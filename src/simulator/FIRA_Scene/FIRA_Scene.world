@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+	<world name="default">
+		<include>
+			<uri>model://blue_goal</uri>
+			<pose>3.35 -0.92 0 0 0 3.14</pose>
+		</include>
+		<include>
+			<uri>model://yellow_goal</uri>
+			<pose>-3.35 -0.48  0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://fira_ground</uri>
+		</include>
+
+		<light name="light_point1"  type="point">
+			<pose>  -3 1 1 0 0 0</pose>
+		</light>
+		<!--
+		<light name="light_point2"  type="point">
+			<pose>-1.5 1 1 0 0 0</pose>
+		</light>
+		-->
+		<light name="light_point3"  type="point">
+			<pose>   0 1 1 0 0 0</pose>
+		</light>
+		<!--
+		<light name="light_point4"  type="point">
+			<pose> 1.5 1 1 0 0 0</pose>
+		</light>
+		-->
+		<light name="light_point5"  type="point">
+			<pose>  3  1 1 0 0 0</pose>
+		</light>
+
+
+
+
+		<light name="light_point6"  type="point">
+			<pose>  -3 -1 1 0 0 0</pose>
+		</light>
+		<!--
+		<light name="light_point7"  type="point">
+			<pose>-1.5 -1 1 0 0 0</pose>
+		</light>
+		-->
+		<light name="light_point8"  type="point">
+			<pose>   0 -1 1 0 0 0</pose>
+		</light>
+		<!--
+		<light name="light_point9"  type="point">
+			<pose> 1.5 -1 1 0 0 0</pose>
+		</light>
+ 		-->
+		<light name="light_point10"  type="point">
+			<pose>  3 -1 1 0 0 0</pose>
+		</light>
+	
+    
+	</world>
+</sdf>

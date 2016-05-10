@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo cp data/net /etc/init.d/net
+sudo chmod 755 /etc/init.d/net
+sudo update-rc.d -f net defaults
+sudo bash /etc/init.d/net

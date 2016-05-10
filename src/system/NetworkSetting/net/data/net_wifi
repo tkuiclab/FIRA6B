@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+host=$(grep "wlan" host)
+host2=${host:0:6} #For WIFI
+#host2=wlan1
+
+name=asus_iclab #ip分享器名稱
+passwd=1234567890 #ip分享器密碼
+
+#sudo /etc/init.d/network-manager stop
+
+sudo ifconfig $host2 up
+sudo wpa_passphrase $name $passwd > wpa.conf
+sudo wpa_supplicant -BDwext -i $host2 -c wpa.conf
+sudo ifconfig $host2 192.168.0.101 #WIFI
+sudo dhclient $host2

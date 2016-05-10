@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <model name="YellowGoal">
+    <pose>0 0 0  0 0 0</pose>
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://yellow_goal/meshes/YellowGoal.DAE</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://yellow_goal/meshes/YellowGoal.DAE</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  <!--<plugin filename="libobj_pub_plugin.so" name="obj_pub_plugin"/>-->
+  </model>
+</sdf>

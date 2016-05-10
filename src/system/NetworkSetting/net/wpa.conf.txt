@@ -1,0 +1,5 @@
+network={
+	ssid="TKU_IARC"
+	#psk="1234567890"
+	psk=94721544903bb435eae03214a36a090ac61c68744ab1dc18ec51709244c3a3eb
+}
