@@ -27,6 +27,7 @@
 //message inclue
 #include "std_msgs/String.h"
 #include "std_msgs/Int32.h"
+#include "vision/Object.h"
 #include "FIRA_status_plugin/RobotSpeedMsg.h"
 #include "FIRA_status_plugin/ModelMsg.h"
 #include "geometry_msgs/Twist.h"
@@ -43,6 +44,9 @@
 #define RobotOpt_Topic_Prefix "/FIRA/Opt_R"
 #define GameState_Topic "/FIRA/GameState"
 #define TeamColor_Topic "/FIRA/TeamColor"
+#define Vision_Topic "/vision/object"
+//one_Robot speed
+#define Robot_Topic_Speed "/cmd_vel"
 //robot suffix
 #define Robot_Position_Topic_Suffix "/Strategy/WorldMap/RobotPos"
 #define Robot_Role_Topic_Suffix "/Strategy/Coach/role"
@@ -80,6 +84,8 @@ public:
     long getGameState(){return gamestate;}
     std::string getTeamColor(){return teamcolor;}
 
+
+
 protected:
     void ros_comms_init();
 
@@ -111,6 +117,7 @@ private:
 
     ros::Subscriber GameState;
     ros::Subscriber TeamColor;
+    ros::Subscriber Vision;
 
     //robot role publisher
     //no robot_1_role_sub, because robot_1 is always goal keeper
@@ -124,6 +131,9 @@ private:
     ros::Publisher robotOpt_1_speed_pub;
     ros::Publisher robotOpt_2_speed_pub;
     ros::Publisher robotOpt_3_speed_pub;
+
+    //one_robot speed
+    ros::Publisher robot_speed_pub;
 
     bool run_one = false;
 
@@ -394,11 +404,20 @@ private:
     }
     void subGameState(const std_msgs::Int32::ConstPtr &msg){
         gamestate=msg->data;
-        std::cout<<"receive"<<std::endl;
+        //std::cout<<"receive"<<std::endl;
     }
     void subTeamColor(const std_msgs::String::ConstPtr &msg){
         teamcolor= msg->data;
-        std::cout<<"receive"<<std::endl;
+        //std::cout<<"receive"<<std::endl;
+    }
+    void subVision(const vision::Object::ConstPtr &msg){
+        global_env->home[0].ball.angle=msg->ball_ang;
+        global_env->home[0].ball.distance=msg->ball_dis;
+        global_env->home[0].op_goal.angle=msg->yellow_ang;
+        global_env->home[0].op_goal.distance=msg->yellow_dis;
+        global_env->home[0].goal.angle=msg->blue_ang;
+        global_env->home[0].goal.distance=msg->blue_dis;
+
     }
 };
 

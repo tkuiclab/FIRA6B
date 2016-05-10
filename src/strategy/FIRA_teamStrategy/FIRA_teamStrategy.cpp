@@ -95,30 +95,30 @@ void FIRA_teamStrategy_class::role_Play(){
     angle_bd1=fabs(angle_bd1);
     angle_bd2=fabs(angle_bd2);
     
-//    
-//    if(distance_dr1>=distance_dr2){
-//        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
-//            printf("roleAry[%d]=Role_Attack\t",1);
-//            printf("roleAry[%d]=Role_Support\n",2);
-//        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
-//            printf("roleAry[%d]=Role_Attack\t",2);
-//            printf("roleAry[%d]=Role_Support\n",1);
-//        }else{
-//            printf("roleAry[%d]=Role_Attack\t",2);
-//            printf("roleAry[%d]=Role_Support\n",1);
-//        }
-//    }else if(distance_dr1<distance_dr2){
-//        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
-//            printf("roleAry[%d]=Role_Attack\t",1);
-//            printf("roleAry[%d]=Role_Support\n",2);
-//        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
-//            printf("roleAry[%d]=Role_Attack\t",2);
-//            printf("roleAry[%d]=Role_Support\n",1);
-//        }else{
-//            printf("roleAry[%d]=Role_Attack\t",1);
-//            printf("roleAry[%d]=Role_Support\n",2);
-//        }
-//    }
+
+    if(distance_dr1>=distance_dr2){
+        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
+            printf("roleAry[%d]=Role_Attack\t",1);
+            printf("roleAry[%d]=Role_Support\n",2);
+        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
+            printf("roleAry[%d]=Role_Attack\t",2);
+            printf("roleAry[%d]=Role_Support\n",1);
+        }else{
+            printf("roleAry[%d]=Role_Attack\t",2);
+            printf("roleAry[%d]=Role_Support\n",1);
+        }
+    }else if(distance_dr1<distance_dr2){
+        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
+            printf("roleAry[%d]=Role_Attack\t",1);
+            printf("roleAry[%d]=Role_Support\n",2);
+        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
+            printf("roleAry[%d]=Role_Attack\t",2);
+            printf("roleAry[%d]=Role_Support\n",1);
+        }else{
+            printf("roleAry[%d]=Role_Attack\t",1);
+            printf("roleAry[%d]=Role_Support\n",2);
+        }
+    }
 }
 
 

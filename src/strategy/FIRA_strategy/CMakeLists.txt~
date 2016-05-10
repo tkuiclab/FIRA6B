@@ -1,0 +1,22 @@
+
+##############################################################################
+# Sections
+##############################################################################
+
+
+##############################################################################
+# Sources
+##############################################################################
+
+
+
+##############################################################################
+# Binaries
+##############################################################################
+
+add_executable(FIRA_strategy strategy.cpp Env.h WorldMapTans.h FIRA_Strategy.h FIRA_Strategy.cpp FIRA_Strategy_B.cpp FIRA_teamStrategy.cpp FIRA_teamStrategy_B.cpp FIRA_pathplan.cpp)
+#add_dependencies(FIRA_strategy FIRA_strategy_gencpp)
+target_link_libraries(FIRA_strategy ${catkin_LIBRARIES})
+#add_dependencies(FIRA_strategy FIRA_strategy_generate_messages_cpp)
+#add_dependencies(FIRA_strategy FIRA_Sim_generate_messages_cpp)
+add_dependencies(FIRA_strategy fira_sim_generate_messages_cpp)

@@ -153,10 +153,17 @@ int main(int argc, char **argv)
     {
         mpathplan.teamColor = mNodeHandle.getTeamColor();
         global_env->gameState = mNodeHandle.getGameState();
-         std::cout << "[strategy] teamColor = " << mpathplan.teamColor  <<  std::endl;
-         std::cout << "[strategy] gameState = " << global_env->gameState <<  std::endl;
+
+        std::cout<<"ball.angle="<<global_env->home[0].ball.angle<<std::endl;
+        std::cout<<"ball.distance="<<global_env->home[0].ball.distance<<std::endl;
+        std::cout<<"yellow.angle="<<global_env->home[0].op_goal.angle<<std::endl;
+        std::cout<<"yellow.distance="<<global_env->home[0].op_goal.distance<<std::endl;
+        std::cout<<"blue.angle="<<global_env->home[0].goal.angle<<std::endl;
+        std::cout<<"blue.angle="<<global_env->home[0].goal.distance<<std::endl;
+        // std::cout << "[strategy] teamColor = " << mpathplan.teamColor  <<  std::endl;
+        // std::cout << "[strategy] gameState = " << global_env->gameState <<  std::endl;
         roleAry = mNodeHandle.getRoleAry();
-        roleAry[1] = Role_Attack;
+        roleAry[0] = Role_Attack;
 //        printf("roleAry = %d,%d,%d\n",roleAry[0],roleAry[1],roleAry[2]);
 
 

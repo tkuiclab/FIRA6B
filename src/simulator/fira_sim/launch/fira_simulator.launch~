@@ -1,0 +1,113 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <arg name="gui" default="true" />
+
+<include file="$(find gazebo_ros)/launch/empty_world.launch">
+<!--    <arg name="world_name" value="$(find youbot_gazebo)/worlds/empty_room.world"/>-->
+    <arg name="world_name" value="$(find fira_sim)/FIRA.world"/>
+    <arg name="debug" value="false" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="headless" value="false"/>
+  </include>
+  <!--include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find fira_sim)/FIRA.world"/>
+    <arg name="debug" value="false" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="headless" value="false"/>
+  </include-->
+
+  <!-- spawn general model for the youbot -->
+  <arg name="youbot_model" default="$(find robot6th_description)/urdf/robot6th.xacro" />
+  <param name="youbot_description" command="$(find xacro)/xacro.py '$(arg youbot_model)'" />
+
+  <!-- FIRA_1 -->
+  <param name="tf_prefix" value="FIRA/R1" />
+  <!-- spawn single robots-->
+  <group ns="/FIRA/R1/Strategy">
+    <param name="tf_prefix" value="FIRA/R1" />
+
+    <include file="$(find robot6th_gazebo)/launch/spawn_robot6th.launch">
+      <arg name="name" value="R1"/>
+      <arg name="pos_x" value="2.25"/>
+      <arg name="pos_y" value="0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="3.14"/>
+    </include>
+  </group>
+
+  <!-- YOUBOT2 -->
+  <param name="tf_prefix" value="FIRA/R2" />
+  <group ns="/FIRA/R2/Strategy">
+    <param name="tf_prefix" value="FIRA/R2" />
+
+   <include file="$(find robot6th_gazebo)/launch/spawn_robot6th.launch">
+      <arg name="name" value="R2"/>
+      <arg name="pos_x" value="1.5"/>
+      <arg name="pos_y" value="1.0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="3.14"/>
+    </include>
+  </group>
+
+  <!-- YOUBOT3 -->
+  <param name="tf_prefix" value="FIRA/R3" />
+  <group ns="/FIRA/R3/Strategy">
+    <param name="tf_prefix" value="FIRA/R3" />
+
+    <include file="$(find robot6th_gazebo)/launch/spawn_robot6th.launch">
+      <arg name="name" value="R3"/>
+      <arg name="pos_x" value="1.5"/>
+      <arg name="pos_y" value="-1.0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="3.14"/>
+    </include>
+  </group>
+
+<!-- FIRA_Opt_1 -->
+  <param name="tf_prefix" value="FIRA/Opt_R1" />
+  <group ns="/FIRA/Opt_R1/Strategy">
+    <param name="tf_prefix" value="FIRA/Opt_R1" />
+
+    <include file="$(find robot6th_gazebo)/launch/spawn_robot6th.launch">
+      <arg name="name" value="Opt_R1"/>
+      <arg name="pos_x" value="-2.25"/>
+      <arg name="pos_y" value="0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="0"/>
+    </include>
+  </group>
+
+
+<!-- YOUBOT4 -->
+  <param name="tf_prefix" value="FIRA/Opt_R2" />
+  <group ns="/FIRA/Opt_R2/Strategy">
+    <param name="tf_prefix" value="FIRA/Opt_R2" />
+
+    <include file="$(find robot6th_gazebo)/launch/spawn_robot6th.launch">
+      <arg name="name" value="Opt_R2"/>
+      <arg name="pos_x" value="-1.5"/>
+      <arg name="pos_y" value="1.0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="0"/>
+    </include>
+  </group>
+
+<!-- YOUBOT5 -->
+  <param name="tf_prefix" value="FIRA/Opt_R3" />
+  <group ns="/FIRA/Opt_R3/Strategy">
+    <param name="tf_prefix" value="FIRA/Opt_R3" />
+
+<include file="$(find robot6th_gazebo)/launch/spawn_robot6th.launch">
+      <arg name="name" value="Opt_R3"/>
+      <arg name="pos_x" value="-1.5"/>
+      <arg name="pos_y" value="-1.0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="0"/>
+    </include>
+  </group>
+</launch>

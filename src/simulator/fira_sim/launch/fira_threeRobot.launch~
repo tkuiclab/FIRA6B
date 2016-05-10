@@ -1,0 +1,118 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <arg name="gui" default="true" />
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+<!--    <arg name="world_name" value="$(find youbot_gazebo)/worlds/empty_room.world"/>-->
+    <arg name="world_name" value="$(find fira_sim)/FIRA.world"/>
+    <arg name="debug" value="false" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="headless" value="false"/>
+  </include>
+
+  <!-- spawn general model for the youbot -->
+  <arg name="youbot_model" default="$(find youbot_description)/robots/youbot.urdf.xacro" />
+  <param name="youbot_description" command="$(find xacro)/xacro.py '$(arg youbot_model)'" />
+
+  <!-- FIRA_1 -->
+  <param name="tf_prefix" value="FIRA_1" />
+  <!-- spawn single robots-->
+  <group ns="/FIRA_1">
+    <param name="tf_prefix" value="FIRA_1" />
+
+    <include file="$(find youbot_gazebo)/launch/spawn_youbot.launch">
+      <arg name="name" value="FIRA_1"/>
+      <arg name="pos_x" value="2.25"/>
+      <arg name="pos_y" value="0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="3.14"/>
+      <arg name="namespace_arg" value="FIRA_1"/>
+    </include>
+  </group>
+
+  <!-- start tf publisher for laser scanner-->
+  <!-- TODO: should be replaced with a robot-wide tf publisher-->
+<!--
+  <node name="youbot0_tf_scanner" pkg="tf" type="static_transform_publisher" args="0.3 0 -0.03 0 0 0 youbot0/base_link youbot0/base_laser_front_link 40" />
+-->
+  <!-- YOUBOT2 -->
+  <param name="tf_prefix" value="FIRA_2" />
+  <group ns="/FIRA_2">
+    <param name="tf_prefix" value="FIRA_2" />
+
+    <include file="$(find youbot_gazebo)/launch/spawn_youbot.launch">
+      <arg name="name" value="FIRA_2"/>
+      <arg name="pos_x" value="1.5"/>
+      <arg name="pos_y" value="1.0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="3.14"/>
+      <arg name="namespace_arg" value="FIRA_2"/>
+    </include>
+  </group>
+
+  <!-- YOUBOT3 -->
+  <param name="tf_prefix" value="FIRA_3" />
+  <group ns="/FIRA_3">
+    <param name="tf_prefix" value="FIRA_3" />
+
+    <include file="$(find youbot_gazebo)/launch/spawn_youbot.launch">
+      <arg name="name" value="FIRA_3"/>
+      <arg name="pos_x" value="1.5"/>
+      <arg name="pos_y" value="-1.0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="3.14"/>
+      <arg name="namespace_arg" value="FIRA_3"/>
+    </include>
+  </group>
+
+<!-- FIRA_Opt_1 -->
+  <param name="tf_prefix" value="FIRA_Opt_1" />
+  <group ns="/FIRA_Opt_1">
+    <param name="tf_prefix" value="FIRA_Opt_1" />
+
+    <include file="$(find youbot_gazebo)/launch/spawn_youbot.launch">
+      <arg name="name" value="FIRA_Opt_1"/>
+      <arg name="pos_x" value="-2.25"/>
+      <arg name="pos_y" value="0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="0"/>
+      <arg name="namespace_arg" value="FIRA_Opt_1"/>
+    </include>
+  </group>
+
+
+<!-- YOUBOT4 -->
+  <param name="tf_prefix" value="FIRA_Opt_2" />
+  <group ns="/FIRA_Opt_2">
+    <param name="tf_prefix" value="FIRA_Opt_2" />
+
+    <include file="$(find youbot_gazebo)/launch/spawn_youbot.launch">
+      <arg name="name" value="FIRA_Opt_2"/>
+      <arg name="pos_x" value="-1.5"/>
+      <arg name="pos_y" value="1.0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="0"/>
+      <arg name="namespace_arg" value="FIRA_Opt_2"/>
+    </include>
+  </group>
+
+<!-- YOUBOT5 -->
+  <param name="tf_prefix" value="FIRA_Opt_3" />
+  <group ns="FIRA_Opt_3">
+    <param name="tf_prefix" value="FIRA_Opt_3" />
+
+    <include file="$(find youbot_gazebo)/launch/spawn_youbot.launch">
+      <arg name="name" value="FIRA_Opt_3"/>
+      <arg name="pos_x" value="-1.5"/>
+      <arg name="pos_y" value="-1.0"/>
+      <arg name="pos_z" value="0.1"/>
+      <arg name="yaw" value="0"/>
+      <arg name="namespace_arg" value="FIRA_Opt_3"/>
+    </include>
+  </group>
+
+
+</launch>

@@ -36,17 +36,20 @@ void Strategy_nodeHandle::ros_comms_init(){
     Gazebo_Model_Name_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::find_gazebo_model_name_fun,this);
 
     //Use_topic_gazebo_msgs_Model_States to get model position
-    ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::ball_sub_fun,this);
+//    ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::ball_sub_fun,this);
 
     //robot subscriber
-    robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_1_pos_fun,this);
-    robot_2_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_2_pos_fun,this);
-    robot_3_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_3_pos_fun,this);
-    robotOpt_1_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_1_pos_fun,this);
-    robotOpt_2_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_2_pos_fun,this);
-    robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_3_pos_fun,this);
+//    robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_1_pos_fun,this);
+//    robot_2_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_2_pos_fun,this);
+//    robot_3_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_3_pos_fun,this);
+//    robotOpt_1_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_1_pos_fun,this);
+//    robotOpt_2_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_2_pos_fun,this);
+//    robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_3_pos_fun,this);
     GameState = n->subscribe<std_msgs::Int32>(GameState_Topic,1000,&Strategy_nodeHandle::subGameState,this);
     TeamColor = n->subscribe<std_msgs::String>(TeamColor_Topic,1000,&Strategy_nodeHandle::subTeamColor,this);
+
+    //contact image
+    Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
 
     //ball subscriber
 //    ball_sub = n->subscribe<FIRA_status_plugin::ModelMsg>(Ball_Topic_Name,1000,&Strategy_nodeHandle::ball_sub_fun,this);
@@ -70,13 +73,16 @@ void Strategy_nodeHandle::ros_comms_init(){
 
     //speed subscriber
     std::string robotSpeed_suffix = RobotSpeed_Topic_Suffix;
-    robot_1_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"1"+robotSpeed_suffix,1000);
-    robot_2_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"2"+robotSpeed_suffix,1000);
-    robot_3_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"3"+robotSpeed_suffix,1000);
-    robotOpt_1_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"1"+robotSpeed_suffix,1000);
-    robotOpt_2_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"2"+robotSpeed_suffix,1000);
-    robotOpt_3_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"3"+robotSpeed_suffix,1000);
+//    robot_1_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"1"+robotSpeed_suffix,1000);
+//    robot_2_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"2"+robotSpeed_suffix,1000);
+//    robot_3_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"3"+robotSpeed_suffix,1000);
+//    robotOpt_1_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"1"+robotSpeed_suffix,1000);
+//    robotOpt_2_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"2"+robotSpeed_suffix,1000);
+//    robotOpt_3_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"3"+robotSpeed_suffix,1000);
 
+    //one_Robot speed publish
+    std::string robotSpeed= Robot_Topic_Speed;
+    robot_speed_pub = n->advertise<geometry_msgs::Twist>(Robot_Topic_Speed,1000);
 
     //std::cout << "PersonalStrategy ros_comms_init() finish" << std::endl;
 
@@ -225,7 +231,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
 
 void Strategy_nodeHandle::pubGrpSpeed(){
     ////--------------------speed test----------------
-    double dVectorMax = VectorMax;
+/*    double dVectorMax = VectorMax;
     double dVectorMin = VectorMin;
     double dVector[3];
     for(int i=0;i<3;i++){
@@ -245,18 +251,19 @@ void Strategy_nodeHandle::pubGrpSpeed(){
             global_env->home[i].v_y = c_v_y;
         }
 //        printf("%d. c_v_x=%lf, c_v_y=%lf ",i,c_v_x,c_v_y);
-    }/*printf("\n");*/
+    }*//*printf("\n");*/
 ////-------------------------pub----------------------------------------
-    if(!opponent){
-        pubSpeed(&robot_1_speed_pub  ,global_env->home[0].v_x,global_env->home[0].v_y,global_env->home[0].v_yaw,global_env->home[0].rotation);
-        pubSpeed(&robot_2_speed_pub  ,global_env->home[1].v_x,global_env->home[1].v_y,global_env->home[1].v_yaw,global_env->home[1].rotation);
-        pubSpeed(&robot_3_speed_pub  ,global_env->home[2].v_x,global_env->home[2].v_y,global_env->home[2].v_yaw,global_env->home[2].rotation);
-    }else{
-        pubSpeed(&robotOpt_1_speed_pub,global_env->opponent[0].v_x,global_env->opponent[0].v_y,global_env->opponent[0].v_yaw,global_env->opponent[0].rotation);
-        pubSpeed(&robotOpt_2_speed_pub,global_env->opponent[1].v_x,global_env->opponent[1].v_y,global_env->opponent[1].v_yaw,global_env->opponent[1].rotation);
-        pubSpeed(&robotOpt_3_speed_pub,global_env->opponent[2].v_x,global_env->opponent[2].v_y,global_env->opponent[2].v_yaw,global_env->opponent[2].rotation);
+//    if(!opponent){
+//        pubSpeed(&robot_1_speed_pub  ,global_env->home[0].v_x,global_env->home[0].v_y,global_env->home[0].v_yaw,global_env->home[0].rotation);
+//        pubSpeed(&robot_2_speed_pub  ,global_env->home[1].v_x,global_env->home[1].v_y,global_env->home[1].v_yaw,global_env->home[1].rotation);
+//        pubSpeed(&robot_3_speed_pub  ,global_env->home[2].v_x,global_env->home[2].v_y,global_env->home[2].v_yaw,global_env->home[2].rotation);
+//    }else{
+//        pubSpeed(&robotOpt_1_speed_pub,global_env->opponent[0].v_x,global_env->opponent[0].v_y,global_env->opponent[0].v_yaw,global_env->opponent[0].rotation);
+//        pubSpeed(&robotOpt_2_speed_pub,global_env->opponent[1].v_x,global_env->opponent[1].v_y,global_env->opponent[1].v_yaw,global_env->opponent[1].rotation);
+//        pubSpeed(&robotOpt_3_speed_pub,global_env->opponent[2].v_x,global_env->opponent[2].v_y,global_env->opponent[2].v_yaw,global_env->opponent[2].rotation);
 //            printf("1: %lf %lf %lf \n",global_env->opponent[0].v_x,global_env->opponent[0].v_y,global_env->opponent[0].v_yaw);
 //            printf("2: %lf %lf %lf \n",global_env->opponent[1].v_x,global_env->opponent[1].v_y,global_env->opponent[1].v_yaw);
 //            printf("3: %lf %lf %lf \n",global_env->opponent[2].v_x,global_env->opponent[2].v_y,global_env->opponent[2].v_yaw);
-    }
+//    }
+     pubSpeed(&robot_speed_pub  ,global_env->home[0].v_x,global_env->home[0].v_y,global_env->home[0].v_yaw,global_env->home[0].rotation);
 }
