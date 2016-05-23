@@ -2,8 +2,10 @@
 > <b>每開啟一個分頁必須先於專案目錄內使用指令：source devel/setup.bash</b>
 
 1. $ roscore
-2. $ rosparam load ~/FIRA16_ws/src/vision/prosilica_driver /prosilica_driver
+2. $ rosparam load ~/FIRA16_ws/src/vision/prosilica_parameter /prosilica_driver
   * 讀取攝影機的參數設定
+  
+  > 若此步驟失效，請將步驟3先執行一遍再跳回來執行
 3. $ rosrun prosilica_camera prosilica_node
 4. $ rosrun vision interface
   * 開啟介面設定色模、距離模...等，每個區塊設定完記得都要按 sent 及 save 的按鍵
