@@ -8,7 +8,13 @@
   > 若此步驟失效，請將步驟3先執行一遍再跳回來執行
 3. $ rosrun prosilica_camera prosilica_node
 4. $ rosrun vision interface
-  * 開啟介面設定色模、距離模...等，每個區塊設定完記得都要按 sent <b>(色模為file)</b> 及 save 的按鍵
+  * 開啟介面設定色模、距離模...等，每個區塊設定完記得都要按 save 及 sent <b>(色模為file)</b> 的按鍵
+
+> 若要存取色模的參數檔並在下次讀出<br>
+> 1. rosparam dump 欲貯存的檔案位置及檔名<br>
+> 2. rosparam load 欲讀出的檔案位置及檔名<br>
+>> 檔名格式：組名年月日 ex: strategy160524
+
 5. $ rosrun vision objectdetection
   * 執行物件分割使機器人能夠辨別各物件之位置
 6. ☑view
