@@ -24,5 +24,6 @@
 8. $ sudo chmod 777 /dev/ttyUSB0
 9. $ rosrun motion_test motion_test
 10. $ rostopic pub /FIRA/GameState std_msgs/Int32 1<br>
-    $ rostopic pub /FIRA/TeamColor std_msgs/String "Blue"
-  * 設定此機器人為<b>藍隊</b>並處於<b>attack</b>的遊戲狀態
+    $ rostopic pub /FIRA/TeamColor std_msgs/String "Blue"<br>
+    $ rostopic pub /FIRA/IsSimulator std_msgs/Int32 1
+  * 設定此機器人為<b>藍隊</b>並處於<b>attack</b>的遊戲狀態並以<b>模擬器</b>的狀態執行
