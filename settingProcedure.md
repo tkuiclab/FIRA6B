@@ -20,7 +20,8 @@
 6. ☑view
   * 於第四點內開啟的介面中勾選，用於顯示物件分割後之球及球門位置
 7. $ rosrun strategy FIRA_strategy
-  * 執行機器人策略
+   $ rosrun strategy teamStrategy
+  * 執行機器人個策及團策
 8. $ sudo chmod 777 /dev/ttyUSB0
 9. $ rosrun motion_test motion_test
 10. $ rostopic pub /FIRA/GameState std_msgs/Int32 1<br>
