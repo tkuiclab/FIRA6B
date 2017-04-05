@@ -1,5 +1,0 @@
-network={
-	ssid="asus_iclab"
-	#psk="1234567890"
-	psk=b2932c6d33d13961cef7d638c1476dfcff103a50deed65ce454a4cd551c4541c
-}
