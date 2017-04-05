@@ -1,6 +1,5 @@
 #include "teamStrategy_nodeHandle.h"
 
-
 TeamStrategy_nodeHandle::
 TeamStrategy_nodeHandle(int argc, char** argv):
 BaseNode(argc,argv,Node_Name)
@@ -8,27 +7,8 @@ BaseNode(argc,argv,Node_Name)
     
 }
 
-
 void TeamStrategy_nodeHandle::ros_comms_init(){
-    //blue_goal_sub = n->subscribe<FIRA_status_plugin::ModelMsg>(BlueGoal_Topic_Name,1000,bluegoal_sub_fun);
-    //yellow_goal_sub = n->subscribe<FIRA_status_plugin::ModelMsg>(YellowGoal_Topic_Name,1000,yellowgoal_sub_fun);
-    
     n = new ros::NodeHandle();
-    
-    //std::string paramVal,defaultVal;
-    //n->param("paramTest",paramVal,defaultVal);
-    //std::cout << "paramVal= " << paramVal << ",defaultVal=" << defaultVal << std::endl;
-    
-    
-    /*global_env->blue.pos.x = 3.35;
-     global_env->blue.pos.y = 0;
-     global_env->blue.pos.z = 0;
-     
-     global_env->yellow.pos.x = -3.35;
-     global_env->yellow.pos.y = 0;
-     global_env->yellow.pos.z = 0;*/
-    
-    
     //prefix
     std::string robot_prefix = Robot_Topic_Prefix;
     std::string robotOpt_prefix = RobotOpt_Topic_Prefix;
@@ -37,34 +17,25 @@ void TeamStrategy_nodeHandle::ros_comms_init(){
     
     Gazebo_Model_Name_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::find_gazebo_model_name_fun,this);
     
-    //ball_sub = n->subscribe<FIRA_status_plugin::ModelMsg>(Ball_Topic_Name,1000,&TeamStrategy_nodeHandle::ball_sub_fun,this);
     ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::ball_sub_fun,this);
     
-    //    robot_1_pos_sub   = n->subscribe<nav_msgs::Odometry>(robot_prefix  +"1"+robotPos_suffix,1000,&TeamStrategy_nodeHandle::robot_1_pos_fun,this);
     robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robot_1_pos_fun,this);
     robot_2_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robot_2_pos_fun,this);
     robot_3_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robot_3_pos_fun,this);
-    //    robot_2_pos_sub   = n->subscribe<nav_msgs::Odometry>(robot_prefix  +"2"+robotPos_suffix,1000,&TeamStrategy_nodeHandle::robot_2_pos_fun,this);
-    //    robot_3_pos_sub   = n->subscribe<nav_msgs::Odometry>(robot_prefix  +"3"+robotPos_suffix,1000,&TeamStrategy_nodeHandle::robot_3_pos_fun,this);
+
     robotOpt_1_pos_sub = n->subscribe<nav_msgs::Odometry>(robotOpt_prefix  +"1"+robotPos_suffix,1000,&TeamStrategy_nodeHandle::robotOpt_1_pos_fun,this);
     robotOpt_2_pos_sub = n->subscribe<nav_msgs::Odometry>(robotOpt_prefix  +"2"+robotPos_suffix,1000,&TeamStrategy_nodeHandle::robotOpt_2_pos_fun,this);
     robotOpt_3_pos_sub = n->subscribe<nav_msgs::Odometry>(robotOpt_prefix  +"3"+robotPos_suffix,1000,&TeamStrategy_nodeHandle::robotOpt_3_pos_fun,this);
     
-    
+    GameState = n->subscribe<std_msgs::Int32>(GameState_Topic,1000,&TeamStrategy_nodeHandle::subGameState,this);
+    TeamColor = n->subscribe<std_msgs::String>(TeamColor_Topic,1000,&TeamStrategy_nodeHandle::subTeamColor,this);
+
     //robot_role
-    std::cout << "TeamStrategy_nodeHandle::ros_comms_init() say opponent = " << opponent << std::endl;
     std::string robot_role_prefix = opponent ?  RobotOpt_Topic_Prefix : Robot_Topic_Prefix;
     std::string robot_role_suffix = Robot_Role_Topic_Suffix;
-    
-    std::cout << "robot_role_prefix = " << robot_role_prefix << std::endl;
-    
+        
     robot_2_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"2"+robot_role_suffix,1000);
-    robot_3_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"3"+robot_role_suffix,1000);
-    
-    
-    std::cout << "teamStrategy ros_comms_init() finish" << std::endl;
-    
-    
+    robot_3_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"3"+robot_role_suffix,1000);    
 }
 void TeamStrategy_nodeHandle::Transfer(int r_number){
     /* Transfer the value of the x, y axis of robot, ball and goal into the distance and angle
@@ -82,14 +53,10 @@ void TeamStrategy_nodeHandle::Transfer(int r_number){
     
     if(Team_color == Team_Blue){
         Goal = global_env->yellow.pos;
-        Goal_op = global_env->blue.pos;
-        //        goal_color = Goal_Yellow;
-        
+        Goal_op = global_env->blue.pos;        
     }else if (Team_color == Team_Yellow){
         Goal = global_env->blue.pos;
         Goal_op = global_env->yellow.pos;
-        //        goal_color = Goal_Blue;
-        
     }
     
     double Robot_head_x = Robot.x + half_robot*cos(global_env->home[r_number].rotation*deg2rad);

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(motion_test)
+project(motion)
 
 find_package(catkin REQUIRED COMPONENTS
- qt_build
+# qt_build
  message_generation
  std_msgs
  roscpp
@@ -17,8 +17,8 @@ catkin_package(CATKIN_DEPENDS
 
 add_library(csslLib cssl/cssl.h cssl/cssl.c cssl/uty.c)
 
-add_executable(motion_test motion.cpp MotorControl.h)
-target_link_libraries(motion_test ${catkin_LIBRARIES})
+add_executable(motion motion.cpp MotorControl.h)
+target_link_libraries(motion ${catkin_LIBRARIES})
 #target_link_libraries(motion_test qnode)
-target_link_libraries(motion_test csslLib)
+target_link_libraries(motion csslLib)
 

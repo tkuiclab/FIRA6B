@@ -1,0 +1,10 @@
+rosdistro: 'indigo
+
+  '
+roslaunch:
+  uris: {host_iclab_desktop__39487: 'http://iclab-desktop:39487/'}
+rosversion: '1.11.20
+
+  '
+run_id: 80924fb6-91c7-11e6-acb6-b8aeed7cea2c
+test: 0

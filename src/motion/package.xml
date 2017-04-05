@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>motion_test</name>
+  <name>motion</name>
   <version>1.0.0</version>
   <description>The motion_test package</description>
 

@@ -25,10 +25,6 @@ static void show_usage()
     << "\t-r,robot index"
     << std::endl;
 }
-
-
-
-
 //parse argument
 //-opt,--opponent   :   set oppent
 //-h,--help         :
@@ -39,16 +35,6 @@ void parseArg(int argc,char** argv,bool &isOpponent){
         if ((arg == "-h") || (arg == "--help")) {
             show_usage();
             return ;
-            /*
-             } else if ((arg == "-r") || (arg == "--robotIndex")) {
-             if (i + 1 < argc) { // Make sure we aren't at the end of argv!
-             robotIndex = atoi(argv[++i]); // Increment 'i' so we don't get the argument as the next argv[i].
-             std::cout <<  "robotIndex=" << robotIndex << std::endl;
-             } else { // Uh-oh, there was no argument to the destination option.
-             std::cerr << "--destination option requires one argument." << std::endl;
-             return ;
-             }
-             }*/
         } else if ((arg == "-opt") || (arg == "--opponent")) {
             if (i + 1 < argc) { // Make sure we aren't at the end of argv!
                 //robotIndex = atoi(argv[++i]); // Increment 'i' so we don't get the argument as the next argv[i].
@@ -74,10 +60,9 @@ void parseArg(int argc,char** argv,bool &isOpponent){
 int main(int argc, char **argv)
 {
     
-    std::cout << "=======FIRA Team Strategy Start====140810_0755===" << std::endl;
-    
+    std::cout << "=======FIRA Team Strategy Start====170119===" << std::endl;
     //---parse argument---
-    bool isOpponent = false;     //---------------------------------------改Opponent
+    bool isOpponent = false;     //--Opponent
     parseArg(argc,argv,isOpponent);
     
     Environment *global_env = new Environment;
@@ -90,39 +75,26 @@ int main(int argc, char **argv)
     global_env->yellow.pos.y = 0;
     global_env->yellow.pos.z = 0;
     
-    
-    
     //---node init---
     TeamStrategy_nodeHandle mNodeHandle(argc,argv);
     mNodeHandle.setEnv(global_env);
     mNodeHandle.setOpponent(isOpponent);
     mNodeHandle.on_init();
-    
-    //std::cout <<  "teamStrategy (in main) opponent=" << isOpponent << std::endl;
-    
-    ros::Rate loop_rate(10000);
-    
-    //global_env->gameState = GameState_AvoidBarrier;
-    
+        
+    ros::Rate loop_rate(20);
+        
     //teamStrategy init
     FIRA_teamStrategy_class mteam;
     
     mteam.setOpponent(isOpponent);
     mteam.loadParam(mNodeHandle.getNodeHandle());
     
-    
-    
-    
-    
     int *roleAry;
     while(ros::ok())
     {
-        //std::cout << "before team of A" << std::endl;
-        
         mteam.setEnv(*global_env);
         mteam.teamStrategy();
         roleAry = mteam.getRoleAry();
-        
         mNodeHandle.pubRole(roleAry);
         
         ros::spinOnce();
@@ -130,7 +102,6 @@ int main(int argc, char **argv)
     }
     
     ros::shutdown();
-    
     
     std::cout << "=======FIRA Team Strategy <<Finish>>===" << std::endl;
     

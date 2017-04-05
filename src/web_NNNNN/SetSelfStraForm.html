@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SetSelfStraForm</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
+  	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
+
+	<link rel="stylesheet" type="text/css" href="SetSelfStraForm.css">
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+	<script src="jquery-ui-1.11.4/jquery-min.js"></script>
+
+	<script type="text/javascript">
+		
+	</script>
+</head>
+<body>
+	<form id="SetSelfStraForm">
+		<h4>SetSelfStraForm</h4>
+		<!-- SelfStraForm_Button -->
+		<div id="SelfStraButton">
+			&emsp;
+			<input type="radio" id="Lose_Ball" name="radio"/><label id="Lose_Ball" for="Lose_Ball">Lose_Ball</label>
+			<input type="radio" id="Stop_Zone" name="radio"/><label id="Stop_Zone" for="Stop_Zone">Stop_Zone</label>
+			<input type="radio" id="Stop_GZone" name="radio"/><label id="Stop_GZone" for="Stop_GZone">Stop_GZone</label>
+			<input type="radio" id="RunState" name="radio"/><label id="RunState" for="RunState">RunState</label>
+			<br>
+			&nbsp;
+			<input type="radio" id="Shoot_A" name="radio" checked="true"/><label id="Shoot_A" for="Shoot_A">Shoot_A</label>
+			<input type="radio" id="Shoot_B" name="radio"/><label id="Shoot_B" for="Shoot_B">Shoot_B</label>
+			<input type="radio" id="Shoot_C" name="radio"/><label id="Shoot_C" for="Shoot_C">Shoot_C</label>
+			<input type="radio" id="Shoot_D" name="radio"/><label id="Shoot_D" for="Shoot_D">Shoot_D</label>
+			<input type="radio" id="Duty" name="radio"/><label id="Duty" for="Duty">&emsp;Duty&emsp;</label>
+		</div>
+		<!-- SetSelfStraForm_Display -->
+		<div id="SelfStraDisplay" style="margin:auto;text-align:center;">
+			<label>是否有掛載 :</label>
+			<input type="text" id name="SelfStrastate" style="width:18px;height:18px;font-size: 9px;" value="否"/>
+			&emsp;
+			<label>擁有其他狀態 :</label>
+			<input type="text" name="SelfStrastate" style="width:18px;height:18px;font-size: 9px;" value="否"/>
+			<!-- 上列Module -->
+			<!-- Lose_ball_Module -->
+			<div style=" width:350px;height:270px;position:absolute;left:22px;text-align:left;border-style:solid;overflow-y:scroll;">
+				<table  id="LoseBallModule">
+				<tr>
+					<th>ConfigName</th>
+					<th>Value</th>
+				</tr>
+				<tr>
+					<td>[1]避障[0]不避障</td>
+					<td><input type="text" name="SelfStrastate"/></td>
+				</tr>
+				<tr>
+					<td>count</td>
+					<td><input type="text" name="SelfStrastate"/></td>
+				</tr>
+				<tr>
+					<td>離球門的距離</td>
+					<td><input type="text" name="SelfStrastate"/></td>
+				</tr>
+				<tr>
+					<td>跳脫離球門的距離</td>
+					<td><input type="text" name="SelfStrastate"/></td>
+				</tr>
+				<tr>
+					<td>移動速度係數</td>
+					<td><input type="text" name="SelfStrastate"/></td>
+				</tr>
+				</table>
+			</div>
+		</div>
+		<!-- SelfStraExecute -->
+		<div id="SelfStraExecute" style="text-align:center;">
+			<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			<input id="next" type="button" value="NEXT"/>
+			&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+			<input id="save" type="button" value="SAVE"/>
+			&nbsp;
+			<input id="close" type="button" value="CLOSE"/>
+		</div>
+	</form>
+	<script>
+		$( "#SelfStraButton" ).buttonset();
+	</script>
+</body>
+</html>
