@@ -47,6 +47,10 @@ Temporary Items
 .apdisk
 
 #folder
+<<<<<<< HEAD
+=======
+simulation
+>>>>>>> FPGA
 Est_Test
 backup
 db
