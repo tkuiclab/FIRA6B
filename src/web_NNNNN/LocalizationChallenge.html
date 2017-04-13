@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://blog.themearmada.com/demos/off-canvas-menu/ -->
+<html id="Update" lang="en" style="cursor:default;">
+<head>
+  <title>Localization UI</title>
+  <meta charset="UTF-8">
+  <!--Font-->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
+
+
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+  <script src="jquery-ui-1.11.4/jquery-min.js"></script>
+  
+  <link rel="stylesheet" href="Lc_js_css/LcGeneral.css">
+  <link rel="stylesheet" href="Lc_js_css/Lcworldmap.css">
+  <script src="js/eventemitter2.min.js"></script>
+  <script src="js/roslib.js"></script>
+  <script src="topic/Topic_Publish.js"></script>
+  <!-- Keyboard command -->l
+    <script type="text/javascript">
+    var key = [];
+
+    function keysPressed(e) {
+        key[e.keyCode] = true;
+        if (key[80]) {
+            topicROSGameState(0);
+        }
+        if (key[79]) {
+            topicROSGameState(1);
+        }
+     } 
+
+    function keyuped(e) {
+        key[e.keyCode] = false;
+    }
+    window.addEventListener("keydown", keysPressed, false);
+    window.addEventListener("keyup", keyuped, false);
+    </script>
+  <!-- button_action -->
+<script>
+	$(document).ready(function(){
+		$("#Btn_Setting").click(function(){
+			$(this).addClass("Btn_Sheng_press");
+			$(this).removeClass("Btn_Sheng");			
+		});
+		
+		$("#Btn_Start").click(function(){
+			$(this).addClass("Btn_Sheng_press");
+			$(this).removeClass("Btn_Sheng");
+			$("#Btn_Stop").addClass("Btn_Sheng");
+			$("#Btn_Stop").removeClass("Btn_Sheng_press");
+		});
+
+		$("#Btn_Stop").click(function(){
+			$(this).addClass("Btn_Sheng_press");
+			$(this).removeClass("Btn_Sheng");
+			$("#Btn_Start").addClass("Btn_Sheng");
+			$("#Btn_Start").removeClass("Btn_Sheng_press");
+		});
+
+		$('#General_tabs li').each(function(i){
+		var _i = i;
+
+		// 綁定click事件到頁籤上，若要改為滑鼠移入切換頁籤的話，將click改為mouseenter
+		$(this).click(function(){
+		  // 移除其他頁籤的class，並將class新增至所選頁籤
+		  $(this).parent().children().removeClass('enable').eq(_i).addClass('enable');
+		  // 隱藏其他頁籤的內容，並顯示所選頁籤的內容
+		  $('#General_contents').children('div').hide().eq(_i).show();
+		});
+
+		$('#Btn_Setting li').mouseenter(function(){
+			$(this).css("background-color","#F39107");
+		});
+		$('#Btn_Setting li').mouseleave(function(){
+			$(this).css("background-color","#982A2A");
+		});
+	  });
+	});
+</script>
+<!-- general_value -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#GeneralSave").click(function() {
+        	up();
+            var SPlanningVelocityBox = [];
+            //var DistanceSettingsBox = [];
+
+            $("[name=SPlanningVelocityElement]").each(function() {
+                SPlanningVelocityBox.push(parseFloat($(this).val()));
+            });
+            // $("[name=DistanceSettingsElement]").each(function() {
+            //     DistanceSettingsBox.push(parseFloat($(this).val()));
+            // });
+            localStorage.setItem("GeneralSPlanStr", JSON.stringify(SPlanningVelocityBox));
+            //localStorage.setItem("GeneralDistanceSetStr", JSON.stringify(DistanceSettingsBox));
+            GeneralTransfer(SPlanningVelocityBox);
+        });
+    });
+</script>
+<style>
+	#full-screen-background-image {
+		z-index: -999;
+		min-height: 100%;
+		width: 100%;
+		height: auto;
+		position: fixed;
+		top: 0;
+		left: 0;
+	}
+	
+	li.left{
+		text-align:left;
+		float:left;
+		width:30%;
+	}
+	
+	li.center{
+		text-align:center;
+		display: inline-block;
+		font-size:1.3em;
+		width: 40%;
+	}
+	
+	li.right{
+		text-align:right;
+		float:right;
+		width: 30%;
+	}
+		
+	#addEvent { 
+		cursor: pointer;
+	}
+	
+	#settingBtn { 
+		cursor: pointer;
+	}
+	
+	#joystick_Canvas{
+		cursor: crosshair;
+	}
+	
+	body{
+		overflow-y: hidden;
+		overflow-x: hidden;
+	}
+	
+	.action_box_inline {
+		display: inline-block;
+		width: 100px;
+		height: 50px;
+		margin: 10px;
+	}
+
+	.action_box{
+		width: 100px;
+		height: 50px;
+		margin: 10px;
+	}
+
+	.team_box{
+		width: 60px;
+		height: 25px;
+		margin: 10px;
+		background-color:#ff661a;
+		border-color: #ff9966;
+		border-width: 2px;
+		border-style:solid;
+	}
+
+	.team_box_press{
+		width: 60px;
+		height: 25px;
+		margin: 10px;
+		background-color:#ffddcc;
+		border-color: #ff6600;
+		border-width: 2px;
+		border-style:solid;
+	}
+	.Side_Choice{
+		height: 40px;
+		width: 80px;
+		color: #ffcc00;
+		background-color: rgba(102, 51, 0, 0.8);
+		border-color: #ff9900;
+		border-width: 2px;
+		border-style:solid;
+		border-radius: 5px;
+		text-align: center;
+		opacity: 0.6;
+	}
+	.Side_Choice_press{
+		height: 50px;
+		width: 110px;
+		color: #ff0000;
+		background-color: rgba(255, 204, 0, 1);
+		border-color: #cc0052;
+		border-width: 4px;
+		text-align: center;
+		font-weight: bolder;
+		font-size: 18px;
+		border-radius: 10px;
+		border-style:solid;
+	}
+
+	.Btn_Sheng{
+		color: #fff;
+		background-color: #982A2A;
+		border-color: #F39107;
+		border-width: 3px;
+		border-style:solid;
+		text-align: center;
+	}
+	
+	.Btn_Sheng_press{		
+		color: #fff;
+		background-color: #F39107;
+		border-color: #F39107;
+		border-width: 3px;
+		text-align: center;
+		border-style:solid;		
+	}
+
+	.choice_rob{
+		color: #fff;
+		background-color: #982A2A;
+		border-color: #F39107;
+		border-width: 3px;
+		border-style:solid;
+		text-align: center;
+	}
+
+	.choice_rob_press{
+		color: #fff;
+		background-color: #F39107;
+		border-color: #F39107;
+		border-width: 3px;
+		text-align: center;
+		border-style:solid;
+	}
+	#General_tabs li{
+		background: #ddd;
+	    border: 1px solid #ccc;
+		border-bottom: none;
+		display: inline-block;
+		margin-right: 5px;
+		padding: 5px 10px;
+		color: #999;
+		cursor: pointer;
+	}
+	#General_tabs li:hover{
+		color: #666;
+	}
+	#General_tabs li.enable{
+		border-bottom: 1px solid #ddd;
+		margin-bottom: -1px;
+		color: #333;
+	}
+	#General_contents{
+		background: #ddd;
+		border: 1px solid #ccc;
+		box-shadow: 0 0 16px #ccc;
+	}
+	#General_contents > div{
+		display: none;
+		text-align: justify;
+		padding: 10px 15px;
+	}
+	#General_contents > div:first-of-type{
+		display: block;
+	}
+</style>
+</head>
+<body>
+<!-- Background -->
+<img alt="full screen background image" src="BG.jpg" id="full-screen-background-image"/>
+
+<p style="font-family:Montserrat;font-size:500%;color:#FFF;text-align:center;">
+Localization Challenge UI
+</p>
+<!-- Wifi Setting-->
+<div class="modal fade" id="connect_Robot1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Connect To Robot1</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="RobotIPDATA" class="control-label">Robot1_IP:</label>
+            <input name="RobotIPDATA" type="text" class="form-control" id="RobotIP" value=IP.textContent>
+          </div>
+          <div class="form-group">
+            <label for="RobotHostDATA" class="control-label">Robot1_Host:</label>
+            <input name="RobotHostDATA" type="text" class="form-control" id="RobotHost" value=Host.textContent>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ros.close();">Close</button>
+        <button type="button" class="btn btn-primary" id="send-message" onclick="RobotConnect();history.go(0);">Connect</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- General Setting -->
+<form class="modal fade" id="Setting_General" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 500px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4>SetGeneralForm</h4>
+            </div>
+            <div class="modal-body" id="GeneralDisplay" style="margin:auto;text-align:center;">
+            <!-- General_Button -->
+                <div class="form-group" id="SetGeneralButton">
+                    <input type="radio" id="SPlanningVelocity" name="radio" checked="checked" />
+                    <label id="SPlanningVelocity" for="SPlanningVelocity">S-Planning Velocity</label>
+                </div>
+           		 <div class="form-group" id="SPlanningVelocityModule" style="height:200px;text-align:left;border-style:solid;overflow:scroll;">
+                	<table>
+                    	<tr>
+                        	<th>ConfigName&emsp;&emsp;</th>
+                        	<th>Value</th>
+                   	 	</tr>
+                    	<tr>
+                       		<td>(double)Vdis_max</td>
+                       		<td>
+                           	<input type="text" name="SPlanningVelocityElement" value="2.2" />
+                        	</td>
+                    	</tr>
+                   	 	<tr>
+                        	<td>(double)Vdis_min</td>
+                        	<td>
+                            	<input type="text" name="SPlanningVelocityElement" value="0.3" />
+                        	</td>
+                    	</tr>
+                    	<tr>
+                        	<td>(double)VTdis_max</td>
+                    		<td>
+                           		<input type="text" name="SPlanningVelocityElement" value="80.0" />
+                        	</td>
+                    	</tr>
+                    	<tr>
+                       		<td>(double)VTdis_min</td>
+                    		<td>
+                        		<input type="text" name="SPlanningVelocityElement" value="50.0" />
+                        	</td>
+                   		</tr>
+                    	<tr>
+                        	<td>(double)Tangle_max</td>
+                        	<td>
+                            	<input type="text" name="SPlanningVelocityElement" value="20.0" />
+                        	</td>
+                    	</tr>
+                    	<tr>
+                        	<td>(double)Tangle_min</td>
+                        	<td>
+                           		<input type="text" name="SPlanningVelocityElement" value="3.0" />
+                        	</td>
+                    	</tr>
+                    	<tr>
+                        	<td>(double)Angle_max</td>
+                        	<td>
+                            	<input type="text" name="SPlanningVelocityElement" value="144.0" />
+                       	 	</td>
+                    	</tr>
+                    	<tr>
+                        	<td>(double)Angle_min</td>
+                        	<td>
+                            	<input type="text" name="SPlanningVelocityElement" value="5.0" />
+                        	</td>
+                    	</tr>
+                	</table>
+            	</div>
+            </div>
+            <div class="modal-footer" id="SetGeneralExecute" style="text-align:center;">
+                <!-- <input id="next" type="button" value="NEXT"/> -->
+                <!-- &emsp;&emsp;&emsp;&emsp;&emsp; -->
+                <input id="GeneralSave" type="button" value="SAVE" />
+                <!-- <input id="close" type="button" value="CLOSE"/> -->
+            </div>
+        </div>
+    </div>
+</form>
+    <!-- General_Button_function-->
+    <script>
+    $("#SetGeneralButton").buttonset();
+    // $("#SetGeneralForm input:radio[name=SetGeneralForm][value='#{@model.get('color')}']");
+
+    //$("#DistanceSettingsModule").hide();
+
+    $("#SPlanningVelocity").click(function() {
+        $("#SPlanningVelocityModule").show();
+        $("#DistanceSettingsModule").hide();
+    });
+    // $("#DistanceSettings").click(function() {
+    //     $("#DistanceSettingsModule").show();
+    //     $("#SPlanningVelocityModule").hide();
+    // });
+    </script>
+<!-- Optimization Setting -->
+<div class="form-group" id="OptimizationModule" style="top:25%; position:absolute;left:3.5%;width:250px;font-family: Signika; font-size: 150% ; color:#fff; background-color: rgba(0,0,0,0.4);border: 7px double #FFF;border-radius: 8px;text-align:left;">
+	<table style="margin-left:40px">
+		<tr>
+			<th style="width:175px;">
+			<label></label>
+			</th>
+		</tr>
+		<tr>
+			<th style="width:100%;">
+			<label for="Optimization" >Optimization</label>
+			</th>
+		</tr>
+		<tr>
+			<td style="width:50%;">
+				<div>
+                     <label style="width:80px;"><input type="checkbox" name="OptimizationElement" > 1 </label>
+                </div>
+			</td>
+			<td style="width:50%;"> 
+				<div>
+                     <label style="width:80px;"><input type="checkbox" name="OptimizationElement"> 2 </label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:50%;">
+				<div>
+                     <label style="width:80px;"><input type="checkbox" name="OptimizationElement"> 3 </label>
+                </div>
+			</td>
+			<td style="width:50%;">
+				<div>
+                     <label style="width:80px;"><input type="checkbox" name="OptimizationElement"> 4 </label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align:center;width:175px;">
+				<input type="button" value ="send" onclick="Optimization()" style="margin-left:-50px;color:blue;background-color:#FFF"/>
+			</td>
+		</tr>
+		<tr>
+			<td><div><label></label></div></td>
+			<td><div><label></label></div></td>
+		</tr>
+	</table>
+</div>
+<!-- Localization Setting -->
+<div class="form-group" id="RobotModule" style="top:9%; position:absolute;right:3.5%;width:250px;font-family: Signika; font-size: 150% ; color:#fff; background-color: rgba(0,0,0,0.4);border: 7px double #FFF;border-radius: 10px;text-align:left;">
+	<table style="margin-left:40px">
+		<tr>
+			<th style="width:175px;">
+			<label></label>
+			</th>
+		</tr>
+		<tr>
+			<th style="width:100%;">
+			<label for="Region_1" >Region 1</label>
+			</th>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement1" value="1" 
+                     onclick="DrawRectangle(1);RegionOrder(1,1)">1</label>
+                </div>
+			</td>
+			<td>
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement1" value="2" 
+                     onclick="DrawRectangle(2);RegionOrder(2,1)">2</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement1" value="5"
+                     onclick="DrawRectangle(5);RegionOrder(5,1)">5</label>
+                </div>
+			</td>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement1" value="6"
+                     onclick="DrawRectangle(6);RegionOrder(6,1)">6</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100%;">
+				<label for="Region_2" >Region 2</label>
+			</th>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement2" value="3"
+                     onclick="DrawRectangle(3);RegionOrder(3,2)">3</label>
+                </div>
+			</td>
+			<td>
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement2" value="4"
+                     onclick="DrawRectangle(4);RegionOrder(4,2)">4</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement2" value="8" 
+                     onclick="DrawRectangle(8);RegionOrder(8,2)">8</label>
+                </div>
+			</td>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement2" value="9"
+                     onclick="DrawRectangle(9);RegionOrder(9,2)">9</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100%;">
+				<label for="Region_3" >Region 3</label>
+			</th>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement3" value="14"
+                     onclick="DrawRectangle(14);RegionOrder(14,3)">14</label>
+                </div>
+			</td>
+			<td>
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement3" value="15"
+                     onclick="DrawRectangle(15);RegionOrder(15,3)">15</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement3" value="19"
+                     onclick="DrawRectangle(19);RegionOrder(19,3)">19</label>
+                </div>
+			</td>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement3" value="20"
+                     onclick="DrawRectangle(20);RegionOrder(20,3)">20</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100%;">
+				<label for="Region_4" >Region 4</label>
+			</th>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement4" value="17" 
+                     onclick="DrawRectangle(17);RegionOrder(17,4)">17</label>
+                </div>
+			</td>
+			<td>
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement4" value="18"
+                      onclick="DrawRectangle(18);RegionOrder(18,4)">18</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement4" value="21"
+                     onclick="DrawRectangle(21);RegionOrder(21,4)">21</label>
+                </div>
+			</td>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement4" value="22"
+                     onclick="DrawRectangle(22);RegionOrder(22,4)">22</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<th style="width:100%;">
+				<label for="Region_5" >Region 5</label>
+			</th>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement5" value="7"
+                     onclick="DrawRectangle(7);RegionOrder(7,5)">7</label>
+                </div>
+			</td>
+			<td>
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement5" value="10"
+                     onclick="DrawRectangle(10);RegionOrder(10,5)">10</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement5" value="11"
+                     onclick="DrawRectangle(11);RegionOrder(11,5)">11</label>
+                </div>
+			</td>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement5" value="12"
+                     onclick="DrawRectangle(12);RegionOrder(12,5)">12</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement5" value="13"
+                     onclick="DrawRectangle(13);RegionOrder(13,5)">13</label>
+                </div>
+			</td>
+			<td style="width:175px;">
+				<div class="radio">
+                     <label style="width:80px;"><input type="radio" name="LocalElement5" value="16"
+                     onclick="DrawRectangle(16);RegionOrder(16,5)">16</label>
+                </div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="button" value ="reset" onclick="RegionReset()" style="color:blue;background-color:#FFF"/>
+			</td>
+			<td>
+				<input type="button" value ="send" onclick="RegionLocation()" style="color:blue;background-color:#FFF"/>
+			</td>
+		</tr>
+		<tr>
+			<th style="width:175px;">
+			<label></label>
+			</th>
+		</tr>
+	</table>
+</div>
+<!-- TeamStrategy_Button_function -->
+<script>
+	$( "#TeamStrategyButton" ).buttonset();
+
+	$('#auto').change(function() {
+     	$('#RobotModule :input').attr('disabled', this.checked);
+	});
+	$('#manual').change(function() {
+     	$('#RobotModule :input').attr('disabled', !this.checked);
+	});
+</script>
+
+<!--Connection Light-->
+<div>
+	<canvas id="Light" width="45" height="45" style="border:0px solid #d3d3d3;top:9.5%; position:absolute;left:4%;"></canvas>
+</div>
+<div style="position:absolute; right:10%;top:0%;">
+        <canvas id="Light2" width="45" height="45" style="border:1px solid #d3d3d3;"></canvas>
+</div>
+<!--  -->
+
+
+<!-- Area -->
+<div id="strategy_Area" style="z-index: -1;" onmousemove="cnvs_getCoordinates(event)" onmouseout="cnvs_clearCoordinates()">
+	<div id="statsPanel" style="border:0px solid #d3d3d3;">
+	</div>
+	<div id="worldmap_Area" style="opacity: 0.8;border:0px solid #d3d3d3;">
+		<canvas id="worldmap_Canvas" style="border:0px solid #d3d3d3; z-index: 2;">
+		Your browser does not support the HTML5 canvas tag.
+		</canvas>
+
+	</div>
+	<!-- 1 -->
+	<canvas id="Rect1" class="DrawRect" width="60" height="60" style="position:absolute;left:10.8%;top:21%;"></canvas>
+	<!-- 2 -->
+	<canvas id="Rect2" class="DrawRect" width="60" height="60" style="position:absolute;left:37%;top:21%;"></canvas>
+	<!-- 3 -->
+	<canvas id="Rect3" class="DrawRect" width="60" height="60" style="position:absolute;right:37%;top:21%;"></canvas>
+	<!-- 4 -->
+	<canvas id="Rect4" class="DrawRect" width="60" height="60" style="position:absolute;right:10.8%;top:21%;"></canvas>
+	<!-- 5 -->
+	<canvas id="Rect5" class="DrawRect" width="60" height="60" style="position:absolute;left:18%;top:33.5%;"></canvas>
+	<!-- 7 -->
+	<canvas id="Rect7" class="DrawRect" width="60" height="60" style="position:absolute;right:47.5%;top:34.4%;"></canvas>
+	<!-- 9 -->
+	<canvas id="Rect9" class="DrawRect" width="60" height="60" style="position:absolute;right:18%;top:33.5%;"></canvas>
+	<!-- 6 -->
+	<canvas id="Rect6" class="DrawRect" width="60" height="60" style="position:absolute;left:30.9%;top:37.2%;"></canvas>
+	<!-- 8 -->
+	<canvas id="Rect8" class="DrawRect" width="60" height="60" style="position:absolute;right:30.9%;top:37.2%;"></canvas> -->
+	<!-- 10 -->
+	<canvas id="Rect10" class="DrawRect" height="60" width="60" style="position:absolute;left:13.8%;top:51%;"></canvas>
+	<!-- 11 -->
+	<canvas id="Rect11" class="DrawRect" height="60" width="60" style="position:absolute;left:26.7%;top:51%;"></canvas>
+	<!-- 12 -->
+	<canvas id="Rect12" class="DrawRect" height="60" width="60" style="position:absolute;right:26.7%;top:51%;"></canvas>
+	<!-- 13 -->
+	<canvas id="Rect13" class="DrawRect" height="60" width="60" style="position:absolute;right:13.8%;top:51%;"></canvas>
+	<!-- 15 -->
+	<canvas id="Rect15" class="DrawRect" width="60" height="60" style="position:absolute;left:30.8%;bottom:29.2%;"></canvas>
+	<!-- 17 -->
+	<canvas id="Rect17" class="DrawRect" width="60" height="60" style="position:absolute;right:30.8%;bottom:29.2%;"></canvas>
+	<!-- 14 -->
+	<canvas id="Rect14" class="DrawRect" width="60" height="60" style="position:absolute;left:17.9%;bottom:25.5%;"></canvas>
+	<!-- 16 -->
+	<canvas id="Rect16" class="DrawRect" width="60" height="60" style="position:absolute;right:47.5%;bottom:26.4%;"></canvas>
+	<!-- 18 -->
+	<canvas id="Rect18" class="DrawRect" width="60" height="60" style="position:absolute;right:18%;bottom:25.5%;"></canvas>
+	<!-- 19 -->
+	<canvas id="Rect19" class="DrawRect" width="60" height="60" style="position:absolute;left:10.6%;bottom:12.8%;"></canvas> 
+	<!-- 20 -->
+	<canvas id="Rect20" class="DrawRect" width="60" height="60" style="position:absolute;left:36.8%;bottom:12.8%;"></canvas>
+	<!-- 21 -->
+	<canvas id="Rect21" class="DrawRect" width="60" height="60" style="position:absolute;right:36.8%;bottom:12.8%;"></canvas>
+	<!-- 22 -->
+	<canvas id="Rect22" class="DrawRect" width="60" height="60" style="position:absolute;right:10.6%;bottom:12.8%;"></canvas>
+
+</div>
+<div id="xycoordinates" style="border:0px solid #d3d3d3;top:0%; position:absolute;left:0%;""></div>
+
+<script type="text/javascript"> 
+function cnvs_getCoordinates(e){
+	x=e.clientX;
+	y=e.clientY;
+	document.getElementById("xycoordinates").innerHTML="Coordinates: (" + x + "," + y + ")";
+}
+function cnvs_clearCoordinates(){
+	document.getElementById("xycoordinates").innerHTML="";
+}
+</script>
+
+<!--Wifi Style -->
+<div  style="border:0px solid #d3d3d3;">
+	<span style="cursor:pointer;top:9%; position:absolute; left:7%;"><img id="Setting_Wifi" src="img/wifi.png" width="50" data-toggle="modal" data-target="#connect_Robot1"></img></span>
+</div>
+
+
+
+<!--button action -->
+<div align="center" id="button_action" style="width:600px;bottom:3%; position:absolute; left:36%;">
+	<button  id = "Btn_Start" class=" Btn_Sheng action_box_inline" onclick="topicROSGameState(9)"><span style="cursor:pointer;">Start</span></button>
+	<button  id = "Btn_Stop" class=" Btn_Sheng action_box_inline" onclick="topicROSGameState(0)"><span style="cursor:pointer;">Stop</span></button>
+	<div class="radio" style="top:5%;position:absolute; right:0%;">
+    	<label style="font-size:25px;color:#FFF;">
+        	<input id="IsSimulator" type="checkbox" onchange="OpenSimulator(document.getElementById('IsSimulator').checked)"> is Simulator</label>
+	</div>
+</div>
+
+
+<!--Setting Button-->
+<div id = "Btn_Setting" class="btn-group" style="left:4.5%; top:15% ;position:absolute;">
+	<button class="btn btn-default btn-md dropdown-toggle Btn_Sheng" type="button" data-toggle="dropdown" aria-expanded="false" style="height:50px">
+        Setting <span class="caret"></span>
+    </button>
+	<ul class="dropdown-menu Btn_Sheng" role="menu" style="min-width:100px;text-align:left">
+        <li id="Btn_General" style="margin-left:3px; line-height:30px; cursor:pointer;" data-toggle="modal" data-target="#Setting_General"><span>General</span></li>
+    </ul>
+</div>
+
+<!-- variable_setting -->
+<script>
+	var worldmap = {
+		width : 750,
+		height : 550,
+		widthToheight : 750/550
+	};
+	var worldmap_canvas = document.getElementById("worldmap_Canvas");
+	var worldmap_img = new Image();
+	var strategy_Area = document.getElementById('strategy_Area');
+	var widthToheight = 750 / 600;
+	var windowWidth = window.innerWidth;
+	var windowHeight = window.innerHeight;
+	var windowWidthToHeight = windowWidth / windowHeight;
+	var joystick_Area = document.getElementById('joystick');
+	var joystick_canvas = document.getElementById("joystick_Canvas");
+	var robotChoice = 0;
+	var speed = 0;
+	var RobposX = [0,0,0];
+	var RobposY = [0,0,0];
+	var RobposZ = [0,0,0];
+
+	var RegionTimes = -1;
+	var Order = [0,0,0,0,0];
+	var Checkorder = [0,0,0,0,0];
+</script>
+<script src="Lc_js_css/LcROS.js"></script>
+<script src="Lc_js_css/LcStorage.js"></script>
+<script src="Lc_js_css/Lcworldmap.js"></script>
+<!-- <script src="js/joystick_base.js"></script> -->
+</body>
+</html>

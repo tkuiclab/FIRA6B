@@ -1,10 +1,8 @@
-
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
 #include "../common/Env.h"
 #include <ros/ros.h>
-
 
 class FIRA_teamStrategy_class
 {

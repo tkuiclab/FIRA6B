@@ -6,7 +6,6 @@ FIRA_teamStrategy_class::FIRA_teamStrategy_class(){
    opponent = false;
 
    roleAry[0] = Role_Goalkeeper;
-//   roleAry[1] = Role_Attack;
 }
 
 //start---simulator---
@@ -17,15 +16,17 @@ void FIRA_teamStrategy_class::setEnv(Environment iEnv){
        for(int i = 0;i < PLAYERS_PER_SIDE;i++){
            env.home[i] = iEnv.opponent[i];
            env.opponent[i] = iEnv.home[i];
-//           printf("in opponent teamStrategy\n");
        }
 
    }
 }
-
+//###################################################//
+//                                                   //
+//                      Coach                        //
+//                                                   //
+//###################################################//
 void FIRA_teamStrategy_class::teamStrategy(){
-    env.gameState = GameState_Play;
-    switch(env.gameState){
+     switch(env.gameState){
         case GameState_Play:
             role_Play();
             break;
@@ -63,10 +64,11 @@ int* FIRA_teamStrategy_class::getRoleAry(){
 
 //-------------------------Role Choose start-----------------------
 void FIRA_teamStrategy_class::role_Play(){
-    
+
     Vector3D goal ;
-    
-    mTeam=Team_Blue;
+
+    if(env.teamcolor == "Blue")mTeam=Team_Blue;
+    else if(env.teamcolor == "Yellow")mTeam=Team_Yellow;
     int goal_color;
     if(mTeam == Team_Blue){
         goal = env.yellow.pos;
@@ -94,31 +96,37 @@ void FIRA_teamStrategy_class::role_Play(){
     
     angle_bd1=fabs(angle_bd1);
     angle_bd2=fabs(angle_bd2);
-    
 
-    if(distance_dr1>=distance_dr2){
-        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
-            printf("roleAry[%d]=Role_Attack\t",1);
-            printf("roleAry[%d]=Role_Support\n",2);
-        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
-            printf("roleAry[%d]=Role_Attack\t",2);
-            printf("roleAry[%d]=Role_Support\n",1);
-        }else{
-            printf("roleAry[%d]=Role_Attack\t",2);
-            printf("roleAry[%d]=Role_Support\n",1);
-        }
-    }else if(distance_dr1<distance_dr2){
-        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
-            printf("roleAry[%d]=Role_Attack\t",1);
-            printf("roleAry[%d]=Role_Support\n",2);
-        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
-            printf("roleAry[%d]=Role_Attack\t",2);
-            printf("roleAry[%d]=Role_Support\n",1);
-        }else{
-            printf("roleAry[%d]=Role_Attack\t",1);
-            printf("roleAry[%d]=Role_Support\n",2);
-        }
-    }
+
+//    if(distance_dr1>=distance_dr2){
+//        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
+//            printf("roleAry[%d]=Role_Attack\t",1);
+//            printf("roleAry[%d]=Role_Support\n",2);
+//        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
+//            printf("roleAry[%d]=Role_Attack\t",2);
+//            printf("roleAry[%d]=Role_Support\n",1);
+//        }else{
+//            printf("roleAry[%d]=Role_Attack\t",2);
+//            printf("roleAry[%d]=Role_Support\n",1);
+//        }
+//    }else if(distance_dr1<distance_dr2){
+//        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
+//            printf("roleAry[%d]=Role_Attack\t",1);
+//            printf("roleAry[%d]=Role_Support\n",2);
+//        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
+//            printf("roleAry[%d]=Role_Attack\t",2);
+//            printf("roleAry[%d]=Role_Support\n",1);
+//        }else{
+//            printf("roleAry[%d]=Role_Attack\t",1);
+//            printf("roleAry[%d]=Role_Support\n",2);
+//        }
+//    }
+    roleAry[0]=Role_Goalkeeper;
+    roleAry[1]=Role_Attack;
+    roleAry[2]=Role_Halt;
+//    roleAry[0]=Role_Attack;
+//    roleAry[1]=Role_Attack;
+//    roleAry[2]=Role_Attack;
 }
 
 
@@ -146,8 +154,10 @@ void FIRA_teamStrategy_class::role_ThrowIn(){
 }
 
 void FIRA_teamStrategy_class::role_CornerKick(){
-    roleAry[1] = Role_Attack;
+    roleAry[0] = Role_CornerKick;
+    roleAry[1] = Role_CornerKick;
     roleAry[2] = Role_CornerKick;
+    printf("cornerKick\n");
 }
 
 void FIRA_teamStrategy_class::role_GoalKick(){
@@ -160,10 +170,7 @@ void FIRA_teamStrategy_class::role_AvoidBarrier(){
     roleAry[2] = Role_Halt;
 }
 
-//-----------------------------------------role choose end----------------
-
-
-
+//---------------role choose end----------------
 double FIRA_teamStrategy_class::vecAngle(Vector2d a,Vector2d b){
 
     a.normalize();
@@ -180,16 +187,17 @@ double FIRA_teamStrategy_class::vecAngle(Vector2d a,Vector2d b){
     if(tCross(2) < 0)       return (-1)*rad*rad2deg;
     else                    return rad*rad2deg;
 }
-
-
 //==========for ROS special===============//
-
+//###################################################//
+//                                                   //
+//                 load parameter                    //
+//                                                   //
+//###################################################//
 void FIRA_teamStrategy_class::loadParam(ros::NodeHandle *n){
 
     std::string teamColor;
 
     if(n->getParam("/FIRA/teamColor",teamColor)){
-
         std::cout << "teamColor=" << teamColor <<std::endl;
     }
 

@@ -1,0 +1,106 @@
+#SetSelfStraForm {
+ /*padding:3px;*/
+  margin: auto;
+  text-align: center;
+  border-style:solid;
+  position:relative;
+  top:10%;
+  left :-10%;
+  width: 400px;
+  height: 480px;
+}
+#AttackStrategy{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#AttackStrategy.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+#ChaseStrategy{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#ChaseStrategy.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+#ZoneAttack{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#ZoneAttack.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+#TypeSAttack{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#TypeSAttack.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+#TypeUAttack{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#TypeUAttack.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+#SideSpeedUp{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#SideSpeedUp.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+#DorsadAttack{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#DorsadAttack.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+#CornerKick{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#CornerKick.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+th {
+	width:50%;
+}
+
+td {
+	width:50%;
+}

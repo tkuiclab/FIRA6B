@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>event.which demo</title>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+	<script type="text/javascript">
+		function blockMenu(Evt){
+                // window.event 是IE才有的物件
+            if(window.event){
+                Evt = window.event;
+                Evt.returnValue = false;//取消IE預設事件
+            }else
+                Evt.preventDefault();//取消DOM預設事件
+            }
+            document.oncontextmenu = blockMenu;
+
+	</script>>
+<body>
+ 
+<input id="whichkey" value="click here">
+<div id="log"></div>
+
+ 
+<script>
+$( "#whichkey" ).on( "mousedown", function( event ) {
+	switch (event.which) {
+        case 1:
+            $( "#log" ).html( "Left" );
+            break;
+        case 2:
+            $( "#log" ).html( "Center" );
+            break;
+        case 3:
+            $( "#log" ).html( "right" );
+            break;
+        default:
+            $( "#log" ).html( "default" );
+    }
+});
+</script>
+ 
+</body>
+</html>

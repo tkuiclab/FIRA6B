@@ -1,0 +1,121 @@
+/* #Setting_Behavior {
+ padding:3px;
+  margin: auto;
+  text-align: center;
+  border-style:solid;
+  position:relative;
+  top:10%;
+  left :-10%;
+  width: 400px;
+  height: 480px;
+} */
+#StateChase{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#StateChase.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+
+
+#StateAttack{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#StateAttack.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+
+
+#StateTypeUChase{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#StateTypeUChase.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+
+
+#StateTypeSAttack{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#StateTypeSAttack.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+
+
+#StateSideSpeedUP{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#StateSideSpeedUP.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+
+
+#StateZoneAttack{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#StateZoneAttack.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+
+
+#StateCornerKick{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#StateCornerKick.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+
+#StrategySelection{
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663D00;
+}
+#StrategySelection.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 17px;
+  color: #1A1A65;
+}
+
+
+th {
+	width:50%;
+}
+
+td {
+	width:50%;
+}

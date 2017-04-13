@@ -4,20 +4,14 @@
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
 #include "MotorControl.h"
+#include <boost/program_options.hpp>
+#include <stdio.h>
+#include <termios.h>  // for tcxxxattr, ECHO, etc ..
+#include <unistd.h>    // for STDIN_FILENO
+#include "std_msgs/Int32.h"
+//#include <conio.h>
 
-
-//====motor define=====
-//#define ROBOT_RADIUS 0.15
-#define ROBOT_RADIUS 1
-#define WheelRadius  0.0508
-#define RPM_Max      6940
-#define Gear         26
-#define PWM_Range    127.0
-#define PWM_Limit_Percent_Min   0.1
-#define PWM_Limit_Percent_Max   0.9
-#define RPM_Offset 0
-#define PWM_MIN 20.0
-#define PWM_MAX 103
+using std::string;
 
 //-------variable-------//
 const char *motion_topic_name = "/cmd_vel";
@@ -42,6 +36,10 @@ const double percentRange =  PWM_Limit_Percent_Max - PWM_Limit_Percent_Min;
 double w1,w2,w3;
 double en1,en2,en3;
 
+
+#define ESCAPE 27
+
+
 /*==============================================================================*/
 //Initialize
 /*==============================================================================*/
@@ -52,81 +50,19 @@ void Initialize()
     w3=0;
 }
 /*==============================================================================*/
-//Transform wheel speed to PWM
-/*==============================================================================*/
-int speed2pwm(double en)
-{
-    int pwm_1,pwm_2,pwm_3;
-    float pwmRatio_1,pwmRatio_2,pwmRatio_3;
-    bool w1_dir,w2_dir,w3_dir;
-
-    en1 = en2 = en3 = en;
-
-    if(w1<0)    w1_dir=false;   else    w1_dir=true;
-    if(w2<0)    w2_dir=false;   else    w2_dir=true;
-    if(w3<0)    w3_dir=false;   else    w3_dir=true;
-
-
-    //ROS_INFO("w1:%f\tw2:%f\tw3:%f\n",w1,w2,w3);
-
-    w1 = w1 * (1/WheelRadius)  * Gear;
-    w2 = w2 * (1/WheelRadius)  * Gear;
-    w3 = w3 * (1/WheelRadius)  * Gear;
-
-    //to rpmPWM_Limit_Percent_Min
-    w1 = w1 * rad2rpm;
-    w2 = w2 * rad2rpm;
-    w3 = w3 * rad2rpm;
-
-    pwmRatio_1 = ( abs(w1) - (float)RPM_Offset) / (float)RPM_Max;
-    pwmRatio_2 = ( abs(w2) - (float)RPM_Offset) / (float)RPM_Max;
-    pwmRatio_3 = ( abs(w3) - (float)RPM_Offset) / (float)RPM_Max;
-
-    if(pwmRatio_1 > 1.0 || pwmRatio_2 > 1.0 || pwmRatio_3 > 1.0)
-    {
-        double pwmMax = pwmRatio_1;
-        pwmMax = pwmMax > pwmRatio_2 ? pwmMax : pwmRatio_2;
-        pwmMax = pwmMax > pwmRatio_3 ? pwmMax : pwmRatio_3;
-        double tRatio = 1.0/(double)pwmMax;
-        pwmRatio_1 = pwmRatio_1 * tRatio;
-        pwmRatio_2 = pwmRatio_2 * tRatio;
-        pwmRatio_3 = pwmRatio_3 * tRatio;
-    }
-    if(pwmRatio_1 < 0.0 || pwmRatio_2 < 0.0 || pwmRatio_3 < 0.0)
-    {
-        en1=0;
-        en2=0;
-        en3=0;
-        return 0;
-    }
-    pwm_1 = (int)(  (pwmRatio_1 *percentRange + PWM_Limit_Percent_Min )*PWM_Range   );
-    pwm_2 = (int)(  (pwmRatio_2 *percentRange + PWM_Limit_Percent_Min )*PWM_Range   );
-    //pwm_3 = (int)(  (pwmRatio_3 *percentRange + PWM_Limit_Percent_Min )*PWM_Range   );
-    pwm_3 = (int)(  (pwmRatio_3 *percentRange + PWM_Limit_Percent_Min )*PWM_Range   );
-
-    //ROS_INFO("pwm1:%d\tpwm2:%d\tpwm3:%d\n",pwm_1,pwm_2,pwm_3);
-
-    if(pwm_1 <= PWM_MIN || pwm_1 >= PWM_MAX)    en1 = 0;
-    if(pwm_2 <= PWM_MIN || pwm_2 >= PWM_MAX)    en2 = 0;
-    if(pwm_3 <= PWM_MIN || pwm_3 >= PWM_MAX)    en3 = 0;
-
-    if(w1_dir) w1=pwm_1;else w1=pwm_1*-1;
-    if(w2_dir) w2=pwm_2;else w2=pwm_2*-1;
-    if(w3_dir) w3=pwm_3;else w3=pwm_3*-1;
-}
-/*==============================================================================*/
 //Topic call back
 /*==============================================================================*/
 void motionCallback(const geometry_msgs::Twist::ConstPtr& msg)
 {
-    w1 = mAngle1Cos*msg->linear.y + mAngle1Sin*msg->linear.x + ROBOT_RADIUS*msg->angular.z;
-    w2 = mAngle2Cos*msg->linear.y + mAngle2Sin*msg->linear.x + ROBOT_RADIUS*msg->angular.z;
-    w3 = mAngle3Cos*msg->linear.y + mAngle3Sin*msg->linear.x + ROBOT_RADIUS*msg->angular.z;
+    w1 = mAngle1Cos*msg->linear.y + mAngle1Sin*msg->linear.x + ROBOT_RADIUS*msg->angular.z*(-1);
+    w2 = mAngle2Cos*msg->linear.y + mAngle2Sin*msg->linear.x + ROBOT_RADIUS*msg->angular.z*(-1);
+    w3 = mAngle3Cos*msg->linear.y + mAngle3Sin*msg->linear.x + ROBOT_RADIUS*msg->angular.z*(-1);
 
     en1 = 1; en2 = 1; en3 = 1;
-    printf("=====================================================\n");
-    printf("-->w1:%0.2f w2:%0.2f w3:%0.2f en1:%f en2:%f en3:%f<--\n\n",w1,w2,w3,en1,en2,en3);
-
+//    printf("=====================================================\n");
+    if(w1 != 0 || w2!=0 || w3!=0){
+//	printf("-->w1:%0.2f w2:%0.2f w3:%0.2f en1:%f en2:%f en3:%f<--\n\n",w1,w2,w3,en1,en2,en3);
+    }
 
 //    ROS_INFO("<=============Kinematics=================>");
 //    ROS_INFO("w1:%f\tw2:%f\tw3:%f\n",w1,w2,w3);
@@ -135,28 +71,137 @@ void motionCallback(const geometry_msgs::Twist::ConstPtr& msg)
     //ROS_INFO("w1:%f\tw2:%f\tw3:%f\n",w1,w2,w3);
     //ROS_INFO("*******************************");
 
-    mcssl_send2motor(w1,w2,w3,en1,en2,en3);
+    mcssl_send2motor(w1,w2,w3,en1,en2,en3,0);
 }
+
+void test(){
+ unsigned int a,b,c,d;
+ int want;
+
+ a = 3; b = 5; c = 1 ; d=1;
+ //want = a  + b  << 8 + c << 16 + d << 24;
+ want = (c << 8 )+ a;
+ printf("want=%d\n",want);
+
+
+}
+void shootCallback(const std_msgs::Int32::ConstPtr& msg)
+{
+//    printf("test\n");
+    static bool shootEN=true;
+    int shoot_time;
+    int count_speed_time;
+    char shoot;
+    shoot_time = msg->data;
+    if(shoot_time>200)shoot_time=200;
+
+//    printf("shootEN = %d\n",shootEN);
+    static double  shoot_wait;
+    double now = ros::Time::now().toSec();
+    switch(shootEN){
+    case false:
+        shoot = 0;
+        if(now > shoot_wait) shootEN = true;
+        break;
+    case true:
+        shoot_wait = ros::Time::now().toSec()+2;
+//        printf("shoot = [%d] \n",shoot);
+        for(count_speed_time=0;count_speed_time<shoot_time;count_speed_time++){
+            shoot =1;
+            mcssl_send2motor(w1,w2,w3,en1,en2,en3,shoot);
+        }
+        shootEN = false;
+        break;
+    default:
+        shootEN = true;
+        shoot = 0;
+        break;
+    }
+
+//    printf("tell me\n");
+
+//    printf("shoot...%d\n",shoot);
+    for(count_speed_time=0;count_speed_time<shoot_time;count_speed_time++){
+        shoot = 0;
+        mcssl_send2motor(w1,w2,w3,en1,en2,en3,shoot);
+    }
+//    printf("shoot%d\n",shoot);
+//    mcssl_send2motor(w1,w2,w3,en1,en2,en3,0);
+//    printf("shoot_time:%d\n",msg->data);
+}
+int getch (void)
+{
+    int ch;
+    struct termios oldt, newt;
+
+    tcgetattr(STDIN_FILENO, &oldt);
+    memcpy(&newt, &oldt, sizeof(newt));
+    newt.c_lflag &= ~( ECHO | ICANON | ECHOE | ECHOK |
+                       ECHONL | ECHOPRT | ECHOKE | ICRNL);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    ch = getchar();
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+
+    return ch;
+}
+
 /*==============================================================================*/
 //Main
 /*==============================================================================*/
 int main(int argc, char **argv)
 {
+
     //Initial
-    ros::init(argc, argv, "motion_test");
-    ros::NodeHandle n;
-    if(mcssl_init()<=0){return 0;}
+    ros::init(argc, argv, "motion");
+    ros::NodeHandle n("~");
+
+//    std::string port_name;
+//    n.param<std::string>("port", port_name, "/dev/ttyUSB3");
+
+//    ROS_INFO("port3=%s",port_name.c_str());
+
+
+
+    //if(mcssl_init()<=0){return 0;}
+//    ROS_INFO("Initialize Motion with port=%s...",port_name.c_str());
+    char *command;
+    //scanf("%s", command);
+
+
+    int c ;
+
+
+
     Initialize();
 
+    geometry_msgs::Twist feedback_msg;
     //motion subscriber
-    ros::Subscriber sub = n.subscribe(motion_topic_name, 1000, motionCallback);
-    
-    ros::Rate loop_rate(5);
+    ros::Subscriber motion_sub = n.subscribe(motion_topic_name, 1, motionCallback);
+    ros::Subscriber shoot_sub  = n.subscribe("/shoot",1,shootCallback);
+    ros::Publisher feedback_pub  = n.advertise<geometry_msgs::Twist>("/motorFB",0);
+    do{
 
+        if(mcssl_init(/*port_name.c_str()*/) > 0){
+            break;
+        }else{
+          usleep(1000000);//1s = 1,000,000 us
+        }
+
+    }while(ros::ok());
+    ROS_INFO("Motion is running\n");
+    ros::Rate loop_rate(30);
+//    static double time = 0;
     while(ros::ok())
     {
-	//mcssl_send2motor(w1,w2,w3);
+//	mcssl_send2motor(w1,w2,w3);
+        feedback_msg = getmotionfeedback();
+        feedback_pub.publish(feedback_msg);
 
+//        double n_time,duration;
+//        n_time = ros::Time::now().toSec();
+//        duration = n_time - time;
+//        time = n_time;
+//        printf("\nduration = %f ",duration);
         //spin
         ros::spinOnce();
         loop_rate.sleep();

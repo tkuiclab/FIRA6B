@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://blog.themearmada.com/demos/off-canvas-menu/ -->
+<html id="Update" lang="en" style="cursor:default;">
+
+<head>
+    <title>Avoidance UI</title>
+    <meta charset="UTF-8">
+    <!--Font-->
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
+    <link rel="stylesheet" href="Av_js_css/AvGeneral.css">
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script src="jquery-ui-1.11.4/jquery-min.js"></script>
+    <script src="js/eventemitter2.min.js"></script>
+    <script src="js/connect_Robot1.js"></script>
+    <script src="js/roslib.js"></script>
+    <script src="topic/Topic_Publish.js"></script>
+    <link rel="stylesheet" href="Av_js_css/Avworldmap.css">
+
+<script type="text/javascript">
+    var key = [];
+
+    function keysPressed(e) {
+        var vec3;
+        key[e.keyCode] = true;
+        if (key[80]) {
+            topicROSGameState(0);
+        }
+        if (key[79]) {
+            topicROSGameState(1);
+        }
+    }
+    function keyuped(e) {
+        key[e.keyCode] = false;
+    }
+    window.addEventListener("keydown", keysPressed, false);
+    window.addEventListener("keyup", keyuped, false);
+    </script>
+    <!-- button_action -->
+    <script>
+    $(document).ready(function() {
+        $("#Btn_Start").click(function() {
+            $(this).addClass("Btn_Sheng_press");
+            $(this).removeClass("Btn_Sheng");
+            $("#Btn_Stop").addClass("Btn_Sheng");
+            $("#Btn_Stop").removeClass("Btn_Sheng_press");
+        });
+
+        $("#Btn_Stop").click(function() {
+            $(this).addClass("Btn_Sheng_press");
+            $(this).removeClass("Btn_Sheng");
+            $("#Btn_Start").addClass("Btn_Sheng");
+            $("#Btn_Start").removeClass("Btn_Sheng_press");
+        });
+
+        $('#General_tabs li').each(function(i) {
+            var _i = i;
+
+            // 綁定click事件到頁籤上，若要改為滑鼠移入切換頁籤的話，將click改為mouseenter
+            $(this).click(function() {
+                // 移除其他頁籤的class，並將class新增至所選頁籤
+                $(this).parent().children().removeClass('enable').eq(_i).addClass('enable');
+                // 隱藏其他頁籤的內容，並顯示所選頁籤的內容
+                $('#General_contents').children('div').hide().eq(_i).show();
+            });
+
+            $('#Btn_Setting li').mouseenter(function() {
+                $(this).css("background-color", "#F39107");
+            });
+            $('#Btn_Setting li').mouseleave(function() {
+                $(this).css("background-color", "#982A2A");
+            });
+        });
+    });
+    </script>
+    <!-- general_value -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#GeneralSave").click(function() {
+            up();
+            var SPlanningVelocityBox = [];
+            var DistantBox = [];
+            var ScanLineBox = [];
+            var ChooseSideBox = [];
+            $("[name=SPlanningVelocityElement]").each(function() {
+                SPlanningVelocityBox.push(parseFloat($(this).val()));
+            });
+            $("[name=DistantElement]").each(function() {
+                DistantBox.push(parseInt($(this).val()));
+            });
+            $("[name=ScanLineElement]").each(function() {
+                ScanLineBox.push(parseInt($(this).val()));
+            });
+            $("[name=ChooseSideElement]").each(function() {
+                ChooseSideBox.push(parseFloat($(this).val()));
+            });
+            // $("[name=DistanceSettingsElement]").each(function() {
+            //     DistanceSettingsBox.push(parseFloat($(this).val()));
+            // });
+            localStorage.setItem("GeneralSPlanStr", JSON.stringify(SPlanningVelocityBox));
+            localStorage.setItem("GeneralDistantStr", JSON.stringify(DistantBox));
+            localStorage.setItem("GeneralScanLineStr", JSON.stringify(ScanLineBox));
+            localStorage.setItem("GeneralChooseSideStr", JSON.stringify(ChooseSideBox));
+            //localStorage.setItem("GeneralDistanceSetStr", JSON.stringify(DistanceSettingsBox));
+            GeneralTransfer(SPlanningVelocityBox, DistantBox, ScanLineBox, ChooseSideBox);
+        });
+    });
+    </script>
+    <style>
+    #full-screen-background-image {
+        z-index: -999;
+        min-height: 100%;
+        width: 100%;
+        height: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    
+    li.left {
+        text-align: left;
+        float: left;
+        width: 30%;
+    }
+    
+    li.center {
+        text-align: center;
+        display: inline-block;
+        font-size: 1.3em;
+        width: 40%;
+    }
+    
+    li.right {
+        text-align: right;
+        float: right;
+        width: 30%;
+    }
+    
+    #addEvent {
+        cursor: pointer;
+    }
+    
+    #settingBtn {
+        cursor: pointer;
+    }
+    
+    #joystick_Canvas {
+        cursor: crosshair;
+    }
+    
+    body {
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+    
+    .action_box_inline {
+        display: inline-block;
+        width: 100px;
+        height: 50px;
+        margin: 10px;
+    }
+    
+    .action_box {
+        width: 100px;
+        height: 50px;
+        margin: 10px;
+    }
+    
+    .team_box {
+        width: 60px;
+        height: 25px;
+        margin: 10px;
+        background-color: #ff661a;
+        border-color: #ff9966;
+        border-width: 2px;
+        border-style: solid;
+    }
+    
+    .team_box_press {
+        width: 60px;
+        height: 25px;
+        margin: 10px;
+        background-color: #ffddcc;
+        border-color: #ff6600;
+        border-width: 2px;
+        border-style: solid;
+    }
+    
+    .Side_Choice {
+        height: 40px;
+        width: 80px;
+        color: #ffcc00;
+        background-color: rgba(102, 51, 0, 0.8);
+        border-color: #ff9900;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 5px;
+        text-align: center;
+        opacity: 0.6;
+    }
+    
+    .Side_Choice_press {
+        height: 50px;
+        width: 110px;
+        color: #ff0000;
+        background-color: rgba(255, 204, 0, 1);
+        border-color: #cc0052;
+        border-width: 4px;
+        text-align: center;
+        font-weight: bolder;
+        font-size: 18px;
+        border-radius: 10px;
+        border-style: solid;
+    }
+    
+    .Btn_Sheng {
+        color: #fff;
+        background-color: #982A2A;
+        border-color: #F39107;
+        border-width: 3px;
+        border-style: solid;
+        text-align: center;
+    }
+    
+    .Btn_Sheng_press {
+        color: #fff;
+        background-color: #F39107;
+        border-color: #F39107;
+        border-width: 3px;
+        text-align: center;
+        border-style: solid;
+    }
+    
+    .choice_rob {
+        color: #fff;
+        background-color: #982A2A;
+        border-color: #F39107;
+        border-width: 3px;
+        border-style: solid;
+        text-align: center;
+    }
+    
+    .choice_rob_press {
+        color: #fff;
+        background-color: #F39107;
+        border-color: #F39107;
+        border-width: 3px;
+        text-align: center;
+        border-style: solid;
+    }
+    
+    #General_tabs li {
+        background: #ddd;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        display: inline-block;
+        margin-right: 5px;
+        padding: 5px 10px;
+        color: #999;
+        cursor: pointer;
+    }
+    
+    #General_tabs li:hover {
+        color: #666;
+    }
+    
+    #General_tabs li.enable {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: -1px;
+        color: #333;
+    }
+    
+    #General_contents {
+        background: #ddd;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 16px #ccc;
+    }
+    
+    #General_contents > div {
+        display: none;
+        text-align: justify;
+        padding: 10px 15px;
+    }
+    
+    #General_contents > div:first-of-type {
+        display: block;
+    }
+    </style>
+</head>
+
+<body onload="OpenSimulator(false)">
+    <!-- Background -->
+    <img alt="full screen background image" src="BG.jpg" id="full-screen-background-image" />
+    <p style="font-family:Montserrat;font-size:500%;color:#FFF;text-align:center;">
+        Avoidance Challenge UI
+    </p>
+    <!-- Wifi Setting-->
+    <div class="modal fade" id="connect_Robot1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Connect To Robot1</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="RobotIPDATA" class="control-label">Robot1_IP:</label>
+                            <input name="RobotIPDATA" type="text" class="form-control" id="RobotIP" value=IP.textContent>
+                        </div>
+                        <div class="form-group">
+                            <label for="RobotHostDATA" class="control-label">Robot1_Host:</label>
+                            <input name="RobotHostDATA" type="text" class="form-control" id="RobotHost" value=Host.textContent>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ros.close();">Close</button>
+                    <button type="button" class="btn btn-primary" id="send-message" onclick="RobotConnect();history.go(0);">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- General Setting -->
+    <form class="modal fade" id="Setting_General" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 500px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>SetGeneralForm</h4>
+                </div>
+                <div class="modal-body" id="GeneralDisplay" style="margin:auto;text-align:center;">
+                    <!-- General_Button -->
+                    <div class="form-group" id="SetGeneralButton">
+                        <input type="radio" id="SPlanningVelocity" name="radio" checked="checked" />
+                        <label id="SPlanningVelocity" for="SPlanningVelocity">S-Planning Velocity</label>
+                        <input type="radio" id="Distant" name="radio" />
+                        <label id="Distant" for="Distant">Distant</label>
+                        <input type="radio" id="ScanLine" name="radio" />
+                        <label id="ScanLine" for="ScanLine">ScanLine</label>
+                        <input type="radio" id="ChooseSide" name="radio" />
+                        <label id="ChooseSide" for="ChooseSide">ChooseSide</label>
+                    </div>
+                    <div class="form-group" id="SPlanningVelocityModule" style="height:200px;text-align:left;border-style:solid;overflow:scroll;">
+                        <table>
+                            <tr>
+                                <th>ConfigName&emsp;&emsp;</th>
+                                <th>Value</th>
+                            </tr>
+                            <tr>
+                                <td>(double)Vdis_max</td>
+                                <td>
+                                    <input type="text" name="SPlanningVelocityElement" value="2.2" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)Vdis_min</td>
+                                <td>
+                                    <input type="text" name="SPlanningVelocityElement" value="0.3" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)VTdis_max</td>
+                                <td>
+                                    <input type="text" name="SPlanningVelocityElement" value="15.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)VTdis_min</td>
+                                <td>
+                                    <input type="text" name="SPlanningVelocityElement" value="10.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)Tangle_max</td>
+                                <td>
+                                    <input type="text" name="SPlanningVelocityElement" value="3.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)Tangle_min</td>
+                                <td>
+                                    <input type="text" name="SPlanningVelocityElement" value="3.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)Angle_max</td>
+                                <td>
+                                    <input type="text" name="SPlanningVelocityElement" value="144.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)Angle_min</td>
+                                <td>
+                                    <input type="text" name="SPlanningVelocityElement" value="5.0" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="form-group" id="DistantModule" style="height:200px;text-align:left;border-style:solid;overflow:scroll;">
+                        <table>
+                            <tr>
+                                <th>ConfigName&emsp;&emsp;</th>
+                                <th>Value</th>
+                            </tr>
+                            <tr>
+                                <td>(double)close_dis</td>
+                                <td>
+                                    <input type="text" name="DistantElement" value="51.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)far_dis</td>
+                                <td>
+                                    <input type="text" name="DistantElement" value="90.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)halfclose_dis</td>
+                                <td>
+                                    <input type="text" name="DistantElement" value="53.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)halffar_dis</td>
+                                <td>
+                                    <input type="text" name="DistantElement" value="100.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)empty_dis</td>
+                                <td>
+                                    <input type="text" name="DistantElement" value="110.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)angle_dis</td>
+                                <td>
+                                    <input type="text" name="DistantElement" value="51.0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double)final_dis</td>
+                                <td>
+                                    <input type="text" name="DistantElement" value="6.0" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="form-group" id="ScanLineModule" style="height:200px;text-align:left;border-style:solid;overflow:scroll;">
+                        <table>
+                            <tr>
+                                <th>ConfigName&emsp;&emsp;</th>
+                                <th>Value</th>
+                            </tr>
+                            <tr>
+                                <td>(int)front_far</td>
+                                <td>
+                                    <input type="text" name="ScanLineElement" value="18" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(int)front</td>
+                                <td>
+                                    <input type="text" name="ScanLineElement" value="5" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(int)left_side</td>
+                                <td>
+                                    <input type="text" name="ScanLineElement" value="6" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(int)right_side</td>
+                                <td>
+                                    <input type="text" name="ScanLineElement" value="6" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(int)left_side_far</td>
+                                <td>
+                                    <input type="text" name="ScanLineElement" value="5" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(int)right_side_far</td>
+                                <td>
+                                    <input type="text" name="ScanLineElement" value="5" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(int)go_line</td>
+                                <td>
+                                    <input type="text" name="ScanLineElement" value="8" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="form-group" id="ChooseSideModule" style="height:200px;text-align:left;border-style:solid;overflow:scroll;">
+                        <table>
+                            <tr>
+                                <th>ConfigName&emsp;&emsp;</th>
+                                <th>Value</th>
+                            </tr>
+                            <tr>
+                                <td>(double)turn</td>
+                                <td>
+                                    <input type="text" name="ChooseSideElement" value="0" />
+                                </td>
+                                <tr>
+                                    <td>(double)special</td>
+                                    <td>
+                                        <input type="text" name="ChooseSideElement" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)special_dis</td>
+                                    <td>
+                                        <input type="text" name="ChooseSideElement" value="0.03" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)straight</td>
+                                    <td>
+                                        <input type="text" name="ChooseSideElement" value="0.04" />
+                                    </td>
+                                </tr>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer" id="SetGeneralExecute" style="text-align:center;">
+                    <!-- <input id="next" type="button" value="NEXT"/> -->
+                    <!-- &emsp;&emsp;&emsp;&emsp;&emsp; -->
+                    <input id="GeneralSave" type="button" value="SAVE" />
+                    <!-- <input id="close" type="button" value="CLOSE"/> -->
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- General_Button_function-->
+    <script>
+    $("#SetGeneralButton").buttonset();
+    // $("#SetGeneralForm input:radio[name=SetGeneralForm][value='#{@model.get('color')}']");
+
+    $("#DistantModule").hide();
+    $("#ScanLineModule").hide();
+    $("#ChooseSideModule").hide();
+
+    $("#SPlanningVelocity").click(function() {
+        $("#SPlanningVelocityModule").show();
+        $("#DistantModule").hide();
+        $("#ScanLineModule").hide();
+        $("#ChooseSideModule").hide();
+    });
+    $("#Distant").click(function() {
+        $("#DistantModule").show();
+        $("#SPlanningVelocityModule").hide();
+        $("#ScanLineModule").hide();
+        $("#ChooseSideModule").hide();
+    });
+    $("#ScanLine").click(function() {
+        $("#ScanLineModule").show();
+        $("#SPlanningVelocityModule").hide();
+        $("#DistantModule").hide();
+        $("#ChooseSideModule").hide();
+    });
+    $("#ChooseSide").click(function() {
+        $("#ChooseSideModule").show();
+        $("#SPlanningVelocityModule").hide();
+        $("#DistantModule").hide();
+        $("#ScanLineModule").hide();
+    });
+    </script>
+    <!--Connection Light-->
+    <div>
+        <canvas id="Light" width="45" height="45" style="border:0px solid #d3d3d3;top:9.5%; position:absolute;left:4%;"></canvas>
+    </div>
+    <div style="position:absolute; right:10%;top:0%;">
+        <canvas id="Light2" width="45" height="45" style="border:1px solid #d3d3d3;"></canvas>
+    </div>
+    <!-- Area -->
+    <div id="strategy_Area" style="z-index: -1;">
+        <div id="statsPanel" style="border:0px solid #d3d3d3;">
+        </div>
+        <div id="worldmap_Area" style="border:0px solid #d3d3d3;">
+            <canvas id="worldmap_Canvas" style="opacity:1;border:0px solid #d3d3d3; z-index: -1;">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
+        </div>
+    </div>
+    <!--Wifi Style -->
+    <div style="border:0px solid #d3d3d3;">
+        <span style="cursor:pointer;top:9%; position:absolute; left:7%;"><img id="Setting_Wifi" src="img/wifi.png" width="50" data-toggle="modal" data-target="#connect_Robot1"></img></span>
+    </div>
+    <!--button action -->
+    <div align="left" id="button_action" style="width:575px;bottom:3%;position:absolute; left:52%; margin-left:-160px">
+        <button id="Btn_Start" class=" Btn_Sheng action_box_inline" onclick="topicROSGameState(1)"><span style="cursor:pointer;">Start</span></button>
+        <button id="Btn_Stop" class=" Btn_Sheng action_box_inline" onclick="topicROSGameState(0)"><span style="cursor:pointer;" oncl>Stop</span></button>
+        <!-- <div class="radio" style="top:5%;position:absolute; right:25%;">
+            <label style="font-size:25px;color:#FFF;">
+                <input id="IsSimulator" type="checkbox" onchange="(document.getElementById('IsSimulator').checked)"> is Simulator</label>
+        </div> -->
+    </div>
+    <!--Setting Button-->
+    <div id="Btn_Setting" class="btn-group" style="left:4.5%; top:20% ;position:absolute;">
+        <button class="btn btn-default btn-md dropdown-toggle Btn_Sheng" type="button" data-toggle="dropdown" aria-expanded="false" style="height:50px">
+            Setting <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu Btn_Sheng" role="menu" style="min-width:100px;text-align:left">
+            <li id="Btn_General" style="margin-left:3px; line-height:30px; cursor:pointer;" data-toggle="modal" data-target="#Setting_General"><span>General</span></li>
+        </ul>
+    </div>
+    <script>
+    var worldmap = {
+        width: 750,
+        height: 550,
+        widthToheight: 750 / 550
+    };
+    var worldmap_canvas = document.getElementById("worldmap_Canvas");
+    var worldmap_img = new Image();
+    var strategy_Area = document.getElementById('strategy_Area');
+    var widthToheight = 750 / 600;
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
+    var windowWidthToHeight = windowWidth / windowHeight;
+    var joystick_Area = document.getElementById('joystick');
+    var joystick_canvas = document.getElementById("joystick_Canvas");
+    </script>
+    <script src="Av_js_css/AvStorage.js"></script>
+    <script src="Av_js_css/AvROS.js"></script>
+    <script src="Av_js_css/Avworldmap.js"></script>
+</body>
+
+</html>

@@ -4,9 +4,6 @@
 #include "../common/Env.h"
 #include <ros/ros.h>
 
-//攻擊防守,防守策略？
-//沒有持球攻擊防守的策略
-//
 #define BallRadius 0.1055
 #define CarRadius 0.34
 
@@ -20,7 +17,6 @@ private:
     bool opponent;
     Environment env;
     int mTeam;
-//    int roleAry[PLAYERS_PER_SIDE];
     //end  ---simulator---
 
 
@@ -36,6 +32,8 @@ public:
     void setOpponent(bool iBool){opponent = iBool;}
     void setTeam(int team){mTeam = team;}
     void setEnv(Environment iEnv);
+    void shoot_init(){shoot = 0;}
+    int getShoot(){return shoot;}
     Environment* getEnv(){return &env;}
     //end  ---simulator---
 
@@ -52,12 +50,14 @@ public:
     void strategy_goalkeeper(int);
     void strategy_head2ball(int);
 
-//--------------各種strategy case-------------------
+//--------------strategy case-------------------
     void strategy_Goalkeeper(int);
     void strategy_Attack(int);
     void strategy_typeS_Attack(int);
     void strategy_Zone_Attack(int);
     void strategy_typeU_Attack(int);
+    void strategy_Dorsad_Attack(int);
+    void strategy_Shoot_Attack(int);
     void strategy_Support(int);
     void strategy_Halt(int);
     void strategy_PenaltyKick(int);
@@ -65,9 +65,13 @@ public:
     void strategy_CornerKick(int);
     void strategy_AvoidBarrier(int);
     void strategy_Chase(int);
+    void strategy_Straight_Chase(int);
+    void strategy_KO5_Chase(int);
+    void strategy_KO5_Attack(int);
+    void strategy_SideSpeedUp(int);
 //--------------------------------------------------
 
-//--------------各種role case-------------------
+//--------------role case-------------------
     void role_Play();
     void role_Halt();
     void role_FreeKick();
@@ -83,7 +87,7 @@ public:
 
     //==========for ROS special===============//
     std::string teamColor;
-    double beta_const ;
+    double beta_const = 0.9;
     double long_rush_alpha;
     double long_rush_dis_br;
     double long_rush_speed_const;
@@ -104,9 +108,23 @@ public:
     double goalkeeper_front_speed;
     double goalkeeper_mid_speed;
     double goalkeeper_side_speed;
+
+    std::vector<double> SPlanning_Velocity;
+    std::vector<double> Distance_Settings;
+    std::vector<double> Attack_Strategy;
+    std::vector<double> Chase_Strategy;
+    std::vector<double> Zone_Attack;
+    std::vector<double> TypeS_Attack;
+    std::vector<double> TypeU_Attack;
+    std::vector<double> Dorsad_Attack;
+    std::vector<double> Corner_Kick;
+    std::vector<double> SideSpeedUp;
+
+
+    // Robot shoot signal publisher
+    int shoot = 0;
+
     void loadParam(ros::NodeHandle *n);
-
-
 };
 
 

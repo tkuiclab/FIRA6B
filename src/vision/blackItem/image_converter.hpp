@@ -7,6 +7,7 @@
 #include <fstream>
 #include <deque>
 
+
 #include "std_msgs/Int32MultiArray.h"
 
 namespace enc = sensor_msgs::image_encodings;
@@ -27,16 +28,29 @@ private:
     std::vector<int>dis_space, dis_pixel;
     int black_gray,black_angle;
 
-    std::vector<int>blackItem_pixel;
+    std::vector<double>blackItem_pixel;
+
+    Mat Main_frame;
+
+    int frame_counter;
+    long int EndTime;
+    long int dt;
+
+    double Camera_H,Camera_f;
+
+    std::vector<double> Angle_sin;
+    std::vector<double> Angle_cos;
+
 
 public:
     ImageConverter();
     ~ImageConverter();
 
+    double Omni_distance(double dis_pixel);
     void imageCb(const sensor_msgs::ImageConstPtr&);
-    void opposite(cv::Mat);
     void get_center();
     void get_distance();
     void get_whitedata();
+    void get_Camera();
 };
 

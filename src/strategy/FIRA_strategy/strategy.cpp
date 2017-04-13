@@ -1,4 +1,3 @@
-
 //ros inclue
 #include "ros/ros.h"
 #include "std_msgs/String.h"
@@ -25,8 +24,6 @@ static void show_usage()
               << "\t-r  ,robot index"
               << std::endl;
 }
-
-
 
 //parse argument
 //-opt,--opponent   :   set oppoent
@@ -75,10 +72,9 @@ void parseArg(int argc,char** argv,bool &isOpponent,int &robotIndex){
 
 int main(int argc, char **argv)
 {
-
     //=========parse arg=============//
     bool isOpponent = false;
-
+    int shoot_value = 0;
 
     int robotIndex = 1;
     parseArg(argc,argv,isOpponent,robotIndex);
@@ -98,18 +94,13 @@ int main(int argc, char **argv)
     global_env->yellow.pos.z = 0;
 
     for(int i = 0;i < PLAYERS_PER_SIDE;i++){
-        //std::cout << "1" << std::endl;
         global_env->home[i].v_x = 0;
-        //  std::cout << "2" << std::endl;
         global_env->home[i].v_y = 0;
         global_env->home[i].v_yaw = 0;
         global_env->opponent[i].v_x = 0;
         global_env->opponent[i].v_y = 0;
         global_env->opponent[i].v_yaw = 0;
     }
-
-//    global_env->gameState = GameState_Play;
-
 
     //=========Node Init=============//
 
@@ -118,28 +109,16 @@ int main(int argc, char **argv)
     mNodeHandle.setOpponent(isOpponent);
     mNodeHandle.on_init();
 
+    ros::Rate loop_rate(30);
 
-
-    ros::Rate loop_rate(50);
-
-
-
-    //bool isOpponent  = false;
-    //FIRA_teamStrategy_class mteam;
-    //mteam.setOpponent(isOpponent);
     FIRA_behavior_class mbehavior;
 
     FIRA_pathplan_class mpathplan;
-//    mpathplan.teamColor = "Blue";
+
     //loadParam
     mpathplan.loadParam(mNodeHandle.getNodeHandle());
     int Team_color;
-    std::cout << "=======Strategy====140811_0755===" << std::endl;
-    if(mpathplan.teamColor == "Blue") Team_color = Team_Blue;
-    else if(mpathplan.teamColor == "Yellow") Team_color = Team_Yellow;
-
-//    std::cout << "[strategy] teamColor = " << mpathplan.teamColor <<  std::endl;
-
+    std::cout << "=======Strategy====170119===" << std::endl;
 
     mbehavior.setOpponent(isOpponent);
     mpathplan.setOpponent(isOpponent);
@@ -151,73 +130,67 @@ int main(int argc, char **argv)
     //return 0;
     while(ros::ok())
     {
-        mpathplan.teamColor = mNodeHandle.getTeamColor();
+        mpathplan.loadParam(mNodeHandle.getNodeHandle());
+        mbehavior.loadParam(mNodeHandle.getNodeHandle());
+        global_env->teamcolor = mNodeHandle.getTeamColor();
+        if(global_env->teamcolor == "Blue")Team_color = Team_Blue;
+        else if(global_env->teamcolor == "Yellow")Team_color = Team_Yellow;
         global_env->gameState = mNodeHandle.getGameState();
-
-        std::cout<<"ball.angle="<<global_env->home[0].ball.angle<<std::endl;
-        std::cout<<"ball.distance="<<global_env->home[0].ball.distance<<std::endl;
-        std::cout<<"yellow.angle="<<global_env->home[0].op_goal.angle<<std::endl;
-        std::cout<<"yellow.distance="<<global_env->home[0].op_goal.distance<<std::endl;
-        std::cout<<"blue.angle="<<global_env->home[0].goal.angle<<std::endl;
-        std::cout<<"blue.angle="<<global_env->home[0].goal.distance<<std::endl;
-        // std::cout << "[strategy] teamColor = " << mpathplan.teamColor  <<  std::endl;
-        // std::cout << "[strategy] gameState = " << global_env->gameState <<  std::endl;
+        global_env->issimulator=mNodeHandle.getIsSimulator();
+        shoot_value = mpathplan.getShoot();
+        if(shoot_value>0){
+           mNodeHandle.pubShoot(shoot_value);
+           mpathplan.shoot_init();
+        }
         roleAry = mNodeHandle.getRoleAry();
-        roleAry[0] = Role_Attack;
-//        printf("roleAry = %d,%d,%d\n",roleAry[0],roleAry[1],roleAry[2]);
 
-
-        //start=========Strategy=============//
+        //============Strategy============//
         mbehavior.setEnv(*global_env);
         mbehavior.setTeam(Team_color);
-        for(int i=0; i<PLAYERS_PER_SIDE;i++){
-            mbehavior.readroleAry(i,roleAry[i]);
+        if((global_env->issimulator)==true){
+            for(int i=0; i<PLAYERS_PER_SIDE;i++){
+                mbehavior.readroleAry(i,roleAry[i]);
+            }
+            actionAry = mbehavior.getactionAry();
+
+            mpathplan.setEnv(*global_env);
+            mpathplan.setTeam(Team_color);
+            for(int i=0; i<PLAYERS_PER_SIDE;i++){
+                mpathplan.personalStrategy(i,actionAry[i]);
+            }
+        }else if((global_env->issimulator)==false){
+            mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
+            mbehavior.readroleAry(global_env->RobotNumber,roleAry[global_env->RobotNumber]);//robotIndex is not equal role
+            actionAry = mbehavior.getactionAry();
+            mpathplan.setEnv(*global_env);
+            mpathplan.setTeam(Team_color);
+            mpathplan.personalStrategy(global_env->RobotNumber,actionAry[global_env->RobotNumber]);
         }
-        actionAry = mbehavior.getactionAry();
-
-        mpathplan.setEnv(*global_env);
-        mpathplan.setTeam(Team_color);
-
-        for(int i=0; i<PLAYERS_PER_SIDE;i++){
-            mpathplan.personalStrategy(i,actionAry[i]);
-        }
-//        printf("%d\n",Team_color);
-//printf("%d,%d,%d\n",actionAry[0],actionAry[1],actionAry[2]);
-
-
-
         //===set env===//
         Environment* tEnv = mpathplan.getEnv();
 
-        for(int i = 0;i < PLAYERS_PER_SIDE;i++){
-
-//            if(!isOpponent){
-                global_env->home[i].v_x = tEnv->home[i].v_x;
-                global_env->home[i].v_y = tEnv->home[i].v_y;
-                global_env->home[i].v_yaw = tEnv->home[i].v_yaw*deg2rad;
-//            }else{
-//                global_env->opponent[i].v_x = tEnv->home[i].v_x;
-//                global_env->opponent[i].v_y = tEnv->home[i].v_y;
-//                global_env->opponent[i].v_yaw = tEnv->home[i].v_yaw*deg2rad;
-//            }
-
-//            double t_x=tEnv->home[i].v_x;
-//            double t_y=tEnv->home[i].v_y;
-//            double t_yaw=tEnv->home[i].v_yaw;
-            //printf("v_x=%lf,v_y=%lf,v_yaw=%lf\n",t_x,t_y,t_yaw);
+        if((global_env->issimulator)==true){
+            for(int i = 0;i < PLAYERS_PER_SIDE;i++){
+                    global_env->home[i].v_x = tEnv->home[i].v_x;
+                    global_env->home[i].v_y = tEnv->home[i].v_y;
+                    global_env->home[i].v_yaw = tEnv->home[i].v_yaw*deg2rad;
+            }
         }
-
-
+        else if((global_env->issimulator)==false){
+            global_env->home[global_env->RobotNumber].v_x = tEnv->home[global_env->RobotNumber].v_x;
+            global_env->home[global_env->RobotNumber].v_y = tEnv->home[global_env->RobotNumber].v_y;
+            global_env->home[global_env->RobotNumber].v_yaw = tEnv->home[global_env->RobotNumber].v_yaw*deg2rad;
+        }
         mNodeHandle.pubGrpSpeed();
 
         ros::spinOnce();
         loop_rate.sleep();
+
     }
 
     ros::shutdown();
 
 
     std::cout << "=======Finish===" << std::endl;
-
     return 0;
 }

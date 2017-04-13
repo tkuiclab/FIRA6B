@@ -52,6 +52,7 @@ foreach(subdir
     objectdetection
     whiteLine
     blackItem
+    image_transport
 )
   #install(DIRECTORY ${subdir} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/qt_tutorials)
   add_subdirectory(${subdir})

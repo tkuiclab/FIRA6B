@@ -12,9 +12,6 @@
 #ifndef TeamStrategy_nodeHandle_HPP_
 #define TeamStrategy_nodeHandle_HPP_
 
-
-
-
 /*****************************************************************************
  ** Includes
  *****************************************************************************/
@@ -22,7 +19,6 @@
 #include <string>
 #include "../common/Env.h"
 #include "../common/BaseNode.h"
-
 #include "std_msgs/String.h"
 #include "std_msgs/Int32.h"
 #include "FIRA_status_plugin/RobotSpeedMsg.h"
@@ -33,9 +29,12 @@
 /*****************************************************************************
  ** Define
  *****************************************************************************/
-#define Ball_Topic_Name         "/FIRA/Strategy/WorldMap/soccer"
+#define Ball_Topic_Name "/FIRA/Strategy/WorldMap/soccer"
+#define GameState_Topic "/FIRA/GameState"
 
-
+//RobotNumber
+#define RobotNumber_Topic "/FIRA/RobotNumber"
+#define TeamColor_Topic "/FIRA/TeamColor"
 //robot prefix
 #define Robot_Topic_Prefix "/FIRA/R"
 #define RobotOpt_Topic_Prefix "/FIRA_Opt/R"
@@ -87,7 +86,14 @@ private:
     std::string model_array[11];
     ros::NodeHandle *n;
     
-    
+    ros::Subscriber GameState;
+    long gamestate;
+
+    //RobotNumber
+    ros::Subscriber RobotNumber;
+    ros::Subscriber TeamColor;
+    long robotnumber;
+
     //gazebo_ModelStates subscriber
     ros::Subscriber Gazebo_Model_Name_sub;
     //ball subscriber
@@ -108,27 +114,16 @@ private:
     
     
     void find_gazebo_model_name_fun(const gazebo_msgs::ModelStates::ConstPtr &msg){//----------------------------------printf here is ok, but printf next row will crash if i open over one robot map
-        //        printf("testttttttttttttt\n");
         
         if(run_one) return;
         
         int model_length;
         model_length = msg->name.size();
-        /*
-         for(int i =0;i<11;i++){
-         if(msg->name[i].c_str()==NULL){
-         model_length = i;
-         }
-         if(model_length!= 0) i = 11;
-         //            printf("%d\n",model_length);
-         }*/
         printf("model_length= %d",model_length);
         for(int i = 0; i<model_length;i++){
             model_array[i] = msg->name[i];
-            //            printf("%d = %s\n",i,model_array[i].c_str());
         }
         run_one = true;
-        //        printf("%s\n",model_array[6].c_str());
     }
     int get_model_num(const std::string ModelName){
         int send_back_num;
@@ -137,39 +132,26 @@ private:
         }
     }
     
-    
-    
+    void subGameState(const std_msgs::Int32::ConstPtr &msg){
+        global_env->gameState=msg->data;
+    }
+
+    void subTeamColor(const std_msgs::String::ConstPtr &msg){
+        global_env->teamcolor= msg->data;
+    }
+
     void  ball_sub_fun(const gazebo_msgs::ModelStates::ConstPtr &msg){
-        //        global_env->currentBall.pos.x = msg->x;
-        //        global_env->currentBall.pos.y = msg->y;
         int model_num;
         model_num = get_model_num("soccer");
-        //        printf("model_num=%d\n",model_num);
-        //        ROS_INFO("name=%s",msg->name[1].c_str());
         geometry_msgs::Pose tPose = msg->pose[model_num];
-        //        ROS_INFO("x=%lf",tPose.position.x);
         global_env->currentBall.pos.x = tPose.position.x;
         global_env->currentBall.pos.y = tPose.position.y;
-        
-        
-        //std::cout << "[ball] x=" << msg->x <<",y=" << msg->y << std::endl;
     }
     
     
     void  robot_1_pos_fun(const gazebo_msgs::ModelStates::ConstPtr &msg){
-        //        global_env->home[0].pos.x = msg->pose.pose.position.x;
-        //        global_env->home[0].pos.y = msg->pose.pose.position.y;
-        
-        
-        //        double w = msg->pose.pose.orientation.w;
-        //        double x = msg->pose.pose.orientation.x;
-        //        double y = msg->pose.pose.orientation.y;
-        //        double z = msg->pose.pose.orientation.z;
-        //        double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
-        //        global_env->home[0].rotation = yaw;
         int model_num;
         model_num = get_model_num("R1");
-        //        printf("model_num=%d\n",model_num);
         geometry_msgs::Pose tPose = msg->pose[model_num];
         global_env->home[0].pos.x = tPose.position.x;
         global_env->home[0].pos.y = tPose.position.y;
@@ -181,20 +163,9 @@ private:
         double z = tPose.orientation.z;
         double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
         global_env->home[0].rotation = yaw;
-        
-        //  std::cout << "x=" << global_env->home[0].pos.x <<",y=" << global_env->home[0].pos.y << std::endl;
     }
     
     void  robot_2_pos_fun(const gazebo_msgs::ModelStates::ConstPtr &msg){
-        //        global_env->home[1].pos.x = msg->pose.pose.position.x;
-        //        global_env->home[1].pos.y = msg->pose.pose.position.y;
-        
-        //        double w = msg->pose.pose.orientation.w;
-        //        double x = msg->pose.pose.orientation.x;
-        //        double y = msg->pose.pose.orientation.y;
-        //        double z = msg->pose.pose.orientation.z;
-        //        double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
-        //        global_env->home[1].rotation = yaw;
         int model_num;
         model_num = get_model_num("R2");
         geometry_msgs::Pose tPose = msg->pose[model_num];
@@ -208,21 +179,9 @@ private:
         double z = tPose.orientation.z;
         double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
         global_env->home[1].rotation = yaw;
-        //std::cout << "x=" << global_env->home[1].pos.x <<",y=" << global_env->home[1].pos.y << std::endl;
-        
-        
     }
     void  robot_3_pos_fun(const gazebo_msgs::ModelStates::ConstPtr &msg){
-        //        global_env->home[2].pos.x = msg->pose.pose.position.x;
-        //        global_env->home[2].pos.y = msg->pose.pose.position.y;
-        
-        //        double w = msg->pose.pose.orientation.w;
-        //        double x = msg->pose.pose.orientation.x;
-        //        double y = msg->pose.pose.orientation.y;
-        //        double z = msg->pose.pose.orientation.z;
-        //        double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
-        //        global_env->home[2].rotation = yaw;
-        
+
         int model_num;
         model_num = get_model_num("R3");
         geometry_msgs::Pose tPose = msg->pose[model_num];
@@ -236,8 +195,6 @@ private:
         double z = tPose.orientation.z;
         double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
         global_env->home[2].rotation = yaw;
-        // std::cout << "x=" << global_env->home[1].pos.x <<",y=" << global_env->home[2].pos.y << std::endl;
-        
     }
     
     
