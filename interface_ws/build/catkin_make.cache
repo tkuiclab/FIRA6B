@@ -1,0 +1,2 @@
+interface_ws/vision
+-DCATKIN_DEVEL_PREFIX=/home/leokim/interface_ws/devel -DCMAKE_INSTALL_PREFIX=/home/leokim/interface_ws/install -G Unix Makefiles
