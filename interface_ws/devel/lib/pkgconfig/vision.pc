@@ -1,8 +1,0 @@
-prefix=/home/leokim/interface_ws/devel
-
-Name: vision
-Description: Description of vision
-Version: 0.0.0
-Cflags: -I/home/leokim/interface_ws/devel/include
-Libs: -L/home/leokim/interface_ws/devel/lib 
-Requires: message_runtime
