@@ -1,3 +1,0 @@
-add_executable(thermal_proc thermal_proc_node.cpp thermal_proc.cpp)
-target_link_libraries(thermal_proc image_processing ${catkin_LIBRARIES})
-add_dependencies(thermal_proc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
