@@ -49,7 +49,7 @@ private:
 	unsigned char shoot_byte;
 	unsigned char en_byte,checksum_byte;
 
-	motor_command	*baseCMD;
+	command	*baseCMD;
 	motor_feedback 	*baseFB;
 	double w1_speed, w1_speed_percent;
 	double w2_speed, w2_speed_percent;
@@ -58,7 +58,7 @@ private:
 	//void send();
 	//void get();
 public:
-	void send(motor_command*);
+	void send(command*);
 //	int 	mcssl_init();
 };
 #endif

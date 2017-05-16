@@ -1,7 +1,7 @@
 #include "motion_nodeHandle.h"
 Motion_nodeHandle::Motion_nodeHandle(int argc, char **argv)
 {
-	nodeCMD = new motor_command;
+	nodeCMD = new command;
 	nodeFB = new motor_feedback;
 	x_speed = 0;
 	y_speed = 0;
@@ -57,7 +57,7 @@ void Motion_nodeHandle::shootCallback(const std_msgs::Int32::ConstPtr &shoot_msg
 #endif
 }
 
-motor_command* Motion_nodeHandle::getMotion()
+command* Motion_nodeHandle::getMotion()
 {
 	this->nodeCMD->x_speed = x_speed;
 	this->nodeCMD->y_speed = y_speed;

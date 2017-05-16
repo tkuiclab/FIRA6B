@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 	Motion_nodeHandle Global_nodeHandle(argc, argv);
 	Base_Control Global_Base_Control;
 
-	motor_command *CMD = new motor_command;
+	command *CMD = new command;
 	//while(ros::ok()){
 	//	if(Global_Motor_Control.mcssl_init()){
 	//		break;
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 	//		exit(EXIT_FAILURE);
 	//	}
 	//}
-	ros::Rate loop_rate(30);
+	ros::Rate loop_rate(50);
 	while(ros::ok()){
 		CMD = Global_nodeHandle.getMotion();
 		Global_Base_Control.send(CMD);	

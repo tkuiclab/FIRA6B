@@ -6,11 +6,18 @@ typedef struct{
 	double y_speed;
 	double yaw_speed;
 	int shoot_power;
-}motor_command;
+}command;
+
 typedef struct{
-	double* motor1_feedback;
-	double* motor2_feedback;
-	double* motor3_feedback;
+	void *w1_speed;
+	void *w2_speed;
+	void *w3_speed;
+}motor_speed;
+
+typedef struct{
+	void* motor1_feedback;
+	void* motor2_feedback;
+	void* motor3_feedback;
 }motor_feedback;
 
 //typedef struct MOTOR_FEEDBACK motor_feedback;

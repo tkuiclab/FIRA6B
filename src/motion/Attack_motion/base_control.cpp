@@ -7,7 +7,7 @@
 
 Base_Control::Base_Control()
 {
-	baseCMD = new motor_command;
+	baseCMD = new command;
 	baseFB = new motor_feedback;
 	serial = NULL;
 	w1_dir=0,w2_dir=0,w3_dir=0;
@@ -26,10 +26,23 @@ Base_Control::Base_Control()
 
 Base_Control::~Base_Control()
 {
-	w1_byte =0;w2_byte =0;w3_byte =0;
-	en1=0;en2=0;en3=0;
-	stop1=0;stop2=0;stop3=0;
+	w1_dir=0,w2_dir=0,w3_dir=0;
+	w1_byte=0,w2_byte=0,w3_byte=0;
+	en1=0,en2=0,en3=0,stop1=0,stop2=0,stop3=0;
 	shoot_byte=0;
+	en_byte=0,checksum_byte=0;
+
+	w1_speed=0, w1_speed_percent=0;
+	w2_speed=0, w2_speed_percent=0;
+	w3_speed=0, w3_speed_percent=0;
+	shoot_power=0, shoot_power_percent=0;
+	
+	mcssl_send2motor();
+	mcssl_send2motor();
+	mcssl_send2motor();
+	mcssl_send2motor();
+	mcssl_send2motor();
+	mcssl_send2motor();
 	mcssl_send2motor();
 #ifdef DEBUG
 	std::cout << "~Base_Control(DEBUG)\n";
@@ -129,6 +142,18 @@ void Base_Control::mcssl_send2motor()
 	en_byte = 128*en1+64*en2+32*en3+16*stop1+8*stop2+4*stop3;
 	checksum_byte = w1_byte+w2_byte+w3_byte+en_byte+shoot_byte;
 #ifdef DEBUG_CSSL
+	std::cout << "mcssl_send2motor(DEBUG_CSSL)\n";
+	std::cout << std::hex;
+	std::cout << "w1_byte: " << (int)w1_byte << std::endl;
+	std::cout << "w2_byte: " << (int)w2_byte << std::endl;
+	std::cout << "w3_byte: " << (int)w3_byte << std::endl;
+	std::cout << "en1 en2 en3 stop1 stop2 stop3: ";	
+	std::cout << (int)en1 << (int)en2 << (int)en3 << (int)stop1 << " " 
+			  << (int)stop2 << (int)stop3 << "00 (" << (int)en_byte << ")"<<  std::endl;
+	std::cout << "shoot: " << (int)shoot_byte << std::endl;
+	std::cout << "checksum: " << (int)checksum_byte << std::endl;
+	std::cout << std::endl;
+#else
 #ifdef DEBUG
 	std::cout << "mcssl_send2motor(DEBUG)\n";
 	std::cout << std::hex;
@@ -137,12 +162,11 @@ void Base_Control::mcssl_send2motor()
 	std::cout << "w3_byte: " << (int)w3_byte << std::endl;
 	std::cout << "en1 en2 en3 stop1 stop2 stop3: ";	
 	std::cout << (int)en1 << (int)en2 << (int)en3 << (int)stop1 << " " 
-			  << (int)stop2 << (int)stop3 << "00 " << (int)en_byte<<  std::endl;
+			  << (int)stop2 << (int)stop3 << "00 (" << (int)en_byte << ")" << std::endl;
 	std::cout << "shoot: " << (int)shoot_byte << std::endl;
 	std::cout << "checksum: " << (int)checksum_byte << std::endl;
 	std::cout << std::endl;
 #endif
-#else
 	cssl_putchar(serial, 0xff);
 	cssl_putchar(serial, 0xfa);
 	cssl_putchar(serial, w1_byte);
@@ -257,7 +281,7 @@ void Base_Control::inverseKinematics()
 	std::cout << std::endl;
 #endif
 }
-void Base_Control::send(motor_command* CMD)
+void Base_Control::send(command* CMD)
 {
 	baseCMD = CMD;
 	inverseKinematics();
