@@ -46,22 +46,21 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-#folder
-<<<<<<< HEAD
-=======
-simulation
->>>>>>> FPGA
-Est_Test
-backup
-db
-demo_batch
-export_db
+##folder
+#Strategy
+devel
+build
+#FPGA
 incremental_db
-output
+expot_db
+db
 output_files
-Debug
-#files
+simulation
+##files
+#Strategy
 .vs
+.catkin_workspace
 *.VC.db
+#FPGA
 *.bak
 *.qdf
