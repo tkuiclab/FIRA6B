@@ -52,7 +52,7 @@ devel
 build
 #FPGA
 incremental_db
-expot_db
+export_db
 db
 output_files
 simulation
@@ -64,3 +64,5 @@ simulation
 #FPGA
 *.bak
 *.qdf
+*.qws
+*.ddb
