@@ -64,3 +64,5 @@ simulation
 #FPGA
 *.bak
 *.qdf
+*.qws
+*.ddb
