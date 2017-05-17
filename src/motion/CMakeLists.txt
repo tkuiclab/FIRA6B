@@ -18,6 +18,7 @@ catkin_package(CATKIN_DEPENDS
 foreach(subdir
 		common
 		Attack_motion
+		test
 		)
 	add_subdirectory(${subdir})
 endforeach()

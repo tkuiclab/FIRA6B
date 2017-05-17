@@ -2,16 +2,16 @@
 #define MOTOR_DATA_H
 
 typedef struct{
-	double x_speed;
-	double y_speed;
-	double yaw_speed;
-	int shoot_power;
+	void* x_speed;
+	void* y_speed;
+	void* yaw_speed;
+	void* shoot_power;
 }command;
 
 typedef struct{
-	void *w1_speed;
-	void *w2_speed;
-	void *w3_speed;
+	void* w1_speed;
+	void* w2_speed;
+	void* w3_speed;
 }motor_speed;
 
 typedef struct{

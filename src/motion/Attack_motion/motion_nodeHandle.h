@@ -22,7 +22,7 @@
 #define odometry_topic_name "/odom"
 #define motion_topic_name "/motion"
 #define shoot_topic_name "/shoot"
-//#define DEBUG
+#define DEBUG
 class Motion_nodeHandle{
 public:
 	Motion_nodeHandle(int argc, char **argv);
@@ -41,10 +41,10 @@ private:
 	ros::Subscriber shoot_sub;
 	command *nodeCMD;
 	motor_feedback *nodeFB;
-	double x_speed;
-	double y_speed;
-	double yaw_speed;
-	int shoot_power;
+	//double x_speed;
+	//double y_speed;
+	//double yaw_speed;
+	//int shoot_power;
 private:
 	void init(int argc, char **argv);
 	void motionCallback(const geometry_msgs::Twist::ConstPtr &);

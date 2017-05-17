@@ -12,7 +12,7 @@
  *	Include header files
  ********************************/
 #include "motion_nodeHandle.h"
-#include "base_control.h"
+//#include "base_control.h"
 //#include "CTest.h"
 /********************************
  *	Define	
@@ -22,7 +22,7 @@
 int main(int argc, char **argv)
 {
 	Motion_nodeHandle Global_nodeHandle(argc, argv);
-	Base_Control Global_Base_Control;
+	//Base_Control Global_Base_Control;
 
 	command *CMD = new command;
 	//while(ros::ok()){
@@ -35,8 +35,8 @@ int main(int argc, char **argv)
 	ros::Rate loop_rate(50);
 	while(ros::ok()){
 		CMD = Global_nodeHandle.getMotion();
-		Global_Base_Control.send(CMD);	
-		if(CMD->shoot_power>0)Global_nodeHandle.clearshoot();
+		//Global_Base_Control.send(CMD);	
+		//if(CMD->shoot_power>0)Global_nodeHandle.clearshoot();
 		ros::spinOnce();
 		loop_rate.sleep();
 	}
