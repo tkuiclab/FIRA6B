@@ -43,6 +43,14 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_SideSpeedUp      8
 #define action_CornerKick       9
 #define action_Zone_Attack     10
+
+#define action_Goalkeeper_init 11
+#define action_Goalkeeper_waiting 12
+#define action_Goalkeeper_blocking 13
+#define action_Goalkeeper_catching 14
+
+
+
 #define action_1               11
 #define action_2               12
 #define action_3               13
@@ -61,6 +69,14 @@ const long PLAYERS_PER_SIDE = 3;
 #define state_SideSpeedUp       5
 #define state_ZoneAttack        6
 #define state_CornerKick        7
+
+#define state_GoalKeeper_init 0
+#define state_GoalKeeper_waiting 1
+#define state_GoalKeeper_blocking 2
+#define state_GoalKeeper_catching 3
+
+
+
 
 #define Team_Blue 1
 #define Team_Yellow 2

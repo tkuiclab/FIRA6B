@@ -70,7 +70,10 @@ public:
     void strategy_KO5_Attack(int);
     void strategy_SideSpeedUp(int);
 //--------------------------------------------------
-
+    void strategy_Goalkeeper_init(int);
+    void strategy_Goalkeeper_waiting(int);
+    void strategy_Goalkeeper_blocking(int);
+    void strategy_Goalkeeper_catching(int);
 //--------------role case-------------------
     void role_Play();
     void role_Halt();

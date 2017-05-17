@@ -12,6 +12,7 @@ class FIRA_behavior_class
 private:
     int action;
     int state_attack=state_Init;
+    int state_GoalKeeper = state_GoalKeeper_init;
     int state_cornerkick=state_CornerKick;
 
     // ========== test change roleAry[ i ] to escape from cornerkick and try to reset the state  begin ==========
@@ -50,6 +51,11 @@ private:
     void StateZoneAttack(int);
     float error[2];
     bool decide_actionAttack;
+
+    void StateGoalKeeperInit(int);
+    void StateGoalKeeperWaiting(int);
+    void StateGoalKeeperBlocking(int);
+    void StateGoalKeeperCatching(int);
 
     float MIN(float i,float j,float k,float l){
         if(i<=j&&i<=k&&i<=l) return i;

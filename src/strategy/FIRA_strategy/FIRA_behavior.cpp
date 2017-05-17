@@ -35,79 +35,75 @@ void FIRA_behavior_class::StateInitAttack(int r_number){
         else
             state_attack = state_Attack;
 }
+
 void FIRA_behavior_class::StateChase(int r_number){
-    /// ========== Init Begin ==========
-    //    printf("Chase_state\n");
+
         double distance_br = env.home[r_number].ball.distance;
         double distance_dr = env.home[r_number].goal.distance;
         double angle_br = env.home[r_number].ball.angle;
         double angle_dr = env.home[r_number].goal.angle;
         double alpha = angle_dr-angle_br;
-    /// ========== Init End ==========
-        ////========state change to sidespeedup or not============
-                /// ========== USE ARRAY TO SAVE DISTANCE AND CAUCULATE ==========
-                int const  ary_length = 7;
-                double temp;
-                static double d_ary_dis[ary_length];
-                double d_ary_orderdis[ary_length];
-                static int counter = 0;
-                static int bool_ary_full = false;
-                static ros::Time start = ros::Time::now();
-                ros::Time current = ros::Time::now();
-                double start_time = (double)(start.sec+(double)start.nsec/1000000000);
-                double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-                double const open_condition = Chase_Strategy[1];//0.15
-                double const calculate_time = Chase_Strategy[2];//0.1
-                if(current_time-start_time>calculate_time){
-                    start.sec = current.sec;
-                    start.nsec = current.nsec;
-                    d_ary_dis[counter++] = distance_br;
-                    if(counter==ary_length){
-                        bool_ary_full = true;
-                        counter = 0;
-                    }
-                    if(bool_ary_full==true){
-                            for(int i = 0;i<ary_length;i++)
-                                d_ary_orderdis[i] = d_ary_dis[i];
-                            for(int i=0;i<ary_length;i++)
-                                for(int j=0;j<ary_length-i-1;j++)
-                                    if(d_ary_orderdis[j]>d_ary_orderdis[j+1]){
-                                            temp = d_ary_orderdis[j];
-                                            d_ary_orderdis[j] = d_ary_orderdis[j+1];
-                                            d_ary_orderdis[j+1] = temp;
-                                    }
-                            if(d_ary_orderdis[ary_length-1]-d_ary_orderdis[0] > 0.05 &&
-                               d_ary_orderdis[ary_length-1]-d_ary_orderdis[0] < open_condition &&
-                               distance_br>=0.5){
-                               counter = 0;
-                               bool_ary_full = false;
-                               for(int i = 0;i<ary_length;i++)
-                                    d_ary_orderdis[i] = 0;
-                            }
-                    }
-                }
-                /// ========== USE LINKED LIST TO SAVE DISTANCE ==========
 
-        ////========state change to Attack or not=================
-          double angle_chase = Chase_Strategy[3];//16.5
-          double distance_chase = Chase_Strategy[4];//0.4
-        ////========== normalization angle to -180~180 ==========
-          if(alpha>180)
-              alpha-=360;
-          else if(alpha<-180)
-              alpha+=360;
-        ////========== normalization end ==========
-        static int counter_test = 0;
+        double angle_chase = Chase_Strategy[3];//16.5
+        double distance_chase = Chase_Strategy[4];//0.4
+
+        if(alpha>180)
+            alpha-=360;
+        else if(alpha<-180)
+            alpha+=360;
+
+        int const  ary_length = 3;
+        static double dis_ary[ary_length] = {0};
+        static int counter = 0;
+        static int bool_ary_full = false;
+
         if(distance_br<=distance_chase && fabs(angle_br)<=angle_chase){
-            counter_test++;
-            if(counter_test>1){
                 state_attack=state_Attack;
                 state_cornerkick=state_Attack;
-                counter_test = 0;
-                counter=0;          // when state leave from Chase   counter must to reset
+                //reset sidespeedup_checking_data
+                counter = 0;
+                bool_ary_full = false;
+                for(int reset_ary = 0; reset_ary < ary_length; reset_ary++){
+                    dis_ary[reset_ary] = 0;   }
+        }
+
+
+        static ros::Time start = ros::Time::now();
+        ros::Time current = ros::Time::now();
+        double start_time = (double)(start.sec+(double)start.nsec/1000000000);
+        double current_time = (double)(current.sec+(double)current.nsec/1000000000);
+        double const open_condition = Chase_Strategy[1];//0.05      //2017_0406
+        double const calculate_time = Chase_Strategy[2];//0.08      //2017_0406
+
+
+            if(current_time-start_time>calculate_time){
+                start.sec = current.sec;
+                start.nsec = current.nsec;
+                if( bool_ary_full == true){
+                    double average_sum_dis_ary = 0;
+                    for(int i=0; i<ary_length; i++){
+                        average_sum_dis_ary += dis_ary[i];
+                    }
+                    average_sum_dis_ary /= ary_length;
+                    double check_for_sidespeedup = average_sum_dis_ary - distance_br;
+
+                    if( open_condition > fabs(check_for_sidespeedup)){
+                        state_attack=state_SideSpeedUp;
+                        //reset sidespeedup_checking_data
+                        counter = 0;
+                        bool_ary_full = false;
+                        for(int reset_ary = 0; reset_ary < ary_length; reset_ary++){
+                            dis_ary[reset_ary] = 0;   }
+                    }else{  dis_ary[counter] =0; }
+                }
+                dis_ary[counter++] += distance_br;
+                if(counter==ary_length){
+                    counter = 0;
+                    bool_ary_full = true;
+                }
             }
-        }else counter_test = 0;
 }
+
 void FIRA_behavior_class::StateAttack(int r_number){
     /// ========== Init Begin ==========
     double distance_br = env.home[r_number].ball.distance;
@@ -171,6 +167,7 @@ void FIRA_behavior_class::StateType_UChase(int r_number){
 void FIRA_behavior_class::StateType_SAttack(int r_number){
 //
 }
+
 void FIRA_behavior_class::StateSideSpeedUp(int r_number){
     /// ========== Init Begin ==========
     double distance_br = env.home[r_number].ball.distance;
@@ -192,17 +189,33 @@ void FIRA_behavior_class::StateSideSpeedUp(int r_number){
             state_attack=state_Attack;
          ///=========== CHANGE TO CHASE ===========
               ///========== USE TIMER ==========
-    static ros::Time start = ros::Time::now();
-    ros::Time current = ros::Time::now();
-    double start_time = (double)(start.sec+(double)start.nsec/1000000000);
-    double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-    double const int_calculate_time = 1.5;
-    if(current_time-start_time > int_calculate_time){
-        start.sec = current.sec;
-        start.nsec = current.nsec;
-        state_attack = state_Chase;
-    }
+
+        static ros::Time start = ros::Time::now();
+        ros::Time current = ros::Time::now();
+        double start_time = (double)(start.sec+(double)start.nsec/1000000000);
+        double current_time = (double)(current.sec+(double)current.nsec/1000000000);
+        double const int_calculate_time = 1.5;
+
+        int chaseCase = StrategySelection[0];
+        int SchaseCase = StrategySelection[1];
+
+        double angle_stopsidespeedup =  5;    //Side_Speed_UP[2] ;
+        if(chaseCase){
+            if( distance_br <= 0.5 ){
+                if( fabs(alpha) < angle_stopsidespeedup ){
+                    state_attack=state_Chase;  }
+            }
+        }/*else if(SchaseCase){
+            //直線追球在追到球前不須減速
+        }*/
+
+        if(current_time-start_time > int_calculate_time){   //1.5sec reset
+            start.sec = current.sec;
+            start.nsec = current.nsec;
+            state_attack = state_Chase;
+        }
 }
+
 void FIRA_behavior_class::StateZoneAttack(int r_number){
     /// ========== Init Begin ==========
     double distance_br = env.home[r_number].ball.distance;
@@ -246,6 +259,52 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
     if(distance_br > 1)
         EscapeCornerKick[r_number] = true;
 }
+
+//###################################################//
+//                                                   //
+//        To determine the robot state changes       //
+//        for GoalKeeper
+//                                                   //
+//###################################################//
+void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
+
+        double op_goal_distance = env.home[r_number].op_goal.distance;
+        double goal_angle = env.home[r_number].goal.angle;
+        double op_goal_angle = env.home[r_number].op_goal.angle;
+
+        if(op_goal_distance < 0.5 && fabs(goal_angle - op_goal_angle)>175){
+            state_GoalKeeper = state_GoalKeeper_waiting;
+        }
+}
+
+void FIRA_behavior_class::StateGoalKeeperWaiting(int r_number){
+        double ball_distance = env.home[r_number].ball.distance;
+        if( ball_distance < 3 ){
+            state_GoalKeeper = state_GoalKeeper_blocking;
+        }
+}
+
+void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
+
+        double ball_distance = env.home[r_number].ball.distance;
+
+        if( ball_distance < 0.5){   //not sure about this
+            state_GoalKeeper = state_GoalKeeper_catching;
+        }else if( ball_distance > 3.5){
+            state_GoalKeeper = state_GoalKeeper_init;
+        }
+}
+
+void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
+
+        if(0){
+            state_GoalKeeper = state_GoalKeeper_init;
+        }
+
+}
+
+
+
 //###################################################//
 //                                                   //
 //            Read the character array               //
@@ -297,7 +356,34 @@ int* FIRA_behavior_class::getactionAry(){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::behavior_Goalkeeper(int robotIndex){
-    actionAry[robotIndex] = action_Goalkeeper;
+
+    switch(state_GoalKeeper){
+        case state_GoalKeeper_init:
+            state_GoalKeeper = state_GoalKeeper_init;
+            StateGoalKeeperInit(robotIndex);
+            ROS_INFO("GoalKeeper init state\n");
+            actionAry[robotIndex] = action_Goalkeeper_init;
+            break;
+
+        case state_GoalKeeper_waiting:
+            StateGoalKeeperWaiting(robotIndex);
+            ROS_INFO("GoalKeeper waiting\n");
+            actionAry[robotIndex] = action_Goalkeeper_waiting;
+        break;
+
+        case state_GoalKeeper_blocking:
+            StateGoalKeeperBlocking(robotIndex);
+            ROS_INFO("GoalKeeper blocking\n");
+            actionAry[robotIndex] = action_Goalkeeper_blocking;
+        break;
+
+        case state_GoalKeeper_catching:
+            StateGoalKeeperCatching(robotIndex);
+            ROS_INFO("GoalKeeper catching\n");
+            actionAry[robotIndex] = action_Goalkeeper_catching;
+        break;
+    }
+
 }
 
 void FIRA_behavior_class::behavior_Attack(int robotIndex){
