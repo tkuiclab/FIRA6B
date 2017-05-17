@@ -1,0 +1,16 @@
+<model>
+  <name>My Ball</name>
+  <version>1.0</version>
+  <sdf version='1.4'>soccer.sdf</sdf>
+
+  <author>
+   <name>JianMing Lin</name>
+   <email>jianming1481@gmail.com</email>
+  </author>
+
+  <description>
+    My Big Ball.
+  </description>
+</model>
+
+

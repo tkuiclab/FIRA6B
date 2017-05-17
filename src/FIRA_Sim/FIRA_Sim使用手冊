@@ -1,0 +1,28 @@
+1.編譯方法
+	1.1.使用CMakeLists在catkin_ws下編譯
+
+	1.2.將FIRA_Scene的檔案放到.gazebo/model
+	
+	1.3.將FIRA_strategy的strategy.cpp裡所有與FIRA_Sim/status.h相關的程式碼先註解掉
+	
+	1.4.將FIRA_Sim的qClient.hpp和qClient.cpp裡所有與FIRA_strategy/strategy.h相關的程式碼註解掉
+
+	1.5.將FIRA_Sim的re_status的CMakeLists.txt裡，add_library(re_status SHARED re_status.cc 		)下面新增一行程式碼：add_dependencies(re_status re_status_plugin_gencpp)
+
+	1.6.將FIRA_Ground.png放到catkin_ws/devel/lib/FIRA_Sim
+
+	1.7.記得將gazebo的環境變數設定到libre_status.soo的資料夾
+
+	1.8.記得去source workspace的setup.bash
+	source devel/setup.bash
+
+2.執行方法
+	2.1.Run Gazebo
+	＃rosrun gazebo_ros gazebo catkin_ws/src/FIRA_Sim/re_status/re_status.world
+
+	2.2.執行程式
+	##執行模擬器
+	＃rosrun FIRA_Sim movetest
+
+	##執行策略(策略要寫在這裡)
+	＃rosrun FIRA_strategy FIRA_strategy
