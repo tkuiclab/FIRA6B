@@ -65,6 +65,8 @@ simulation
 .vs
 .catkin_workspace
 *.VC.db
+*.user
+*.user.*
 #FPGA
 *.bak
 *.qdf
