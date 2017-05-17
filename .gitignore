@@ -58,6 +58,10 @@ output_files
 simulation
 ##files
 #Strategy
+*~
+*.swp
+*.swo
+*.autosave
 .vs
 .catkin_workspace
 *.VC.db
