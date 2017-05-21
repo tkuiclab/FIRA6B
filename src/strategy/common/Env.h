@@ -52,6 +52,8 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_Dorsad_Attack   17
 #define action_Shoot_Attack    18
 #define action_Straight_Chase  19
+#define action_PenaltyKick     20
+#define action_ThrowIn         21
 
 #define state_Init              0
 #define state_Chase             1

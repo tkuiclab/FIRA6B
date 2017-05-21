@@ -41,25 +41,29 @@
 #define Ball_Topic_Name         "/FIRA/Strategy/WorldMap/soccer"
 #define ModelState_Topic_Name  "/gazebo/model_states"
 #define IsSimulator_Topic "/FIRA/IsSimulator"
+
+//RobotNumber
+#define RobotNumber_Topic "/FIRA/RobotNumber"
+
 //robot prefix
 #define Robot_Topic_Prefix "/FIRA/R"
 #define RobotOpt_Topic_Prefix "/FIRA/Opt_R"
 #define GameState_Topic "/FIRA/GameState"
 #define TeamColor_Topic "/FIRA/TeamColor"
 #define Vision_Topic "/vision/object"
-//BlackObject_distance
-#define  BlackObject_Topic "/vision/BlackRealDis"
-//one_Robot speed
-#define Robot_Topic_Speed "/cmd_vel"
+
 //robot suffix
 #define Robot_Position_Topic_Suffix "/Strategy/WorldMap/RobotPos"
 #define Robot_Role_Topic_Suffix "/Strategy/Coach/role"
 #define RobotSpeed_Topic_Suffix "/Strategy/PathPlan/RobotSpeed"
 
-#define Node_Name "PersonalStrategy"
+//BlackObject_distance
+#define  BlackObject_Topic "/vision/BlackRealDis"
 
-//RobotNumber
-#define RobotNumber_Topic "/FIRA/RobotNumber"
+//one_Robot speed
+#define Robot_Topic_Speed "/cmd_vel"
+
+#define Node_Name "PersonalStrategy"
 
 #define VectorMax 1.42
 #define VectorMin 0.05
@@ -79,6 +83,7 @@ public:
         global_env = inEnv;
 
     }
+    void setOpponent(bool inBool){opponent = inBool;}
     // shoot signal
     ros::Publisher shoot;
     // pub shoot signal
@@ -114,8 +119,6 @@ public:
     int* getRoleAry(){
         return roleAry;
     }
-
-    void setOpponent(bool inBool){opponent = inBool;}
 
     ros::NodeHandle* getNodeHandle(){return n;}
     long getGameState(){return gamestate;}

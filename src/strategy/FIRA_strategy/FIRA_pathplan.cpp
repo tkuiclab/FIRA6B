@@ -1,6 +1,8 @@
 ﻿#include "FIRA_pathplan.h"
 #include "math.h"
 #include "time.h"
+#include <iostream>
+using namespace std;
 
 static bool loopEnd;
 
@@ -127,12 +129,12 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
             case action_SideSpeedUp:
                 strategy_SideSpeedUp(robotIndex);
                 break;
-//            case Role_PenaltyKick:;
-//                strategy_PenaltyKick(robotIndex);
-//                break;
-//            case Role_ThrowIn:
-//                strategy_ThrowIn(robotIndex);
-//                break;
+            case action_PenaltyKick:;
+                strategy_PenaltyKick(robotIndex);
+                break;
+            case action_ThrowIn:
+                strategy_ThrowIn(robotIndex);
+                break;
             case action_CornerKick:
                 strategy_CornerKick(robotIndex);
                 break;
@@ -172,7 +174,7 @@ void FIRA_pathplan_class::strategy_Chase(int r_number){
         alpha = -beta;
     }
     double rotAngle = -alpha;
-    Rotation2Dd rot( rotAngle * deg2rad);
+    Rotation2Dd rot( rotAngle * deg2rad);        // Rotate Matrix
     Vector2d vectornt = rot * vectorbr;
     env.home[r_number].v_x =vectornt(0);
     env.home[r_number].v_y =vectornt(1);
@@ -238,7 +240,7 @@ void FIRA_pathplan_class::strategy_KO5_Chase(int r_number){
     double beta = atan2( 0.73 , c_ball_dis) * rad2deg;
 
     Vector2d vectorbr(ball_x, ball_y);
-    Vector2d vectordr(goal_x,goal_y);
+    Vector2d vectordr(goal_x, goal_y);
 
     if(beta < alpha){
         alpha = beta;
@@ -972,41 +974,57 @@ void FIRA_pathplan_class::strategy_Halt(int Robot_index){
 
 void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
 
-    Vector3D robot = env.home[Robot_index].pos;
-    Vector3D ball = env.currentBall.pos;
-    Vector3D goal = env.yellow.pos;
+////Original Start
+//    Vector3D robot = env.home[Robot_index].pos;
+//    Vector3D ball = env.currentBall.pos;
+//    Vector3D goal = env.yellow.pos;
 
-    double Robot_head_x = robot.x + half_robot*cos(env.home[Robot_index].rotation*deg2rad);
-    double Robot_head_y = robot.y + half_robot*sin(env.home[Robot_index].rotation*deg2rad);
+//    double Robot_head_x = robot.x + half_robot*cos(env.home[Robot_index].rotation*deg2rad);
+//    double Robot_head_y = robot.y + half_robot*sin(env.home[Robot_index].rotation*deg2rad);
 
-    double vectorbr_x = ball.x - Robot_head_x;
-    double vectorbr_y = ball.y - Robot_head_y;
+//    double vectorbr_x = ball.x - Robot_head_x;
+//    double vectorbr_y = ball.y - Robot_head_y;
 
-    double vectordr_x = goal.x - Robot_head_x;
-    double vectordr_y = goal.y - Robot_head_y;
+//    double vectordr_x = goal.x - Robot_head_x;
+//    double vectordr_y = goal.y - Robot_head_y;
 
-    double dis_br = hypot(vectorbr_x,vectorbr_y);
-    double dis_dr = hypot(vectordr_x,vectordr_y);
+//    double dis_br = hypot(vectorbr_x,vectorbr_y);
+//    double dis_dr = hypot(vectordr_x,vectordr_y);
 
-    double v_x = vectordr_x*6;
-    double v_y = vectordr_y*6;
+//    double v_x = vectordr_x*6;
+//    double v_y = vectordr_y*6;
 
-    double phi = atan2(vectordr_y , vectordr_x) * rad2deg;
-    double angle = phi - env.home[Robot_index].rotation;
-    if(angle>180)
-    {
-        angle = angle - 360;
-    }else if(angle < -180){
-        angle = angle + 360;
-    }
+//    double phi = atan2(vectordr_y , vectordr_x) * rad2deg;
+//    double angle = phi - env.home[Robot_index].rotation;
+//    if(angle>180)
+//    {
+//        angle = angle - 360;
+//    }else if(angle < -180){
+//        angle = angle + 360;
+//    }
 
-    if((fabs(robot.y) <= 1.5 && dis_br<=0.5)){
-        env.home[1].v_x=v_x;
-        env.home[1].v_y=v_y;
-        env.home[1].v_yaw=angle;
-    }else{
-        strategy_Support(Robot_index);
-    }
+//    if((fabs(robot.y) <= 1.5 && dis_br<=0.5)){
+//        env.home[1].v_x=v_x;
+//        env.home[1].v_y=v_y;
+//        env.home[1].v_yaw=angle;
+//    }else{
+//        strategy_Support(Robot_index);
+//    }
+////Original end
+
+//Turn Left
+    double goal_angle = env.home[Robot_index].goal.angle;
+    int des_angle = goal_angle + 30;
+
+//    if(des_angle>180)
+//    {
+//        des_angle = des_angle - 360;
+//    }else if(des_angle < -180){
+//        des_angle = des_angle + 360;
+//    }
+
+    env.home[Robot_index].v_yaw = des_angle;
+
 }
 
 void FIRA_pathplan_class::strategy_ThrowIn(int Robot_index){
@@ -1050,13 +1068,15 @@ void FIRA_pathplan_class::strategy_ThrowIn(int Robot_index){
     }else if(angle < -180){
         angle = angle + 360;
     }
-    if((fabs(robot.y) >= 2 && dis_br<=1)){
-        env.home[1].v_x=v_x;
-        env.home[1].v_y=v_y;
-        env.home[1].v_yaw=angle;
-    }else{
-        strategy_Support(Robot_index);
-    }
+//    if((fabs(robot.y) >= 2 && dis_br<=1)){
+//        env.home[1].v_x=v_x;
+//        env.home[1].v_y=v_y;
+//        env.home[1].v_yaw=angle;
+//    }else{
+//        strategy_Support(Robot_index);
+//    }
+    shoot = 30;
+    printf("shoot = 30\n");
 }
 
 void FIRA_pathplan_class::strategy_CornerKick(int Robot_index){

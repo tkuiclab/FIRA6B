@@ -15,8 +15,12 @@ void TeamStrategy_nodeHandle::ros_comms_init(){
     //suffix
     std::string robotPos_suffix = Robot_Position_Topic_Suffix;
     
+    //gazebo_ModelStates subscriber
     Gazebo_Model_Name_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::find_gazebo_model_name_fun,this);
     
+    //Is Gazabo simulation mode?
+    IsSimulator = n->subscribe<std_msgs::Int32>(IsSimulator_Topic,1000,&TeamStrategy_nodeHandle::subIsSimulator,this);
+
     ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::ball_sub_fun,this);
     
     robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robot_1_pos_fun,this);
@@ -80,4 +84,22 @@ void TeamStrategy_nodeHandle::Transfer(int r_number){
     global_env->home[r_number].goal.angle = phi_dr - global_env->home[r_number].rotation; // angle between robot to our attacking goal and robot's head direction
     global_env->home[r_number].ball.angle = phi_br - global_env->home[r_number].rotation; // angle between robot to the ball and robot's head direction
     global_env->home[r_number].op_goal.angle = phi_dr_op - global_env->home[r_number].rotation;// angle between robot to opponent's attacking goal and robot's head direction
+}
+void TeamStrategy_nodeHandle::loadParam(ros::NodeHandle *n){
+     if(n->getParam("/FIRA/blackItem/angle",Blackangle)){
+//     std::cout << "param Blackangle=" << Blackangle <<std::endl;
+    }
+     if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){
+//     std::cout << "param RobotNumber=" << global_env->RobotNumber<<std::endl;
+    }
+     if(n->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity)){
+//         for(int i=0;i<8;i++)
+//             std::cout<< "param SPlanning_Velocity["<< i << "]=" << SPlanning_Velocity[i] << std::endl;
+//     std::cout << "====================================" << std::endl;
+     }
+    if(n->getParam("/FIRA/Distance_Settings", Distance_Settings)){
+//        for(int i=0;i<3;i++)
+//            std::cout<< "param Distance_Settings["<< i << "]=" << Distance_Settings[i] << std::endl;
+//     std::cout << "====================================" << std::endl;
+    }
 }

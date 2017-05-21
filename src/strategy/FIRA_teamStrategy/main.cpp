@@ -92,6 +92,7 @@ int main(int argc, char **argv)
     int *roleAry;
     while(ros::ok())
     {
+        mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
         mteam.setEnv(*global_env);
         mteam.teamStrategy();
         roleAry = mteam.getRoleAry();

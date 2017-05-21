@@ -1,6 +1,6 @@
 #include "FIRA_teamStrategy.h"
 #include "math.h"
-
+static int shoot=1;
 
 FIRA_teamStrategy_class::FIRA_teamStrategy_class(){
    opponent = false;
@@ -98,29 +98,29 @@ void FIRA_teamStrategy_class::role_Play(){
     angle_bd2=fabs(angle_bd2);
 
 
-//    if(distance_dr1>=distance_dr2){
-//        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
-//            printf("roleAry[%d]=Role_Attack\t",1);
-//            printf("roleAry[%d]=Role_Support\n",2);
-//        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
-//            printf("roleAry[%d]=Role_Attack\t",2);
-//            printf("roleAry[%d]=Role_Support\n",1);
-//        }else{
-//            printf("roleAry[%d]=Role_Attack\t",2);
-//            printf("roleAry[%d]=Role_Support\n",1);
-//        }
-//    }else if(distance_dr1<distance_dr2){
-//        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
-//            printf("roleAry[%d]=Role_Attack\t",1);
-//            printf("roleAry[%d]=Role_Support\n",2);
-//        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
-//            printf("roleAry[%d]=Role_Attack\t",2);
-//            printf("roleAry[%d]=Role_Support\n",1);
-//        }else{
-//            printf("roleAry[%d]=Role_Attack\t",1);
-//            printf("roleAry[%d]=Role_Support\n",2);
-//        }
-//    }
+    if(distance_dr1>=distance_dr2){
+        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
+            printf("roleAry[%d]=Role_Attack\t",1);
+            printf("roleAry[%d]=Role_Support\n",2);
+        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
+            printf("roleAry[%d]=Role_Support\t",1);
+            printf("roleAry[%d]=Role_Attack\n",2);
+        }else{
+            printf("roleAry[%d]=Role_Support\t",1);
+            printf("roleAry[%d]=Role_Attack\n",2);
+        }
+    }else if(distance_dr1<distance_dr2){
+        if((angle_bd1<angle_bd2)&&(distance_br1<1)&&(angle_bd2>70)){
+            printf("roleAry[%d]=Role_Attack\t",1);
+            printf("roleAry[%d]=Role_Support\n",2);
+        }else if((angle_bd2<angle_bd1)&&(distance_br2<1)&&(angle_bd1>70)){
+            printf("roleAry[%d]=Role_Support\t",1);
+            printf("roleAry[%d]=Role_Attack\n",2);
+        }else{
+            printf("roleAry[%d]=Role_Attack\t",1);
+            printf("roleAry[%d]=Role_Support\n",2);
+        }
+    }
     roleAry[0]=Role_Attack;
     roleAry[1]=Role_Attack;
     roleAry[2]=Role_Attack;
@@ -138,7 +138,8 @@ void FIRA_teamStrategy_class::role_FreeKick(){
 }
 
 void FIRA_teamStrategy_class::role_PenaltyKick(){
-
+    roleAry[1] = Role_PenaltyKick;
+    roleAry[2] = Role_Halt;
 }
 
 void FIRA_teamStrategy_class::role_FreeBall(){
@@ -146,8 +147,38 @@ void FIRA_teamStrategy_class::role_FreeBall(){
 }
 
 void FIRA_teamStrategy_class::role_ThrowIn(){
+
+    Vector3D goal;
+    static int shoot=1;
+
+    if(env.teamcolor == "Blue")mTeam=Team_Blue;
+    else if(env.teamcolor == "Yellow")mTeam=Team_Yellow;
+    int goal_color;
+    if(mTeam == Team_Blue){
+        goal = env.yellow.pos;
+        goal_color = Goal_Yellow;
+
+    }else if (mTeam == Team_Yellow){
+        goal = env.blue.pos;
+        goal_color = Goal_Blue;
+    }
+
+    double distance_br1=env.home[1].ball.distance;
+    double angle_br1=env.home[1].ball.angle;
+
     roleAry[1] = Role_Halt;
     roleAry[2] = Role_Halt;
+    printf("shoot=%d\n",shoot);
+    printf("distance=%f, angle_br1=%f\n",distance_br1, angle_br1);
+    if(shoot == 1){
+        if(distance_br1 < 0.4 && fabs(angle_br1) < 6){
+            roleAry[1] = Role_ThrowIn;
+            printf("catch\n");
+            shoot--;
+        }
+    }else{
+        role_Play();
+    }
 }
 
 void FIRA_teamStrategy_class::role_CornerKick(){

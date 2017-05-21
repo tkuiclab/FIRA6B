@@ -267,12 +267,12 @@ void FIRA_behavior_class::readroleAry(int robotIndex,int role){
                 break;
             case Role_AvoidBarrier:
                 behavior_AvoidBarrier(robotIndex);
-//            case Role_PenaltyKick:
-//                strategy_PenaltyKick(robotIndex);
-//                break;
-//            case Role_ThrowIn:
-//                strategy_ThrowIn(robotIndex);
-//                break;
+            case Role_PenaltyKick:
+                behavior_PenaltyKick(robotIndex);
+                break;
+            case Role_ThrowIn:
+                behavior_ThrowIn(robotIndex);
+                break;
             case Role_CornerKick:
                 if(EscapeCornerKick[robotIndex]){
                     behavior_Attack(robotIndex);
@@ -359,6 +359,7 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 break;
             case state_ZoneAttack:
                 actionAry[robotIndex] = action_Zone_Attack;
+//                state_attack[robotIndex] = state_Init;
                 StateZoneAttack(robotIndex);
                 ROS_INFO("Zone_Attack\n");
                 break;
@@ -377,6 +378,12 @@ void FIRA_behavior_class::behavior_Halt(int robotIndex){
 }
 void FIRA_behavior_class::behavior_AvoidBarrier(int robotIndex){
     actionAry[robotIndex] = action_AvoidBarrier;
+}
+void FIRA_behavior_class::behavior_PenaltyKick(int robotIndex){
+    actionAry[robotIndex] = action_PenaltyKick;
+}
+void FIRA_behavior_class::behavior_ThrowIn(int robotIndex){
+    actionAry[robotIndex] = action_ThrowIn;
 }
 void FIRA_behavior_class::behavior_CornerKick(int robotIndex){
         state_cornerkick = state_CornerKick;
