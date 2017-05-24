@@ -39,8 +39,8 @@ private:
 	ros::Publisher odom_pub;
 	ros::Subscriber motion_sub;
 	ros::Subscriber shoot_sub;
-	command *nodeCMD;
-	motor_feedback *nodeFB;
+	robot_command *node_robotCMD;
+	motor_feedback *node_motorFB;
 	//double x_speed;
 	//double y_speed;
 	//double yaw_speed;
@@ -51,7 +51,7 @@ private:
 	void shootCallback(const std_msgs::Int32::ConstPtr &);
 //	void inverseKinematics();
 public:
-	command* getMotion();
+	robot_command* getMotion();
 	motor_feedback* getMotor_feedback();
 	void clearshoot();
 };

@@ -9,11 +9,6 @@
 #include <termios.h>  // for tcxxxattr, ECHO, etc ..
 #include <unistd.h>    // for STDIN_FILENO
 #include "std_msgs/Int32.h"
-<<<<<<< HEAD
-
-//#define Debug
-=======
->>>>>>> d93263fa679c79c163714542e7a7926781967b22
 //#include <conio.h>
 
 using std::string;
@@ -39,7 +34,7 @@ const double rad2rpm =  60.0  / (2.0*M_PI);
 const double percentRange =  PWM_Limit_Percent_Max - PWM_Limit_Percent_Min;
 
 double w1,w2,w3;
-double en1,en2,en3;
+char en1,en2,en3;
 
 
 #define ESCAPE 27
@@ -65,9 +60,9 @@ void motionCallback(const geometry_msgs::Twist::ConstPtr& msg)
 
     en1 = 1; en2 = 1; en3 = 1;
 //    printf("=====================================================\n");
-    if(w1 != 0 || w2!=0 || w3!=0){
+//    if(w1 != 0 || w2!=0 || w3!=0){
 //	printf("-->w1:%0.2f w2:%0.2f w3:%0.2f en1:%f en2:%f en3:%f<--\n\n",w1,w2,w3,en1,en2,en3);
-    }
+//    }
 
 //    ROS_INFO("<=============Kinematics=================>");
 //    ROS_INFO("w1:%f\tw2:%f\tw3:%f\n",w1,w2,w3);
@@ -79,13 +74,6 @@ void motionCallback(const geometry_msgs::Twist::ConstPtr& msg)
     mcssl_send2motor(w1,w2,w3,en1,en2,en3,0);
 }
 
-<<<<<<< HEAD
-void shootCallback(const std_msgs::Int32::ConstPtr& msg)
-{
-    int shoot_power = msg->data;
-    char shoot=(char)shoot_power;
-    mcssl_send2motor(w1,w2,w3,en1,en2,en3,shoot);
-=======
 void test(){
  unsigned int a,b,c,d;
  int want;
@@ -99,45 +87,17 @@ void test(){
 }
 void shootCallback(const std_msgs::Int32::ConstPtr& msg)
 {
-//    printf("test\n");
-    static bool shootEN=true;
     int shoot_time;
     int count_speed_time;
-    char shoot;
     shoot_time = msg->data;
-    if(shoot_time>200)shoot_time=200;
-
-//    printf("shootEN = %d\n",shootEN);
-    static double  shoot_wait;
-    double now = ros::Time::now().toSec();
-    switch(shootEN){
-    case false:
-        shoot = 0;
-        if(now > shoot_wait) shootEN = true;
-        break;
-    case true:
-        shoot_wait = ros::Time::now().toSec()+2;
-//        printf("shoot = [%d] \n",shoot);
-        for(count_speed_time=0;count_speed_time<shoot_time;count_speed_time++){
-            shoot =1;
-            mcssl_send2motor(w1,w2,w3,en1,en2,en3,shoot);
-        }
-        shootEN = false;
-        break;
-    default:
-        shootEN = true;
-        shoot = 0;
-        break;
-    }
-
+    if(shoot_time>250)shoot_time=250;
 //    printf("tell me\n");
-
-//    printf("shoot...%d\n",shoot);
-    for(count_speed_time=0;count_speed_time<shoot_time;count_speed_time++){
-        shoot = 0;
-        mcssl_send2motor(w1,w2,w3,en1,en2,en3,shoot);
+    for(count_speed_time=0;count_speed_time<=shoot_time;count_speed_time++){
+        mcssl_send2motor(w1,w2,w3,en1,en2,en3,1);
     }
-//    printf("shoot%d\n",shoot);
+    for(count_speed_time=0;count_speed_time<=shoot_time;count_speed_time++){
+        mcssl_send2motor(w1,w2,w3,en1,en2,en3,0);
+    }
 //    mcssl_send2motor(w1,w2,w3,en1,en2,en3,0);
 //    printf("shoot_time:%d\n",msg->data);
 }
@@ -155,7 +115,6 @@ int getch (void)
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 
     return ch;
->>>>>>> d93263fa679c79c163714542e7a7926781967b22
 }
 
 /*==============================================================================*/
@@ -163,10 +122,7 @@ int getch (void)
 /*==============================================================================*/
 int main(int argc, char **argv)
 {
-<<<<<<< HEAD
-=======
 
->>>>>>> d93263fa679c79c163714542e7a7926781967b22
     //Initial
     ros::init(argc, argv, "motion");
     ros::NodeHandle n("~");
@@ -183,27 +139,19 @@ int main(int argc, char **argv)
     char *command;
     //scanf("%s", command);
 
-<<<<<<< HEAD
-=======
 
     int c ;
 
 
 
->>>>>>> d93263fa679c79c163714542e7a7926781967b22
     Initialize();
 
     geometry_msgs::Twist feedback_msg;
     //motion subscriber
-    ros::Subscriber motion_sub = n.subscribe(motion_topic_name, 1, motionCallback);
-    ros::Subscriber shoot_sub  = n.subscribe("/shoot",1,shootCallback);
-    ros::Publisher feedback_pub  = n.advertise<geometry_msgs::Twist>("/motorFB",0);
-<<<<<<< HEAD
-#ifdef Debug
-    ROS_INFO("Debug mode (motion)\n");
-#else
-=======
->>>>>>> d93263fa679c79c163714542e7a7926781967b22
+    ros::Subscriber motion_sub = n.subscribe(motion_topic_name, 1000, motionCallback);
+//    ros::Subscriber shoot_sub  = n.subscribe("/shoot",1,shootCallback);
+    ros::Publisher motor_pub  = n.advertise<geometry_msgs::Twist>("/motorFB",1000);
+    ros::Publisher location_pub  = n.advertise<geometry_msgs::Twist>("/location",1000);
     do{
 
         if(mcssl_init(/*port_name.c_str()*/) > 0){
@@ -213,33 +161,16 @@ int main(int argc, char **argv)
         }
 
     }while(ros::ok());
-<<<<<<< HEAD
-#endif
-=======
->>>>>>> d93263fa679c79c163714542e7a7926781967b22
     ROS_INFO("Motion is running\n");
-    ros::Rate loop_rate(30);
-//    static double time = 0;
+    ros::Rate loop_rate(50);
+
     while(ros::ok())
     {
-//	mcssl_send2motor(w1,w2,w3);
-<<<<<<< HEAD
-#ifdef Debug
-
-#else
-        feedback_msg = getmotionfeedback();
-        feedback_pub.publish(feedback_msg);
-#endif
-=======
-        feedback_msg = getmotionfeedback();
-        feedback_pub.publish(feedback_msg);
->>>>>>> d93263fa679c79c163714542e7a7926781967b22
-
-//        double n_time,duration;
-//        n_time = ros::Time::now().toSec();
-//        duration = n_time - time;
-//        time = n_time;
-//        printf("\nduration = %f ",duration);
+	//mcssl_send2motor(w1,w2,w3);
+        feedback_msg = getmotorfeedback();
+        motor_pub.publish(feedback_msg);
+        feedback_msg = getlocation();
+        location_pub.publish(feedback_msg);
         //spin
         ros::spinOnce();
         loop_rate.sleep();

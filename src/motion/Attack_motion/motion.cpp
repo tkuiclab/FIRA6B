@@ -3,6 +3,8 @@
  ********************************/
 #include <iostream>
 #include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
 /********************************
  *	Include libraries
  ********************************/
@@ -12,19 +14,19 @@
  *	Include header files
  ********************************/
 #include "motion_nodeHandle.h"
-//#include "base_control.h"
+#include "base_control.h"
 //#include "CTest.h"
 /********************************
  *	Define	
  ********************************/
-//#define DEBUG
+#define DEBUG
 
 int main(int argc, char **argv)
 {
-	Motion_nodeHandle Global_nodeHandle(argc, argv);
-	//Base_Control Global_Base_Control;
+	Motion_nodeHandle main_nodeHandle(argc, argv);
+	Base_Control main_Base_Control;
 
-	command *CMD = new command;
+	robot_command *main_robotCMD = new robot_command;
 	//while(ros::ok()){
 	//	if(Global_Motor_Control.mcssl_init()){
 	//		break;
@@ -32,15 +34,16 @@ int main(int argc, char **argv)
 	//		exit(EXIT_FAILURE);
 	//	}
 	//}
-	ros::Rate loop_rate(50);
+	ros::Rate loop_rate(10);
 	while(ros::ok()){
-		CMD = Global_nodeHandle.getMotion();
-		//Global_Base_Control.send(CMD);	
-		//if(CMD->shoot_power>0)Global_nodeHandle.clearshoot();
+		main_robotCMD = main_nodeHandle.getMotion();
+		main_Base_Control.send(main_robotCMD);
+		
+		if(main_robotCMD->shoot_power>0)main_nodeHandle.clearshoot();
 		ros::spinOnce();
 		loop_rate.sleep();
 	}
-	delete CMD;
+	delete main_robotCMD;
 //	ros::shutdown();
 	std::cout << "close Attack Motion\n";
 #ifdef DEBUG

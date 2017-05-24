@@ -1,16 +1,12 @@
 #include "motion_nodeHandle.h"
 Motion_nodeHandle::Motion_nodeHandle(int argc, char **argv)
 {
-	this->nodeCMD = new command;
-	this->nodeFB = new motor_feedback;
-	this->nodeCMD->x_speed = new double;
-	this->nodeCMD->y_speed = new double;
-	this->nodeCMD->yaw_speed = new double;
-	this->nodeCMD->shoot_power = new int;
-	//x_speed = 0;
-	//y_speed = 0;
-	//yaw_speed = 0;
-	//shoot_power = 0;
+	this->node_robotCMD = new robot_command;
+	this->node_motorFB = new motor_feedback;
+	this->node_robotCMD->x_speed = new double;
+	this->node_robotCMD->y_speed = new double;
+	this->node_robotCMD->yaw_speed = new double;
+	this->node_robotCMD->shoot_power = new int;
 	init(argc, argv);
 }
 
@@ -20,8 +16,6 @@ Motion_nodeHandle::~Motion_nodeHandle()
 #ifdef DEBUG
 	std::cout << "~Motion_nodeHandle(DEBUG)\n";
 #endif
-	//delete nodeCMD;
-	//delete nodeFB;
 }
 
 void Motion_nodeHandle::init(int argc, char **argv)
@@ -42,14 +36,15 @@ void Motion_nodeHandle::motionCallback(const geometry_msgs::Twist::ConstPtr &mot
 	//this->x_speed = motion_msg->linear.x;
 	//this->y_speed = motion_msg->linear.y;
 	//this->yaw_speed = motion_msg->angular.z;
-	*(double*)(this->nodeCMD->x_speed) = motion_msg->linear.x;
-	*(double*)(this->nodeCMD->y_speed) = motion_msg->linear.y;
-	*(double*)(this->nodeCMD->yaw_speed) = motion_msg->angular.z;
+	*(double*)(this->node_robotCMD->x_speed) = motion_msg->linear.x;
+	*(double*)(this->node_robotCMD->y_speed) = motion_msg->linear.y;
+	*(double*)(this->node_robotCMD->yaw_speed) = motion_msg->angular.z;
 #ifdef DEBUG
 	std::cout << "motionCallback(DEBUG)\n";
-	std::cout << "X axis speed: " << *(double*)(this->nodeCMD->x_speed) << std::endl;
-	std::cout << "Y axis speed: " << *(double*)(this->nodeCMD->y_speed) << std::endl;
-	std::cout << "yaw speed: " << *(double*)(this->nodeCMD->yaw_speed) << std::endl;
+	std::cout << std::dec;
+	std::cout << "X axis speed(%): " << *(double*)(this->node_robotCMD->x_speed) << std::endl;
+	std::cout << "Y axis speed(%): " << *(double*)(this->node_robotCMD->y_speed) << std::endl;
+	std::cout << "yaw speed(%): " << *(double*)(this->node_robotCMD->yaw_speed) << std::endl;
 	std::cout << std::endl;
 #endif
 }
@@ -57,24 +52,21 @@ void Motion_nodeHandle::motionCallback(const geometry_msgs::Twist::ConstPtr &mot
 
 void Motion_nodeHandle::shootCallback(const std_msgs::Int32::ConstPtr &shoot_msg)
 {
-	//this->shoot_power = shoot_msg->data;
-	*(int*)nodeCMD->shoot_power = shoot_msg->data;
+	*(int*)(this->node_robotCMD->shoot_power) = shoot_msg->data;
 #ifdef DEBUG
 	std::cout << "shootCallback(DEBUG)\n";
-	std::cout << "shoot power: " << *(int*)(nodeCMD->shoot_power) << std::endl;
+	std::cout << std::dec;
+	std::cout << "shoot power(%): " << *(int*)(node_robotCMD->shoot_power) << std::endl;
+	std::cout << std::endl;
 #endif
 }
 
-command* Motion_nodeHandle::getMotion()
+robot_command* Motion_nodeHandle::getMotion()
 {
-	//this->nodeCMD->x_speed = x_speed;
-	//this->nodeCMD->y_speed = y_speed;
-	//this->nodeCMD->yaw_speed = yaw_speed;
-	//this->nodeCMD->shoot_power = shoot_power;
-	return this->nodeCMD;
+	return this->node_robotCMD;
 }
 
 void Motion_nodeHandle::clearshoot()
 {
-	*(int*)(this->nodeCMD->shoot_power) = 0;
+	*(int*)(this->node_robotCMD->shoot_power) = 0;
 }

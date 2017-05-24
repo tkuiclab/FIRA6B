@@ -18,8 +18,8 @@
 /*******************************
   * Define 
   ******************************/
-//#define DEBUG
-//#define DEBUG_CSSL
+#define DEBUG
+#define DEBUG_CSSL
 
 class Base_Control{
 public:
@@ -43,22 +43,29 @@ private:
 
 
 	cssl_t *serial;
-	unsigned char w1_dir,w2_dir,w3_dir;
-	unsigned char w1_byte,w2_byte,w3_byte;
-	unsigned char en1,en2,en3,stop1,stop2,stop3;
-	unsigned char shoot_byte;
-	unsigned char en_byte,checksum_byte;
+	//unsigned char w1_dir,w2_dir,w3_dir;
+	//unsigned char w1_byte,w2_byte,w3_byte;
+	//unsigned char en1,en2,en3,stop1,stop2,stop3;
+	//unsigned char shoot_byte;
 
-	command	*baseCMD;
+	robot_command *base_robotCMD;
+
+	motor_command *base_motorCMD;
+	motor_command *base_motorCMD_percent;
+	motor_command *base_motorCMD_byte;
+	
 	motor_feedback 	*baseFB;
 	double w1_speed, w1_speed_percent;
 	double w2_speed, w2_speed_percent;
 	double w3_speed, w3_speed_percent;
 	int shoot_power, shoot_power_percent;
+	unsigned char shoot_byte,checksum_byte;
+	unsigned char en1,en2,en3,stop1,stop2,stop3;
+	unsigned char w1_dir,w2_dir,w3_dir;
 	//void send();
 	//void get();
 public:
-	void send(command*);
+	void send(robot_command*);
 //	int 	mcssl_init();
 };
 #endif
