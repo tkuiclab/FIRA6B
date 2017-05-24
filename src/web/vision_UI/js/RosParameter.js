@@ -397,6 +397,7 @@ function ParameterScanTransfer() {
     console.log(box);
     ParameterScan.set(box);
 }*/
+
 //ParameterHSV
 var ParameterHSV_Ball = new ROSLIB.Param({
     ros: ros,
@@ -414,12 +415,16 @@ var ParameterHSV_Yellow = new ROSLIB.Param({
     ros: ros,
     name: '/FIRA/HSV/Yellow',
 });
+var ParameterHSV_White = new ROSLIB.Param({
+    ros: ros,
+    name: '/FIRA/HSV/White',
+});
 
 ParameterHSV_Ball.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("HSVElement");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = value[i];
+            //obj[i].value = value[i];
             OrangeBox[i] = value[i];
             document.getElementsByName('HSVElement2')[i].value = value[i];
         }
@@ -449,6 +454,15 @@ ParameterHSV_Yellow.get(function(value) {
         var obj = document.getElementsByName("HSVElement");
         for (var i = 0; i < obj.length; i++) {
             YellowBox[i] = value[i];
+        }
+    }
+});
+
+ParameterHSV_White.get(function(value) {
+    if (value != null) {
+        var obj = document.getElementsByName("HSVElement");
+        for (var i = 0; i < obj.length; i++) {
+            WhiteBox[i] = value[i];
         }
     }
 });
@@ -488,9 +502,9 @@ function ParameterHSVTransfer() {
             break;
         case 4:
             for (var i = 0; i < 6; i++) {
-                WhiteBox[i] = parseInt(document.getElementsByName('HSVElement')[i].value);
-                //ParameterHSV.set
+                box[i] = parseInt(document.getElementsByName('HSVElement')[i].value);
             }
+                ParameterHSV_White.set(box);
             break;
     }
 }

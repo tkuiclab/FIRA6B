@@ -189,7 +189,6 @@
 Element.prototype.leftTopScreen = function() {
     var x = this.offsetLeft;
     var y = this.offsetTop;
-
     var element = this.offsetParent;
 
     while (element !== null) {
@@ -200,22 +199,34 @@ Element.prototype.leftTopScreen = function() {
     }
     return new Array(x, y);
 }
+function Angle_Calculation(mouseX,mouseY) {
+    var centerX = document.getElementsByName('CenterElement')[0].value;
+    var centerY = document.getElementsByName('CenterElement')[1].value
+    y=mouseY-centerY;
+    x=mouseX-centerX;
+    var angle = Math.floor(Math.atan2(-y,x)*180*10/Math.PI)/10;
+    if(angle<0){angle+=360;}
+    document.getElementById("CameraAngle").innerText = angle;
+}
 video_canvas.addEventListener("mousedown", function(e) {
     var flip = document.getElementById("playerfunction");
 
     var xy = flip.leftTopScreen();
-
+    var centerX = document.getElementsByName('CenterElement')[0].value;
+    var centerY = document.getElementsByName('CenterElement')[1].value
     var context = flip.getContext("2d");
 
     context.fillStyle = 'rgba(255, 255, 255, 0)';
-    context.fillRect(0, 0, 695, 493);
+    context.fillRect(0, 0, 659, 493);
 
     flip.addEventListener("click", function(event) {
         var x = event.clientX;
         var y = event.clientY;
-
-        document.getElementById("CameraX").innerText = x - xy[0];
-        document.getElementById("CameraY").innerText = y - xy[1];
+		
+        document.getElementById("CameraX").innerText = x - xy[0]-centerX;
+        document.getElementById("CameraY").innerText = y - xy[1]-centerY;
+        Angle_Calculation(x - xy[0],y - xy[1]);
+        topicROSPosition (x - xy[0],y - xy[1]);
         //console.log(x - xy[0], y - xy[1]);
     });
 })

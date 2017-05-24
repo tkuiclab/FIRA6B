@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+	qt_build
 )
 
 ## System dependencies are found with CMake's conventions
@@ -60,8 +61,9 @@ find_package(catkin REQUIRED COMPONENTS
    parametercheck.msg
    Object.msg
    dis.msg
+   position.msg
  )
-
+include_directories(${catkin_INCLUDE_DIRS})
 ## Generate services in the 'srv' folder
 ##add_service_files(
 ##   FILES
@@ -110,13 +112,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES vision
-#  CATKIN_DEPENDS cv_bridge image_transport roscpp rospy std_msgs
-#  DEPENDS system_lib
-CATKIN_DEPENDS message_runtime
-)
+catkin_package(CATKIN_DEPENDS message_runtime std_msgs roscpp 
+#		sensor_msgs
+		 cv_bridge image_transport)
 
 ###########
 ## Build ##
@@ -128,11 +126,15 @@ CATKIN_DEPENDS message_runtime
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
-
+rosbuild_prepare_qt4(QtCore QtGui)
 foreach(subdir
-#	include
-#	src
-	interface
+ 	common
+    Interface
+    objectdetection
+    whiteLine
+    blackItem
+    image_transport
+	web_interface
 )
 add_subdirectory(${subdir})
 endforeach()

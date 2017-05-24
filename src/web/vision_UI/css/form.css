@@ -810,7 +810,7 @@
 /*====================================*/
 
 #InterfaceCamera {
-    width: 695px;
+    width: 659px;
     height: 493px;
     /*width: 640px;
     height: 480px;*/
@@ -831,7 +831,7 @@
 
 #playerfunction {
     height: 493px;
-    width: 695px;
+    width: 659px;
     position: absolute;
     top: 0%;
     z-index: 2;
