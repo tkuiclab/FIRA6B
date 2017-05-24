@@ -255,6 +255,7 @@ function RobotConnect() {
         CheckIP[2] = 0;
     });
     SetParamRobotNum();
+    up();
 }
 
 function RobotCloseConnect() {

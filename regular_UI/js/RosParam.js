@@ -18,17 +18,20 @@ function ChooseRobotNumber(priority, value) {
 }
 
 function SetParamRobotNum() {
+    console.log(RobNum);
     if (RobNum[0] == RobNum[1]) {
         alert('RobNum repeat');
         RobNum[0] = 0;
         RobNum[1] = 1;
         RobNum[2] = 2;
-    } else if (RobNum[0] == RobNum[2]) {
+    }
+    if (RobNum[0] == RobNum[2]) {
         alert('RobNum repeat');
         RobNum[0] = 0;
         RobNum[1] = 1;
         RobNum[2] = 2;
-    } else if (RobNum[1] == RobNum[2]) {
+    }
+    if (RobNum[1] == RobNum[2]) {
         alert('RobNum repeat');
         RobNum[0] = 0;
         RobNum[1] = 1;
@@ -75,7 +78,7 @@ var DistanceSettingsBox3 = new ROSLIB.Param({
 });
 
 function GetGeneralValue() {
-    //up();
+    up();
     var SVBox1 = [];
     var DSBox1 = [];
     var SVBox2 = [];
@@ -283,7 +286,7 @@ var CornerKickBox3 = new ROSLIB.Param({
 });
 
 function GetPathplanValue() {
-    //up();
+    up();
     var ASBox1 = [];
     var CSBox1 = [];
     var ZABox1 = [];
@@ -775,7 +778,7 @@ var StrategySelectBox3 = new ROSLIB.Param({
 
 
 function GetBehaviorValue() {
-    //up();
+    up();
     var SCBox1 = [];
     var SABox1 = [];
     var STUCBox1 = [];
@@ -949,8 +952,8 @@ function GetBehaviorValue() {
 }
 
 function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1, SCKBox1, SSBox1,
-        SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2,
-        SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3){
+    SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2,
+    SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3) {
 
 
     StateChaseBox1.set(SCBox1);
