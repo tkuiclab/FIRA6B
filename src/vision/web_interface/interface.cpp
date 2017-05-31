@@ -552,18 +552,18 @@ cv::Mat InterfaceProc::ColorModel(const cv::Mat iframe)
       if(ColorModeMsg==0){
         if(hmax>hmin){
           if((H<=hmax)&&(H>=hmin)&&(S<=smax)&&(S>=smin)&&(V<=vmax)&&(V>=vmin) ){
-            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 50;
-            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 100;
-            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 150 ;}else{
+            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 197;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 149;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 0 ;}else{
             oframe.data[(i*iframe.cols*3)+(j*3)+0] = iframe.data[(i*iframe.cols*3)+(j*3)+0];
             oframe.data[(i*iframe.cols*3)+(j*3)+1] = iframe.data[(i*iframe.cols*3)+(j*3)+1];
             oframe.data[(i*iframe.cols*3)+(j*3)+2] = iframe.data[(i*iframe.cols*3)+(j*3)+2];
           } 
         }else{
           if(((H<=hmax)||(H>=hmin))&&(S<=smax)&&(S>=smin)&&(V<=vmax)&&(V>=vmin) ){
-            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 50;
-            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 100;
-            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 150 ;}else{
+            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 197;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 149;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 0 ;}else{
             oframe.data[(i*iframe.cols*3)+(j*3)+0] = iframe.data[(i*iframe.cols*3)+(j*3)+0];
             oframe.data[(i*iframe.cols*3)+(j*3)+1] = iframe.data[(i*iframe.cols*3)+(j*3)+1];
             oframe.data[(i*iframe.cols*3)+(j*3)+2] = iframe.data[(i*iframe.cols*3)+(j*3)+2];
@@ -594,18 +594,18 @@ cv::Mat InterfaceProc::ColorModel(const cv::Mat iframe)
       else if(ColorModeMsg==2){
         if(hmax>hmin){
           if((H<=hmax)&&(H>=hmin)&&(S<=smax)&&(S>=smin)&&(V<=vmax)&&(V>=vmin) ){
-            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 255;
-            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 150;
-            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 150 ;}else{
+            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 127;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 183;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 224 ;}else{
             oframe.data[(i*iframe.cols*3)+(j*3)+0] = iframe.data[(i*iframe.cols*3)+(j*3)+0];
             oframe.data[(i*iframe.cols*3)+(j*3)+1] = iframe.data[(i*iframe.cols*3)+(j*3)+1];
             oframe.data[(i*iframe.cols*3)+(j*3)+2] = iframe.data[(i*iframe.cols*3)+(j*3)+2];
           } 
         }else{
           if(((H<=hmax)||(H>=hmin))&&(S<=smax)&&(S>=smin)&&(V<=vmax)&&(V>=vmin) ){
-            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 255;
-            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 150;
-            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 150 ;}else{
+            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 127;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 183;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 224 ;}else{
             oframe.data[(i*iframe.cols*3)+(j*3)+0] = iframe.data[(i*iframe.cols*3)+(j*3)+0];
             oframe.data[(i*iframe.cols*3)+(j*3)+1] = iframe.data[(i*iframe.cols*3)+(j*3)+1];
             oframe.data[(i*iframe.cols*3)+(j*3)+2] = iframe.data[(i*iframe.cols*3)+(j*3)+2];
@@ -615,18 +615,18 @@ cv::Mat InterfaceProc::ColorModel(const cv::Mat iframe)
       else if(ColorModeMsg==3){
         if(hmax>hmin){
           if((H<=hmax)&&(H>=hmin)&&(S<=smax)&&(S>=smin)&&(V<=vmax)&&(V>=vmin) ){
-            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 0;
-            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 50;
-            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 150 ;}else{
+            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 207;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 90;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 111 ;}else{
             oframe.data[(i*iframe.cols*3)+(j*3)+0] = iframe.data[(i*iframe.cols*3)+(j*3)+0];
             oframe.data[(i*iframe.cols*3)+(j*3)+1] = iframe.data[(i*iframe.cols*3)+(j*3)+1];
             oframe.data[(i*iframe.cols*3)+(j*3)+2] = iframe.data[(i*iframe.cols*3)+(j*3)+2];
           } 
         }else{
           if(((H<=hmax)||(H>=hmin))&&(S<=smax)&&(S>=smin)&&(V<=vmax)&&(V>=vmin) ){
-            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 0;
-            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 50;
-            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 150 ;}else{
+            oframe.data[(i*oframe.cols*3)+(j*3)+0] = 207;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 90;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 111 ;}else{
             oframe.data[(i*iframe.cols*3)+(j*3)+0] = iframe.data[(i*iframe.cols*3)+(j*3)+0];
             oframe.data[(i*iframe.cols*3)+(j*3)+1] = iframe.data[(i*iframe.cols*3)+(j*3)+1];
             oframe.data[(i*iframe.cols*3)+(j*3)+2] = iframe.data[(i*iframe.cols*3)+(j*3)+2];
@@ -1525,8 +1525,8 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
 
       x[1] = Frame_Area(center_x+x_2,frame_.cols);
       y[1] = Frame_Area(center_y-y_2,frame_.rows);
-      line(frame_, Point(x[0],y[0]), Point(x[0],y[0]), Scalar(0,0,0), 10);
-      line(frame_, Point(x[1],y[1]), Point(x[1],y[1]), Scalar(0,0,0), 10);
+      //line(frame_, Point(x[0],y[0]), Point(x[0],y[0]), Scalar(0,0,0), 10);
+      //line(frame_, Point(x[1],y[1]), Point(x[1],y[1]), Scalar(0,0,0), 10);
 
       Two_point_msg.blue_x_1 = x[0];
       Two_point_msg.blue_x_1 = y[0];
@@ -1549,8 +1549,8 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
       x[3] = Frame_Area(center_x+x_4,frame_.cols);
       y[3] = Frame_Area(center_y-y_4,frame_.rows);
 
-      line(frame_, Point(x[2],y[2]), Point(x[2],y[2]), Scalar(0,0,0), 10);
-      line(frame_, Point(x[3],y[3]), Point(x[3],y[3]), Scalar(0,0,0), 10);
+      //line(frame_, Point(x[2],y[2]), Point(x[2],y[2]), Scalar(0,0,0), 10);
+      //line(frame_, Point(x[3],y[3]), Point(x[3],y[3]), Scalar(0,0,0), 10);
 
       Two_point_msg.yellow_x_1 = x[2];
       Two_point_msg.yellow_x_1 = y[2];

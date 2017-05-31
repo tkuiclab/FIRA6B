@@ -1,22 +1,22 @@
 Attack_Strategy: [0]
 Camera: {Focal: 11.144465290806757, High: 650.0}
-Center: {Camera_high: 650, Center_X: 366, Center_Y: 271, Front: 280, Inner: 35, Outer: 265,
+Center: {Camera_high: 650, Center_X: 369, Center_Y: 268, Front: 146, Inner: 35, Outer: 265,
   X: 338, Y: 258}
 Chase_Strategy: [0]
 Corner_Kick: [1.2, 60, 90, 50]
 Distance_Settings: [0, 0, 0]
 Dorsad_Attack: [8, 90, 180, 2, 1, 2]
-FPS: 25
+FPS: 14
 HSV:
   Ball: [0, 37, 28, 100, 20, 100]
   Blue: [205, 231, 80, 100, 42, 100]
   ColorMode: 1
   Green: [43, 187, 41, 74, 21, 100]
-  White: [0, 359, 0, 359, 0, 359]
-  Yellow: [39, 10, 0, 64, 3, 100]
+  White: [0, 359, 0, 100, 0, 80]
+  Yellow: [61, 107, 27, 100, 56, 100]
   black: {angle: 50, gray: 50}
   white: {angle: 50, gray: 50}
-Parameterbutton: 2
+Parameterbutton: 1
 R1:
   Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n<!--\
       \ ===================================================================================\
