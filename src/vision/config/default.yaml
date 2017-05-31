@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 11.144465290806757, High: 650.0}
-  Center: {Camera_high: 650, Center_X: 337, Center_Y: 268, Front: 146, Inner: 35, Outer: 265,
+  Center: {Camera_high: 650, Center_X: 369, Center_Y: 268, Front: 146, Inner: 35, Outer: 265,
     X: 338, Y: 258}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]

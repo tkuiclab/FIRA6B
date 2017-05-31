@@ -25,6 +25,7 @@
 #include "vision/Object.h"
 #include "vision/dis.h"
 #include "vision/position.h"
+#include "vision/Two_point.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -66,6 +67,8 @@ private:
   ros::Publisher CenterDis_pub;
   ros::Publisher white_pub;
   ros::Publisher black_pub;
+  ros::Publisher Two_point_pub;
+
   ros::Subscriber s1;
   ros::Subscriber s2;
   ros::Subscriber s3;
@@ -285,7 +288,7 @@ public:
   void object_Item_reset(object_Item &);
   void find_around(Mat &, int, int, int &, int);
   //void object_compare(int, int);
-  void draw_ellipse(Mat &, object_Item &);
+  void draw_ellipse(Mat &, object_Item &,int );
   void draw_Line(Mat &, int, int, int);
   void Draw_cross(cv::Mat &,char);
   void find_object_point(object_Item &, int);

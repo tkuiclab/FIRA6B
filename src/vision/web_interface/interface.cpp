@@ -243,7 +243,11 @@ void InterfaceProc::Parameter_setting(const vision::parametercheck msg)
   remove("Parameter.yaml");*/
 ////////////////////////////////////如果有新的topic進來////////////////////////////
   if(paraMeterCheck!=0){
-    system("rosparam dump src/vision/config/Parameter.yaml");
+    system("rosparam dump src/vision/config/Parameter.yaml /FIRA");
+
+
+
+
     paraMeterCheck=0;
   }  
   cout<<"Parameter has change "<<endl;
@@ -262,6 +266,7 @@ InterfaceProc::InterfaceProc()
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
   white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
   black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
+  Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
   //camera_pub = nh.advertise<vision::camera>("/interface/camera_response",1);
   s1 = nh.subscribe("interface/parameterbutton", 1000, &InterfaceProc::ParameterButtonCall, this);
   s2 = nh.subscribe("interface/color", 1000, &InterfaceProc::colorcall,this);
@@ -1015,6 +1020,7 @@ void InterfaceProc::object_Item_reset(object_Item &obj_){
   obj_.distance = 0;
   obj_.size = 0;
   obj_.LR = "null";
+
 }
 void InterfaceProc::objectdet_change(Mat &frame_, int color, object_Item &obj_item){
   int x,y;
@@ -1094,9 +1100,9 @@ void InterfaceProc::objectdet_change(Mat &frame_, int color, object_Item &obj_it
 //    cv::waitKey(10);
 //  }
 
-  draw_ellipse(Main_frame,Red_Item);
-  draw_ellipse(Main_frame,Yellow_Item);
-  draw_ellipse(Main_frame,Blue_Item);
+  draw_ellipse(Main_frame,Red_Item,REDITEM);
+  draw_ellipse(Main_frame,Yellow_Item,YELLOWITEM);
+  draw_ellipse(Main_frame,Blue_Item,BLUEITEM);
 
   if(Red_Item.x!=0){Draw_cross(Main_frame,'R');}
   if(Blue_Item.x!=0){Draw_cross(Main_frame,'B');} 
@@ -1488,14 +1494,74 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color){
     obj_.angle = Angle_Adjustment(angle_-center_front)-360;
   }
 }
-void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_){
+void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   ellipse(frame_, Point(center_x,center_y), Size(obj_.dis_min,obj_.dis_min), 0, 360-obj_.ang_max, 360-obj_.ang_min, Scalar(255,255,0), 1);
   ellipse(frame_, Point(center_x,center_y), Size(obj_.dis_max,obj_.dis_max), 0, 360-obj_.ang_max, 360-obj_.ang_min, Scalar(255,255,0), 1);
   draw_Line(frame_, obj_.dis_max, obj_.dis_min, obj_.ang_max);
   draw_Line(frame_, obj_.dis_max, obj_.dis_min, obj_.ang_min);
-
   circle(frame_, Point(obj_.x,obj_.y), 2, Scalar(0,0,255), -1);
-}
+
+  vision::Two_point Two_point_msg;
+
+  int x_1,y_1,x_2,y_2,x_3,y_3,x_4,y_4;
+  double blue_angle_max;
+  double blue_angle_min;
+  double yellow_angle_max;
+  double yellow_angle_min;
+  int x[4],y[4];
+
+  if(color = BLUEITEM){
+     blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
+     blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
+
+      x_1= Blue_Item.dis_min*Angle_cos[blue_angle_max];
+      y_1= Blue_Item.dis_min*Angle_sin[blue_angle_max];
+
+      x_2= Blue_Item.dis_min*Angle_cos[blue_angle_min];
+      y_2= Blue_Item.dis_min*Angle_sin[blue_angle_min];
+
+      x[0] = Frame_Area(center_x+x_1,frame_.cols);
+      y[0] = Frame_Area(center_y-y_1,frame_.rows);
+
+      x[1] = Frame_Area(center_x+x_2,frame_.cols);
+      y[1] = Frame_Area(center_y-y_2,frame_.rows);
+      line(frame_, Point(x[0],y[0]), Point(x[0],y[0]), Scalar(0,0,0), 10);
+      line(frame_, Point(x[1],y[1]), Point(x[1],y[1]), Scalar(0,0,0), 10);
+
+      Two_point_msg.blue_x_1 = x[0];
+      Two_point_msg.blue_x_1 = y[0];
+      Two_point_msg.blue_x_2 = x[1];
+      Two_point_msg.blue_y_2 = y[1];}
+
+  if(color = YELLOWITEM){
+      yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
+      yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
+
+      x_3= Yellow_Item.dis_min*Angle_cos[yellow_angle_max];
+      y_3= Yellow_Item.dis_min*Angle_sin[yellow_angle_max];
+
+      x_4= Yellow_Item.dis_min*Angle_cos[yellow_angle_min];
+      y_4= Yellow_Item.dis_min*Angle_sin[yellow_angle_min];
+
+      x[2] = Frame_Area(center_x+x_3,frame_.cols);
+      y[2] = Frame_Area(center_y-y_3,frame_.rows);
+
+      x[3] = Frame_Area(center_x+x_4,frame_.cols);
+      y[3] = Frame_Area(center_y-y_4,frame_.rows);
+
+      line(frame_, Point(x[2],y[2]), Point(x[2],y[2]), Scalar(0,0,0), 10);
+      line(frame_, Point(x[3],y[3]), Point(x[3],y[3]), Scalar(0,0,0), 10);
+
+      Two_point_msg.yellow_x_1 = x[2];
+      Two_point_msg.yellow_x_1 = y[2];
+      Two_point_msg.yellow_x_2 = x[3];
+      Two_point_msg.yellow_y_2 = y[3];}
+
+  Two_point_pub.publish(Two_point_msg);
+
+
+  }
+
 
 void InterfaceProc::draw_Line(Mat &frame_, int obj_distance_max, int obj_distance_min, int obj_angle){
   int x_,y_;
@@ -1517,6 +1583,7 @@ void InterfaceProc::draw_Line(Mat &frame_, int obj_distance_max, int obj_distanc
   y[1] = Frame_Area(center_y-y_,frame_.rows);
 
   line(frame_, Point(x[0],y[0]), Point(x[1],y[1]), Scalar(255,255,0), 1);
+
 }
 void InterfaceProc::Draw_cross(cv::Mat &frame_,char color){
   std::string R_X;

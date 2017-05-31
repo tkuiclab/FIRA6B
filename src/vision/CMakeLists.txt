@@ -62,6 +62,7 @@ find_package(catkin REQUIRED COMPONENTS
    Object.msg
    dis.msg
    position.msg
+   Two_point.msg
  )
 include_directories(${catkin_INCLUDE_DIRS})
 ## Generate services in the 'srv' folder
@@ -128,12 +129,12 @@ include_directories(
 )
 rosbuild_prepare_qt4(QtCore QtGui)
 foreach(subdir
- 	common
-    Interface
-    objectdetection
-    whiteLine
-    blackItem
-    image_transport
+ 	#common
+    #Interface
+    #objectdetection
+    #whiteLine
+    #blackItem
+    #image_transport
 	web_interface
 )
 add_subdirectory(${subdir})

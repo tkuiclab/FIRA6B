@@ -224,7 +224,7 @@ video_canvas.addEventListener("mousedown", function(e) {
         var y = event.clientY;
 		
         document.getElementById("CameraX").innerText = x - xy[0]-centerX;
-        document.getElementById("CameraY").innerText = y - xy[1]-centerY;
+        document.getElementById("CameraY").innerText = centerY - y + xy[1];
         Angle_Calculation(x - xy[0],y - xy[1]);
         topicROSPosition (x - xy[0],y - xy[1]);
         //console.log(x - xy[0], y - xy[1]);
