@@ -8,7 +8,7 @@
 /********************************
  *	Include libraries
  ********************************/
-#include "../common/motor_data.h"
+#include "motor_data.h"
 
 /********************************
  *	Include header files
@@ -19,14 +19,14 @@
 /********************************
  *	Define	
  ********************************/
-#define DEBUG
+//#define DEBUG 
 
 int main(int argc, char **argv)
 {
 	Motion_nodeHandle main_nodeHandle(argc, argv);
 	Base_Control main_Base_Control;
 
-	robot_command *main_robotCMD = new robot_command;
+	robot_command *main_robotCMD;
 	//while(ros::ok()){
 	//	if(Global_Motor_Control.mcssl_init()){
 	//		break;
@@ -34,12 +34,13 @@ int main(int argc, char **argv)
 	//		exit(EXIT_FAILURE);
 	//	}
 	//}
-	ros::Rate loop_rate(10);
+	ros::Rate loop_rate(30);
 	while(ros::ok()){
 		main_robotCMD = main_nodeHandle.getMotion();
 		main_Base_Control.send(main_robotCMD);
 		
-		if(main_robotCMD->shoot_power>0)main_nodeHandle.clearshoot();
+		main_nodeHandle.clear();
+
 		ros::spinOnce();
 		loop_rate.sleep();
 	}

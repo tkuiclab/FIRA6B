@@ -2,24 +2,32 @@
 #define MOTOR_DATA_H
 
 typedef struct{
-	void* x_speed;
-	void* y_speed;
-	void* yaw_speed;
-	void* shoot_power;
+	double* x_speed;
+	double* y_speed;
+	double* yaw_speed;
+	int* shoot_power;
 }robot_command;
 
 typedef struct{
-	void* w1_speed;
-	void* w2_speed;
-	void* w3_speed;
-	void* enable_stop;
-}motor_command;
+	unsigned char* head1;
+	unsigned char* head2;
+	unsigned char* w1;
+	unsigned char* w2;
+	unsigned char* w3;
+	unsigned char* enable_and_stop;
+	unsigned char* shoot;
+	unsigned char* checksum;
+}serial_tx;
 
 typedef struct{
-	void* motor1_feedback;
-	void* motor2_feedback;
-	void* motor3_feedback;
-}motor_feedback;
+	unsigned char* head1;
+	unsigned char* head2;
+	int* w1;
+	int* w2;
+	int* w3;
+	unsigned char* shoot;
+	unsigned char* batery;
+}serial_rx;
 
 //typedef struct MOTOR_FEEDBACK motor_feedback;
 //typedef struct MOTOR_COMMAND motor_command;

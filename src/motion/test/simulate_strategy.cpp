@@ -6,8 +6,8 @@ int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "simulate_strategy");
 	ros::NodeHandle n;
-	ros::Publisher pub_motion = n.advertise<geometry_msgs::Twist>("/motion",1000);
-	ros::Publisher pub_shoot = n.advertise<std_msgs::Int32>("/shoot", 1000);
+	ros::Publisher pub_motion = n.advertise<geometry_msgs::Twist>("/motion/cmd_vel",1000);
+	ros::Publisher pub_shoot = n.advertise<std_msgs::Int32>("/motion/shoot", 1000);
 	double x_speed = 0;
 	double y_speed = 0;
 	double yaw_speed = 0;
