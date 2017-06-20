@@ -116,9 +116,10 @@ public:
     std::vector<double> Zone_Attack;
     std::vector<double> TypeS_Attack;
     std::vector<double> TypeU_Attack;
+    std::vector<double> Side_Speed_Up;
     std::vector<double> Dorsad_Attack;
     std::vector<double> Corner_Kick;
-    std::vector<double> SideSpeedUp;
+    std::vector<double> Penalty_Kick;
 
 
     // Robot shoot signal publisher

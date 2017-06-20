@@ -179,8 +179,8 @@ void FIRA_behavior_class::StateSideSpeedUp(int r_number){
     double angle_dr = env.home[r_number].goal.angle;
     double alpha = angle_dr-angle_br;
     /// ========== Init End ==========
-    double angle_side=Side_Speed_UP[0];//10
-    double const distance_side=Side_Speed_UP[1];//0.45
+    double angle_side=Side_Speed_Up[0];//10
+    double const distance_side=Side_Speed_Up[1];//0.45
     ////========== normalization angle to -180~180 ==========
       if(alpha>180)
           alpha-=360;
@@ -306,12 +306,12 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         if(run_onetime == 0)
         run_onetime = 1;
 
-        int chaseCase = StrategySelection[0];
-        int SchaseCase = StrategySelection[1];
-        int attackCase = StrategySelection[2];
-        int SattackCase = StrategySelection[3];
-        int DattackCase = StrategySelection[4];
-        int ShootCase = StrategySelection[5];
+        int chaseCase = Strategy_Selection[0];
+        int SchaseCase = Strategy_Selection[1];
+        int attackCase = Strategy_Selection[2];
+        int SattackCase = Strategy_Selection[3];
+        int DattackCase = Strategy_Selection[4];
+        int ShootCase = Strategy_Selection[5];
 
         double rushDistance = TypeS_Attack[2];
 
@@ -420,7 +420,7 @@ void FIRA_behavior_class::loadParam(ros::NodeHandle *n){
 //            std::cout<< "param Corner_Kick["<< i << "]=" << Corner_Kick[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
     }
-    if(n->getParam("/FIRA_Behavior/Side_Speed_UP", Side_Speed_UP)){
+    if(n->getParam("/FIRA_Behavior/Side_Speed_UP", Side_Speed_Up)){
 //        for(int i=0;i<2;i++)
 //            std::cout<< "param Side_Speed_UP["<< i << "]=" << Side_Speed_UP[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
@@ -440,7 +440,7 @@ void FIRA_behavior_class::loadParam(ros::NodeHandle *n){
 //            std::cout<< "param Zone_Attack["<< i << "]=" << Zone_Attack[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
     }
-    if(n->getParam("/StrategySelection", StrategySelection)){
+    if(n->getParam("/StrategySelection", Strategy_Selection)){
 
     }
 }

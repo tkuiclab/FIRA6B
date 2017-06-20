@@ -806,11 +806,11 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
 
 void FIRA_pathplan_class::strategy_SideSpeedUp(int Robot_index){
     //-----------parameter--------------------------------------
-    double beta_param = SideSpeedUp[0]; //0.73
-    double const const_angle_mult = SideSpeedUp[1];//1.2
-    double const const_dis = SideSpeedUp[2];//0.7
-    double const const_mult = SideSpeedUp[3];//5.0
-    double const const_only = SideSpeedUp[4];//2.2*0.8*10=17.6
+    double beta_param = Side_Speed_Up[0]; //0.73
+    double const const_angle_mult = Side_Speed_Up[1];//1.2
+    double const const_dis = Side_Speed_Up[2];//0.7
+    double const const_mult = Side_Speed_Up[3];//5.0
+    double const const_only = Side_Speed_Up[4];//2.2*0.8*10=17.6
     //-----------------------------------------------------------
     int r_number = Robot_index;
     double ball_dis = env.home[r_number].ball.distance;
@@ -1014,7 +1014,14 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
 
 //Turn Left
     double goal_angle = env.home[Robot_index].goal.angle;
-    int des_angle = goal_angle + 30;
+    static double first_goal_angle = goal_angle;
+    double degree = Penalty_Kick[0];
+    static double des_angle = first_goal_angle + degree;
+    static double last_degree = degree;
+
+    if(last_degree!=degree){
+        des_angle = first_goal_angle + degree;
+    }
 
 //    if(des_angle>180)
 //    {
@@ -1023,7 +1030,16 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
 //        des_angle = des_angle + 360;
 //    }
 
-    env.home[Robot_index].v_yaw = des_angle;
+    env.home[Robot_index].v_yaw = des_angle-goal_angle;
+    printf("des_angle-goal_angle=%f\n",des_angle-goal_angle);
+    printf("degree=%f\n",degree);
+
+    if(fabs(des_angle-goal_angle)<=7){
+        shoot = 50;
+    }else{
+        shoot = 0;
+    }
+
 
 }
 
@@ -1210,7 +1226,9 @@ void FIRA_pathplan_class::loadParam(ros::NodeHandle *n){
    }
    if(n->getParam("/FIRA/Corner_Kick", Corner_Kick)){
    }
-   if(n->getParam("/FIRA/SideSpeedUp", SideSpeedUp)){
+   if(n->getParam("/FIRA/Penalty_Kick", Penalty_Kick)){
+   }
+   if(n->getParam("/FIRA/SideSpeedUp", Side_Speed_Up)){
 //       for(int i=0;i<5;i++)
 //           std::cout<< "param SideSpeedUp["<< i << "]=" << SideSpeedUp[i] << std::endl;
 //   std::cout << "====================================" << std::endl;
