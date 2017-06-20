@@ -26,6 +26,7 @@
 #include "vision/dis.h"
 #include "vision/position.h"
 #include "vision/Two_point.h"
+#include "vision/bin.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -79,7 +80,7 @@ private:
   ros::Subscriber s8;
   ros::Subscriber s9;
   ros::Subscriber s10;
-
+  ros::Subscriber s11;
 
   cv::Mat *frame;
   cv::Mat *centermats;
@@ -167,13 +168,13 @@ public:
   int WhiteHSVBoxMsg[6];
   int ColorModeMsg;
   int paraMeterCheck;
+  int SaveButton;
   int image_fps;
   int   ball_x, ball_y, ball_ang, ball_dis;
   int   blue_x, blue_y,blue_ang, blue_dis;
   int   yellow_x, yellow_y, yellow_ang, yellow_dis;
   std::string  ball_LR,blue_LR,yellow_LR;
   //vector<BYTE> ColorFile();
-
   void imageCb(const sensor_msgs::ImageConstPtr&);
   void ParameterButtonCall(const vision::parameterbutton);
   void colorcall(const vision::color);
@@ -186,6 +187,7 @@ public:
   void Parameter_getting(const int x) ;
   void Parameter_setting(const vision::parametercheck) ;
   void positioncall(const vision::position msg);
+  void SaveButton_setting(const vision::bin );
   //void object_data(const vision::Object);
   int mosue_x,mosue_y;
   int distance_space[100];
@@ -292,7 +294,10 @@ public:
   void draw_Line(Mat &, int, int, int);
   void Draw_cross(cv::Mat &,char);
   void find_object_point(object_Item &, int);
-
+  void HSVmap();
+  void RGBtoHSV_maxmin(double &,double &,double &,double &,double &);
+  double RGBtoHSV_H(double , double , double , double , double );
+  double RGBtoHSV_S(double , double );
   int Angle_Interval(int);
 
   double camera_f(double Omni_pixel);

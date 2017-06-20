@@ -16,6 +16,15 @@ using namespace std;
 namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
+std::string visionpath = ros::package::getPath("vision");
+
+std::string defaultpath = "/config/default.yaml";
+std::string parameterpath = "/config/Parameter.yaml";
+std::string def = visionpath + defaultpath;
+std::string param = visionpath + parameterpath; 
+const char *defpath = def.c_str();
+const char *parampath = param.c_str();
+
 void onMouse(int Event,int x,int y,int flags,void* param);
 int mousex=-1 , mousey=-1 , onclick=0;
 void InterfaceProc::ParameterButtonCall (const vision::parameterbutton msg)
@@ -115,8 +124,11 @@ void InterfaceProc::positioncall(const vision::position msg)
 }
 void InterfaceProc::Parameter_getting(const int x)
 {
-  if(ifstream("src/vision/config/default.yaml")){
-    system("rosparam load src/vision/config/default.yaml");
+  if(ifstream(/*"src/FIRA6B/src/vision/config/default.yaml"*/defpath)){
+    cout<<visionpath<<endl;
+    std::string temp = "rosparam load " + def; 
+    const char *load = temp.c_str(); 
+    system(load);
     cout<<"Read the yaml file"<<endl;
   }else{
     HSV_Ball[0] = 0;  HSV_Ball[1] = 37;
@@ -243,14 +255,19 @@ void InterfaceProc::Parameter_setting(const vision::parametercheck msg)
   remove("Parameter.yaml");*/
 ////////////////////////////////////如果有新的topic進來////////////////////////////
   if(paraMeterCheck!=0){
-    system("rosparam dump src/vision/config/Parameter.yaml /FIRA");
-
+    std::string temp = "rosparam dump " + param; 
+    const char *save = temp.c_str(); 
+    system(save);
 
 
 
     paraMeterCheck=0;
   }  
   cout<<"Parameter has change "<<endl;
+}
+void InterfaceProc::SaveButton_setting(const vision::bin msg)
+{
+  SaveButton = msg.bin;
 }
 
 InterfaceProc::InterfaceProc()
@@ -259,8 +276,8 @@ InterfaceProc::InterfaceProc()
   ros::NodeHandle n("~");	
   Parameter_getting(1);	
   init_data();
-  image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
-  //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
+  //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+  image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
   image_pub_threshold_ = it_.advertise("/camera/image", 1);//http://localhost:8080/stream?topic=/camera/image webfor /camera/image
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
@@ -278,6 +295,7 @@ InterfaceProc::InterfaceProc()
   s8 = nh.subscribe("interface/scan", 1000, &InterfaceProc::scancall,this);
   s9 = nh.subscribe("interface/parametercheck",1000, &InterfaceProc::Parameter_setting,this);
   s10 = nh.subscribe("interface/position",1000, &InterfaceProc::positioncall,this);
+  s11 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
   cv::namedWindow(OPENCV_WINDOW, CV_WINDOW_AUTOSIZE);
   //cv::Mat iframe;
   frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );
@@ -313,8 +331,8 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   }
   *frame = cv_ptr->image;
   *outputframe = *frame;
-  vision_path = ros::package::getPath("vision");
 
+  vision_path = ros::package::getPath("vision");
   color_map = ColorFile();
   double ang_PI;
   for(int ang=0 ; ang<360; ang++){
@@ -322,7 +340,6 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     Angle_sin.push_back(sin(ang_PI));
     Angle_cos.push_back(cos(ang_PI));
   }
-
   //cv::imshow(OPENCV_WINDOW, *frame);
   // Image Output
   //cv::imshow(OPENCV_WINDOW, *ColorModels);
@@ -1655,3 +1672,132 @@ void InterfaceProc::Draw_cross(cv::Mat &frame_,char color){
       break;
   }
 }
+void InterfaceProc::RGBtoHSV_maxmin(double &Rnew, double &Gnew, double &Bnew, double &HSVmax, double &HSVmin)
+{
+  HSVmax = max(max(Rnew,Gnew),Bnew);
+  HSVmin = min(min(Rnew,Gnew),Bnew);
+}
+double InterfaceProc::RGBtoHSV_H(double Rnew, double Gnew, double Bnew, double HSVmax, double HSVmin)
+{
+    double range = HSVmax-HSVmin;
+    double H_;
+    if(range == 0){
+        return 0;
+    }else if(HSVmax == Rnew){
+        H_ = 60.0*((Gnew-Bnew)/range);
+    }else if(HSVmax == Gnew){
+        H_ = 60.0*((Bnew-Rnew)/range + 2);
+    }else if(HSVmax == Bnew){
+        H_ = 60.0*((Rnew-Gnew)/range + 4);
+    }
+    if(H_ < 0) H_ += 360;
+    return H_;
+}
+double InterfaceProc::RGBtoHSV_S(double HSVmax, double HSVmin)
+{
+    double range = HSVmax-HSVmin;
+    if(range == 0){
+        return 0;
+    }else{
+        return range/HSVmax*255;
+    }
+}
+////////////////////////////////////////////////////////////////////////
+/// ///////////////////////////////HSVmap////////////////////////////////
+void InterfaceProc::HSVmap()
+{
+    unsigned char *HSVmap = new unsigned char[256*256*256];
+    for(int b=0;b<256;b++){
+        for(int g=0;g<256;g++){
+            for(int r=0;r<256;r++){
+                double Rnew,Gnew,Bnew,HSVmax,HSVmin,H_sum,S_sum,V_sum;
+                Bnew = b/255.0;
+                Gnew = g/255.0;
+                Rnew = r/255.0;
+                RGBtoHSV_maxmin(Rnew, Gnew, Bnew, HSVmax, HSVmin);
+                H_sum = RGBtoHSV_H(Rnew, Gnew, Bnew, HSVmax, HSVmin);
+                S_sum = RGBtoHSV_S(HSVmax,HSVmin);
+                V_sum = HSVmax*255.0;
+                HSVmap[r+(g<<8)+(b<<16)] = 0x00;
+                if(HSV_red[1] < HSV_red[0]){
+                    if( (H_sum >= HSV_red[1]) && (H_sum <= HSV_red[0])
+                      &&(S_sum >= HSV_red[3]) && (S_sum <= HSV_red[2])
+                      &&(V_sum >= HSV_red[5]) && (V_sum <= HSV_red[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | REDITEM;
+
+                }else{
+                    if( (H_sum >= HSV_red[1]) || (H_sum <= HSV_red[0])
+                      &&(S_sum >= HSV_red[3]) && (S_sum <= HSV_red[2])
+                      &&(V_sum >= HSV_red[5]) && (V_sum <= HSV_red[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | REDITEM;
+                }
+                if(HSV_green[1] < HSV_green[0]){
+                    if( (H_sum >= HSV_green[1]) && (H_sum <= HSV_green[0])
+                      &&(S_sum >= HSV_green[3]) && (S_sum <= HSV_green[2])
+                      &&(V_sum >= HSV_green[5]) && (V_sum <= HSV_green[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | GREENITEM;
+                }else{
+                    if( (H_sum >= HSV_green[1]) || (H_sum <= HSV_green[0])
+                      &&(S_sum >= HSV_green[3]) && (S_sum <= HSV_green[2])
+                      &&(V_sum >= HSV_green[5]) && (V_sum <= HSV_green[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | GREENITEM;
+                }
+                if(HSV_blue[1] < HSV_blue[0]){
+                    if( (H_sum >= HSV_blue[1]) && (H_sum <= HSV_blue[0])
+                      &&(S_sum >= HSV_blue[3]) && (S_sum <= HSV_blue[2])
+                      &&(V_sum >= HSV_blue[5]) && (V_sum <= HSV_blue[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | BLUEITEM;
+                }else{
+                    if( (H_sum >= HSV_blue[1]) || (H_sum <= HSV_blue[0])
+                      &&(S_sum >= HSV_blue[3]) && (S_sum <= HSV_blue[2])
+                      &&(V_sum >= HSV_blue[5]) && (V_sum <= HSV_blue[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | BLUEITEM;
+                }
+                if(HSV_yellow[1] < HSV_yellow[0]){
+                    if( (H_sum >= HSV_yellow[1]) && (H_sum <= HSV_yellow[0])
+                      &&(S_sum >= HSV_yellow[3]) && (S_sum <= HSV_yellow[2])
+                      &&(V_sum >= HSV_yellow[5]) && (V_sum <= HSV_yellow[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | YELLOWITEM;
+                }else{
+                    if( (H_sum >= HSV_yellow[1]) || (H_sum <= HSV_yellow[0])
+                      &&(S_sum >= HSV_yellow[3]) && (S_sum <= HSV_yellow[2])
+                      &&(V_sum >= HSV_yellow[5]) && (V_sum <= HSV_yellow[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | YELLOWITEM;
+                }
+                if(HSV_white[1] < HSV_white[0]){
+                    if( (H_sum >= HSV_white[1]) && (H_sum <= HSV_white[0])
+                      &&(S_sum >= HSV_white[3]) && (S_sum <= HSV_white[2])
+                      &&(V_sum >= HSV_white[5]) && (V_sum <= HSV_white[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | WHITEITEM;
+                }else{
+                    if( (H_sum >= HSV_white[1]) || (H_sum <= HSV_white[0])
+                      &&(S_sum >= HSV_white[3]) && (S_sum <= HSV_white[2])
+                      &&(V_sum >= HSV_white[5]) && (V_sum <= HSV_white[4]) )
+                        HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | WHITEITEM;
+                }
+            }
+        }
+    }
+
+    string Filename = vision_path+FILE_PATH;
+    const char *Filename_Path = Filename.c_str();
+    if(SaveButton!=0){
+    FILE *file=fopen(Filename_Path,"wb"); //開啟檔案來寫
+    fwrite( HSVmap, 1, 256*256*256 , file );
+    fclose(file);
+    SaveButton = 0;
+  }
+}
+/// ////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+

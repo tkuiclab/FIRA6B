@@ -152,7 +152,7 @@ function topicROSColor(mode) {
         GreenHSVBox: GreenBox,
         BlueHSVBox: BlueBox,
         YellowHSVBox: YellowBox,
-        WhiteHSVBox: WhiteBox
+        WhiteHSVBox: WhiteBox,
     });
     TopicColor.publish(Color);
 }
@@ -212,6 +212,19 @@ function topicROSColorButton(value) {
         button: value
     });
     TopicColorButton.publish(ColorButton);
+}
+//save
+var TopicSaveButton = new ROSLIB.Topic({
+    ros: ros,
+    name: '/interface/bin_save',
+    messageType: '/vision/bin'
+});
+function topicROSSaveButton(value) {
+    console.log(64);
+    var SaveButton = new ROSLIB.Message({
+        bin: 64
+    });
+    TopicSaveButton.publish(ColorButton);
 }
 //====================================================================
 //checkforparameter

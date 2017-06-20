@@ -229,7 +229,7 @@ video_canvas.addEventListener("mousedown", function(e) {
         topicROSPosition (x - xy[0],y - xy[1]);
         //console.log(x - xy[0], y - xy[1]);
     });
-})
+});
 
 function CheckCamera(check){
     var video = document.getElementById("player");
