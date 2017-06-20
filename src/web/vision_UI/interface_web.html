@@ -429,7 +429,7 @@
                                         <td>
                                             <div class="auto">
                                                 <input type="radio" id="HSVButton" name="radio" checked="checked" 
-                                                onclick="topicROSParameterButton(4);ParameterbuttonTransfer(4);;"/>
+                                                onclick="topicROSParameterButton(4);ParameterbuttonTransfer(4);topicROSCheckButton(value);"/>
                                                 <label id="HSVButton" for="HSVButton">HSV</label>
                                             </div>
                                         </td>
@@ -531,7 +531,7 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <button id="sendHSV" type="button" class="Button" onmousedown="showHsvColor();ParameterHSVTransfer();topicROSCheckButton(value);ParameterHSVTransfer();topicROSSaveButton">Save</button>
+                                                <button id="sendHSV" type="button" class="Button" onmousedown="showHsvColor();ParameterHSVTransfer();topicROSCheckButton(value);ParameterHSVTransfer();topicROSSaveButton()">Save</button>
                                             </td>
                                             <td>
                                                 <select id="HSVSelect" onchange="ColorRecord(this.value);topicColorTransfer(this.value);showHsvColor()">

@@ -224,7 +224,7 @@ function topicROSSaveButton(value) {
     var SaveButton = new ROSLIB.Message({
         bin: 64
     });
-    TopicSaveButton.publish(ColorButton);
+    TopicSaveButton.publish(SaveButton);
 }
 //====================================================================
 //checkforparameter

@@ -9,12 +9,12 @@ FIRA:
   Dorsad_Attack: [8, 90, 180, 2, 1, 2]
   FPS: 25
   HSV:
-    Ball: [42, 140, 11, 41, 17, 100]
-    Blue: [0, 359, 0, 100, 0, 100]
+    Ball: [0, 359, 0, 100, 54, 100]
+    Blue: [205, 231, 80, 100, 42, 100]
     ColorMode: 1
-    Green: [0, 359, 0, 100, 21, 100]
+    Green: [43, 187, 41, 74, 21, 100]
     White: [0, 359, 0, 359, 0, 359]
-    Yellow: [39, 10, 0, 32, 3, 100]
+    Yellow: [39, 10, 0, 64, 3, 100]
     black: {angle: 50, gray: 50}
     white: {angle: 50, gray: 50}
   Parameterbutton: 4
@@ -169,8 +169,8 @@ roslaunch:
     host_iclab_desktop__44452: 'http://iclab-desktop:44452/', host_iclab_desktop__44621: 'http://iclab-desktop:44621/',
     host_iclab_desktop__44954: 'http://iclab-desktop:44954/', host_iclab_desktop__45644: 'http://iclab-desktop:45644/',
     host_iclab_desktop__45691: 'http://iclab-desktop:45691/', host_iclab_desktop__45996: 'http://iclab-desktop:45996/',
-    host_iclab_desktop__46546: 'http://iclab-desktop:46546/', host_tamkang_to_be_filled_by_o_e_m__35573: 'http://tamkang-To-be-filled-by-O-E-M:35573/',
-    host_tamkang_to_be_filled_by_o_e_m__41827: 'http://tamkang-To-be-filled-by-O-E-M:41827/'}
+    host_iclab_desktop__46546: 'http://iclab-desktop:46546/', host_tamkang_to_be_filled_by_o_e_m__44482: 'http://tamkang-To-be-filled-by-O-E-M:44482/',
+    host_tamkang_to_be_filled_by_o_e_m__44954: 'http://tamkang-To-be-filled-by-O-E-M:44954/'}
 rosversion: '1.11.20
 
   '

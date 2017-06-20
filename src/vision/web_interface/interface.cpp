@@ -267,8 +267,11 @@ void InterfaceProc::Parameter_setting(const vision::parametercheck msg)
 }
 void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
+
   SaveButton = msg.bin;
+  HSVmap();
 }
+
 
 InterfaceProc::InterfaceProc()
     :it_(nh) 
@@ -1781,11 +1784,14 @@ void InterfaceProc::HSVmap()
 
     string Filename = vision_path+FILE_PATH;
     const char *Filename_Path = Filename.c_str();
+    
     if(SaveButton!=0){
+      cout<<SaveButton<<endl;
     FILE *file=fopen(Filename_Path,"wb"); //開啟檔案來寫
     fwrite( HSVmap, 1, 256*256*256 , file );
     fclose(file);
     SaveButton = 0;
+  cout<<SaveButton<<endl;
   }
 }
 /// ////////////////////////////////////////////////////////////////////
