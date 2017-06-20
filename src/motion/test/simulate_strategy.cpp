@@ -17,18 +17,38 @@ int main(int argc, char** argv)
 	ros::Rate loop_rate(30);
 	int counter = 0;
 	while(ros::ok()){
-		counter = counter%10;
-		if(counter<3){
-			x_speed=x_speed+0.5;
-			if(x_speed>100)x_speed=0;
-		}else if(counter<6){
-			y_speed=y_speed+0.3;
-			if(y_speed>100)y_speed=0;
-			shoot_msg.data = (shoot_msg.data)+1;
-			if(shoot_msg.data>100)shoot_msg.data=0;
+		counter = counter%720;
+		if(counter<240){
+			y_speed = 0;
+			yaw_speed = 0;
+			if(counter>120){
+				x_speed+=0.2;
+			}else if(counter == 120){
+				x_speed = 0;
+			}else{
+				x_speed-=0.2;
+			}
+		}else if(counter<480){
+			x_speed = 0;
+			yaw_speed = 0;
+			if(counter>360){
+				y_speed+=0.2;
+			}else if(counter == 360){
+				y_speed = 0;
+			}else{
+				y_speed-=0.2;
+			}
+
 		}else{
-			yaw_speed=yaw_speed+0.1;
-			if(yaw_speed>100)yaw_speed=0;
+			x_speed = 0;
+			y_speed = 0;
+			if(counter>600){
+				yaw_speed+=0.2;
+			}else if(counter == 600){
+				yaw_speed = 0;
+			}else{
+				yaw_speed-=0.2;
+			}
 		}
 		motion_msg.linear.x = x_speed;
 		motion_msg.linear.y = y_speed;

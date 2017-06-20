@@ -37,7 +37,7 @@ void Motion_nodeHandle::init(int argc, char **argv)
 	std::cout << "PATH= " << *argv << std::endl;
 #endif
 	n = new ros::NodeHandle();
-	odom_pub = n->advertise<nav_msgs::Odometry>(odometry_topic_name,1000);
+	motionFB_pub = n->advertise<geometry_msgs::Twist>(motion_feedback_topic_name,1000);
 	motion_sub = n->subscribe<geometry_msgs::Twist>(motion_topic_name, 1000, &Motion_nodeHandle::motionCallback, this);
 	shoot_sub = n->subscribe<std_msgs::Int32>(shoot_topic_name, 1000, &Motion_nodeHandle::shootCallback, this);
 }
@@ -72,9 +72,23 @@ void Motion_nodeHandle::shootCallback(const std_msgs::Int32::ConstPtr &shoot_msg
 #endif
 }
 
+void Motion_nodeHandle::pub(const geometry_msgs::Twist &pub_msgs)
+{
+	motionFB_pub.publish(pub_msgs);
+}
+
 robot_command* Motion_nodeHandle::getMotion()
 {
 	return this->node_robotCMD;
+}
+
+void Motion_nodeHandle::pub_robotFB(robot_command* node_robotFB)
+{
+	geometry_msgs::Twist robotFB;
+	robotFB.linear.x = *(node_robotFB->x_speed);
+	robotFB.linear.y = *(node_robotFB->y_speed);
+	robotFB.angular.z = *(node_robotFB->yaw_speed);
+	pub(robotFB);
 }
 
 void Motion_nodeHandle::clear()

@@ -7,6 +7,32 @@
 
 Base_Control::Base_Control()
 {
+	this->base_robotFB = new robot_command;
+	this->base_robotFB->x_speed = new double;
+	this->base_robotFB->y_speed = new double;
+	this->base_robotFB->yaw_speed = new double;
+	this->base_robotFB->shoot_power = new int;
+	std::memset(this->base_robotFB->x_speed, 0, sizeof(double));
+	std::memset(this->base_robotFB->y_speed, 0, sizeof(double));
+	std::memset(this->base_robotFB->yaw_speed, 0, sizeof(double));
+	std::memset(this->base_robotFB->shoot_power, 0, sizeof(int));
+
+	this->base_RX = new serial_rx;
+	this->base_RX->head1 = new unsigned char;
+	this->base_RX->head2 = new unsigned char;
+	this->base_RX->w1 = new int;
+	this->base_RX->w2 = new int;
+	this->base_RX->w3 = new int;
+	this->base_RX->shoot = new unsigned char;
+	this->base_RX->batery = new unsigned char;
+	memset(this->base_RX->head1, 0, sizeof(unsigned char));
+	memset(this->base_RX->head2, 0, sizeof(unsigned char));
+	memset(this->base_RX->w1, 0, sizeof(int));
+	memset(this->base_RX->w2, 0, sizeof(int));
+	memset(this->base_RX->w3, 0, sizeof(int));
+	memset(this->base_RX->shoot, 0, sizeof(unsigned char));
+	memset(this->base_RX->batery, 0, sizeof(unsigned char));
+
 	this->base_TX = new serial_tx;
 
 	this->base_TX->head1 = new unsigned char;
@@ -27,42 +53,24 @@ Base_Control::Base_Control()
 	memset(this->base_TX->shoot, 0, sizeof(unsigned char));
 	memset(this->base_TX->checksum, 0, sizeof(unsigned char));
 	//this->base_RX = new serial_rx;
-	this->w1_speed=0;this->w1_speed_percent=0;
-	this->w2_speed=0;this->w2_speed_percent=0;
-	this->w3_speed=0;this->w3_speed_percent=0;
-	this->en1=0;this->en2=0;this->en3=0;
-	this->stop1=0;this->stop2=0;this->stop3=0;
-	this->w1_dir=0;this->w2_dir=0;this->w3_dir=0;
 	this->serial = NULL;
 #ifdef DEBUG
 	std::cout << "Base_Control(DEBUG)\n";
 	std::cout << "Init base control\n";
-	std::cout << (int)*this->base_TX->head1 << std::endl;
+	/*std::cout << (int)*this->base_TX->head1 << std::endl;
 	std::cout << (int)*this->base_TX->head2 << std::endl;
 	std::cout << (int)*this->base_TX->w1 << std::endl;
 	std::cout << (int)*this->base_TX->w2 << std::endl;
 	std::cout << (int)*this->base_TX->w3 << std::endl;
 	std::cout << (int)*this->base_TX->enable_and_stop << std::endl;
 	std::cout << (int)*this->base_TX->shoot << std::endl;
-	std::cout << (int)*this->base_TX->checksum << std::endl;
+	std::cout << (int)*this->base_TX->checksum << std::endl;*/
 #endif
 	mcssl_init();
 }
 
 Base_Control::~Base_Control()
 {
-	//w1_dir=0,w2_dir=0,w3_dir=0;
-	//w1_byte=0,w2_byte=0,w3_byte=0;
-	//en1=0,en2=0,en3=0,stop1=0,stop2=0,stop3=0;
-	//shoot_byte=0;
-	//en_byte=0,checksum_byte=0;
-
-	//w1_speed=0, w1_speed_percent=0;
-	//w2_speed=0, w2_speed_percent=0;
-	//w3_speed=0, w3_speed_percent=0;
-	//shoot_power=0, shoot_power_percent=0;
-	
-	//mcssl_send2motor();
 #ifdef DEBUG
 	std::cout << "~Base_Control(DEBUG)\n";
 #endif
@@ -148,129 +156,40 @@ void Base_Control::mcssl_finish()
 
 void Base_Control::mcssl_Callback(int id, uint8_t *buf, int length)
 {
-/*	static int i=0;
-    int checknum;
-    unsigned char pls1_1,pls1_2,pls1_3,pls1_4;
-    unsigned char pls2_1,pls2_2,pls2_3,pls2_4;
-    unsigned char pls3_1,pls3_2,pls3_3,pls3_4;
-    bool findpacket=0;
-//        printf("*buf=%x\n",*buf);
-    //-----store packet
-    feedback[i]=*buf;
-
-//    printf("feedback[%d]=%d\n",i,feedback[i]);
-    i=i+length;
-    if((i>14))i=i%15;
-
-//    printf("feedback:\n");
-//    for(int oo=0;oo<15;oo++){
-//        printf("%x ,",feedback[oo]);
-//    }
-//    printf("\n");
-
-    for(int header=0;header<15;header++){
-//                printf("feedback:\n");
-//                for(int oo=0;oo<15;oo++){
-//                    printf("%x ,",feedback[(header+oo)%15]);
-//                }
-//                printf("\n");
-        if(feedback[header]!=0xff){continue;}
-        else if(feedback[(header+1)%15]!=0xfa){continue;}
-        else{
-            if(header == 0){checknum=15;}
-            else{checknum=header;}
-            unsigned char checkcode = feedback[checknum-1];
-            unsigned char checksum = 0;
-            for(int check=2;check<14;check++){
-                checksum += feedback[(header+check)%15];
-            }
-//                printf("checksum = %x checknum = %x\n",checksum,checkcode);
-            if(checksum != checkcode){continue;}
-            else{
-                findpacket=1;
-//                    printf("checksum = %x checknum = %x\n",checksum,checkcode);
-//                    printf("feedback[14]=%x ,checkcode=%x\n",feedback[14],checkcode);
-                if(feedback[14]!=checkcode){
-//                    printf("checksum = %x checknum = %x\n",checksum,checkcode);
-	                for(int permutation=15;permutation<15-header;permutation--){
-	                    unsigned char tmp[2];
-//                        printf("move:\n");
-	                    for(int move=0;move<15;move++){
-	                        tmp[1] = feedback[(header+move+1)%15];
-	                        tmp[0] = tmp[1];
-	                        feedback[(header+move+1)%15] = tmp[0];
-//                            printf("%x ,",feedback[move]);
-	                    }
-//                        printf("\n");
-	                }
-	                i = 0;
-                }else{break;}
-            }
-        }
-    }
-    
-//    static int aa=0;
-//    static bool bb = 0;
-//    static double  start;
-//    if(bb == 0){
-//        start = ros::Time::now().toSec();
-//        bb = 1;
-//    }
-//    double now = ros::Time::now().toSec();
-//    printf("[Feedback start time:%f]\n",now-start);
-//    printf("%d ",aa++);
-//    printf("feedback:\n");
-//    for(int oo=0;oo<15;oo++){
-//        printf("%x ,",feedback[oo]);
-//    }
-//    printf("findpacket %d\n",findpacket);
-    if((findpacket==1)&&(feedback[0]==0xff)&&(feedback[1]==0xfa)){
-//            printf("feedback:\n");
-//            for(int oo=0;oo<15;oo++){
-//                printf("%x ,",feedback[oo]);
-//            }
-//            printf("\n");
-        pls1_4 = feedback[2];   //motor1
-        pls1_3 = feedback[3];
-        pls1_2 = feedback[4];
-        pls1_1 = feedback[5];
-
-        pls2_4 = feedback[6];   //motor2
-        pls2_3 = feedback[7];
-        pls2_2 = feedback[8];
-        pls2_1 = feedback[9];
-
-        pls3_4 = feedback[10];  //motor3
-        pls3_3 = feedback[11];
-        pls3_2 = feedback[12];
-        pls3_1 = feedback[13];
-        *(int*)base_motorFB->w1_speed = (pls1_4 << 24)+(pls1_3 << 16)+(pls1_2 << 8)+pls1_1;
-        *(int*)base_motorFB->w2_speed = (pls2_4 << 24)+(pls2_3 << 16)+(pls2_2 << 8)+pls2_1;
-        *(int*)base_motorFB->w3_speed = (pls3_4 << 24)+(pls3_3 << 16)+(pls3_2 << 8)+pls3_1;
-    }else{
-		base_motorFB = base_motorFB;
-    }
-
-
-
-//    printf("pls_1=%d \n",pls3);
-    odom_x =(pls1*(-0.3333)+pls2*(-0.3333)+pls3*(0.6667))*2*M_PI*WheelRadius/(26)/2000;
-    odom_y =(pls1*(0.5774) + pls2*(-0.5774) + pls3*(0))*2*M_PI*WheelRadius/26/2000;
-//    odom_yaw =(pls1*(0.21231) + pls2*(0.21231) + pls3*(0.21231))/2000/26;
-    odom_yaw =(pls1*(yaw_inv) + pls2*(yaw_inv) + pls3*(yaw_inv))*2*M_PI*WheelRadius/2000/26;
-    int round;
-    round = odom_yaw/(2*M_PI);
-    odom_yaw = (odom_yaw-round*2*M_PI);
-//    printf("round = %d\n");
-//    printf("length_x=%lf , length_y=%lf , length_r=%lf\npls_1=%d,pls_2=%d, pls_3=%d \n\n",odom_x,odom_y,odom_yaw,pls1,pls2,pls3);
-//    printf("\n=====================\n");
-
-    motionfeedback.linear.x = odom_x;
-    motionfeedback.linear.y = odom_y;
-    motionfeedback.angular.z = odom_yaw;
- */
+	static int count_buffer = 0;
+	this->cssl_buffer[count_buffer] = *buf;
+	count_buffer = (count_buffer+length)%100;
+	unsigned char checksum;
+	for(int i=0; i<30; i++){
+		if((cssl_buffer[i]==0xff)&&(cssl_buffer[i+1]==0xfa)){
+			checksum = cssl_buffer[i+2]+cssl_buffer[i+3]+cssl_buffer[i+4]+cssl_buffer[i+5]+cssl_buffer[i+6]+cssl_buffer[i+7]+cssl_buffer[i+8]+cssl_buffer[i+9]+cssl_buffer[i+10]+cssl_buffer[i+11]+cssl_buffer[i+12]+cssl_buffer[i+13];
+			if(cssl_buffer[i+14]==checksum){
+				*(this->base_RX->head1) = cssl_buffer[i];
+				*(this->base_RX->head2) = cssl_buffer[i+1];
+				*(this->base_RX->w1) = (cssl_buffer[i+2]<<24)+(cssl_buffer[i+3]<<16)+(cssl_buffer[i+4]<<8)+(cssl_buffer[i+5]);
+				*(this->base_RX->w2) = (cssl_buffer[i+6]<<24)+(cssl_buffer[i+7]<<16)+(cssl_buffer[i+8]<<8)+(cssl_buffer[i+9]);
+				*(this->base_RX->w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
+				(this->base_RX->shoot) = NULL;
+				(this->base_RX->batery) = NULL;
+				forwardKinematics(this->base_RX);	
+				break;
+			}else{
+				continue;
+			}
+		}else{
+			continue;
+		}
+	}
 #ifdef DEBUG_CSSLCALLBACK
 	std::cout << "mcssl_Callback(DEBUG_CSSLCALLBACK)\n";
+	std::cout << "head1: " << (int)*(this->base_RX->head1) << "\n";
+	std::cout << "head2: " << (int)*(this->base_RX->head2) << "\n";
+	std::cout << "w1: " << (int)*(this->base_RX->w1) << "\n";
+	std::cout << "w2: " << (int)*(this->base_RX->w2) << "\n";
+	std::cout << "w3: " << (int)*(this->base_RX->w3) << "\n";
+	std::cout << "shoot: " << (int)*(this->base_RX->shoot) << "\n";
+	std::cout << "batery: " << (int)*(this->base_RX->batery) << "\n";
+	std::cout << std::endl;
 #else
 #endif
 }
@@ -333,19 +252,22 @@ void Base_Control::shoot_regularization()
 #endif
 }
 
-void Base_Control::speed_regularization()
+void Base_Control::speed_regularization(double w1, double w2, double w3)
 {
-	w1_dir = (w1_speed>0)? 0x80 : 0;
-	w2_dir = (w2_speed>0)? 0x80 : 0;
-	w3_dir = (w3_speed>0)? 0x80 : 0;
+	unsigned char w1_dir = (w1>0)? 0x80 : 0;
+	unsigned char w2_dir = (w2>0)? 0x80 : 0;
+	unsigned char w3_dir = (w3>0)? 0x80 : 0;
 
-	w1_speed_percent = (fabs(w1_speed)<1)? 0 : fabs(w1_speed);
-	w2_speed_percent = (fabs(w2_speed)<1)? 0 : fabs(w2_speed);
-	w3_speed_percent = (fabs(w3_speed)<1)? 0 : fabs(w3_speed);
+	double w1_speed_percent = (fabs(w1)<1)? 0 : fabs(w1);
+	double w2_speed_percent = (fabs(w2)<1)? 0 : fabs(w2);
+	double w3_speed_percent = (fabs(w3)<1)? 0 : fabs(w3);
 //	enable
-	en1 = (w1_speed_percent > 0)? 1 : 0;
-	en2 = (w2_speed_percent > 0)? 1 : 0;
-	en3 = (w3_speed_percent > 0)? 1 : 0;
+	this->en1 = (w1_speed_percent > 0)? 1 : 0;
+	this->en2 = (w2_speed_percent > 0)? 1 : 0;
+	this->en3 = (w3_speed_percent > 0)? 1 : 0;
+	this->stop1 = 0;
+	this->stop2 = 0;
+	this->stop3 = 0;
 //	stop
 /*
 	if((w1_speed_percent != 999)&&(stop1 == 1)){
@@ -379,6 +301,7 @@ void Base_Control::speed_regularization()
 	std::cout << std::hex;
 	std::cout << "enable & stop(hex): " << (int)*(this->base_TX->enable_and_stop) << std::endl;
 	std::cout << std::endl;
+
 #endif
 /*
 	if(w1_speed_percent == 999){
@@ -411,42 +334,61 @@ void Base_Control::speed_regularization()
 */
 }
 
+void Base_Control::forwardKinematics(serial_rx* motorFB)
+{
+	double yaw;
+	int round;
+	*(this->base_robotFB->x_speed) = (*(motorFB->w1)*(-0.3333) + *(motorFB->w2)*(-0.3333) + *(motorFB->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
+    *(this->base_robotFB->y_speed) = (*(motorFB->w1)*(0.5774) + *(motorFB->w2)*(-0.5774) + *(motorFB->w3)*(0))*2*M_PI*wheel_radius/26/2000;
+   yaw = (*(motorFB->w1)*(yaw_inv) + *(motorFB->w2)*(yaw_inv) + *(motorFB->w3)*(yaw_inv))*wheel_radius/2000/26;
+   round = yaw/360;
+   yaw = yaw-(360*round);
+   if(yaw>180){
+	   *(this->base_robotFB->yaw_speed) = yaw - 360;
+   }else if(yaw < -180){
+	   *(this->base_robotFB->yaw_speed) = yaw + 360;
+   }
+}
+
 void Base_Control::inverseKinematics()
 {
-	this->w1_speed = *(this->base_robotCMD->x_speed)*cos(m1_Angle)+*(this->base_robotCMD->y_speed)*sin(m1_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
-	this->w2_speed = *(this->base_robotCMD->x_speed)*cos(m2_Angle)+*(this->base_robotCMD->y_speed)*sin(m2_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
-	this->w3_speed = *(this->base_robotCMD->x_speed)*cos(m3_Angle)+*(this->base_robotCMD->y_speed)*sin(m3_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
+	double w1_speed, w2_speed, w3_speed;
+
+	w1_speed = *(this->base_robotCMD->x_speed)*cos(m1_Angle)+*(this->base_robotCMD->y_speed)*sin(m1_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
+	w2_speed = *(this->base_robotCMD->x_speed)*cos(m2_Angle)+*(this->base_robotCMD->y_speed)*sin(m2_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
+	w3_speed = *(this->base_robotCMD->x_speed)*cos(m3_Angle)+*(this->base_robotCMD->y_speed)*sin(m3_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
 
 	for(int i=0;i<10;i++){
-		if(fabs(this->w1_speed)>100||fabs(this->w2_speed)>100||fabs(this->w3_speed>100)){
-			this->w1_speed = this->w1_speed*0.9;
-			this->w2_speed = this->w2_speed*0.9;
-			this->w3_speed = this->w3_speed*0.9;
+		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed>100)){
+			w1_speed = w1_speed*0.9;
+			w2_speed = w2_speed*0.9;
+			w3_speed = w3_speed*0.9;
 		}else{
-			this->w1_speed = this->w1_speed;
-			this->w2_speed = this->w2_speed;
-			this->w3_speed = this->w3_speed;
+			w1_speed = w1_speed;
+			w2_speed = w2_speed;
+			w3_speed = w3_speed;
 			break;
 		}
 	}
+	speed_regularization(w1_speed, w2_speed, w3_speed);
 #ifdef DEBUG
 	std::cout << "Inverse kinematics(DEBUG)\n";
 	std::cout << std::dec;
 	std::cout << "x_speed CMD: " << *(base_robotCMD->x_speed) << std::endl;
 	std::cout << "y_speed CMD: " << *(base_robotCMD->y_speed) << std::endl;
 	std::cout << "yaw_speed CMD: " << *(base_robotCMD->yaw_speed) << std::endl;
-	std::cout << "w1_speed(%): " << this->w1_speed << std::endl;
-	std::cout << "w2_speed(%): " << this->w2_speed << std::endl;
-	std::cout << "w3_speed(%): " << this->w3_speed << std::endl;
+	std::cout << "w1_speed(%): " << w1_speed << std::endl;
+	std::cout << "w2_speed(%): " << w2_speed << std::endl;
+	std::cout << "w3_speed(%): " << w3_speed << std::endl;
 	std::cout << std::endl;
 #endif
 }
 void Base_Control::send(robot_command* CMD)
 {
 	this->base_robotCMD = CMD;
-	inverseKinematics();
 	shoot_regularization();
-	speed_regularization();
+	inverseKinematics();
+	//speed_regularization();
 	mcssl_send2motor();
 }
 
