@@ -184,7 +184,6 @@ int main(int argc, char **argv)
         }
 
 
-
         if(actionAry[global_env->RobotNumber] == 0){
 
         }else{
