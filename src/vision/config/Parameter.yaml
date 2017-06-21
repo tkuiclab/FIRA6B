@@ -9,7 +9,7 @@ FIRA:
   Dorsad_Attack: [8, 90, 180, 2, 1, 2]
   FPS: 25
   HSV:
-    Ball: [0, 359, 0, 100, 54, 100]
+    Ball: [0, 37, 28, 100, 20, 100]
     Blue: [205, 231, 80, 100, 42, 100]
     ColorMode: 1
     Green: [43, 187, 41, 74, 21, 100]
@@ -169,8 +169,8 @@ roslaunch:
     host_iclab_desktop__44452: 'http://iclab-desktop:44452/', host_iclab_desktop__44621: 'http://iclab-desktop:44621/',
     host_iclab_desktop__44954: 'http://iclab-desktop:44954/', host_iclab_desktop__45644: 'http://iclab-desktop:45644/',
     host_iclab_desktop__45691: 'http://iclab-desktop:45691/', host_iclab_desktop__45996: 'http://iclab-desktop:45996/',
-    host_iclab_desktop__46546: 'http://iclab-desktop:46546/', host_tamkang_to_be_filled_by_o_e_m__44482: 'http://tamkang-To-be-filled-by-O-E-M:44482/',
-    host_tamkang_to_be_filled_by_o_e_m__44954: 'http://tamkang-To-be-filled-by-O-E-M:44954/'}
+    host_iclab_desktop__46546: 'http://iclab-desktop:46546/', host_tamkang_to_be_filled_by_o_e_m__32900: 'http://tamkang-To-be-filled-by-O-E-M:32900/',
+    host_tamkang_to_be_filled_by_o_e_m__45984: 'http://tamkang-To-be-filled-by-O-E-M:45984/'}
 rosversion: '1.11.20
 
   '

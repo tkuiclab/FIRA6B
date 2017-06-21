@@ -1722,60 +1722,60 @@ void InterfaceProc::HSVmap()
                 S_sum = RGBtoHSV_S(HSVmax,HSVmin);
                 V_sum = HSVmax*255.0;
                 HSVmap[r+(g<<8)+(b<<16)] = 0x00;
-                if(HSV_red[1] < HSV_red[0]){
-                    if( (H_sum >= HSV_red[1]) && (H_sum <= HSV_red[0])
-                      &&(S_sum >= HSV_red[3]) && (S_sum <= HSV_red[2])
-                      &&(V_sum >= HSV_red[5]) && (V_sum <= HSV_red[4]) )
+                if(HSV_red[0] < HSV_red[1]){
+                    if( (H_sum >= HSV_red[0]) && (H_sum <= HSV_red[1])
+                      &&(S_sum >= HSV_red[2]) && (S_sum <= HSV_red[3])
+                      &&(V_sum >= HSV_red[4]) && (V_sum <= HSV_red[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | REDITEM;
 
                 }else{
-                    if( (H_sum >= HSV_red[1]) || (H_sum <= HSV_red[0])
-                      &&(S_sum >= HSV_red[3]) && (S_sum <= HSV_red[2])
-                      &&(V_sum >= HSV_red[5]) && (V_sum <= HSV_red[4]) )
+                    if( (H_sum >= HSV_red[0]) || (H_sum <= HSV_red[1])
+                      &&(S_sum >= HSV_red[2]) && (S_sum <= HSV_red[3])
+                      &&(V_sum >= HSV_red[4]) && (V_sum <= HSV_red[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | REDITEM;
                 }
-                if(HSV_green[1] < HSV_green[0]){
-                    if( (H_sum >= HSV_green[1]) && (H_sum <= HSV_green[0])
-                      &&(S_sum >= HSV_green[3]) && (S_sum <= HSV_green[2])
-                      &&(V_sum >= HSV_green[5]) && (V_sum <= HSV_green[4]) )
+                if(HSV_green[0] < HSV_green[1]){
+                    if( (H_sum >= HSV_green[0]) && (H_sum <= HSV_green[1])
+                      &&(S_sum >= HSV_green[2]) && (S_sum <= HSV_green[3])
+                      &&(V_sum >= HSV_green[4]) && (V_sum <= HSV_green[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | GREENITEM;
                 }else{
-                    if( (H_sum >= HSV_green[1]) || (H_sum <= HSV_green[0])
-                      &&(S_sum >= HSV_green[3]) && (S_sum <= HSV_green[2])
-                      &&(V_sum >= HSV_green[5]) && (V_sum <= HSV_green[4]) )
+                    if( (H_sum >= HSV_green[0]) || (H_sum <= HSV_green[1])
+                      &&(S_sum >= HSV_green[2]) && (S_sum <= HSV_green[3])
+                      &&(V_sum >= HSV_green[4]) && (V_sum <= HSV_green[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | GREENITEM;
                 }
-                if(HSV_blue[1] < HSV_blue[0]){
-                    if( (H_sum >= HSV_blue[1]) && (H_sum <= HSV_blue[0])
-                      &&(S_sum >= HSV_blue[3]) && (S_sum <= HSV_blue[2])
-                      &&(V_sum >= HSV_blue[5]) && (V_sum <= HSV_blue[4]) )
+                if(HSV_blue[0] < HSV_blue[1]){
+                    if( (H_sum >= HSV_blue[0]) && (H_sum <= HSV_blue[1])
+                      &&(S_sum >= HSV_blue[2]) && (S_sum <= HSV_blue[3])
+                      &&(V_sum >= HSV_blue[4]) && (V_sum <= HSV_blue[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | BLUEITEM;
                 }else{
-                    if( (H_sum >= HSV_blue[1]) || (H_sum <= HSV_blue[0])
-                      &&(S_sum >= HSV_blue[3]) && (S_sum <= HSV_blue[2])
-                      &&(V_sum >= HSV_blue[5]) && (V_sum <= HSV_blue[4]) )
+                    if( (H_sum >= HSV_blue[0]) || (H_sum <= HSV_blue[1])
+                      &&(S_sum >= HSV_blue[2]) && (S_sum <= HSV_blue[3])
+                      &&(V_sum >= HSV_blue[4]) && (V_sum <= HSV_blue[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | BLUEITEM;
                 }
-                if(HSV_yellow[1] < HSV_yellow[0]){
-                    if( (H_sum >= HSV_yellow[1]) && (H_sum <= HSV_yellow[0])
-                      &&(S_sum >= HSV_yellow[3]) && (S_sum <= HSV_yellow[2])
-                      &&(V_sum >= HSV_yellow[5]) && (V_sum <= HSV_yellow[4]) )
+                if(HSV_yellow[0] < HSV_yellow[1]){
+                    if( (H_sum >= HSV_yellow[0]) && (H_sum <= HSV_yellow[1])
+                      &&(S_sum >= HSV_yellow[2]) && (S_sum <= HSV_yellow[3])
+                      &&(V_sum >= HSV_yellow[4]) && (V_sum <= HSV_yellow[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | YELLOWITEM;
                 }else{
-                    if( (H_sum >= HSV_yellow[1]) || (H_sum <= HSV_yellow[0])
-                      &&(S_sum >= HSV_yellow[3]) && (S_sum <= HSV_yellow[2])
-                      &&(V_sum >= HSV_yellow[5]) && (V_sum <= HSV_yellow[4]) )
+                    if( (H_sum >= HSV_yellow[0]) || (H_sum <= HSV_yellow[1])
+                      &&(S_sum >= HSV_yellow[2]) && (S_sum <= HSV_yellow[3])
+                      &&(V_sum >= HSV_yellow[4]) && (V_sum <= HSV_yellow[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | YELLOWITEM;
                 }
-                if(HSV_white[1] < HSV_white[0]){
-                    if( (H_sum >= HSV_white[1]) && (H_sum <= HSV_white[0])
-                      &&(S_sum >= HSV_white[3]) && (S_sum <= HSV_white[2])
-                      &&(V_sum >= HSV_white[5]) && (V_sum <= HSV_white[4]) )
+                if(HSV_white[0] < HSV_white[1]){
+                    if( (H_sum >= HSV_white[0]) && (H_sum <= HSV_white[1])
+                      &&(S_sum >= HSV_white[2]) && (S_sum <= HSV_white[3])
+                      &&(V_sum >= HSV_white[4]) && (V_sum <= HSV_white[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | WHITEITEM;
                 }else{
-                    if( (H_sum >= HSV_white[1]) || (H_sum <= HSV_white[0])
-                      &&(S_sum >= HSV_white[3]) && (S_sum <= HSV_white[2])
-                      &&(V_sum >= HSV_white[5]) && (V_sum <= HSV_white[4]) )
+                    if( (H_sum >= HSV_white[0]) || (H_sum <= HSV_white[1])
+                      &&(S_sum >= HSV_white[2]) && (S_sum <= HSV_white[3])
+                      &&(V_sum >= HSV_white[4]) && (V_sum <= HSV_white[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | WHITEITEM;
                 }
             }
