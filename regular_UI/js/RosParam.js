@@ -18,17 +18,20 @@ function ChooseRobotNumber(priority, value) {
 }
 
 function SetParamRobotNum() {
+    console.log(RobNum);
     if (RobNum[0] == RobNum[1]) {
         alert('RobNum repeat');
         RobNum[0] = 0;
         RobNum[1] = 1;
         RobNum[2] = 2;
-    } else if (RobNum[0] == RobNum[2]) {
+    }
+    if (RobNum[0] == RobNum[2]) {
         alert('RobNum repeat');
         RobNum[0] = 0;
         RobNum[1] = 1;
         RobNum[2] = 2;
-    } else if (RobNum[1] == RobNum[2]) {
+    }
+    if (RobNum[1] == RobNum[2]) {
         alert('RobNum repeat');
         RobNum[0] = 0;
         RobNum[1] = 1;
@@ -75,7 +78,7 @@ var DistanceSettingsBox3 = new ROSLIB.Param({
 });
 
 function GetGeneralValue() {
-    //up();
+    up();
     var SVBox1 = [];
     var DSBox1 = [];
     var SVBox2 = [];
@@ -215,6 +218,10 @@ var CornerKickBox1 = new ROSLIB.Param({
     ros: ros,
     name: '/FIRA/Corner_Kick'
 });
+var PenaltyKickBox1 = new ROSLIB.Param({
+    ros: ros,
+    name: '/FIRA/Penalty_Kick'
+});
 
 var AttackStrategyBox2 = new ROSLIB.Param({
     ros: ros2,
@@ -247,6 +254,10 @@ var DorsadAttackBox2 = new ROSLIB.Param({
 var CornerKickBox2 = new ROSLIB.Param({
     ros: ros2,
     name: '/FIRA/Corner_Kick'
+});
+var PenaltyKickBox2 = new ROSLIB.Param({
+    ros: ros2,
+    name: '/FIRA/Penalty_Kick'
 });
 
 var AttackStrategyBox3 = new ROSLIB.Param({
@@ -281,9 +292,13 @@ var CornerKickBox3 = new ROSLIB.Param({
     ros: ros3,
     name: '/FIRA/Corner_Kick'
 });
+var PenaltyKickBox3 = new ROSLIB.Param({
+    ros: ros3,
+    name: '/FIRA/Penalty_Kick'
+});
 
 function GetPathplanValue() {
-    //up();
+    up();
     var ASBox1 = [];
     var CSBox1 = [];
     var ZABox1 = [];
@@ -292,6 +307,7 @@ function GetPathplanValue() {
     var SSUBox1 = [];
     var DABox1 = [];
     var CKBox1 = [];
+    var PKBox1 = [];
 
     var ASBox2 = [];
     var CSBox2 = [];
@@ -301,6 +317,7 @@ function GetPathplanValue() {
     var SSUBox2 = [];
     var DABox2 = [];
     var CKBox2 = [];
+    var PKBox2 = [];
 
     var ASBox3 = [];
     var CSBox3 = [];
@@ -310,6 +327,7 @@ function GetPathplanValue() {
     var SSUBox3 = [];
     var DABox3 = [];
     var CKBox3 = [];
+    var PKBox3 = [];
 
     $("[name=AttackStrategyElement1]").each(function() {
         ASBox1.push(parseFloat($(this).val()));
@@ -335,6 +353,9 @@ function GetPathplanValue() {
     $("[name=CornerKickElement1]").each(function() {
         CKBox1.push(parseFloat($(this).val()));
     });
+    $("[name=PenaltyKickElement1]").each(function() {
+        PKBox1.push(parseFloat($(this).val()));
+    });
     localStorage.setItem("PathplanAtkStrategyStr1", JSON.stringify(ASBox1));
     localStorage.setItem("PathplanChaseStrategyStr1", JSON.stringify(CSBox1));
     localStorage.setItem("PathplanZoneAtkStr1", JSON.stringify(ZABox1));
@@ -343,6 +364,7 @@ function GetPathplanValue() {
     localStorage.setItem("PathplanSideSpeedUpStr1", JSON.stringify(SSUBox1));
     localStorage.setItem("PathplanDorsadAttackStr1", JSON.stringify(DABox1));
     localStorage.setItem("PathplanCornerKickStr1", JSON.stringify(CKBox1));
+    localStorage.setItem("PathplanPenaltyKickStr1", JSON.stringify(PKBox1));
 
 
     $("[name=AttackStrategyElement2]").each(function() {
@@ -369,6 +391,9 @@ function GetPathplanValue() {
     $("[name=CornerKickElement2]").each(function() {
         CKBox2.push(parseFloat($(this).val()));
     });
+    $("[name=PenaltyKickElement2]").each(function() {
+        PKBox2.push(parseFloat($(this).val()));
+    });
     localStorage.setItem("PathplanAtkStrategyStr2", JSON.stringify(ASBox2));
     localStorage.setItem("PathplanChaseStrategyStr2", JSON.stringify(CSBox2));
     localStorage.setItem("PathplanZoneAtkStr2", JSON.stringify(ZABox2));
@@ -377,6 +402,7 @@ function GetPathplanValue() {
     localStorage.setItem("PathplanSideSpeedUpStr2", JSON.stringify(SSUBox2));
     localStorage.setItem("PathplanDorsadAttackStr2", JSON.stringify(DABox2));
     localStorage.setItem("PathplanCornerKickStr2", JSON.stringify(CKBox2));
+    localStorage.setItem("PathplanPenaltyKickStr1", JSON.stringify(PKBox2));
 
 
     $("[name=AttackStrategyElement3]").each(function() {
@@ -403,6 +429,9 @@ function GetPathplanValue() {
     $("[name=CornerKickElement3]").each(function() {
         CKBox3.push(parseFloat($(this).val()));
     });
+    $("[name=PenaltyKickElement3]").each(function() {
+        PKBox3.push(parseFloat($(this).val()));
+    });
     localStorage.setItem("PathplanAtkStrategyStr3", JSON.stringify(ASBox3));
     localStorage.setItem("PathplanChaseStrategyStr3", JSON.stringify(CSBox3));
     localStorage.setItem("PathplanZoneAtkStr3", JSON.stringify(ZABox3));
@@ -411,16 +440,17 @@ function GetPathplanValue() {
     localStorage.setItem("PathplanSideSpeedUpStr3", JSON.stringify(SSUBox3));
     localStorage.setItem("PathplanDorsadAttackStr3", JSON.stringify(DABox3));
     localStorage.setItem("PathplanCornerKickStr3", JSON.stringify(CKBox3));
+    localStorage.setItem("PathplanPenaltyKickStr1", JSON.stringify(PKBox3));
 
-    SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DABox1, CKBox1,
-        ASBox2, CSBox2, ZABox2, TSABox2, TUABox2, SSUBox2, DABox2, CKBox2,
-        ASBox3, CSBox3, ZABox3, TSABox3, TUABox3, SSUBox3, DABox3, CKBox3);
+    SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DABox1, CKBox1, PKBox1,
+        ASBox2, CSBox2, ZABox2, TSABox2, TUABox2, SSUBox2, DABox2, CKBox2, PKBox2,
+        ASBox3, CSBox3, ZABox3, TSABox3, TUABox3, SSUBox3, DABox3, CKBox3, PKBox3);
 
 }
 
-function SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DABox1, CKBox1,
-    ASBox2, CSBox2, ZABox2, TSABox2, TUABox2, SSUBox2, DABox2, CKBox2,
-    ASBox3, CSBox3, ZABox3, TSABox3, TUABox3, SSUBox3, DABox3, CKBox3) {
+function SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DABox1, CKBox1, PKBox1,
+    ASBox2, CSBox2, ZABox2, TSABox2, TUABox2, SSUBox2, DABox2, CKBox2, PKBox2,
+    ASBox3, CSBox3, ZABox3, TSABox3, TUABox3, SSUBox3, DABox3, CKBox3, PKBox3) {
 
 
     AttackStrategyBox1.set(ASBox1);
@@ -431,6 +461,7 @@ function SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DAB
     SideSpeedUpBox1.set(SSUBox1);
     DorsadAttackBox1.set(DABox1);
     CornerKickBox1.set(CKBox1);
+    PenaltyKickBox1.set(PKBox1);
 
     AttackStrategyBox2.set(ASBox2);
     ChaseStrategyBox2.set(CSBox2);
@@ -440,6 +471,7 @@ function SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DAB
     SideSpeedUpBox2.set(SSUBox2);
     DorsadAttackBox2.set(DABox2);
     CornerKickBox2.set(CKBox2);
+    PenaltyKickBox2.set(PKBox2);
 
     AttackStrategyBox3.set(ASBox3);
     ChaseStrategyBox3.set(CSBox3);
@@ -449,6 +481,7 @@ function SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DAB
     SideSpeedUpBox3.set(SSUBox3);
     DorsadAttackBox3.set(DABox3);
     CornerKickBox3.set(CKBox3);
+    PenaltyKickBox3.set(PKBox3);
 }
 
 AttackStrategyBox1.get(function(value) {
@@ -523,8 +556,15 @@ CornerKickBox1.get(function(value) {
         }
     }
 });
-
-
+PenaltyKickBox1.get(function(value) {
+    if (value != null) {
+        CheckGetParm = 1;
+        obj = document.getElementsByName("PenaltyKickElement1");
+        for (var i = 0; i < obj.length; i++) {
+            obj[i].value = value[i];
+        }
+    }
+});
 AttackStrategyBox2.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
@@ -592,6 +632,15 @@ CornerKickBox2.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("CornerKickElement2");
+        for (var i = 0; i < obj.length; i++) {
+            obj[i].value = value[i];
+        }
+    }
+});
+PenaltyKickBox2.get(function(value) {
+    if (value != null) {
+        CheckGetParm = 1;
+        obj = document.getElementsByName("PenaltyKickElement2");
         for (var i = 0; i < obj.length; i++) {
             obj[i].value = value[i];
         }
@@ -665,6 +714,15 @@ CornerKickBox3.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("CornerKickElement3");
+        for (var i = 0; i < obj.length; i++) {
+            obj[i].value = value[i];
+        }
+    }
+});
+PenaltyKickBox3.get(function(value) {
+    if (value != null) {
+        CheckGetParm = 1;
+        obj = document.getElementsByName("PenaltyKickElement3");
         for (var i = 0; i < obj.length; i++) {
             obj[i].value = value[i];
         }
@@ -775,7 +833,7 @@ var StrategySelectBox3 = new ROSLIB.Param({
 
 
 function GetBehaviorValue() {
-    //up();
+    up();
     var SCBox1 = [];
     var SABox1 = [];
     var STUCBox1 = [];
@@ -949,8 +1007,8 @@ function GetBehaviorValue() {
 }
 
 function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1, SCKBox1, SSBox1,
-        SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2,
-        SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3){
+    SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2,
+    SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3) {
 
 
     StateChaseBox1.set(SCBox1);
@@ -980,6 +1038,16 @@ function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1,
     StateCornerKickBox3.set(SCKBox3);
     StrategySelectBox3.set(SSBox3);
 
+}
+
+function SetBehaviorKeyborard(box1) {
+    console.log(box1);
+    if (CheckIP[0] == 1)
+        StrategySelectBox1.set(box1);
+    if (CheckIP[1] == 1)
+        StrategySelectBox2.set(box1);
+    if (CheckIP[2] == 1)
+        StrategySelectBox3.set(box1);
 }
 
 

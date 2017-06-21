@@ -186,6 +186,16 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].value = 50;
     }
 
+    if (localStorage.getItem("PathplanPenaltyKickStr1") != null) {
+        obj = document.getElementsByName("PenaltyKickElement1");
+        for (var i = 0; i < obj.length; i++) {
+            obj[i].value = JSON.parse(localStorage.getItem("PathplanPenaltyKickStr1"))[i];
+        }
+    } else {
+        obj = document.getElementsByName("PenaltyKickElement1");
+        obj[0].value = 1.0;
+    }
+
     //Robot 2
     if (localStorage.getItem("PathplanAtkStrategyStr2") != null) {
         obj = document.getElementsByName("AttackStrategyElement2");
@@ -281,6 +291,16 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].value = 50;
     }
 
+    if (localStorage.getItem("PathplanPenaltyKickStr2") != null) {
+        obj = document.getElementsByName("PenaltyKickElement2");
+        for (var i = 0; i < obj.length; i++) {
+            obj[i].value = JSON.parse(localStorage.getItem("PathplanPenaltyKickStr2"))[i];
+        }
+    } else {
+        obj = document.getElementsByName("PenaltyKickElement2");
+        obj[0].value = 1.0;
+    }
+
     // Robot 3
     if (localStorage.getItem("PathplanAtkStrategyStr3") != null) {
         obj = document.getElementsByName("AttackStrategyElement3");
@@ -374,6 +394,16 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[1].value = 60;
         obj[2].value = 90;
         obj[3].value = 50;
+    }
+
+    if (localStorage.getItem("PathplanPenaltyKickStr3") != null) {
+        obj = document.getElementsByName("PenaltyKickElement3");
+        for (var i = 0; i < obj.length; i++) {
+            obj[i].value = JSON.parse(localStorage.getItem("PathplanPenaltyKickStr3"))[i];
+        }
+    } else {
+        obj = document.getElementsByName("PenaltyKickElement3");
+        obj[0].value = 1.0;
     }
 
     // BehaviorStorage

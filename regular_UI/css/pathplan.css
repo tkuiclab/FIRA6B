@@ -209,6 +209,19 @@
     color: #1A1A65;
 }
 
+#PenaltyKick1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#PenaltyKick1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
 /*Robot2*/
 #AttackStrategy2 {
     background-image: none;
@@ -309,6 +322,19 @@
 }
 
 #CornerKick2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#PenaltyKick2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#PenaltyKick2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -418,6 +444,19 @@
     font-size: 14px;
     color: #1A1A65;
 }
+
+#PenaltyKick3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#PenaltyKick3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
 /*====================================================*/
 
 
@@ -458,6 +497,9 @@
     width: 50%;
 }
 
+#PenaltyKickModule1 td {
+    width: 50%;
+}
 /*Robot2*/
 
 #AttackStrategyModule2 td {
@@ -492,6 +534,10 @@
     width: 50%;
 }
 
+#PenaltyKickModule2 td {
+    width: 50%;
+}
+
 /*Robot3*/
 
 #AttackStrategyModule3 td {
@@ -523,6 +569,10 @@
 }
 
 #CornerKickModule3 td {
+    width: 50%;
+}
+
+#PenaltyKickModule3 td {
     width: 50%;
 }
 /*=====================================================*/
@@ -589,6 +639,12 @@
     overflow: scroll;
 }
 
+#PenaltyKickModule1 {
+    height: 200px;
+    text-align: left;
+    border-style: solid;
+    overflow: scroll;
+}
 /*Robot2*/
 
 #AttackStrategyModule2 {
@@ -647,6 +703,13 @@
     overflow: scroll;
 }
 
+#PenaltyKickModule2 {
+    height: 200px;
+    text-align: left;
+    border-style: solid;
+    overflow: scroll;
+}
+
 /*Robot3*/
 
 #AttackStrategyModule3 {
@@ -699,6 +762,13 @@
 }
 
 #CornerKickModule3 {
+    height: 200px;
+    text-align: left;
+    border-style: solid;
+    overflow: scroll;
+}
+
+#PenaltyKickModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
@@ -810,6 +880,18 @@
 }
 
 #CornerKickModule3.form-group {
+    background-color: #b0c4de;
+}
+
+#PenaltyKickModule1.form-group {
+    background-color: #ffb6c1;
+}
+
+#PenaltyKickModule2.form-group {
+    background-color: #90ee90;
+}
+
+#PenaltyKickModule3.form-group {
     background-color: #b0c4de;
 }
 

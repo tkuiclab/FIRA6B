@@ -27,6 +27,7 @@
     <script src="js/roslib.js"></script>
     <script src="js/CloseReverseOut.js"></script>
     <script src="js/CloseCenterRightButton.js"></script>
+    
 </head>
 
 <body onload="joystick_main()">
@@ -48,7 +49,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <input id="StopButton" type="radio" checked="checked" name="SwitchButton" onclick="PublishTopicGameState(0);StandBy();" />
+                                    <input id="StopButton" type="radio" checked="checked" name="SwitchButton" onclick="PublishTopicGameState(0);StrategyStop()" />
                                     <label id="StopButton" for="StopButton">Stop</label>
                                 </div>
                             </td>
@@ -60,7 +61,7 @@
                         <tr>
                             <td>
                                 <div>
-                                    <input id="YellowButton" type="radio" name="TeamButton" onclick="PublishTopicTeamColor('Yellow');" />
+                                    <input id="YellowButton" type="radio" name="TeamButton" checked="true" onclick="PublishTopicTeamColor('Yellow');"/>
                                     <label id="YellowButton" for="YellowButton">Yellow</label>
                                 </div>
                             </td>
@@ -84,7 +85,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <input id="KeyboardControlButton" type="checkbox" name="KeyboardControl" />
+                                    <input id="KeyboardControlButton" type="checkbox" name="KeyboardControl" onclick="KeyboardState(this.checked)" />
                                     <label id="KeyboardControlButton" for="KeyboardControlButton">KeyboardControl</label>
                                 </div>
                             </td>
@@ -751,11 +752,15 @@
                                 <tr>
                                     <td>
                                         <input type="radio" id="DorsadAttack1" name="PathplanStrategy1" />
-                                        <label id="DorsadAttack1" for="DorsadAttack1">Dorsad-Attack</label>
+                                        <label id="DorsadAttack1" for="DorsadAttack1">Dorsad Attack</label>
                                     </td>
                                     <td>
                                         <input type="radio" id="CornerKick1" name="PathplanStrategy1" />
-                                        <label id="CornerKick1" for="CornerKick1">Corner_Kick</label>
+                                        <label id="CornerKick1" for="CornerKick1">Corner Kick</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="PenaltyKick1" name="PathplanStrategy1" />
+                                        <label id="PenaltyKick1" for="PenaltyKick1">Penalty Kick</label>
                                     </td>
                                 </tr>
                             </table>
@@ -1005,6 +1010,21 @@
                                 </tr>
                             </table>
                         </div>
+                        <!-- Penalty Kick Module -->
+                        <div class="form-group" id="PenaltyKickModule1">
+                            <table>
+                                <tr>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td>(double)Turn</td>
+                                    <td>
+                                        <input type="text" name="PenaltyKickElement1" value="1.0" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                     <div id="PathplanRobot2Module">
                         <div class="form-group" id="PathplanButton2">
@@ -1040,11 +1060,15 @@
                                 <tr>
                                     <td>
                                         <input type="radio" id="DorsadAttack2" name="PathplanStrategy2" />
-                                        <label id="DorsadAttack2" for="DorsadAttack2">Dorsad-Attack</label>
+                                        <label id="DorsadAttack2" for="DorsadAttack2">Dorsad Attack</label>
                                     </td>
                                     <td>
                                         <input type="radio" id="CornerKick2" name="PathplanStrategy2" />
-                                        <label id="CornerKick2" for="CornerKick2">Corner_Kick</label>
+                                        <label id="CornerKick2" for="CornerKick2">Corner Kick</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="PenaltyKick2" name="PathplanStrategy2" />
+                                        <label id="PenaltyKick2" for="PenaltyKick2">Penalty Kick</label>
                                     </td>
                                 </tr>
                             </table>
@@ -1294,6 +1318,21 @@
                                 </tr>
                             </table>
                         </div>
+                        <!-- Penalty Kick Module -->
+                        <div class="form-group" id="PenaltyKickModule2">
+                            <table>
+                                <tr>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td>(double)Turn</td>
+                                    <td>
+                                        <input type="text" name="PenaltyKickElement2" value="1.0" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                     <div id="PathplanRobot3Module">
                         <div class="form-group" id="PathplanButton3">
@@ -1329,11 +1368,15 @@
                                 <tr>
                                     <td>
                                         <input type="radio" id="DorsadAttack3" name="PathplanStrategy3" />
-                                        <label id="DorsadAttack3" for="DorsadAttack3">Dorsad-Attack</label>
+                                        <label id="DorsadAttack3" for="DorsadAttack3">Dorsad Attack</label>
                                     </td>
                                     <td>
                                         <input type="radio" id="CornerKick3" name="PathplanStrategy3" />
-                                        <label id="CornerKick3" for="CornerKick3">Corner_Kick</label>
+                                        <label id="CornerKick3" for="CornerKick3">Corner Kick</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="PenaltyKick3" name="PathplanStrategy3" />
+                                        <label id="PenaltyKick3" for="PenaltyKick3">Penalty Kick</label>
                                     </td>
                                 </tr>
                             </table>
@@ -1579,6 +1622,21 @@
                                     <td>(double)criticalAng</td>
                                     <td>
                                         <input type="text" name="CornerKickElement3" value="50" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- Penalty Kick Module -->
+                        <div class="form-group" id="PenaltyKickModule3">
+                            <table>
+                                <tr>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td>(double)Turn</td>
+                                    <td>
+                                        <input type="text" name="PenaltyKickElement3" value="1.0" />
                                     </td>
                                 </tr>
                             </table>
@@ -2541,19 +2599,19 @@
                 <div class="modal-body">
                     <!-- TeamStrategy_Button -->
                     <div class="form-group" align="center" id="ChooseShowButtonDiv">
-                        <input type="radio" id="NotShow"  name="auto" onclick="ChooseShowFlag(0);" />
+                        <input type="radio" id="NotShow" name="auto" onclick="ChooseShowFlag(0);" />
                         <label id="NotShow" for="NotShow">NotShow</label>
-                        <input type="radio" id="SType" name="auto" checked="true" onclick="ChooseShowFlag(1);"/>
+                        <input type="radio" id="SType" name="auto" checked="true" onclick="ChooseShowFlag(1);" />
                         <label id="SType" for="SType">SType</label>
                     </div>
                     <!-- TeamStrategy_Display -->
                     <div class="modal-body" id="ChooseShowDisplay" style="margin:auto;text-align:center;">
                         <div class="form-group" id="NotShowModule">
-                            
+
                         </div>
                         <div class="form-group" id="STypeModule">
                             <table>
-                                 <tr>
+                                <tr>
                                     <th>ConfigName</th>
                                     <th>Value</th>
                                 </tr>
@@ -2668,121 +2726,111 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="RobotCloseConnect();">Close</button>
-                    <button id="Robotwifi" type="button" class="btn btn-primary" id="send-message" onclick="RobotConnect();history.go(0);">Connect</button>
+                    <button id="Robotwifi" type="button" class="btn btn-primary" id="send-message" onclick="RobotConnect();history.go(0);SetParamRobotNum();">Connect</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- Buttton -->
     <script type="text/javascript">
-    $("#SwitchButttonDiv").buttonset();
-    $("#TeamColorButttonDiv").buttonset();
-    $("#FunctionButttonDiv").buttonset();
-    $("#RobotStateDiv").buttonset();
-    $("#ShootDiv").buttonset();
-    $("#RobotStrategyDiv").buttonset();
+        $("#SwitchButttonDiv").buttonset();
+        $("#TeamColorButttonDiv").buttonset();
+        $("#FunctionButttonDiv").buttonset();
+        $("#RobotStateDiv").buttonset();
+        $("#ShootDiv").buttonset();
+        $("#RobotStrategyDiv").buttonset();
     </script>
     <!-- General -->
     <script type="text/javascript">
-    // RobotState
-    $("#GeneralSettingRobotDiv").buttonset();
+        // RobotState
+        $("#GeneralSettingRobotDiv").buttonset();
 
-    $("#GeneralRobot2Module").hide();
-    $("#GeneralRobot3Module").hide();
-
-    $("#GeneralRobot1Button").click(function() {
-        $("#GeneralRobot1Module").show();
         $("#GeneralRobot2Module").hide();
         $("#GeneralRobot3Module").hide();
-    });
-    $("#GeneralRobot2Button").click(function() {
-        $("#GeneralRobot2Module").show();
-        $("#GeneralRobot1Module").hide();
-        $("#GeneralRobot3Module").hide();
-    });
-    $("#GeneralRobot3Button").click(function() {
-        $("#GeneralRobot3Module").show();
-        $("#GeneralRobot1Module").hide();
-        $("#GeneralRobot2Module").hide();
-    });
 
-    //Robot 1
-    $("#SetGeneralButton1").buttonset();
+        $("#GeneralRobot1Button").click(function() {
+            $("#GeneralRobot1Module").show();
+            $("#GeneralRobot2Module").hide();
+            $("#GeneralRobot3Module").hide();
+        });
+        $("#GeneralRobot2Button").click(function() {
+            $("#GeneralRobot2Module").show();
+            $("#GeneralRobot1Module").hide();
+            $("#GeneralRobot3Module").hide();
+        });
+        $("#GeneralRobot3Button").click(function() {
+            $("#GeneralRobot3Module").show();
+            $("#GeneralRobot1Module").hide();
+            $("#GeneralRobot2Module").hide();
+        });
 
-    $("#DistanceSettingsModule1").hide();
+        //Robot 1
+        $("#SetGeneralButton1").buttonset();
 
-    $("#SPlanningVelocity1").click(function() {
-        $("#SPlanningVelocityModule1").show();
         $("#DistanceSettingsModule1").hide();
-    });
-    $("#DistanceSettings1").click(function() {
-        $("#DistanceSettingsModule1").show();
-        $("#SPlanningVelocityModule1").hide();
-    });
-    //Robot 2
-    $("#SetGeneralButton2").buttonset();
 
-    $("#DistanceSettingsModule2").hide();
+        $("#SPlanningVelocity1").click(function() {
+            $("#SPlanningVelocityModule1").show();
+            $("#DistanceSettingsModule1").hide();
+        });
+        $("#DistanceSettings1").click(function() {
+            $("#DistanceSettingsModule1").show();
+            $("#SPlanningVelocityModule1").hide();
+        });
+        //Robot 2
+        $("#SetGeneralButton2").buttonset();
 
-    $("#SPlanningVelocity2").click(function() {
-        $("#SPlanningVelocityModule2").show();
         $("#DistanceSettingsModule2").hide();
-    });
-    $("#DistanceSettings2").click(function() {
-        $("#DistanceSettingsModule2").show();
-        $("#SPlanningVelocityModule2").hide();
-    });
-    //Robot 3
-    $("#SetGeneralButton3").buttonset();
 
-    $("#DistanceSettingsModule3").hide();
+        $("#SPlanningVelocity2").click(function() {
+            $("#SPlanningVelocityModule2").show();
+            $("#DistanceSettingsModule2").hide();
+        });
+        $("#DistanceSettings2").click(function() {
+            $("#DistanceSettingsModule2").show();
+            $("#SPlanningVelocityModule2").hide();
+        });
+        //Robot 3
+        $("#SetGeneralButton3").buttonset();
 
-    $("#SPlanningVelocity3").click(function() {
-        $("#SPlanningVelocityModule3").show();
         $("#DistanceSettingsModule3").hide();
-    });
-    $("#DistanceSettings3").click(function() {
-        $("#DistanceSettingsModule3").show();
-        $("#SPlanningVelocityModule3").hide();
-    });
+
+        $("#SPlanningVelocity3").click(function() {
+            $("#SPlanningVelocityModule3").show();
+            $("#DistanceSettingsModule3").hide();
+        });
+        $("#DistanceSettings3").click(function() {
+            $("#DistanceSettingsModule3").show();
+            $("#SPlanningVelocityModule3").hide();
+        });
     </script>
     <!--Pathplan-->
     <script>
-    // RobotState
-    $("#PathplanSettingRobotDiv").buttonset();
+        // RobotState
+        $("#PathplanSettingRobotDiv").buttonset();
 
-    $("#PathplanRobot2Module").hide();
-    $("#PathplanRobot3Module").hide();
-
-    $("#PathplanRobot1Button").click(function() {
-        $("#PathplanRobot1Module").show();
         $("#PathplanRobot2Module").hide();
         $("#PathplanRobot3Module").hide();
-    });
-    $("#PathplanRobot2Button").click(function() {
-        $("#PathplanRobot2Module").show();
-        $("#PathplanRobot1Module").hide();
-        $("#PathplanRobot3Module").hide();
-    });
-    $("#PathplanRobot3Button").click(function() {
-        $("#PathplanRobot3Module").show();
-        $("#PathplanRobot1Module").hide();
-        $("#PathplanRobot2Module").hide();
-    });
 
-    //Robot 1
-    $("#PathplanButton1").buttonset();
+        $("#PathplanRobot1Button").click(function() {
+            $("#PathplanRobot1Module").show();
+            $("#PathplanRobot2Module").hide();
+            $("#PathplanRobot3Module").hide();
+        });
+        $("#PathplanRobot2Button").click(function() {
+            $("#PathplanRobot2Module").show();
+            $("#PathplanRobot1Module").hide();
+            $("#PathplanRobot3Module").hide();
+        });
+        $("#PathplanRobot3Button").click(function() {
+            $("#PathplanRobot3Module").show();
+            $("#PathplanRobot1Module").hide();
+            $("#PathplanRobot2Module").hide();
+        });
 
-    $("#ChaseStrategyModule1").hide();
-    $("#ZoneAttackModule1").hide();
-    $("#TypeSAttackModule1").hide();
-    $("#TypeUAttackModule1").hide();
-    $("#SideSpeedUpModule1").hide();
-    $("#DorsadAttackModule1").hide();
-    $("#CornerKickModule1").hide();
+        //Robot 1
+        $("#PathplanButton1").buttonset();
 
-    $("#AttackStrategy1").click(function() {
-        $("#AttackStrategyModule1").show();
         $("#ChaseStrategyModule1").hide();
         $("#ZoneAttackModule1").hide();
         $("#TypeSAttackModule1").hide();
@@ -2790,90 +2838,110 @@
         $("#SideSpeedUpModule1").hide();
         $("#DorsadAttackModule1").hide();
         $("#CornerKickModule1").hide();
-    });
-    $("#ChaseStrategy1").click(function() {
-        $("#ChaseStrategyModule1").show();
-        $("#AttackStrategyModule1").hide();
-        $("#ZoneAttackModule1").hide();
-        $("#TypeSAttackModule1").hide();
-        $("#TypeUAttackModule1").hide();
-        $("#SideSpeedUpModule1").hide();
-        $("#DorsadAttackModule1").hide();
-        $("#CornerKickModule1").hide();
-    });
-    $("#ZoneAttack1").click(function() {
-        $("#ZoneAttackModule1").show();
-        $("#AttackStrategyModule1").hide();
-        $("#ChaseStrategyModule1").hide();
-        $("#TypeSAttackModule1").hide();
-        $("#TypeUAttackModule1").hide();
-        $("#SideSpeedUpModule1").hide();
-        $("#DorsadAttackModule1").hide();
-        $("#CornerKickModule1").hide();
-    });
-    $("#TypeSAttack1").click(function() {
-        $("#TypeSAttackModule1").show();
-        $("#AttackStrategyModule1").hide();
-        $("#ChaseStrategyModule1").hide();
-        $("#ZoneAttackModule1").hide();
-        $("#TypeUAttackModule1").hide();
-        $("#SideSpeedUpModule1").hide();
-        $("#DorsadAttackModule1").hide();
-        $("#CornerKickModule1").hide();
-    });
-    $("#TypeUAttack1").click(function() {
-        $("#TypeUAttackModule1").show();
-        $("#AttackStrategyModule1").hide();
-        $("#ChaseStrategyModule1").hide();
-        $("#ZoneAttackModule1").hide();
-        $("#TypeSAttackModule1").hide();
-        $("#SideSpeedUpModule1").hide();
-        $("#DorsadAttackModule1").hide();
-        $("#CornerKickModule1").hide();
-    });
-    $("#SideSpeedUp1").click(function() {
-        $("#SideSpeedUpModule1").show();
-        $("#AttackStrategyModule1").hide();
-        $("#ChaseStrategyModule1").hide();
-        $("#ZoneAttackModule1").hide();
-        $("#TypeSAttackModule1").hide();
-        $("#TypeUAttackModule1").hide();
-        $("#DorsadAttackModule1").hide();
-        $("#CornerKickModule1").hide();
-    });
-    $("#DorsadAttack1").click(function() {
-        $("#DorsadAttackModule1").show();
-        $("#AttackStrategyModule1").hide();
-        $("#ChaseStrategyModule1").hide();
-        $("#ZoneAttackModule1").hide();
-        $("#TypeSAttackModule1").hide();
-        $("#TypeUAttackModule1").hide();
-        $("#SideSpeedUpModule1").hide();
-        $("#CornerKickModule1").hide();
-    });
-    $("#CornerKick1").click(function() {
-        $("#CornerKickModule1").show();
-        $("#AttackStrategyModule1").hide();
-        $("#ChaseStrategyModule1").hide();
-        $("#ZoneAttackModule1").hide();
-        $("#TypeSAttackModule1").hide();
-        $("#TypeUAttackModule1").hide();
-        $("#SideSpeedUpModule1").hide();
-        $("#DorsadAttackModule1").hide();
-    });
-    //Robot 2
-    $("#PathplanButton2").buttonset();
+        $("#PenaltyKickModule1").hide();
 
-    $("#ChaseStrategyModule2").hide();
-    $("#ZoneAttackModule2").hide();
-    $("#TypeSAttackModule2").hide();
-    $("#TypeUAttackModule2").hide();
-    $("#SideSpeedUpModule2").hide();
-    $("#DorsadAttackModule2").hide();
-    $("#CornerKickModule2").hide();
+        $("#AttackStrategy1").click(function() {
+            $("#AttackStrategyModule1").show();
+            $("#ChaseStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#ChaseStrategy1").click(function() {
+            $("#ChaseStrategyModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#ZoneAttack1").click(function() {
+            $("#ZoneAttackModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ChaseStrategyModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#TypeSAttack1").click(function() {
+            $("#TypeSAttackModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ChaseStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#TypeUAttack1").click(function() {
+            $("#TypeUAttackModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ChaseStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#SideSpeedUp1").click(function() {
+            $("#SideSpeedUpModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ChaseStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#DorsadAttack1").click(function() {
+            $("#DorsadAttackModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ChaseStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#CornerKick1").click(function() {
+            $("#CornerKickModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ChaseStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#PenaltyKick1").click(function() {
+            $("#PenaltyKickModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ChaseStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#CornerKickModule1").hide();
+        });
+        //Robot 2
+        $("#PathplanButton2").buttonset();
 
-    $("#AttackStrategy2").click(function() {
-        $("#AttackStrategyModule2").show();
         $("#ChaseStrategyModule2").hide();
         $("#ZoneAttackModule2").hide();
         $("#TypeSAttackModule2").hide();
@@ -2881,91 +2949,112 @@
         $("#SideSpeedUpModule2").hide();
         $("#DorsadAttackModule2").hide();
         $("#CornerKickModule2").hide();
-    });
-    $("#ChaseStrategy2").click(function() {
-        $("#ChaseStrategyModule2").show();
-        $("#AttackStrategyModule2").hide();
-        $("#ZoneAttackModule2").hide();
-        $("#TypeSAttackModule2").hide();
-        $("#TypeUAttackModule2").hide();
-        $("#SideSpeedUpModule2").hide();
-        $("#DorsadAttackModule2").hide();
-        $("#CornerKickModule2").hide();
-    });
-    $("#ZoneAttack2").click(function() {
-        $("#ZoneAttackModule2").show();
-        $("#AttackStrategyModule2").hide();
-        $("#ChaseStrategyModule2").hide();
-        $("#TypeSAttackModule2").hide();
-        $("#TypeUAttackModule2").hide();
-        $("#SideSpeedUpModule2").hide();
-        $("#DorsadAttackModule2").hide();
-        $("#CornerKickModule2").hide();
-    });
-    $("#TypeSAttack2").click(function() {
-        $("#TypeSAttackModule2").show();
-        $("#AttackStrategyModule2").hide();
-        $("#ChaseStrategyModule2").hide();
-        $("#ZoneAttackModule2").hide();
-        $("#TypeUAttackModule2").hide();
-        $("#SideSpeedUpModule2").hide();
-        $("#DorsadAttackModule2").hide();
-        $("#CornerKickModule2").hide();
-    });
-    $("#TypeUAttack2").click(function() {
-        $("#TypeUAttackModule2").show();
-        $("#AttackStrategyModule2").hide();
-        $("#ChaseStrategyModule2").hide();
-        $("#ZoneAttackModule2").hide();
-        $("#TypeSAttackModule2").hide();
-        $("#SideSpeedUpModule2").hide();
-        $("#DorsadAttackModule2").hide();
-        $("#CornerKickModule2").hide();
-    });
-    $("#SideSpeedUp2").click(function() {
-        $("#SideSpeedUpModule2").show();
-        $("#AttackStrategyModule2").hide();
-        $("#ChaseStrategyModule2").hide();
-        $("#ZoneAttackModule2").hide();
-        $("#TypeSAttackModule2").hide();
-        $("#TypeUAttackModule2").hide();
-        $("#DorsadAttackModule2").hide();
-        $("#CornerKickModule2").hide();
-    });
-    $("#DorsadAttack2").click(function() {
-        $("#DorsadAttackModule2").show();
-        $("#AttackStrategyModule2").hide();
-        $("#ChaseStrategyModule2").hide();
-        $("#ZoneAttackModule2").hide();
-        $("#TypeSAttackModule2").hide();
-        $("#TypeUAttackModule2").hide();
-        $("#SideSpeedUpModule2").hide();
-        $("#CornerKickModule2").hide();
-    });
-    $("#CornerKick2").click(function() {
-        $("#CornerKickModule2").show();
-        $("#AttackStrategyModule2").hide();
-        $("#ChaseStrategyModule2").hide();
-        $("#ZoneAttackModule2").hide();
-        $("#TypeSAttackModule2").hide();
-        $("#TypeUAttackModule2").hide();
-        $("#SideSpeedUpModule2").hide();
-        $("#DorsadAttackModule2").hide();
-    });
+        $("#PenaltyKickModule2").hide();
 
-    //Robot 3
-    $("#PathplanButton3").buttonset();
+        $("#AttackStrategy2").click(function() {
+            $("#AttackStrategyModule2").show();
+            $("#ChaseStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
+        $("#ChaseStrategy2").click(function() {
+            $("#ChaseStrategyModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
+        $("#ZoneAttack2").click(function() {
+            $("#ZoneAttackModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ChaseStrategyModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
+        $("#TypeSAttack2").click(function() {
+            $("#TypeSAttackModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ChaseStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
+        $("#TypeUAttack2").click(function() {
+            $("#TypeUAttackModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ChaseStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
+        $("#SideSpeedUp2").click(function() {
+            $("#SideSpeedUpModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ChaseStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
+        $("#DorsadAttack2").click(function() {
+            $("#DorsadAttackModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ChaseStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
+        $("#CornerKick2").click(function() {
+            $("#CornerKickModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ChaseStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
 
-    $("#ChaseStrategyModule3").hide();
-    $("#ZoneAttackModule3").hide();
-    $("#TypeSAttackModule3").hide();
-    $("#TypeUAttackModule3").hide();
-    $("#SideSpeedUpModule3").hide();
-    $("#DorsadAttackModule3").hide();
-    $("#CornerKickModule3").hide();
+        $("#PenaltyKick2").click(function() {
+            $("#PenaltyKickModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ChaseStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#CornerKickModule2").hide();
+        });
 
-    $("#AttackStrategy3").click(function() {
-        $("#AttackStrategyModule3").show();
+        //Robot 3
+        $("#PathplanButton3").buttonset();
+
         $("#ChaseStrategyModule3").hide();
         $("#ZoneAttackModule3").hide();
         $("#TypeSAttackModule3").hide();
@@ -2973,115 +3062,135 @@
         $("#SideSpeedUpModule3").hide();
         $("#DorsadAttackModule3").hide();
         $("#CornerKickModule3").hide();
-    });
-    $("#ChaseStrategy3").click(function() {
-        $("#ChaseStrategyModule3").show();
-        $("#AttackStrategyModule3").hide();
-        $("#ZoneAttackModule3").hide();
-        $("#TypeSAttackModule3").hide();
-        $("#TypeUAttackModule3").hide();
-        $("#SideSpeedUpModule3").hide();
-        $("#DorsadAttackModule3").hide();
-        $("#CornerKickModule3").hide();
-    });
-    $("#ZoneAttack3").click(function() {
-        $("#ZoneAttackModule3").show();
-        $("#AttackStrategyModule3").hide();
-        $("#ChaseStrategyModule3").hide();
-        $("#TypeSAttackModule3").hide();
-        $("#TypeUAttackModule3").hide();
-        $("#SideSpeedUpModule3").hide();
-        $("#DorsadAttackModule3").hide();
-        $("#CornerKickModule3").hide();
-    });
-    $("#TypeSAttack3").click(function() {
-        $("#TypeSAttackModule3").show();
-        $("#AttackStrategyModule3").hide();
-        $("#ChaseStrategyModule3").hide();
-        $("#ZoneAttackModule3").hide();
-        $("#TypeUAttackModule3").hide();
-        $("#SideSpeedUpModule3").hide();
-        $("#DorsadAttackModule3").hide();
-        $("#CornerKickModule3").hide();
-    });
-    $("#TypeUAttack3").click(function() {
-        $("#TypeUAttackModule3").show();
-        $("#AttackStrategyModule3").hide();
-        $("#ChaseStrategyModule3").hide();
-        $("#ZoneAttackModule3").hide();
-        $("#TypeSAttackModule3").hide();
-        $("#SideSpeedUpModule3").hide();
-        $("#DorsadAttackModule3").hide();
-        $("#CornerKickModule3").hide();
-    });
-    $("#SideSpeedUp3").click(function() {
-        $("#SideSpeedUpModule3").show();
-        $("#AttackStrategyModule3").hide();
-        $("#ChaseStrategyModule3").hide();
-        $("#ZoneAttackModule3").hide();
-        $("#TypeSAttackModule3").hide();
-        $("#TypeUAttackModule3").hide();
-        $("#DorsadAttackModule3").hide();
-        $("#CornerKickModule3").hide();
-    });
-    $("#DorsadAttack3").click(function() {
-        $("#DorsadAttackModule3").show();
-        $("#AttackStrategyModule3").hide();
-        $("#ChaseStrategyModule3").hide();
-        $("#ZoneAttackModule3").hide();
-        $("#TypeSAttackModule3").hide();
-        $("#TypeUAttackModule3").hide();
-        $("#SideSpeedUpModule3").hide();
-        $("#CornerKickModule3").hide();
-    });
-    $("#CornerKick3").click(function() {
-        $("#CornerKickModule3").show();
-        $("#AttackStrategyModule3").hide();
-        $("#ChaseStrategyModule3").hide();
-        $("#ZoneAttackModule3").hide();
-        $("#TypeSAttackModule3").hide();
-        $("#TypeUAttackModule3").hide();
-        $("#SideSpeedUpModule3").hide();
-        $("#DorsadAttackModule3").hide();
-    });
+        $("#PenaltyKickModule3").hide();
+
+        $("#AttackStrategy3").click(function() {
+            $("#AttackStrategyModule3").show();
+            $("#ChaseStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#ChaseStrategy3").click(function() {
+            $("#ChaseStrategyModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#ZoneAttack3").click(function() {
+            $("#ZoneAttackModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ChaseStrategyModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#TypeSAttack3").click(function() {
+            $("#TypeSAttackModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ChaseStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#TypeUAttack3").click(function() {
+            $("#TypeUAttackModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ChaseStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#SideSpeedUp3").click(function() {
+            $("#SideSpeedUpModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ChaseStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#DorsadAttack3").click(function() {
+            $("#DorsadAttackModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ChaseStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#CornerKick3").click(function() {
+            $("#CornerKickModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ChaseStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#PenaltyKick3").click(function() {
+            $("#PenaltyKickModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ChaseStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#CornerKickModule3").hide();
+        });
     </script>
     <!-- Behavior -->
     <script>
-    // RobotState
-    $("#BehaviorSettingRobotDiv").buttonset();
+        // RobotState
+        $("#BehaviorSettingRobotDiv").buttonset();
 
-    $("#BehaviorRobot2Module").hide();
-    $("#BehaviorRobot3Module").hide();
-
-    $("#BehaviorRobot1Button").click(function() {
-        $("#BehaviorRobot1Module").show();
         $("#BehaviorRobot2Module").hide();
         $("#BehaviorRobot3Module").hide();
-    });
-    $("#BehaviorRobot2Button").click(function() {
-        $("#BehaviorRobot2Module").show();
-        $("#BehaviorRobot1Module").hide();
-        $("#BehaviorRobot3Module").hide();
-    });
-    $("#BehaviorRobot3Button").click(function() {
-        $("#BehaviorRobot3Module").show();
-        $("#BehaviorRobot1Module").hide();
-        $("#BehaviorRobot2Module").hide();
-    });
 
-    //Robot 1
-    $("#SetBehaviorButton1").buttonset();
+        $("#BehaviorRobot1Button").click(function() {
+            $("#BehaviorRobot1Module").show();
+            $("#BehaviorRobot2Module").hide();
+            $("#BehaviorRobot3Module").hide();
+        });
+        $("#BehaviorRobot2Button").click(function() {
+            $("#BehaviorRobot2Module").show();
+            $("#BehaviorRobot1Module").hide();
+            $("#BehaviorRobot3Module").hide();
+        });
+        $("#BehaviorRobot3Button").click(function() {
+            $("#BehaviorRobot3Module").show();
+            $("#BehaviorRobot1Module").hide();
+            $("#BehaviorRobot2Module").hide();
+        });
 
-    $("#StateAttackModule1").hide();
-    $("#StateTypeUChaseModule1").hide();
-    $("#StateTypeSAttackModule1").hide();
-    $("#StateSideSpeedUPModule1").hide();
-    $("#StateZoneAttackModule1").hide();
-    $("#StateCornerKickModule1").hide();
-    $("#StrategySelectionModule1").hide();
+        //Robot 1
+        $("#SetBehaviorButton1").buttonset();
 
-    $("#StateChase1").click(function() {
-        $("#StateChaseModule1").show();
         $("#StateAttackModule1").hide();
         $("#StateTypeUChaseModule1").hide();
         $("#StateTypeSAttackModule1").hide();
@@ -3089,91 +3198,91 @@
         $("#StateZoneAttackModule1").hide();
         $("#StateCornerKickModule1").hide();
         $("#StrategySelectionModule1").hide();
-    });
-    $("#StateAttack1").click(function() {
-        $("#StateAttackModule1").show();
-        $("#StateChaseModule1").hide();
-        $("#StateTypeUChaseModule1").hide();
-        $("#StateTypeSAttackModule1").hide();
-        $("#StateSideSpeedUPModule1").hide();
-        $("#StateZoneAttackModule11").hide();
-        $("#StateCornerKickModule11").hide();
-        $("#StrategySelectionModule1").hide();
-    });
-    $("#StateTypeUChase1").click(function() {
-        $("#StateTypeUChaseModule1").show();
-        $("#StateChaseModule1").hide();
-        $("#StateAttackModule1").hide();
-        $("#StateTypeSAttackModule1").hide();
-        $("#StateSideSpeedUPModule1").hide();
-        $("#StateZoneAttackModule1").hide();
-        $("#StateCornerKickModule1").hide();
-        $("#StrategySelectionModule1").hide();
-    });
-    $("#StateTypeSAttack1").click(function() {
-        $("#StateTypeSAttackModule1").show();
-        $("#StateChaseModule1").hide();
-        $("#StateAttackModule1").hide();
-        $("#StateTypeUChaseModule1").hide();
-        $("#StateSideSpeedUPModule1").hide();
-        $("#StateZoneAttackModule1").hide();
-        $("#StateCornerKickModule1").hide();
-        $("#StrategySelectionModule1").hide();
-    });
-    $("#StateSideSpeedUP1").click(function() {
-        $("#StateSideSpeedUPModule1").show();
-        $("#StateChaseModule1").hide();
-        $("#StateAttackModule1").hide();
-        $("#StateTypeUChaseModule1").hide();
-        $("#StateTypeSAttackModule1").hide();
-        $("#StateZoneAttackModule1").hide();
-        $("#StateCornerKickModule1").hide();
-        $("#StrategySelectionModule1").hide();
-    });
-    $("#StateZoneAttack1").click(function() {
-        $("#StateZoneAttackModule1").show();
-        $("#StateChaseModule1").hide();
-        $("#StateAttackModule1").hide();
-        $("#StateTypeUChaseModule1").hide();
-        $("#StateTypeSAttackModule1").hide();
-        $("#StateSideSpeedUPModule1").hide();
-        $("#StateCornerKickModule1").hide();
-        $("#StrategySelectionModule1").hide();
-    });
-    $("#StateCornerKick1").click(function() {
-        $("#StateCornerKickModule1").show();
-        $("#StateChaseModule1").hide();
-        $("#StateAttackModule1").hide();
-        $("#StateTypeUChaseModule1").hide();
-        $("#StateTypeSAttackModule1").hide();
-        $("#StateSideSpeedUPModule1").hide();
-        $("#StateZoneAttackModule1").hide();
-        $("#StrategySelectionModule1").hide();
-    });
-    $("#StrategySelection1").click(function() {
-        $("#StrategySelectionModule1").show();
-        $("#StateChaseModule1").hide();
-        $("#StateAttackModule1").hide();
-        $("#StateTypeUChaseModule1").hide();
-        $("#StateTypeSAttackModule1").hide();
-        $("#StateSideSpeedUPModule1").hide();
-        $("#StateZoneAttackModule1").hide();
-        $("#StateCornerKickModule1").hide();
-    });
 
-    // Robot2
-    $("#SetBehaviorButton2").buttonset();
+        $("#StateChase1").click(function() {
+            $("#StateChaseModule1").show();
+            $("#StateAttackModule1").hide();
+            $("#StateTypeUChaseModule1").hide();
+            $("#StateTypeSAttackModule1").hide();
+            $("#StateSideSpeedUPModule1").hide();
+            $("#StateZoneAttackModule1").hide();
+            $("#StateCornerKickModule1").hide();
+            $("#StrategySelectionModule1").hide();
+        });
+        $("#StateAttack1").click(function() {
+            $("#StateAttackModule1").show();
+            $("#StateChaseModule1").hide();
+            $("#StateTypeUChaseModule1").hide();
+            $("#StateTypeSAttackModule1").hide();
+            $("#StateSideSpeedUPModule1").hide();
+            $("#StateZoneAttackModule11").hide();
+            $("#StateCornerKickModule11").hide();
+            $("#StrategySelectionModule1").hide();
+        });
+        $("#StateTypeUChase1").click(function() {
+            $("#StateTypeUChaseModule1").show();
+            $("#StateChaseModule1").hide();
+            $("#StateAttackModule1").hide();
+            $("#StateTypeSAttackModule1").hide();
+            $("#StateSideSpeedUPModule1").hide();
+            $("#StateZoneAttackModule1").hide();
+            $("#StateCornerKickModule1").hide();
+            $("#StrategySelectionModule1").hide();
+        });
+        $("#StateTypeSAttack1").click(function() {
+            $("#StateTypeSAttackModule1").show();
+            $("#StateChaseModule1").hide();
+            $("#StateAttackModule1").hide();
+            $("#StateTypeUChaseModule1").hide();
+            $("#StateSideSpeedUPModule1").hide();
+            $("#StateZoneAttackModule1").hide();
+            $("#StateCornerKickModule1").hide();
+            $("#StrategySelectionModule1").hide();
+        });
+        $("#StateSideSpeedUP1").click(function() {
+            $("#StateSideSpeedUPModule1").show();
+            $("#StateChaseModule1").hide();
+            $("#StateAttackModule1").hide();
+            $("#StateTypeUChaseModule1").hide();
+            $("#StateTypeSAttackModule1").hide();
+            $("#StateZoneAttackModule1").hide();
+            $("#StateCornerKickModule1").hide();
+            $("#StrategySelectionModule1").hide();
+        });
+        $("#StateZoneAttack1").click(function() {
+            $("#StateZoneAttackModule1").show();
+            $("#StateChaseModule1").hide();
+            $("#StateAttackModule1").hide();
+            $("#StateTypeUChaseModule1").hide();
+            $("#StateTypeSAttackModule1").hide();
+            $("#StateSideSpeedUPModule1").hide();
+            $("#StateCornerKickModule1").hide();
+            $("#StrategySelectionModule1").hide();
+        });
+        $("#StateCornerKick1").click(function() {
+            $("#StateCornerKickModule1").show();
+            $("#StateChaseModule1").hide();
+            $("#StateAttackModule1").hide();
+            $("#StateTypeUChaseModule1").hide();
+            $("#StateTypeSAttackModule1").hide();
+            $("#StateSideSpeedUPModule1").hide();
+            $("#StateZoneAttackModule1").hide();
+            $("#StrategySelectionModule1").hide();
+        });
+        $("#StrategySelection1").click(function() {
+            $("#StrategySelectionModule1").show();
+            $("#StateChaseModule1").hide();
+            $("#StateAttackModule1").hide();
+            $("#StateTypeUChaseModule1").hide();
+            $("#StateTypeSAttackModule1").hide();
+            $("#StateSideSpeedUPModule1").hide();
+            $("#StateZoneAttackModule1").hide();
+            $("#StateCornerKickModule1").hide();
+        });
 
-    $("#StateAttackModule2").hide();
-    $("#StateTypeUChaseModule2").hide();
-    $("#StateTypeSAttackModule2").hide();
-    $("#StateSideSpeedUPModule2").hide();
-    $("#StateZoneAttackModule2").hide();
-    $("#StateCornerKickModule2").hide();
-    $("#StrategySelectionModule2").hide();
+        // Robot2
+        $("#SetBehaviorButton2").buttonset();
 
-    $("#StateChase2").click(function() {
-        $("#StateChaseModule2").show();
         $("#StateAttackModule2").hide();
         $("#StateTypeUChaseModule2").hide();
         $("#StateTypeSAttackModule2").hide();
@@ -3181,91 +3290,91 @@
         $("#StateZoneAttackModule2").hide();
         $("#StateCornerKickModule2").hide();
         $("#StrategySelectionModule2").hide();
-    });
-    $("#StateAttack2").click(function() {
-        $("#StateAttackModule2").show();
-        $("#StateChaseModule2").hide();
-        $("#StateTypeUChaseModule2").hide();
-        $("#StateTypeSAttackModule2").hide();
-        $("#StateSideSpeedUPModule2").hide();
-        $("#StateZoneAttackModule2").hide();
-        $("#StateCornerKickModule2").hide();
-        $("#StrategySelectionModule2").hide();
-    });
-    $("#StateTypeUChase2").click(function() {
-        $("#StateTypeUChaseModule2").show();
-        $("#StateChaseModule2").hide();
-        $("#StateAttackModule2").hide();
-        $("#StateTypeSAttackModule2").hide();
-        $("#StateSideSpeedUPModule2").hide();
-        $("#StateZoneAttackModule2").hide();
-        $("#StateCornerKickModule2").hide();
-        $("#StrategySelectionModule2").hide();
-    });
-    $("#StateTypeSAttack2").click(function() {
-        $("#StateTypeSAttackModule2").show();
-        $("#StateChaseModule2").hide();
-        $("#StateAttackModule2").hide();
-        $("#StateTypeUChaseModule2").hide();
-        $("#StateSideSpeedUPModule2").hide();
-        $("#StateZoneAttackModule2").hide();
-        $("#StateCornerKickModule2").hide();
-        $("#StrategySelectionModule2").hide();
-    });
-    $("#StateSideSpeedUP2").click(function() {
-        $("#StateSideSpeedUPModule2").show();
-        $("#StateChaseModule2").hide();
-        $("#StateAttackModule2").hide();
-        $("#StateTypeUChaseModule2").hide();
-        $("#StateTypeSAttackModule2").hide();
-        $("#StateZoneAttackModule2").hide();
-        $("#StateCornerKickModule2").hide();
-        $("#StrategySelectionModule2").hide();
-    });
-    $("#StateZoneAttack2").click(function() {
-        $("#StateZoneAttackModule2").show();
-        $("#StateChaseModule2").hide();
-        $("#StateAttackModule2").hide();
-        $("#StateTypeUChaseModule2").hide();
-        $("#StateTypeSAttackModule2").hide();
-        $("#StateSideSpeedUPModule2").hide();
-        $("#StateCornerKickModule2").hide();
-        $("#StrategySelectionModule2").hide();
-    });
-    $("#StateCornerKick2").click(function() {
-        $("#StateCornerKickModule2").show();
-        $("#StateChaseModule2").hide();
-        $("#StateAttackModule2").hide();
-        $("#StateTypeUChaseModule2").hide();
-        $("#StateTypeSAttackModule2").hide();
-        $("#StateSideSpeedUPModule2").hide();
-        $("#StateZoneAttackModule2").hide();
-        $("#StrategySelectionModule2").hide();
-    });
-    $("#StrategySelection2").click(function() {
-        $("#StrategySelectionModule2").show();
-        $("#StateChaseModule2").hide();
-        $("#StateAttackModule2").hide();
-        $("#StateTypeUChaseModule2").hide();
-        $("#StateTypeSAttackModule2").hide();
-        $("#StateSideSpeedUPModule2").hide();
-        $("#StateZoneAttackModule2").hide();
-        $("#StateCornerKickModule2").hide();
-    });
 
-    // Robot3
-    $("#SetBehaviorButton3").buttonset();
+        $("#StateChase2").click(function() {
+            $("#StateChaseModule2").show();
+            $("#StateAttackModule2").hide();
+            $("#StateTypeUChaseModule2").hide();
+            $("#StateTypeSAttackModule2").hide();
+            $("#StateSideSpeedUPModule2").hide();
+            $("#StateZoneAttackModule2").hide();
+            $("#StateCornerKickModule2").hide();
+            $("#StrategySelectionModule2").hide();
+        });
+        $("#StateAttack2").click(function() {
+            $("#StateAttackModule2").show();
+            $("#StateChaseModule2").hide();
+            $("#StateTypeUChaseModule2").hide();
+            $("#StateTypeSAttackModule2").hide();
+            $("#StateSideSpeedUPModule2").hide();
+            $("#StateZoneAttackModule2").hide();
+            $("#StateCornerKickModule2").hide();
+            $("#StrategySelectionModule2").hide();
+        });
+        $("#StateTypeUChase2").click(function() {
+            $("#StateTypeUChaseModule2").show();
+            $("#StateChaseModule2").hide();
+            $("#StateAttackModule2").hide();
+            $("#StateTypeSAttackModule2").hide();
+            $("#StateSideSpeedUPModule2").hide();
+            $("#StateZoneAttackModule2").hide();
+            $("#StateCornerKickModule2").hide();
+            $("#StrategySelectionModule2").hide();
+        });
+        $("#StateTypeSAttack2").click(function() {
+            $("#StateTypeSAttackModule2").show();
+            $("#StateChaseModule2").hide();
+            $("#StateAttackModule2").hide();
+            $("#StateTypeUChaseModule2").hide();
+            $("#StateSideSpeedUPModule2").hide();
+            $("#StateZoneAttackModule2").hide();
+            $("#StateCornerKickModule2").hide();
+            $("#StrategySelectionModule2").hide();
+        });
+        $("#StateSideSpeedUP2").click(function() {
+            $("#StateSideSpeedUPModule2").show();
+            $("#StateChaseModule2").hide();
+            $("#StateAttackModule2").hide();
+            $("#StateTypeUChaseModule2").hide();
+            $("#StateTypeSAttackModule2").hide();
+            $("#StateZoneAttackModule2").hide();
+            $("#StateCornerKickModule2").hide();
+            $("#StrategySelectionModule2").hide();
+        });
+        $("#StateZoneAttack2").click(function() {
+            $("#StateZoneAttackModule2").show();
+            $("#StateChaseModule2").hide();
+            $("#StateAttackModule2").hide();
+            $("#StateTypeUChaseModule2").hide();
+            $("#StateTypeSAttackModule2").hide();
+            $("#StateSideSpeedUPModule2").hide();
+            $("#StateCornerKickModule2").hide();
+            $("#StrategySelectionModule2").hide();
+        });
+        $("#StateCornerKick2").click(function() {
+            $("#StateCornerKickModule2").show();
+            $("#StateChaseModule2").hide();
+            $("#StateAttackModule2").hide();
+            $("#StateTypeUChaseModule2").hide();
+            $("#StateTypeSAttackModule2").hide();
+            $("#StateSideSpeedUPModule2").hide();
+            $("#StateZoneAttackModule2").hide();
+            $("#StrategySelectionModule2").hide();
+        });
+        $("#StrategySelection2").click(function() {
+            $("#StrategySelectionModule2").show();
+            $("#StateChaseModule2").hide();
+            $("#StateAttackModule2").hide();
+            $("#StateTypeUChaseModule2").hide();
+            $("#StateTypeSAttackModule2").hide();
+            $("#StateSideSpeedUPModule2").hide();
+            $("#StateZoneAttackModule2").hide();
+            $("#StateCornerKickModule2").hide();
+        });
 
-    $("#StateAttackModule3").hide();
-    $("#StateTypeUChaseModule3").hide();
-    $("#StateTypeSAttackModule3").hide();
-    $("#StateSideSpeedUPModule3").hide();
-    $("#StateZoneAttackModule3").hide();
-    $("#StateCornerKickModule3").hide();
-    $("#StrategySelectionModule3").hide();
+        // Robot3
+        $("#SetBehaviorButton3").buttonset();
 
-    $("#StateChase3").click(function() {
-        $("#StateChaseModule3").show();
         $("#StateAttackModule3").hide();
         $("#StateTypeUChaseModule3").hide();
         $("#StateTypeSAttackModule3").hide();
@@ -3273,107 +3382,119 @@
         $("#StateZoneAttackModule3").hide();
         $("#StateCornerKickModule3").hide();
         $("#StrategySelectionModule3").hide();
-    });
-    $("#StateAttack3").click(function() {
-        $("#StateAttackModule3").show();
-        $("#StateChaseModule3").hide();
-        $("#StateTypeUChaseModule3").hide();
-        $("#StateTypeSAttackModule3").hide();
-        $("#StateSideSpeedUPModule3").hide();
-        $("#StateZoneAttackModule3").hide();
-        $("#StateCornerKickModule3").hide();
-        $("#StrategySelectionModule3").hide();
-    });
-    $("#StateTypeUChase3").click(function() {
-        $("#StateTypeUChaseModule3").show();
-        $("#StateChaseModule3").hide();
-        $("#StateAttackModule3").hide();
-        $("#StateTypeSAttackModule3").hide();
-        $("#StateSideSpeedUPModule3").hide();
-        $("#StateZoneAttackModule3").hide();
-        $("#StateCornerKickModule3").hide();
-        $("#StrategySelectionModule3").hide();
-    });
-    $("#StateTypeSAttack3").click(function() {
-        $("#StateTypeSAttackModule3").show();
-        $("#StateChaseModule3").hide();
-        $("#StateAttackModule3").hide();
-        $("#StateTypeUChaseModule3").hide();
-        $("#StateSideSpeedUPModule3").hide();
-        $("#StateZoneAttackModule3").hide();
-        $("#StateCornerKickModule3").hide();
-        $("#StrategySelectionModule3").hide();
-    });
-    $("#StateSideSpeedUP3").click(function() {
-        $("#StateSideSpeedUPModule3").show();
-        $("#StateChaseModule3").hide();
-        $("#StateAttackModule3").hide();
-        $("#StateTypeUChaseModule3").hide();
-        $("#StateTypeSAttackModule3").hide();
-        $("#StateZoneAttackModule3").hide();
-        $("#StateCornerKickModule3").hide();
-        $("#StrategySelectionModule3").hide();
-    });
-    $("#StateZoneAttack3").click(function() {
-        $("#StateZoneAttackModule3").show();
-        $("#StateChaseModule3").hide();
-        $("#StateAttackModule3").hide();
-        $("#StateTypeUChaseModule3").hide();
-        $("#StateTypeSAttackModule3").hide();
-        $("#StateSideSpeedUPModule3").hide();
-        $("#StateCornerKickModule3").hide();
-        $("#StrategySelectionModule3").hide();
-    });
-    $("#StateCornerKick3").click(function() {
-        $("#StateCornerKickModule3").show();
-        $("#StateChaseModule3").hide();
-        $("#StateAttackModule3").hide();
-        $("#StateTypeUChaseModule3").hide();
-        $("#StateTypeSAttackModule3").hide();
-        $("#StateSideSpeedUPModule3").hide();
-        $("#StateZoneAttackModule3").hide();
-        $("#StrategySelectionModule3").hide();
-    });
-    $("#StrategySelection3").click(function() {
-        $("#StrategySelectionModule3").show();
-        $("#StateChaseModule3").hide();
-        $("#StateAttackModule3").hide();
-        $("#StateTypeUChaseModule3").hide();
-        $("#StateTypeSAttackModule3").hide();
-        $("#StateSideSpeedUPModule3").hide();
-        $("#StateZoneAttackModule3").hide();
-        $("#StateCornerKickModule3").hide();
-    });
+
+        $("#StateChase3").click(function() {
+            $("#StateChaseModule3").show();
+            $("#StateAttackModule3").hide();
+            $("#StateTypeUChaseModule3").hide();
+            $("#StateTypeSAttackModule3").hide();
+            $("#StateSideSpeedUPModule3").hide();
+            $("#StateZoneAttackModule3").hide();
+            $("#StateCornerKickModule3").hide();
+            $("#StrategySelectionModule3").hide();
+        });
+        $("#StateAttack3").click(function() {
+            $("#StateAttackModule3").show();
+            $("#StateChaseModule3").hide();
+            $("#StateTypeUChaseModule3").hide();
+            $("#StateTypeSAttackModule3").hide();
+            $("#StateSideSpeedUPModule3").hide();
+            $("#StateZoneAttackModule3").hide();
+            $("#StateCornerKickModule3").hide();
+            $("#StrategySelectionModule3").hide();
+        });
+        $("#StateTypeUChase3").click(function() {
+            $("#StateTypeUChaseModule3").show();
+            $("#StateChaseModule3").hide();
+            $("#StateAttackModule3").hide();
+            $("#StateTypeSAttackModule3").hide();
+            $("#StateSideSpeedUPModule3").hide();
+            $("#StateZoneAttackModule3").hide();
+            $("#StateCornerKickModule3").hide();
+            $("#StrategySelectionModule3").hide();
+        });
+        $("#StateTypeSAttack3").click(function() {
+            $("#StateTypeSAttackModule3").show();
+            $("#StateChaseModule3").hide();
+            $("#StateAttackModule3").hide();
+            $("#StateTypeUChaseModule3").hide();
+            $("#StateSideSpeedUPModule3").hide();
+            $("#StateZoneAttackModule3").hide();
+            $("#StateCornerKickModule3").hide();
+            $("#StrategySelectionModule3").hide();
+        });
+        $("#StateSideSpeedUP3").click(function() {
+            $("#StateSideSpeedUPModule3").show();
+            $("#StateChaseModule3").hide();
+            $("#StateAttackModule3").hide();
+            $("#StateTypeUChaseModule3").hide();
+            $("#StateTypeSAttackModule3").hide();
+            $("#StateZoneAttackModule3").hide();
+            $("#StateCornerKickModule3").hide();
+            $("#StrategySelectionModule3").hide();
+        });
+        $("#StateZoneAttack3").click(function() {
+            $("#StateZoneAttackModule3").show();
+            $("#StateChaseModule3").hide();
+            $("#StateAttackModule3").hide();
+            $("#StateTypeUChaseModule3").hide();
+            $("#StateTypeSAttackModule3").hide();
+            $("#StateSideSpeedUPModule3").hide();
+            $("#StateCornerKickModule3").hide();
+            $("#StrategySelectionModule3").hide();
+        });
+        $("#StateCornerKick3").click(function() {
+            $("#StateCornerKickModule3").show();
+            $("#StateChaseModule3").hide();
+            $("#StateAttackModule3").hide();
+            $("#StateTypeUChaseModule3").hide();
+            $("#StateTypeSAttackModule3").hide();
+            $("#StateSideSpeedUPModule3").hide();
+            $("#StateZoneAttackModule3").hide();
+            $("#StrategySelectionModule3").hide();
+        });
+        $("#StrategySelection3").click(function() {
+            $("#StrategySelectionModule3").show();
+            $("#StateChaseModule3").hide();
+            $("#StateAttackModule3").hide();
+            $("#StateTypeUChaseModule3").hide();
+            $("#StateTypeSAttackModule3").hide();
+            $("#StateSideSpeedUPModule3").hide();
+            $("#StateZoneAttackModule3").hide();
+            $("#StateCornerKickModule3").hide();
+        });
     </script>
     <!-- TeamStrategy_Button_function -->
     <script>
-    $("#TeamStrategyButtonDiv").buttonset();
+        $("#TeamStrategyButtonDiv").buttonset();
 
-    $('#auto').change(function() {
-        $('#RobotModule :input').attr('disabled', this.checked);
-    });
-    $('#manual').change(function() {
-        $('#RobotModule :input').attr('disabled', !this.checked);
-    });
+        $('#auto').change(function() {
+            $('#RobotModule :input').attr('disabled', this.checked);
+        });
+        $('#manual').change(function() {
+            $('#RobotModule :input').attr('disabled', !this.checked);
+        });
     </script>
     <!-- ChooseShow_Button_function -->
     <script>
-    $("#ChooseShowButtonDiv").buttonset();
-    $("#NotShowModule").hide();
-
-    $("#NotShow").click(function() {
-        $("#NotShowModule").show();
-        $("#STypeModule").hide();
-    });
-
-    $("#SType").click(function() {
-        $("#STypeModule").show();
+        $("#ChooseShowButtonDiv").buttonset();
         $("#NotShowModule").hide();
-    });
+
+        $("#NotShow").click(function() {
+            $("#NotShowModule").show();
+            $("#STypeModule").hide();
+        });
+
+        $("#SType").click(function() {
+            $("#STypeModule").show();
+            $("#NotShowModule").hide();
+        });
     </script>
     <script src="js/GlobalVariable.js"></script>
+    <script src="js/KeyboardControl.js"></script>
     <script src="js/RobotConnect.js"></script>
     <script src="js/RosParam.js"></script>
+    <script src="js/RosService.js"></script>
     <script src="js/RosTopic.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/InterfaceControl.js"></script>

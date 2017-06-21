@@ -14,7 +14,6 @@ function GetJoystickSpeed() {
         y: Yspeed,
         z: 0
     });
-
     PublishTopicCmdVel(vec3);
 }
 
