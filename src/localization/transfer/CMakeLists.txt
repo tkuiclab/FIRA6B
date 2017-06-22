@@ -16,7 +16,7 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 # Binaries
 ##############################################################################
 
-add_executable(localization_node NodeHandle.cpp Transfer.cpp)
+add_executable(localization_node NodeHandle.cpp Transfer.cpp DisplayImage.cpp)
 target_link_libraries(localization_node ${catkin_LIBRARIES})
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations

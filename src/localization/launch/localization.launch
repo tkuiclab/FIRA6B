@@ -3,10 +3,10 @@
     <node name="prosilica_driver" pkg="prosilica_camera" type="prosilica_node" respawn="true" respawn_delay="5" output="screen"/>
     <node name="whiteline" pkg="vision" type="whiteLine" /> 
     <node name="objectdetection" pkg="vision" type="objectdetection"  respawn="true" respawn_delay="5" output="screen"/>
-    <!--<node name="interface" pkg="vision" type="interface" respawn="false"/><-->
+    <node name="interface" pkg="vision" type="interface" respawn="false"/>
     <node name="motion" pkg="motion" type="motion" output="screen"/>
     <node name="strategy_param_server" pkg="param_convey" type="strategy_param_server"/>
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
-    <include file="$(find localization)/launch/static_transform_publisher.launch" />  
+    <include file="$(find tf)/launch/static_transform_publisher.launch" />  
     <include file="$(find localization)/launch/hector_mapping.launch" />         
 </launch>
