@@ -126,7 +126,7 @@ void InterfaceProc::Parameter_getting(const int x)
 {
   if(ifstream(/*"src/FIRA6B/src/vision/config/default.yaml"*/defpath)){
     cout<<visionpath<<endl;
-    std::string temp = "rosparam load " + def; 
+    std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
     system(load);
     cout<<"Read the yaml file"<<endl;
@@ -269,6 +269,17 @@ void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
 
   SaveButton = msg.bin;
+    for(int i=0;i<6;i++){
+      HSV_red.push_back(BallHSVBoxMsg[i]);  HSV_green.push_back(GreenHSVBoxMsg[i]);
+      HSV_blue.push_back(BlueHSVBoxMsg[i]); HSV_yellow.push_back(YellowHSVBoxMsg[i]);
+cout<<"test"<<endl;
+    }
+      cout<<HSV_red[0]<<endl;
+  cout<<HSV_red[1]<<endl;
+  cout<<BallHSVBoxMsg[2]<<endl;
+  cout<<BallHSVBoxMsg[3]<<endl;
+  cout<<BallHSVBoxMsg[4]<<endl;
+  cout<<BallHSVBoxMsg[5]<<endl;
   HSVmap();
 }
 
@@ -279,8 +290,8 @@ InterfaceProc::InterfaceProc()
   ros::NodeHandle n("~");	
   Parameter_getting(1);	
   init_data();
-  //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
-  image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
+  image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+  //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
   image_pub_threshold_ = it_.advertise("/camera/image", 1);//http://localhost:8080/stream?topic=/camera/image webfor /camera/image
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
@@ -445,37 +456,37 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     case 1:
       // camera_pub.publish(camera_msg);
       *CameraModels=CameraModel(*frame);
-      cv::imshow(OPENCV_WINDOW, *CameraModels);
+      //cv::imshow(OPENCV_WINDOW, *CameraModels);
       outputframe=CameraModels;
       break;
     case 2:
       *CenterModels=CenterModel(*frame);
       //cout<<CenterXMsg<<endl;
-      cv::imshow(OPENCV_WINDOW, *CenterModels);
+      //cv::imshow(OPENCV_WINDOW, *CenterModels);
       outputframe=CenterModels;
       break;
     case 3:
       *ScanModels=ScanModel(*frame);
-      cv::imshow(OPENCV_WINDOW, *ScanModels);
+      //cv::imshow(OPENCV_WINDOW, *ScanModels);
       outputframe=ScanModels;
       break;
     case 4:
       *ColorModels =ColorModel(*frame);
-      cv::imshow(OPENCV_WINDOW, *ColorModels);
+      //cv::imshow(OPENCV_WINDOW, *ColorModels);
       outputframe=ColorModels;
       break;
     case 5:
       *WhiteModels =White_Line(*frame);
-      cv::imshow(OPENCV_WINDOW, *WhiteModels);
+      //cv::imshow(OPENCV_WINDOW, *WhiteModels);
       outputframe=WhiteModels;  
       break; 
     case 6:
       *BlackModels =Black_Line(*frame);
-      cv::imshow(OPENCV_WINDOW, *BlackModels);
+      //cv::imshow(OPENCV_WINDOW, *BlackModels);
       outputframe=BlackModels;
       break;
     case 7:
-      cv::imshow(OPENCV_WINDOW, Main_frame);
+      //cv::imshow(OPENCV_WINDOW, Main_frame);
       *outputframe=Main_frame;
       break;
   }
@@ -1702,7 +1713,7 @@ double InterfaceProc::RGBtoHSV_S(double HSVmax, double HSVmin)
     if(range == 0){
         return 0;
     }else{
-        return range/HSVmax*255;
+        return range/HSVmax*100;
     }
 }
 ////////////////////////////////////////////////////////////////////////
@@ -1713,58 +1724,69 @@ void InterfaceProc::HSVmap()
     for(int b=0;b<256;b++){
         for(int g=0;g<256;g++){
             for(int r=0;r<256;r++){
-                double Rnew,Gnew,Bnew,HSVmax,HSVmin,H_sum,S_sum,V_sum;
-                Bnew = b/255.0;
-                Gnew = g/255.0;
-                Rnew = r/255.0;
-                RGBtoHSV_maxmin(Rnew, Gnew, Bnew, HSVmax, HSVmin);
+                double R,G,B,H_sum,S_sum,V_sum;
+                B = b/255.0;
+                G = g/255.0;
+                R = r/255.0;
+                double Max = (max(R,G)>max(G,B))?max(R,G):max(G,B);
+                 double Min = (min(R,G)<min(G,B))?min(R,G):min(G,B); 
+                  if(Max==Min)Max+=1;
+                  if(R==Max){H_sum=(G-B)*60/(Max-Min);}
+                  if(G==Max){H_sum=120+(B-R)*60/(Max-Min);}
+                  if(B==Max){H_sum=240+(R-G)*60/(Max-Min);}
+                  if(B==G&&B==R) H_sum=0;
+                  if(H_sum<0){H_sum=H_sum+360;}
+                  S_sum=(((Max-Min)*100)/Max);
+                  if(Max==0)S_sum=0;
+                    V_sum=Max*100;
+                /*RGBtoHSV_maxmin(Rnew, Gnew, Bnew, HSVmax, HSVmin);
                 H_sum = RGBtoHSV_H(Rnew, Gnew, Bnew, HSVmax, HSVmin);
                 S_sum = RGBtoHSV_S(HSVmax,HSVmin);
-                V_sum = HSVmax*255.0;
+                V_sum = HSVmax*255.0;*/
                 HSVmap[r+(g<<8)+(b<<16)] = 0x00;
-                if(HSV_red[0] < HSV_red[1]){
-                    if( (H_sum >= HSV_red[0]) && (H_sum <= HSV_red[1])
-                      &&(S_sum >= HSV_red[2]) && (S_sum <= HSV_red[3])
-                      &&(V_sum >= HSV_red[4]) && (V_sum <= HSV_red[5]) )
+                if(BallHSVBoxMsg[0] < BallHSVBoxMsg[1]){
+                    if( (H_sum >= BallHSVBoxMsg[0]) && (H_sum <= BallHSVBoxMsg[1])
+                      &&(S_sum >= BallHSVBoxMsg[2]) && (S_sum <= BallHSVBoxMsg[3])
+                      &&(V_sum >= BallHSVBoxMsg[4]) && (V_sum <= BallHSVBoxMsg[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | REDITEM;
 
                 }else{
-                    if( (H_sum >= HSV_red[0]) || (H_sum <= HSV_red[1])
-                      &&(S_sum >= HSV_red[2]) && (S_sum <= HSV_red[3])
-                      &&(V_sum >= HSV_red[4]) && (V_sum <= HSV_red[5]) )
+                    if( (H_sum >= BallHSVBoxMsg[0]) || (H_sum <= BallHSVBoxMsg[1])
+                      &&(S_sum >= BallHSVBoxMsg[2]) && (S_sum <= BallHSVBoxMsg[3])
+                      &&(V_sum >= BallHSVBoxMsg[4]) && (V_sum <= BallHSVBoxMsg[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | REDITEM;
                 }
-                if(HSV_green[0] < HSV_green[1]){
-                    if( (H_sum >= HSV_green[0]) && (H_sum <= HSV_green[1])
-                      &&(S_sum >= HSV_green[2]) && (S_sum <= HSV_green[3])
-                      &&(V_sum >= HSV_green[4]) && (V_sum <= HSV_green[5]) )
+                if(GreenHSVBoxMsg[0] < GreenHSVBoxMsg[1]){
+                    if( (H_sum >= GreenHSVBoxMsg[0]) && (H_sum <= GreenHSVBoxMsg[1])
+                      &&(S_sum >= GreenHSVBoxMsg[2]) && (S_sum <= GreenHSVBoxMsg[3])
+                      &&(V_sum >= GreenHSVBoxMsg[4]) && (V_sum <= GreenHSVBoxMsg[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | GREENITEM;
                 }else{
-                    if( (H_sum >= HSV_green[0]) || (H_sum <= HSV_green[1])
-                      &&(S_sum >= HSV_green[2]) && (S_sum <= HSV_green[3])
-                      &&(V_sum >= HSV_green[4]) && (V_sum <= HSV_green[5]) )
+                    if( (H_sum >= GreenHSVBoxMsg[0]) || (H_sum <= GreenHSVBoxMsg[1])
+                      &&(S_sum >= GreenHSVBoxMsg[2]) && (S_sum <= GreenHSVBoxMsg[3])
+                      &&(V_sum >= GreenHSVBoxMsg[4]) && (V_sum <= GreenHSVBoxMsg[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | GREENITEM;
                 }
-                if(HSV_blue[0] < HSV_blue[1]){
-                    if( (H_sum >= HSV_blue[0]) && (H_sum <= HSV_blue[1])
-                      &&(S_sum >= HSV_blue[2]) && (S_sum <= HSV_blue[3])
-                      &&(V_sum >= HSV_blue[4]) && (V_sum <= HSV_blue[5]) )
+                if(BlueHSVBoxMsg[0] < BlueHSVBoxMsg[1]){
+                    if( (H_sum >= BlueHSVBoxMsg[0]) && (H_sum <= BlueHSVBoxMsg[1])
+                      &&(S_sum >= BlueHSVBoxMsg[2]) && (S_sum <= BlueHSVBoxMsg[3])
+                      &&(V_sum >= BlueHSVBoxMsg[4]) && (V_sum <= BlueHSVBoxMsg[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | BLUEITEM;
                 }else{
-                    if( (H_sum >= HSV_blue[0]) || (H_sum <= HSV_blue[1])
-                      &&(S_sum >= HSV_blue[2]) && (S_sum <= HSV_blue[3])
-                      &&(V_sum >= HSV_blue[4]) && (V_sum <= HSV_blue[5]) )
+                    if( (H_sum >= BlueHSVBoxMsg[0]) || (H_sum <= BlueHSVBoxMsg[1])
+                      &&(S_sum >= BlueHSVBoxMsg[2]) && (S_sum <= BlueHSVBoxMsg[3])
+                      &&(V_sum >= BlueHSVBoxMsg[4]) && (V_sum <= BlueHSVBoxMsg[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | BLUEITEM;
                 }
-                if(HSV_yellow[0] < HSV_yellow[1]){
-                    if( (H_sum >= HSV_yellow[0]) && (H_sum <= HSV_yellow[1])
-                      &&(S_sum >= HSV_yellow[2]) && (S_sum <= HSV_yellow[3])
-                      &&(V_sum >= HSV_yellow[4]) && (V_sum <= HSV_yellow[5]) )
+                if(YellowHSVBoxMsg[0] < YellowHSVBoxMsg[1]){
+                    if( (H_sum >= YellowHSVBoxMsg[0]) && (H_sum <= YellowHSVBoxMsg[1])
+                      &&(S_sum >= YellowHSVBoxMsg[2]) && (S_sum <= YellowHSVBoxMsg[3])
+                      &&(V_sum >= YellowHSVBoxMsg[4]) && (V_sum <= YellowHSVBoxMsg[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | YELLOWITEM;
                 }else{
-                    if( (H_sum >= HSV_yellow[0]) || (H_sum <= HSV_yellow[1])
-                      &&(S_sum >= HSV_yellow[2]) && (S_sum <= HSV_yellow[3])
-                      &&(V_sum >= HSV_yellow[4]) && (V_sum <= HSV_yellow[5]) )
+                    if( (H_sum >= YellowHSVBoxMsg[0]) || (H_sum <= YellowHSVBoxMsg[1])
+                      &&(S_sum >= YellowHSVBoxMsg[2]) && (S_sum <= YellowHSVBoxMsg[3])
+                      &&(V_sum >= YellowHSVBoxMsg[4]) && (V_sum <= YellowHSVBoxMsg[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | YELLOWITEM;
                 }
                 if(HSV_white[0] < HSV_white[1]){
@@ -1787,11 +1809,16 @@ void InterfaceProc::HSVmap()
     
     if(SaveButton!=0){
       cout<<SaveButton<<endl;
-    FILE *file=fopen(Filename_Path,"wb"); //開啟檔案來寫
+    FILE *file=fopen(Filename_Path,"rb+"); //開啟檔案來寫
     fwrite( HSVmap, 1, 256*256*256 , file );
     fclose(file);
     SaveButton = 0;
-  cout<<SaveButton<<endl;
+  cout<<BallHSVBoxMsg[0]<<endl;
+  cout<<BallHSVBoxMsg[1]<<endl;
+  cout<<BallHSVBoxMsg[2]<<endl;
+  cout<<BallHSVBoxMsg[3]<<endl;
+  cout<<BallHSVBoxMsg[4]<<endl;
+  cout<<BallHSVBoxMsg[5]<<endl;
   }
 }
 /// ////////////////////////////////////////////////////////////////////

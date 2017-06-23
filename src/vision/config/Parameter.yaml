@@ -2,19 +2,19 @@ FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 11.144465290806757, High: 650.0}
   Center: {Camera_high: 650, Center_X: 369, Center_Y: 268, Front: 146, Inner: 35,
-    Outer: 265, X: 338, Y: 258}
+    Outer: 265, X: 332, Y: 258}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance_Settings: [0, 0, 0]
   Dorsad_Attack: [8, 90, 180, 2, 1, 2]
-  FPS: 25
+  FPS: 11
   HSV:
-    Ball: [0, 37, 28, 100, 20, 100]
-    Blue: [205, 231, 80, 100, 42, 100]
+    Ball: [0, 53, 17, 100, 46, 100]
+    Blue: [223, 255, 81, 100, 0, 100]
     ColorMode: 1
     Green: [43, 187, 41, 74, 21, 100]
     White: [0, 359, 0, 359, 0, 359]
-    Yellow: [39, 10, 0, 64, 3, 100]
+    Yellow: [56, 143, 25, 100, 43, 87]
     black: {angle: 50, gray: 50}
     white: {angle: 50, gray: 50}
   Parameterbutton: 4
@@ -143,11 +143,11 @@ gazebo: {auto_disable_bodies: false, cfm: 0.0, contact_max_correcting_vel: 100.0
   sor_pgs_rms_error_tol: 0.0, sor_pgs_w: 1.3, time_step: 0.001}
 height: 493
 prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
-  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.025,
+  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.011,
   exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
-  gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 493, stream_bytes_per_second: 45000000,
+  gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
   trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
-  whitebalance_red: 100, width: 659, x_offset: 0, y_offset: 0}
+  whitebalance_red: 100, width: 640, x_offset: 0, y_offset: 0}
 rosbridge_websocket: {address: '', authenticate: false, delay_between_messages: 0,
   fragment_timeout: 600, max_message_size: None, port: 9090, retry_startup_delay: 5}
 rosdistro: 'indigo
@@ -162,15 +162,15 @@ roslaunch:
     host_iclab_desktop__37888: 'http://iclab-desktop:37888/', host_iclab_desktop__38032: 'http://iclab-desktop:38032/',
     host_iclab_desktop__38595: 'http://iclab-desktop:38595/', host_iclab_desktop__38844: 'http://iclab-desktop:38844/',
     host_iclab_desktop__38966: 'http://iclab-desktop:38966/', host_iclab_desktop__38987: 'http://iclab-desktop:38987/',
-    host_iclab_desktop__39094: 'http://iclab-desktop:39094/', host_iclab_desktop__39606: 'http://iclab-desktop:39606/',
-    host_iclab_desktop__40833: 'http://iclab-desktop:40833/', host_iclab_desktop__41464: 'http://iclab-desktop:41464/',
-    host_iclab_desktop__41942: 'http://iclab-desktop:41942/', host_iclab_desktop__42001: 'http://iclab-desktop:42001/',
-    host_iclab_desktop__42089: 'http://iclab-desktop:42089/', host_iclab_desktop__42535: 'http://iclab-desktop:42535/',
-    host_iclab_desktop__44452: 'http://iclab-desktop:44452/', host_iclab_desktop__44621: 'http://iclab-desktop:44621/',
-    host_iclab_desktop__44954: 'http://iclab-desktop:44954/', host_iclab_desktop__45644: 'http://iclab-desktop:45644/',
-    host_iclab_desktop__45691: 'http://iclab-desktop:45691/', host_iclab_desktop__45996: 'http://iclab-desktop:45996/',
-    host_iclab_desktop__46546: 'http://iclab-desktop:46546/', host_tamkang_to_be_filled_by_o_e_m__32900: 'http://tamkang-To-be-filled-by-O-E-M:32900/',
-    host_tamkang_to_be_filled_by_o_e_m__45984: 'http://tamkang-To-be-filled-by-O-E-M:45984/'}
+    host_iclab_desktop__39094: 'http://iclab-desktop:39094/', host_iclab_desktop__39268: 'http://iclab-desktop:39268/',
+    host_iclab_desktop__39606: 'http://iclab-desktop:39606/', host_iclab_desktop__40833: 'http://iclab-desktop:40833/',
+    host_iclab_desktop__41464: 'http://iclab-desktop:41464/', host_iclab_desktop__41942: 'http://iclab-desktop:41942/',
+    host_iclab_desktop__42001: 'http://iclab-desktop:42001/', host_iclab_desktop__42089: 'http://iclab-desktop:42089/',
+    host_iclab_desktop__42535: 'http://iclab-desktop:42535/', host_iclab_desktop__44452: 'http://iclab-desktop:44452/',
+    host_iclab_desktop__44621: 'http://iclab-desktop:44621/', host_iclab_desktop__44954: 'http://iclab-desktop:44954/',
+    host_iclab_desktop__45644: 'http://iclab-desktop:45644/', host_iclab_desktop__45691: 'http://iclab-desktop:45691/',
+    host_iclab_desktop__45916: 'http://iclab-desktop:45916/', host_iclab_desktop__45996: 'http://iclab-desktop:45996/',
+    host_iclab_desktop__46546: 'http://iclab-desktop:46546/'}
 rosversion: '1.11.20
 
   '
@@ -180,11 +180,6 @@ tf_prefix: FIRA/R3
 trig_rate: 15.0
 trig_timestamp_topic: ''
 trigger_mode: streaming
-usb_cam:
-  image_raw:
-    compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
-    compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
-    theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
 use_sim_time: true
 whitebalance_blue: 100
 whitebalance_red: 100
