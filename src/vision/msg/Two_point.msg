@@ -1,8 +1,7 @@
-int64 blue_x_1
-int64 blue_y_1
-int64 blue_x_2
-int64 blue_y_2
-int64 yellow_x_1
-int64 yellow_y_1
-int64 yellow_x_2
-int64 yellow_y_2
+int64 blue_dis
+int64 blue_ang1
+int64 blue_ang2
+int64 yellow_dis
+int64 yellow_ang1
+int64 yellow_ang2
+

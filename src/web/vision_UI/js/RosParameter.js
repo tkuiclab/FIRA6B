@@ -27,7 +27,7 @@ ParameterCenter_X.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("CenterElement");
         obj[0].value = value;
-        document.getElementsByName("CenterLabel")[0].innerText = value;
+        document.getElementsByName("CenterLabel")[0].value = value;
     }
 });
 
@@ -46,7 +46,7 @@ ParameterCenter_Y.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("CenterElement");
         obj[1].value = value;
-        document.getElementsByName("CenterLabel")[1].innerText = value;
+        document.getElementsByName("CenterLabel")[1].value = value;
     }
 });
 
@@ -66,7 +66,7 @@ ParameterCenter_Inner.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("CenterElement");
         obj[2].value = value;
-        document.getElementsByName("CenterLabel")[2].innerText = value;
+        document.getElementsByName("CenterLabel")[2].value = value;
     }
 });
 
@@ -86,7 +86,7 @@ ParameterCenter_Outer.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("CenterElement");
         obj[3].value = value;
-        document.getElementsByName("CenterLabel")[3].innerText = value;
+        document.getElementsByName("CenterLabel")[3].value = value;
     }
 });
 
@@ -106,7 +106,7 @@ ParameterCenter_Front.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("CenterElement");
         obj[4].value = value;
-        document.getElementsByName("CenterLabel")[4].innerText = value;
+        document.getElementsByName("CenterLabel")[4].value = value;
     }
 });
 
@@ -180,7 +180,7 @@ ParameterScan1.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[0].value = value;
-        document.getElementsByName("ScanLabel")[0].innerText = value; 
+        document.getElementsByName("ScanLabel")[0].value = value; 
     }
 });
 
@@ -199,7 +199,7 @@ ParameterScan2.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[1].value = value;
-        document.getElementsByName("ScanLabel")[1].innerText = value; 
+        document.getElementsByName("ScanLabel")[1].value = value; 
     }
 });
 
@@ -218,7 +218,7 @@ ParameterScan3.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[2].value = value;
-        document.getElementsByName("ScanLabel")[2].innerText = value; 
+        document.getElementsByName("ScanLabel")[2].value = value; 
     }
 });
 
@@ -237,7 +237,7 @@ ParameterScan4.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[3].value = value;
-        document.getElementsByName("ScanLabel")[3].innerText = value; 
+        document.getElementsByName("ScanLabel")[3].value = value; 
     }
 });
 
@@ -256,7 +256,7 @@ ParameterScan5.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[4].value = value;
-        document.getElementsByName("ScanLabel")[4].innerText = value; 
+        document.getElementsByName("ScanLabel")[4].value = value; 
     }
 });
 
@@ -275,7 +275,7 @@ ParameterScan6.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[5].value = value;
-        document.getElementsByName("ScanLabel")[5].innerText = value; 
+        document.getElementsByName("ScanLabel")[5].value = value; 
     }
 });
 
@@ -295,7 +295,7 @@ ParameterScan7.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[6].value = value;
-        document.getElementsByName("ScanLabel")[6].innerText = value; 
+        document.getElementsByName("ScanLabel")[6].value = value; 
     }
 });
 
@@ -315,7 +315,7 @@ ParameterScan8.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[7].value = value;
-        document.getElementsByName("ScanLabel")[7].innerText = value; 
+        document.getElementsByName("ScanLabel")[7].value = value; 
     }
 });
 
@@ -334,7 +334,7 @@ ParameterScan9.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[8].value = value;
-        document.getElementsByName("ScanLabel")[8].innerText = value; 
+        document.getElementsByName("ScanLabel")[8].value = value; 
     }
 });
 
@@ -353,7 +353,7 @@ ParameterScan10.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[9].value = value;
-        document.getElementsByName("ScanLabel")[9].innerText = value; 
+        document.getElementsByName("ScanLabel")[9].value = value; 
     }
 });
 
@@ -372,7 +372,7 @@ ParameterScan11.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("ScanElement");
         obj[10].value = value;
-        document.getElementsByName("ScanLabel")[10].innerText = value; 
+        document.getElementsByName("ScanLabel")[10].value = value; 
     }
 });
 
@@ -426,6 +426,7 @@ ParameterHSV_Ball.get(function(value) {
         for (var i = 0; i < obj.length; i++) {
             //obj[i].value = value[i];
             OrangeBox[i] = value[i];
+            obj[i].value = value[i];
             document.getElementsByName('HSVElement2')[i].value = value[i];
         }
     }

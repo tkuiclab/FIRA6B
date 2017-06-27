@@ -9,15 +9,15 @@ FIRA:
   Dorsad_Attack: [8, 90, 180, 2, 1, 2]
   FPS: 14
   HSV:
-    Ball: [0, 53, 17, 100, 46, 100]
-    Blue: [223, 255, 81, 100, 0, 100]
+    Ball: [0, 51, 17, 100, 46, 100]
+    Blue: [223, 255, 32, 55, 0, 100]
     ColorMode: 1
     Green: [43, 187, 41, 74, 21, 100]
     White: [0, 359, 0, 359, 0, 359]
-    Yellow: [34, 136, 13, 73, 48, 90]
-    black: {angle: 50, gray: 50}
+    Yellow: [18, 103, 24, 57, 26, 54]
+    black: {angle: 50, gray: 64}
     white: {angle: 1, gray: 50}
-  Parameterbutton: 5
+  Parameterbutton: 3
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
         <!-- ===================================================================================\
@@ -155,6 +155,10 @@ rosdistro: 'indigo
   '
 roslaunch:
   uris: {host_angus_aspire_5742g__48051: 'http://angus-Aspire-5742G:48051/', host_angus_aspire_5742g__55935: 'http://angus-Aspire-5742G:55935/',
+    host_iclab2_to_be_filled_by_o_e_m__36463: 'http://iclab2-To-be-filled-by-O-E-M:36463/',
+    host_iclab2_to_be_filled_by_o_e_m__39169: 'http://iclab2-To-be-filled-by-O-E-M:39169/',
+    host_iclab2_to_be_filled_by_o_e_m__39948: 'http://iclab2-To-be-filled-by-O-E-M:39948/',
+    host_iclab2_to_be_filled_by_o_e_m__42278: 'http://iclab2-To-be-filled-by-O-E-M:42278/',
     host_iclab_desktop__33237: 'http://iclab-desktop:33237/', host_iclab_desktop__33506: 'http://iclab-desktop:33506/',
     host_iclab_desktop__33568: 'http://iclab-desktop:33568/', host_iclab_desktop__33695: 'http://iclab-desktop:33695/',
     host_iclab_desktop__33955: 'http://iclab-desktop:33955/', host_iclab_desktop__34557: 'http://iclab-desktop:34557/',
@@ -183,6 +187,11 @@ tf_prefix: FIRA/R3
 trig_rate: 15.0
 trig_timestamp_topic: ''
 trigger_mode: streaming
+usb_cam:
+  image_raw:
+    compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
+    compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
+    theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
 use_sim_time: true
 whitebalance_blue: 100
 whitebalance_red: 100

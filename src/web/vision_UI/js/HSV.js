@@ -14,6 +14,7 @@
         sliderBarSat(100, "Max");
         sliderBarVal(0, "min");
         sliderBarVal(100, "Max");
+        topicColorTransfer(this.value);
     }
 
     function RangeHSVColor(h_min, h_max, s_min, s_max, v_min, v_max) {

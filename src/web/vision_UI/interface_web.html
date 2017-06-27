@@ -108,7 +108,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <input id="CameraButton1" class="Button" type="button" value="Sent" onclick="ParameterCameraValue();topicROSCheckButton(this.value);" />
+                                            <input id="CameraButton1" class="Button" type="button" value="Sent" onclick="ParameterCameraValue();topicROSCheckButton(this.value);topicROSCamera(this.value)" />
                                         </td>
                                     </tr>
                                 </table>
@@ -125,7 +125,7 @@
                                             <input name="CenterElement" type="range" min="0" max="659" value="0" oninput="showValue(this.value,'CenterLabel',0);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_X()" />
                                         </td>
                                         <td>
-                                            <label name="CenterLabel">num</label>
+                                            <input name="CenterLabel" type = "number" class="RBS2" min="0" max="659" value="0" oninput="rangeValue(this.value,'CenterElement',0);topicCenterTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -136,7 +136,7 @@
                                             <input name="CenterElement" type="range" min="0" max="493" value="0" oninput="showValue(this.value,'CenterLabel',1);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Y()" />
                                         </td>
                                         <td>
-                                            <label name="CenterLabel">num</label>
+                                            <input name="CenterLabel" type = "number" class="RBS2" min="0" max="493" value="0" oninput="rangeValue(this.value,'CenterElement',1);topicCenterTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -144,10 +144,10 @@
                                             <label>Inner</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CenterElement" type="range" min="1" max="360" value="0" oninput="showValue(this.value,'CenterLabel',2);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Inner()" />
+                                            <input name="CenterElement" type="range" min="1" max="360" value="1" oninput="showValue(this.value,'CenterLabel',2);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Inner()" />
                                         </td>
                                         <td>
-                                            <label name="CenterLabel">num</label>
+                                            <input name="CenterLabel" type = "number" class="RBS2" min="1" max="360" value="1" oninput="rangeValue(this.value,'CenterElement',2);topicCenterTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -155,10 +155,10 @@
                                             <label>Outer</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CenterElement" type="range" min="1" max="360" value="0" oninput="showValue(this.value,'CenterLabel',3);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Outer()" />
+                                            <input name="CenterElement" type="range" min="1" max="360" value="1" oninput="showValue(this.value,'CenterLabel',3);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Outer()" />
                                         </td>
                                         <td>
-                                            <label name="CenterLabel">num</label>
+                                            <input name="CenterLabel" type = "number" class="RBS2" min="1" max="360" value="1" oninput="rangeValue(this.value,'CenterElement',3);topicCenterTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -169,7 +169,7 @@
                                             <input name="CenterElement" type="range" min="0" max="360" value="0" oninput="showValue(this.value,'CenterLabel',4);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Front()"  />
                                         </td>
                                         <td>
-                                            <label name="CenterLabel">num</label>
+                                            <input name="CenterLabel" type = "number" class="RBS2" min="0" max="360" value="0" oninput="rangeValue(this.value,'CenterElement',4);topicCenterTransfer()" />
                                         </td>
                                     </tr>
                                 </table>
@@ -199,7 +199,7 @@
                             <div id="CenterButtonDiv">
                                 <table>
                                     <td>
-                                        <input id="Button2" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value);">
+                                        <input id="Button2" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value);topicCenterTransfer()">
                                     </td>
                                 </table>
                             </div>
@@ -212,7 +212,7 @@
                                             <label>Angle_Near_Gap:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="4" max="36" value="4" oninput="rangeValue(this.value,'ScanElement',0);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -225,12 +225,12 @@
                                             <label>Magn_Near_Gap:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="240" value="1" oninput="rangeValue(this.value,'ScanElement',1);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="0" oninput="showValue(this.value,'ScanLabel',1);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer2()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',1);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer2()"  />
                                         </td>
                                     </tr>
                                     <tr>
@@ -238,13 +238,13 @@
                                             <label>Magn_Near_Start:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="240" value="1" oninput="rangeValue(this.value,'ScanElement',2);topicScanTransfer()" />
                                         </td>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="0" oninput="showValue(this.value,'ScanLabel',2);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer3()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',2);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer3()"  />
                                         </td>
                                     </tr>
                                     <tr>
@@ -252,13 +252,13 @@
                                             <label>Magn_Middle_Start:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="240" value="1" oninput="rangeValue(this.value,'ScanElement',3);topicScanTransfer()" />
                                         </td>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="0" oninput="showValue(this.value,'ScanLabel',3);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer4()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',3);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer4()"  />
                                         </td>
                                     </tr>
                                     <tr>
@@ -266,7 +266,7 @@
                                             <label>Magn_Far_Start:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="240" value="1" oninput="rangeValue(this.value,'ScanElement',4);topicScanTransfer()" />
                                         </td>
                                         </td>
                                     </tr>
@@ -280,13 +280,13 @@
                                             <label>Magn_Far_End:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="240" value="1" oninput="rangeValue(this.value,'ScanElement',5);topicScanTransfer()" />
                                         </td>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="0" oninput="showValue(this.value,'ScanLabel',5);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer6()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',5);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer6()"  />
                                         </td>
                                     </tr>
                                 </table>
@@ -298,7 +298,7 @@
                                             <label align="left">Dont_Search_Angle_1:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="0" max="350" value="0" oninput="rangeValue(this.value,'ScanElement',6);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -311,7 +311,7 @@
                                             <label align="left">Dont_Search_Angle_2:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="0" max="350" value="0" oninput="rangeValue(this.value,'ScanElement',7);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -324,7 +324,7 @@
                                             <label align="left">Dont_Search_Angle_3:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="0" max="350" value="0" oninput="rangeValue(this.value,'ScanElement',8);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -341,7 +341,7 @@
                                             <label>Angle_range_1:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="9" value="0" oninput="rangeValue(this.value,'ScanElement',9);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -354,7 +354,7 @@
                                             <label align="left">Angle_range_2_3:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <label name="ScanLabel" class="RBS1"></label>
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="45" value="0" oninput="rangeValue(this.value,'ScanElement',10);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -367,7 +367,7 @@
                             <div id="ScanButtonDiv">
                                 <table>
                                     <td>
-                                        <input id="ScanButton1" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value)">
+                                        <input id="ScanButton1" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value);topicScanTransfer()">
                                     </td>
                                 </table>
                             </div>
@@ -429,7 +429,7 @@
                                         <td>
                                             <div class="auto">
                                                 <input type="radio" id="HSVButton" name="radio" checked="checked" 
-                                                onclick="topicROSParameterButton(4);ParameterbuttonTransfer(4);topicROSCheckButton(value);"/>
+                                                onclick="topicROSParameterButton(4);ParameterbuttonTransfer(4);topicROSCheckButton(value);topicColorTransfer(this.value)"/>
                                                 <label id="HSVButton" for="HSVButton">HSV</label>
                                             </div>
                                         </td>
