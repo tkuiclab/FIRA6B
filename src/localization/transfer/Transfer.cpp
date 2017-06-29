@@ -14,10 +14,12 @@ int main(int argc, char **argv){
     while(ros::ok())
     {
         imgNode.load_map();
-        imgNode.map_pub();
+        // imgNode.map_pub();
         mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
         mNodeHandle.whiteline_pub();
         mNodeHandle.odom_tf_pub();
+        // printf("here\n");
+        // mNodeHandle.initialpose_pub();
         ros::spinOnce();
         loop_rate.sleep();
     }

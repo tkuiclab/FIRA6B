@@ -8,6 +8,7 @@
 #include "sensor_msgs/LaserScan.h"
 #include "imu_3d/inertia.h"
 #include "geometry_msgs/Twist.h"
+#include "geometry_msgs/PoseWithCovarianceStamped.h"
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
 ///=========define==========
@@ -25,7 +26,8 @@ private:
     ros::Subscriber Imu3d_sub;
     std_msgs::Int32MultiArray WhiteLine;
     ros::Publisher LaserScan_pub;
-    ros::Publisher Odom_pub ;
+    ros::Publisher Odom_pub;
+    ros::Publisher Initialpose_pub;
     tf::StampedTransform tf_map_to_odom_;
     tf::TransformBroadcaster odom_broadcaster;
     int WhiteAngle;
@@ -45,8 +47,9 @@ public:
     void imu_sub(const imu_3d::inertia &msg);
     void motorFB_sub(const geometry_msgs::Twist &msg);
     void estimateFB_pub();
+    void odom_tf_pub();
+    void initialpose_pub();
 //    param
     void loadParam(ros::NodeHandle *nh);
-    void odom_tf_pub();
     ros::NodeHandle* getNodeHandle(){return nh;}
 };

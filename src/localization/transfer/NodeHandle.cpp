@@ -11,6 +11,7 @@ void Client::ros_comms_init(){
     MotorFB_sub = nh->subscribe(motorFB_Topic,1000,&Client::motorFB_sub,this);
     Imu3d_sub = nh->subscribe(imu3d_Topic,10000,&Client::imu_sub,this);
     Odom_pub = nh->advertise<nav_msgs::Odometry>("/odom", 50);
+    // Initialpose_pub = nh->advertise<geometry_msgs::PoseWithCovarianceStamped>("/initialpose",1000);
 }
 void Client::loadParam(ros::NodeHandle* nh){
     nh->getParam("/FIRA/whiteline/angle",WhiteAngle);
@@ -80,11 +81,12 @@ void Client::odom_tf_pub(){
     odom_trans.child_frame_id = "base_link";
     odom_trans.transform.translation.x = new_FB_x;
     odom_trans.transform.translation.y = new_FB_y;
-    odom_trans.transform.translation.z = 0.0;
-    // odom_trans.transform.translation.x = 0;
-    // odom_trans.transform.translation.y = 0;
-    // odom_trans.transform.translation.z = 0.0;
+    odom_trans.transform.translation.z = 0;
     // odom_trans.transform.rotation = imu3d;
+    odom_trans.transform.rotation.x = 0;
+    odom_trans.transform.rotation.y = 0;
+    odom_trans.transform.rotation.z = 0;
+    odom_trans.transform.rotation.w = 1;
     odom_broadcaster.sendTransform(odom_trans);
     nav_msgs::Odometry odom;
     odom.header.stamp = current_time;
@@ -93,13 +95,26 @@ void Client::odom_tf_pub(){
     //set the position
     odom.pose.pose.position.x = new_FB_x;
     odom.pose.pose.position.y = new_FB_y;
-    odom.pose.pose.position.z = 0.0;
- 
+    odom.pose.pose.position.z = 0;
+    odom.pose.pose.orientation.x = 0;
+    odom.pose.pose.orientation.y = 0;
+    odom.pose.pose.orientation.z = 0;
+    odom.pose.pose.orientation.w = 1;
     //set the velocity
     odom.child_frame_id = "base_link";
-    // odom.twist.twist.linear.x = 0;
-    // odom.twist.twist.linear.y = 0;
-    // odom.twist.twist.angular.z = 0;
+    odom.twist.twist.linear.x = 0;
+    odom.twist.twist.linear.y = 0;
+    odom.twist.twist.angular.z = 0;
     Odom_pub.publish(odom);
     last_time = current_time;
+}
+void Client::initialpose_pub(){
+    ros::Time current_time = ros::Time::now();  
+    geometry_msgs::PoseWithCovarianceStamped init_pose;
+    init_pose.header.stamp = current_time;
+    init_pose.header.frame_id = "initialpose";
+    init_pose.pose.pose.position.x = 0;
+    init_pose.pose.pose.position.y = 0;
+    init_pose.pose.pose.position.z = 0;
+    Initialpose_pub.publish(init_pose);
 }
