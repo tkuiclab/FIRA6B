@@ -1012,7 +1012,6 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
 //    }
 ////Original end
 
-//Turn Left
     double goal_angle = env.home[Robot_index].goal.angle;
     static double first_goal_angle = goal_angle;
     double degree = Penalty_Kick[0];
