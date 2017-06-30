@@ -199,13 +199,14 @@ Element.prototype.leftTopScreen = function() {
     }
     return new Array(x, y);
 }
-function Angle_Calculation(mouseX,mouseY) {
+
+function Angle_Calculation(mouseX, mouseY) {
     var centerX = document.getElementsByName('CenterElement')[0].value;
     var centerY = document.getElementsByName('CenterElement')[1].value
-    y=mouseY-centerY;
-    x=mouseX-centerX;
-    var angle = Math.floor(Math.atan2(-y,x)*180*10/Math.PI)/10;
-    if(angle<0){angle+=360;}
+    y = mouseY - centerY;
+    x = mouseX - centerX;
+    var angle = Math.floor(Math.atan2(-y, x) * 180 * 10 / Math.PI) / 10;
+    if (angle < 0) { angle += 360; }
     document.getElementById("CameraAngle").innerText = angle;
 }
 video_canvas.addEventListener("mousedown", function(e) {
@@ -222,21 +223,37 @@ video_canvas.addEventListener("mousedown", function(e) {
     flip.addEventListener("click", function(event) {
         var x = event.clientX;
         var y = event.clientY;
-		
-        document.getElementById("CameraX").innerText = x - xy[0]-centerX;
+
+        document.getElementById("CameraX").innerText = x - xy[0] - centerX;
         document.getElementById("CameraY").innerText = centerY - y + xy[1];
-        Angle_Calculation(x - xy[0],y - xy[1]);
-        topicROSPosition (x - xy[0],y - xy[1]);
+        Angle_Calculation(x - xy[0], y - xy[1]);
+        topicROSPosition(x - xy[0], y - xy[1]);
         //console.log(x - xy[0], y - xy[1]);
     });
 });
 
-function CheckCamera(check){
+function CheckCamera(check) {
     var video = document.getElementById("player");
-    if(check){
+    if (check)
         video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image";
-        //video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/usb_cam/image_raw";
-    }
     else
         video.src = "img/offline.png";
+
+}
+
+function MonitorSwitch(value) {
+    var video = document.getElementById("player");
+    var check = document.getElementById("CameraSwitch").checked;
+
+    if (value == 7){
+        if (check)
+            video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image_monitor";
+        else
+            video.src = "img/offline.png";
+    }else {
+        if (check)
+            video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image";
+        else
+            video.src = "img/offline.png";
+    }
 }

@@ -49,19 +49,19 @@
                                 <tr width="100%" height="50%">
                                     <td>
                                         <div class="auto" >
-                                            <input type="radio" id="CameraButton" name="ButtonElement" checked="checked" autocomplete="on" onclick="topicROSParameterButton(1);ParameterbuttonTransfer(1)" />
+                                            <input type="radio" id="CameraButton" name="ButtonElement" checked="checked" autocomplete="on" onclick="topicROSParameterButton(1);ParameterbuttonTransfer(1);topicROSCheckButton(value)" />
                                             <label id="CameraButton" for="CameraButton">Camera</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="CenterButton" name="ButtonElement" onclick="topicROSParameterButton(2);ParameterbuttonTransfer(2)" />
+                                            <input type="radio" id="CenterButton" name="ButtonElement" onclick="topicROSParameterButton(2);ParameterbuttonTransfer(2);topicROSCheckButton(value)" />
                                             <label id="CenterButton" for="CenterButton">Center</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="ScanButton" name="ButtonElement" onclick="topicROSParameterButton(3);ParameterbuttonTransfer(3)" />
+                                            <input type="radio" id="ScanButton" name="ButtonElement" onclick="topicROSParameterButton(3);ParameterbuttonTransfer(3);topicROSCheckButton(value)" />
                                             <label id="ScanButton" for="ScanButton">Scan</label>
                                         </div>
                                     </td>
@@ -81,7 +81,7 @@
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="MonitorButton" name="ButtonElement" onclick="topicROSParameterButton(7)" />
+                                            <input type="radio" id="MonitorButton" name="ButtonElement" onclick="topicROSParameterButton(7);ParameterbuttonTransfer(7);topicROSCheckButton(value);"/>
                                             <label id="MonitorButton" for="MonitorButton">Monitor</label>
                                         </div>
                                     </td>
@@ -96,7 +96,7 @@
                                             <label>FPS</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CameraElement" type="range" min="0" max="100" value="0" oninput="showValue(this.value,'CameraLabel',0);topicROSCamera(this.value)"onchange="topicROSCheckButton(this.value);ParameterCameraValue()" />
+                                            <input name="CameraElement" type="range" min="0" max="100" value="0" oninput="showLabel(this.value,'CameraLabel',0);topicROSCamera(this.value)"onchange="topicROSCheckButton(this.value);ParameterCameraValue()" />
                                         </td>
                                         <td>
                                             <label name="CameraLabel">num</label>
@@ -436,14 +436,14 @@
                                         <td>
                                             <div class="auto">
                                                 <input type="radio" id="WhiteButton" name="radio" 
-                                                onclick="topicROSParameterButton(5);ParameterbuttonTransfer(5)"/>
+                                                onclick="topicROSParameterButton(5);ParameterbuttonTransfer(5);topicROSCheckButton(value)"/>
                                                 <label id="WhiteButton" for="WhiteButton">White</label>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="auto">
                                                 <input type="radio" id="BlackButton" name="radio" 
-                                                onclick="topicROSParameterButton(6);ParameterbuttonTransfer(6)"/>
+                                                onclick="topicROSParameterButton(6);ParameterbuttonTransfer(6);topicROSCheckButton(value)"/>
                                                 <label id="BlackButton" for="BlackButton">Black</label>
                                             </div>
                                         </td>
@@ -557,7 +557,7 @@
                                                 <label>Gray</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="WhiteElement" type="range" min="0" max="255" value="0" oninput="showValue(this.value,'WhiteLabel',0);topicWhiteTransfer();" onchange="topicROSCheckButton(this.value);ParameterWhite_grayTransfer"()" />
+                                                <input name="WhiteElement" type="range" min="0" max="255" value="0" oninput="showLabel(this.value,'WhiteLabel',0);topicWhiteTransfer();" onchange="topicROSCheckButton(this.value);ParameterWhite_grayTransfer()" />
                                             </td>
                                             <td>
                                                 <label name="WhiteLabel">num</label>
@@ -568,7 +568,7 @@
                                                 <label>Angle</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="WhiteElement" type="range" min="1" max="120" value="0" oninput="showValue(this.value,'WhiteLabel',1);topicWhiteTransfer()" onchange="topicROSCheckButton(this.value);ParameterWhite_angleTransfer()"  />
+                                                <input name="WhiteElement" type="range" min="1" max="120" value="0" oninput="showLabel(this.value,'WhiteLabel',1);topicWhiteTransfer()" onchange="topicROSCheckButton(this.value);ParameterWhite_angleTransfer()"  />
                                             </td>
                                             <td>
                                                 <label name="WhiteLabel">num</label>
@@ -593,7 +593,7 @@
                                                 <label>Gray</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="BlackElement" type="range" min="0" max="255" value="0" oninput="showValue(this.value,'BlackLabel',0);topicBlackTransfer();"onchange="topicROSCheckButton(this.value);ParameterBlack_grayTransfer()" />
+                                                <input name="BlackElement" type="range" min="0" max="255" value="0" oninput="showLabel(this.value,'BlackLabel',0);topicBlackTransfer();"onchange="topicROSCheckButton(this.value);ParameterBlack_grayTransfer()" />
                                             </td>
                                             <td>
                                                 <label name="BlackLabel">num</label>
@@ -604,7 +604,7 @@
                                                 <label>Angle</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="BlackElement" type="range" min="1" max="120" value="0" oninput="showValue(this.value,'BlackLabel',1);topicBlackTransfer()" onchange="topicROSCheckButton(this.value);ParameterBlack_angleTransfer()"  />
+                                                <input name="BlackElement" type="range" min="1" max="120" value="0" oninput="showLabel(this.value,'BlackLabel',1);topicBlackTransfer()" onchange="topicROSCheckButton(this.value);ParameterBlack_angleTransfer()"  />
                                             </td>
                                             <td>
                                                 <label name="BlackLabel">num</label>

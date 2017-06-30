@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 11.144465290806757, High: 650.0}
-  Center: {Camera_high: 650, Center_X: 310, Center_Y: 268, Front: 267, Inner: 40,
+  Center: {Camera_high: 650, Center_X: 348, Center_Y: 268, Front: 274, Inner: 40,
     Outer: 265, X: 332, Y: 258}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
@@ -9,15 +9,15 @@ FIRA:
   Dorsad_Attack: [8, 90, 180, 2, 1, 2]
   FPS: 14
   HSV:
-    Ball: [0, 51, 17, 100, 46, 100]
-    Blue: [223, 255, 32, 55, 0, 100]
+    Ball: [47, 120, 28, 100, 0, 100]
+    Blue: [189, 264, 19, 45, 5, 39]
     ColorMode: 1
     Green: [43, 187, 41, 74, 21, 100]
     White: [0, 359, 0, 359, 0, 359]
-    Yellow: [18, 103, 24, 57, 26, 54]
-    black: {angle: 50, gray: 64}
-    white: {angle: 1, gray: 50}
-  Parameterbutton: 3
+    Yellow: [0, 30, 21, 38, 12, 67]
+    black: {angle: 41, gray: 106}
+    white: {angle: 32, gray: 31}
+  Parameterbutton: 2
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
         <!-- ===================================================================================\
@@ -125,6 +125,10 @@ camera:
     compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
     compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
     theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
+  image_monitor:
+    compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
+    compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
+    theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
   image_raw:
     compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
     compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
@@ -156,9 +160,13 @@ rosdistro: 'indigo
 roslaunch:
   uris: {host_angus_aspire_5742g__48051: 'http://angus-Aspire-5742G:48051/', host_angus_aspire_5742g__55935: 'http://angus-Aspire-5742G:55935/',
     host_iclab2_to_be_filled_by_o_e_m__36463: 'http://iclab2-To-be-filled-by-O-E-M:36463/',
+    host_iclab2_to_be_filled_by_o_e_m__38996: 'http://iclab2-To-be-filled-by-O-E-M:38996/',
     host_iclab2_to_be_filled_by_o_e_m__39169: 'http://iclab2-To-be-filled-by-O-E-M:39169/',
     host_iclab2_to_be_filled_by_o_e_m__39948: 'http://iclab2-To-be-filled-by-O-E-M:39948/',
+    host_iclab2_to_be_filled_by_o_e_m__40772: 'http://iclab2-To-be-filled-by-O-E-M:40772/',
     host_iclab2_to_be_filled_by_o_e_m__42278: 'http://iclab2-To-be-filled-by-O-E-M:42278/',
+    host_iclab2_to_be_filled_by_o_e_m__45546: 'http://iclab2-To-be-filled-by-O-E-M:45546/',
+    host_iclab2_to_be_filled_by_o_e_m__45579: 'http://iclab2-To-be-filled-by-O-E-M:45579/',
     host_iclab_desktop__33237: 'http://iclab-desktop:33237/', host_iclab_desktop__33506: 'http://iclab-desktop:33506/',
     host_iclab_desktop__33568: 'http://iclab-desktop:33568/', host_iclab_desktop__33695: 'http://iclab-desktop:33695/',
     host_iclab_desktop__33955: 'http://iclab-desktop:33955/', host_iclab_desktop__34557: 'http://iclab-desktop:34557/',

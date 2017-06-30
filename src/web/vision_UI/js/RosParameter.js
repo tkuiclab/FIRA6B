@@ -142,7 +142,7 @@ var Parameterbutton = new ROSLIB.Param({
 
 function ParameterbuttonTransfer(value) {
     var value;
-
+    MonitorSwitch(value);
     console.log(value);
     Parameterbutton.set(value);
 }
