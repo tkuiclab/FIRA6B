@@ -119,6 +119,14 @@ var cmdVel3 = new ROSLIB.Topic({
     messageType: '/geometry_msgs/Twist'
 });
 
+function StrategyStop() {
+    setTimeout(StandBy, 0);
+    setTimeout(StandBy, 100);
+    setTimeout(StandBy, 200);
+    setTimeout(StandBy, 300);
+    setTimeout(StandBy, 400);
+}
+
 function StandBy() {
     var twist = new ROSLIB.Message({
         linear: {
@@ -329,9 +337,9 @@ TSInfoListen1.subscribe(function(msg) {
     info = new ROSLIB.Message({
         data: Box
     });
-    if(CheckIP[1])
+    if (CheckIP[1])
         TSInfoPub12.publish(info);
-    if(CheckIP[2])
+    if (CheckIP[2])
         TSInfoPub13.publish(info);
 });
 
@@ -345,12 +353,11 @@ TSInfoListen2.subscribe(function(msg) {
     info = new ROSLIB.Message({
         data: Box
     });
-    
-    if(CheckIP[0])
+
+    if (CheckIP[0])
         TSInfoPub21.publish(info);
-    if(CheckIP[2]){
+    if (CheckIP[2]) {
         TSInfoPub23.publish(info);
-        console.log(2,info);
     }
 });
 
@@ -364,11 +371,10 @@ TSInfoListen3.subscribe(function(msg) {
     info = new ROSLIB.Message({
         data: Box
     });
-    
-    if(CheckIP[0])
+
+    if (CheckIP[0])
         TSInfoPub31.publish(info);
-    if(CheckIP[1]){
+    if (CheckIP[1]) {
         TSInfoPub32.publish(info);
-         console.log(2,info);
     }
 });

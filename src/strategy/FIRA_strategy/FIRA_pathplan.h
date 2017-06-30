@@ -45,13 +45,9 @@ public:
     void strategy_dst_head2ball(double destination_x,double destination_y);
 
 //    void strategy_dontboom();
-
-
-    void strategy_goalkeeper(int);
     void strategy_head2ball(int);
 
 //--------------strategy case-------------------
-    void strategy_Goalkeeper(int);
     void strategy_Attack(int);
     void strategy_typeS_Attack(int);
     void strategy_Zone_Attack(int);

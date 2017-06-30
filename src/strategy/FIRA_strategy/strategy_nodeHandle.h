@@ -28,6 +28,7 @@
 #include "std_msgs/String.h"
 #include "std_msgs/Int32.h"
 #include "vision/Object.h"
+#include "vision/Two_point.h"
 #include "FIRA_status_plugin/RobotSpeedMsg.h"
 #include "FIRA_status_plugin/ModelMsg.h"
 #include "geometry_msgs/Twist.h"
@@ -47,6 +48,7 @@
 #define GameState_Topic "/FIRA/GameState"
 #define TeamColor_Topic "/FIRA/TeamColor"
 #define Vision_Topic "/vision/object"
+#define Vision_Two_point_Topic "/vision/Two_point"
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
 //one_Robot speed
@@ -63,6 +65,7 @@
 
 #define VectorMax 1.42
 #define VectorMin 0.05
+
 /*****************************************************************************
 ** Class
 *****************************************************************************/
@@ -160,10 +163,13 @@ private:
     ros::Subscriber GameState;
     ros::Subscriber TeamColor;
     ros::Subscriber Vision;
+    ros::Subscriber Vision_Two_point;
     ros::Subscriber IsSimulator;
 
     //BlackObject
     ros::Subscriber BlackObject;
+
+
 
     //robot role publisher
     //no robot_1_role_sub, because robot_1 is always goal keeper
@@ -333,7 +339,6 @@ private:
 
     void subVision(const vision::Object::ConstPtr &msg){
         double ball_distance,yellow_distance,blue_distance;
-
         yellow_distance = msg->yellow_dis;
         blue_distance = msg->blue_dis;
         if(global_env->teamcolor == "Blue"){
@@ -352,8 +357,20 @@ private:
        ball_distance = msg->ball_dis;
        global_env->home[global_env->RobotNumber].ball.distance = ball_distance/100;
        global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
-
     }
+
+        void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
+            if(global_env->teamcolor == "Blue"){
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = msg->blue_ang1;
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = msg->blue_ang2;
+            }else if(global_env->teamcolor == "Yellow"){
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->yellow_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = msg->yellow_ang1;
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = msg->yellow_ang2;
+            }
+        }
+
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
         static int counter=0;
         int All_Line_distance[360];
@@ -540,11 +557,10 @@ private:
 //                  ROS_INFO("New.distance[%d]=%d\t New.location[%d]=%d\t New_Save[%d].counter=%d\n",i,New_Save[i].distance,i,New_Save[i].location,i,New_Save[i].counter);
 //                   ROS_INFO("global_env->mindis[%d]=%d\t global_env->blackangle[%d]=%d\n \n",i,global_env->mindis[i],i,global_env->blackangle[i]);
 //              }
-
-
-
-
     }
+
+
+
     void subIsSimulator(const std_msgs::Int32::ConstPtr &msg){
         issimulator=msg->data;
         if(issimulator==1){
@@ -563,6 +579,7 @@ private:
             //contact image
             Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
             BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
+            Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1000,&Strategy_nodeHandle::subVision_Two_point,this);
         }
 
     }

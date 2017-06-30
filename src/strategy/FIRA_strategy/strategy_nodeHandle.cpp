@@ -87,7 +87,6 @@ void Strategy_nodeHandle::Transfer(int r_number){
     global_env->home[r_number].ball.distance = hypot(vectorbr_x,vectorbr_y);
     global_env->home[r_number].goal.distance = hypot(vectordr_x,vectordr_y);
     global_env->home[r_number].op_goal.distance = hypot(vectordr_x_op, vectordr_y_op);
-
     double goal_angle = phi_dr - global_env->home[r_number].rotation;
     if(goal_angle > 180)
     {
