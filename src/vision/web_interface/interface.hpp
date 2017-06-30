@@ -81,7 +81,8 @@ private:
   ros::Subscriber s9;
   ros::Subscriber s10;
   ros::Subscriber s11;
-
+  cv::Mat *frame_white;
+  cv::Mat *frame_black;
   cv::Mat *frame;
   cv::Mat *centermats;
 
@@ -91,7 +92,7 @@ private:
   cv::Mat Obstaclemap;
   cv::Mat Erodemap;
   cv::Mat Dilatemap;
- 	
+
   cv::Mat *CenterModels;
   cv::Mat *ColorModels;
   cv::Mat *CameraModels;
@@ -99,6 +100,7 @@ private:
   cv::Mat *BlackModels;
   cv::Mat *ScanModels;
   cv::Mat *outputframe;
+
  int hmax,hmin,smax,smin,vmax,vmin;
   object_Item FIND_Item,Red_Item,Yellow_Item,Blue_Item;
   object_Item *Obstacle_Item;
@@ -124,8 +126,10 @@ private:
   std_msgs::Int32MultiArray WhiteRealDis;
   std_msgs::Int32MultiArray BlackRealDis;
   //int WhiteDis[360]={0}
-  double WhiteDis;
-  double BlackDis;
+  //double WhiteDis;
+  //double BlackDis;
+  deque<double> WhiteDis;
+  deque<double> BlackDis;
   //for(int i=0;i<360;i++){WhiteDis[i]=0};
 
   int dis_gap;

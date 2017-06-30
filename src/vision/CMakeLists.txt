@@ -137,6 +137,8 @@ foreach(subdir
     #blackItem
     #image_transport
 	web_interface
+	web_line
+	web_monitor
 )
 add_subdirectory(${subdir})
 endforeach()
