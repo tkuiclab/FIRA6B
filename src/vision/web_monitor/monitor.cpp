@@ -34,12 +34,70 @@ void InterfaceProc::Parameter_getting(const int x)
     const char *load = temp.c_str(); 
     system(load);
     cout<<"Read the yaml file"<<endl;
+    nh.getParam("/FIRA/HSV/Ball",HSV_red);
+    nh.getParam("/FIRA/HSV/Blue",HSV_blue);
+    nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
+    nh.getParam("/FIRA/HSV/Green",HSV_green);
+    nh.getParam("/FIRA/HSV/White",HSV_white);
+    nh.getParam("/FIRA/HSV/ColorMode",ColorModeMsg);
+    nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
+    nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
+    nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
+    nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
+
+  /////////////////////////////////掃瞄點前置參數///////////////////////////////////
+    nh.getParam("/FIRA/SCAN/Angle_Near_Gap",Angle_Near_GapMsg);
+    nh.getParam("/FIRA/SCAN/Magn_Near_Gap",Magn_Near_GapMsg);
+    nh.getParam("/FIRA/SCAN/Magn_Near_Start",Magn_Near_StartMsg);
+    nh.getParam("/FIRA/SCAN/Magn_Middle_Start",Magn_Middle_StartMsg);
+    nh.getParam("/FIRA/SCAN/Magn_Far_Start",Magn_Far_StartMsg);
+    nh.getParam("/FIRA/SCAN/Magn_Far_End",Magn_Far_EndMsg);
+    nh.getParam("/FIRA/SCAN/Dont_Search_Angle_1",Dont_Search_Angle_1Msg);
+    nh.getParam("/FIRA/SCAN/Dont_Search_Angle_2",Dont_Search_Angle_2Msg);
+    nh.getParam("/FIRA/SCAN/Dont_Search_Angle_3",Dont_Search_Angle_3Msg);
+    nh.getParam("/FIRA/SCAN/Angle_range_1",Angle_range_1Msg);
+    nh.getParam("/FIRA/SCAN/Angle_range_2_3",Angle_range_2_3Msg);
+
+    search_angle    = Angle_Near_GapMsg;
+    search_distance = Magn_Near_GapMsg;
+    search_start    = Magn_Near_StartMsg;
+    search_near     = Magn_Middle_StartMsg;
+    search_middle   = Magn_Far_StartMsg;
+    search_end      = Magn_Far_EndMsg;
+
+    dont_angle[0] = Dont_Search_Angle_1Msg;
+    dont_angle[1] = Dont_Search_Angle_2Msg;
+    dont_angle[2] = Dont_Search_Angle_3Msg;
+    dont_angle[3] = Angle_range_1Msg;
+    dont_angle[4] = Angle_range_2_3Msg;
+    dont_angle[5] = Angle_range_2_3Msg;
+  ///////////////////////////////////////FPS設定////////////////////////////////////////////////
+    nh.getParam("/FIRA/FPS",fpsMsg);
+    get_campara();
+  //////////////////////////////////// CNETER設定///////////////////////////////////////////////
+    nh.getParam("/FIRA/Center/Center_X",CenterXMsg);
+    nh.getParam("/FIRA/Center/Center_Y",CenterYMsg);
+    nh.getParam("/FIRA/Center/Inner",InnerMsg);
+    nh.getParam("/FIRA/Center/Outer",OuterMsg);
+    nh.getParam("/FIRA/Center/Front",FrontMsg);
+    nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
+
+    center_x=CenterXMsg;
+    center_y=CenterYMsg;
+    center_inner=InnerMsg;
+    center_outer=OuterMsg;
+    center_front=FrontMsg;
+    Camera_H=Camera_HighMsg;
+
+    nh.getParam("/FIRA/Parameterbutton",buttonmsg);
+    cout<<center_x<<endl;
   }
 }
 void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
   
   SaveButton = msg.bin;
+  Parameter_getting(1);
   HSVmap();
 }
 
@@ -56,63 +114,6 @@ InterfaceProc::InterfaceProc()
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
-
-  nh.getParam("/FIRA/HSV/Ball",HSV_red);
-  nh.getParam("/FIRA/HSV/Blue",HSV_blue);
-  nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
-  nh.getParam("/FIRA/HSV/Green",HSV_green);
-  nh.getParam("/FIRA/HSV/White",HSV_white);
-  nh.getParam("/FIRA/HSV/ColorMode",ColorModeMsg);
-  nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
-  nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
-  nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
-  nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
-
-/////////////////////////////////掃瞄點前置參數///////////////////////////////////
-  nh.getParam("/FIRA/SCAN/Angle_Near_Gap",Angle_Near_GapMsg);
-  nh.getParam("/FIRA/SCAN/Magn_Near_Gap",Magn_Near_GapMsg);
-  nh.getParam("/FIRA/SCAN/Magn_Near_Start",Magn_Near_StartMsg);
-  nh.getParam("/FIRA/SCAN/Magn_Middle_Start",Magn_Middle_StartMsg);
-  nh.getParam("/FIRA/SCAN/Magn_Far_Start",Magn_Far_StartMsg);
-  nh.getParam("/FIRA/SCAN/Magn_Far_End",Magn_Far_EndMsg);
-  nh.getParam("/FIRA/SCAN/Dont_Search_Angle_1",Dont_Search_Angle_1Msg);
-  nh.getParam("/FIRA/SCAN/Dont_Search_Angle_2",Dont_Search_Angle_2Msg);
-  nh.getParam("/FIRA/SCAN/Dont_Search_Angle_3",Dont_Search_Angle_3Msg);
-  nh.getParam("/FIRA/SCAN/Angle_range_1",Angle_range_1Msg);
-  nh.getParam("/FIRA/SCAN/Angle_range_2_3",Angle_range_2_3Msg);
-
-  search_angle    = Angle_Near_GapMsg;
-  search_distance = Magn_Near_GapMsg;
-  search_start    = Magn_Near_StartMsg;
-  search_near     = Magn_Middle_StartMsg;
-  search_middle   = Magn_Far_StartMsg;
-  search_end      = Magn_Far_EndMsg;
-
-  dont_angle[0] = Dont_Search_Angle_1Msg;
-  dont_angle[1] = Dont_Search_Angle_2Msg;
-  dont_angle[2] = Dont_Search_Angle_3Msg;
-  dont_angle[3] = Angle_range_1Msg;
-  dont_angle[4] = Angle_range_2_3Msg;
-  dont_angle[5] = Angle_range_2_3Msg;
-///////////////////////////////////////FPS設定////////////////////////////////////////////////
-  nh.getParam("/FIRA/FPS",fpsMsg);
-  get_campara();
-//////////////////////////////////// CNETER設定///////////////////////////////////////////////
-  nh.getParam("/FIRA/Center/Center_X",CenterXMsg);
-  nh.getParam("/FIRA/Center/Center_Y",CenterYMsg);
-  nh.getParam("/FIRA/Center/Inner",InnerMsg);
-  nh.getParam("/FIRA/Center/Outer",OuterMsg);
-  nh.getParam("/FIRA/Center/Front",FrontMsg);
-  nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
-
-  center_x=CenterXMsg;
-  center_y=CenterYMsg;
-  center_inner=InnerMsg;
-  center_outer=OuterMsg;
-  center_front=FrontMsg;
-  Camera_H=Camera_HighMsg;
-
-  nh.getParam("/FIRA/Parameterbutton",buttonmsg);
 } 
 InterfaceProc::~InterfaceProc()
 {
@@ -962,17 +963,6 @@ void InterfaceProc::HSVmap()
     const char *Filename_Path = Filename.c_str();
     
     if(SaveButton!=0){
-    cout<<HSV_red[0]<<endl;
-    cout<<HSV_red[1]<<endl;
-
-    cout<<HSV_red[2]<<endl;
-
-    cout<<HSV_red[3]<<endl;
-
-    cout<<HSV_red[4]<<endl;
-
-    cout<<HSV_red[5]<<endl;
-
     FILE *file=fopen(Filename_Path,"rb+"); //開啟檔案來寫
     fwrite( HSVmap, 1, 256*256*256 , file );
     fclose(file);

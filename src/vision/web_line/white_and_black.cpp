@@ -19,10 +19,19 @@ void InterfaceProc::Parameter_getting(const int x)
 {
 if(ifstream(parampath)){
     cout<<visionpath<<endl;
-    std::string temp = "rosparam load " + param; 
+    /*std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
-    system(load);
-    //cout<<"Read the yaml file"<<endl;
+    system(load);*/
+    nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
+    nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
+    nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
+    nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
+    nh.getParam("/FIRA/Center/Center_X",CenterXMsg);
+    nh.getParam("/FIRA/Center/Center_Y",CenterYMsg);
+    nh.getParam("/FIRA/Center/Inner",InnerMsg);
+    nh.getParam("/FIRA/Center/Outer",OuterMsg);
+    nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
+    cout<<"Read the yaml file"<<endl;
  }
 }
 InterfaceProc::InterfaceProc()
@@ -34,7 +43,8 @@ InterfaceProc::InterfaceProc()
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
     black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
   frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );
-  nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
+  Parameter_getting(1);
+  /*nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
   nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
   nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
   nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
@@ -48,13 +58,12 @@ InterfaceProc::InterfaceProc()
   center_inner=InnerMsg;
   center_outer=OuterMsg;
   center_front=FrontMsg;
-  Camera_H=Camera_HighMsg;
+  Camera_H=Camera_HighMsg;*/
 } 
 InterfaceProc::~InterfaceProc()
 {
  delete frame;
- //delete whiteframe;
- //delete blackframe;
+
 }
 void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 {
@@ -72,6 +81,15 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 
     Mat frame;
     cv::flip(cv_ptr->image, frame, 1);
+    nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
+    nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
+    nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
+    nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
+    nh.getParam("/FIRA/Center/Center_X",CenterXMsg);
+    nh.getParam("/FIRA/Center/Center_Y",CenterYMsg);
+    nh.getParam("/FIRA/Center/Inner",InnerMsg);
+    nh.getParam("/FIRA/Center/Outer",OuterMsg);
+    nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
 
 ///////////////////////////////White_Line///////////////////////////////
 
@@ -157,7 +175,6 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   }
  
   black_pub.publish(BlackRealDis);
- 
 }
 double InterfaceProc::Omni_distance(double pixel_dis)
 {
