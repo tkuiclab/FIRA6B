@@ -17,7 +17,7 @@ FIRA:
     Yellow: [0, 30, 21, 38, 12, 67]
     black: {angle: 41, gray: 106}
     white: {angle: 32, gray: 31}
-  Parameterbutton: 7
+  Parameterbutton: 2
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
         <!-- ===================================================================================\
