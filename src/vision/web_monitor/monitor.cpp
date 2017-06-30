@@ -28,11 +28,11 @@ const char *parampath = param.c_str();
 
 void InterfaceProc::Parameter_getting(const int x)
 {
-  if(ifstream(parampath)){
+  /*if(ifstream(parampath)){
     cout<<visionpath<<endl;
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
-    system(load);
+    system(load);*/
     cout<<"Read the yaml file"<<endl;
     nh.getParam("/FIRA/HSV/Ball",HSV_red);
     nh.getParam("/FIRA/HSV/Blue",HSV_blue);
@@ -91,7 +91,7 @@ void InterfaceProc::Parameter_getting(const int x)
 
     nh.getParam("/FIRA/Parameterbutton",buttonmsg);
     cout<<center_x<<endl;
-  }
+  
 }
 void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
@@ -235,10 +235,10 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 }
   //imshow(OPENCV_WINDOW, Main_frame);
 
- if(buttonmsg == 7){
+
  sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
   image_pub_threshold_.publish(thresholdMsg);
-}
+
    cv::waitKey(3);
 
 

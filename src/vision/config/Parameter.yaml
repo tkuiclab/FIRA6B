@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 11.144465290806757, High: 650.0}
-  Center: {Camera_high: 650, Center_X: 348, Center_Y: 268, Front: 267, Inner: 40,
+  Center: {Camera_high: 650, Center_X: 348, Center_Y: 268, Front: 274, Inner: 40,
     Outer: 265, X: 332, Y: 258}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
@@ -14,10 +14,10 @@ FIRA:
     ColorMode: 1
     Green: [43, 187, 41, 74, 21, 100]
     White: [0, 359, 0, 359, 0, 359]
-    Yellow: [162, 235, 0, 10, 78, 100]
+    Yellow: [0, 30, 21, 38, 12, 67]
     black: {angle: 41, gray: 106}
     white: {angle: 32, gray: 31}
-  Parameterbutton: 5
+  Parameterbutton: 7
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
         <!-- ===================================================================================\
