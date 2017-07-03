@@ -11,16 +11,18 @@
 /*******************************
   * Include library
   ******************************/
+extern "C"{
 #include "motor_data.h"
 #include "cssl.h"
+}
 //#include "../common/cssl/cssl.c"
 //#include "../common/cssl/port.h"
 
 /*******************************
   * Define 
   ******************************/
-//#define DEBUG
-#define DEBUG_CSSL
+#define DEBUG
+//#define DEBUG_CSSL
 
 class Base_Control{
 public:
@@ -28,14 +30,14 @@ public:
 	~Base_Control();
 
 private:
-	void	mcssl_Callback(int id, uint8_t *buf, int length);
+	static void	mcssl_Callback(int, uint8_t*, int);
 	void 	mcssl_finish();
 	void 	mcssl_send2motor();
 	int 	mcssl_init();
 	void	shoot_regularization();
 	void	speed_regularization(double, double, double);
 	void	inverseKinematics();
-	void	forwardKinematics(serial_rx*);	
+//	void	forwardKinematics();	
 private:
 	const double m1_Angle = -M_PI/3;
 	const double m2_Angle =  M_PI/3;
@@ -53,14 +55,15 @@ private:
 	robot_command *base_robotCMD;
 	robot_command *base_robotFB;
 	serial_tx *base_TX;
-	serial_rx *base_RX;
+	//static serial_rx* base_RX;
 
 //	double w1_speed, w1_speed_percent;
 //	double w2_speed, w2_speed_percent;
 //	double w3_speed, w3_speed_percent;
 	unsigned char en1,en2,en3,stop1,stop2,stop3;
 //	unsigned char w1_dir,w2_dir,w3_dir;
-	unsigned char cssl_buffer[50] = {0};
+//	static	unsigned char cssl_buffer[50];
+//	static	int count_buffer;
 	//void send();
 	//void get();
 public:

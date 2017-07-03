@@ -1,6 +1,6 @@
 #ifndef MOTOR_DATA_H
 #define MOTOR_DATA_H
-
+extern "C"{
 typedef struct{
 	double* x_speed;
 	double* y_speed;
@@ -31,5 +31,6 @@ typedef struct{
 
 //typedef struct MOTOR_FEEDBACK motor_feedback;
 //typedef struct MOTOR_COMMAND motor_command;
+}
 #endif 
 

@@ -41,8 +41,8 @@ int main(int argc, char **argv)
 		main_Base_Control.send(main_robotCMD);
 		
 		main_nodeHandle.clear();
-		main_robotFB = main_Base_Control.get_feedback();
-		main_nodeHandle.pub_robotFB(main_robotFB);
+//		main_robotFB = main_Base_Control.get_feedback();
+//		main_nodeHandle.pub_robotFB(main_robotFB);
 		ros::spinOnce();
 		loop_rate.sleep();
 	}

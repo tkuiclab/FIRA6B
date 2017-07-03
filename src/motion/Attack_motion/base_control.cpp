@@ -16,7 +16,7 @@ Base_Control::Base_Control()
 	std::memset(this->base_robotFB->y_speed, 0, sizeof(double));
 	std::memset(this->base_robotFB->yaw_speed, 0, sizeof(double));
 	std::memset(this->base_robotFB->shoot_power, 0, sizeof(int));
-
+/*
 	this->base_RX = new serial_rx;
 	this->base_RX->head1 = new unsigned char;
 	this->base_RX->head2 = new unsigned char;
@@ -32,7 +32,7 @@ Base_Control::Base_Control()
 	memset(this->base_RX->w3, 0, sizeof(int));
 	memset(this->base_RX->shoot, 0, sizeof(unsigned char));
 	memset(this->base_RX->batery, 0, sizeof(unsigned char));
-
+*/
 	this->base_TX = new serial_tx;
 
 	this->base_TX->head1 = new unsigned char;
@@ -52,8 +52,10 @@ Base_Control::Base_Control()
 	memset(this->base_TX->enable_and_stop, 0, sizeof(unsigned char));
 	memset(this->base_TX->shoot, 0, sizeof(unsigned char));
 	memset(this->base_TX->checksum, 0, sizeof(unsigned char));
-	//this->base_RX = new serial_rx;
+
 	this->serial = NULL;
+	//this->count_buffer = 0;
+	//memset(this->cssl_buffer, 0, sizeof(unsigned char));
 #ifdef DEBUG
 	std::cout << "Base_Control(DEBUG)\n";
 	std::cout << "Init base control\n";
@@ -86,7 +88,7 @@ int Base_Control::mcssl_init()
 	cssl_start();
 	if(!serial){
 		devs = "/dev/ttyUSB0";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*serial->callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB1";
@@ -140,6 +142,7 @@ int Base_Control::mcssl_init()
 		std::cout << "Initialize attack motion with port = "<< devs << "...\n";
 		cssl_setflowcontrol(serial, 0, 0);
 	}
+	serial->callback = &Base_Control::mcssl_Callback;
 #endif
 	return 1;
 }
@@ -154,24 +157,26 @@ void Base_Control::mcssl_finish()
 #endif
 }
 
-void Base_Control::mcssl_Callback(int id, uint8_t *buf, int length)
+void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 {
+	serial_rx base_RX;
+	static unsigned char cssl_buffer[50]={0};
 	static int count_buffer = 0;
-	this->cssl_buffer[count_buffer] = *buf;
-	count_buffer = (count_buffer+length)%100;
+	cssl_buffer[count_buffer++] = *buf;
+	count_buffer = (count_buffer+length)%50;
 	unsigned char checksum;
 	for(int i=0; i<30; i++){
 		if((cssl_buffer[i]==0xff)&&(cssl_buffer[i+1]==0xfa)){
 			checksum = cssl_buffer[i+2]+cssl_buffer[i+3]+cssl_buffer[i+4]+cssl_buffer[i+5]+cssl_buffer[i+6]+cssl_buffer[i+7]+cssl_buffer[i+8]+cssl_buffer[i+9]+cssl_buffer[i+10]+cssl_buffer[i+11]+cssl_buffer[i+12]+cssl_buffer[i+13];
 			if(cssl_buffer[i+14]==checksum){
-				*(this->base_RX->head1) = cssl_buffer[i];
-				*(this->base_RX->head2) = cssl_buffer[i+1];
-				*(this->base_RX->w1) = (cssl_buffer[i+2]<<24)+(cssl_buffer[i+3]<<16)+(cssl_buffer[i+4]<<8)+(cssl_buffer[i+5]);
-				*(this->base_RX->w2) = (cssl_buffer[i+6]<<24)+(cssl_buffer[i+7]<<16)+(cssl_buffer[i+8]<<8)+(cssl_buffer[i+9]);
-				*(this->base_RX->w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
-				(this->base_RX->shoot) = NULL;
-				(this->base_RX->batery) = NULL;
-				forwardKinematics(this->base_RX);	
+				*(base_RX.head1) = cssl_buffer[i];
+				*(base_RX.head2) = cssl_buffer[i+1];
+				*(base_RX.w1) = (cssl_buffer[i+2]<<24)+(cssl_buffer[i+3]<<16)+(cssl_buffer[i+4]<<8)+(cssl_buffer[i+5]);
+				*(base_RX.w2) = (cssl_buffer[i+6]<<24)+(cssl_buffer[i+7]<<16)+(cssl_buffer[i+8]<<8)+(cssl_buffer[i+9]);
+				*(base_RX.w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
+				(base_RX.shoot) = NULL;
+				(base_RX.batery) = NULL;
+				//forwardKinematics();	
 				break;
 			}else{
 				continue;
@@ -182,16 +187,17 @@ void Base_Control::mcssl_Callback(int id, uint8_t *buf, int length)
 	}
 #ifdef DEBUG_CSSLCALLBACK
 	std::cout << "mcssl_Callback(DEBUG_CSSLCALLBACK)\n";
-	std::cout << "head1: " << (int)*(this->base_RX->head1) << "\n";
-	std::cout << "head2: " << (int)*(this->base_RX->head2) << "\n";
-	std::cout << "w1: " << (int)*(this->base_RX->w1) << "\n";
-	std::cout << "w2: " << (int)*(this->base_RX->w2) << "\n";
-	std::cout << "w3: " << (int)*(this->base_RX->w3) << "\n";
-	std::cout << "shoot: " << (int)*(this->base_RX->shoot) << "\n";
-	std::cout << "batery: " << (int)*(this->base_RX->batery) << "\n";
+	std::cout << "head1: " << (int)*(base_RX->head1) << "\n";
+	std::cout << "head2: " << (int)*(base_RX->head2) << "\n";
+	std::cout << "w1: " << (int)*(base_RX->w1) << "\n";
+	std::cout << "w2: " << (int)*(base_RX->w2) << "\n";
+	std::cout << "w3: " << (int)*(base_RX->w3) << "\n";
+	std::cout << "shoot: " << (int)*(base_RX->shoot) << "\n";
+	std::cout << "batery: " << (int)*(base_RX->batery) << "\n";
 	std::cout << std::endl;
 #else
 #endif
+
 }
 
 void Base_Control::mcssl_send2motor()
@@ -220,7 +226,7 @@ void Base_Control::mcssl_send2motor()
 	std::cout << "en1 en2 en3 stop1 stop2 stop3: ";	
 	std::cout << (int)en1 << (int)en2 << (int)en3 << (int)stop1;
 	std::cout << " ";
-	std::cout << (int)stop2 << (int)stop3 << "00 (" << (int)*(this->base_TX->enable_and->stop) << ")"<<  std::endl;
+	std::cout << (int)stop2 << (int)stop3 << "00 (" << (int)*(this->base_TX->enable_and_stop) << ")"<<  std::endl;
 	std::cout << "shoot: " << (int)*(this->base_TX->shoot) << std::endl;
 	std::cout << "checksum: " << (int)*(this->base_TX->checksum) << std::endl;
 	std::cout << std::endl;
@@ -233,6 +239,13 @@ void Base_Control::mcssl_send2motor()
 	cssl_putchar(serial, *(this->base_TX->enable_and_stop));
 	cssl_putchar(serial, *(this->base_TX->shoot));
 	cssl_putchar(serial, *(this->base_TX->checksum));
+	/*cssl_putchar(serial, 0xff);
+	cssl_putchar(serial, 0xfa);
+	cssl_putchar(serial, 0);
+	cssl_putchar(serial, 0);
+	cssl_putchar(serial, 0);
+	cssl_putchar(serial, 0x80);
+	cssl_putchar(serial, 0x0);*/
 #endif
 }
 
@@ -333,23 +346,23 @@ void Base_Control::speed_regularization(double w1, double w2, double w3)
 	}
 */
 }
-
-void Base_Control::forwardKinematics(serial_rx* motorFB)
+/*
+void Base_Control::forwardKinematics()
 {
-	double yaw;
-	int round;
-	*(this->base_robotFB->x_speed) = (*(motorFB->w1)*(-0.3333) + *(motorFB->w2)*(-0.3333) + *(motorFB->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
-    *(this->base_robotFB->y_speed) = (*(motorFB->w1)*(0.5774) + *(motorFB->w2)*(-0.5774) + *(motorFB->w3)*(0))*2*M_PI*wheel_radius/26/2000;
-   yaw = (*(motorFB->w1)*(yaw_inv) + *(motorFB->w2)*(yaw_inv) + *(motorFB->w3)*(yaw_inv))*wheel_radius/2000/26;
+	double yaw=0;
+	int round=0;
+	//*(this->base_robotFB->x_speed) = (RX.w1)*(-0.3333) + *(baseRX->w2)*(-0.3333) + *(baseRX->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
+    //*(this->base_robotFB->y_speed) = (*(baseRX->w1)*(0.5774) + *(baseRX->w2)*(-0.5774) + *(baseRX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
+   //yaw = (*(baseRX->w1)*(yaw_inv) + *(baseRX->w2)*(yaw_inv) + *(baseRX->w3)*(yaw_inv))*wheel_radius/2000/26;
    round = yaw/360;
    yaw = yaw-(360*round);
    if(yaw>180){
-	   *(this->base_robotFB->yaw_speed) = yaw - 360;
+	   //*(this->base_robotFB->yaw_speed) = yaw - 360;
    }else if(yaw < -180){
-	   *(this->base_robotFB->yaw_speed) = yaw + 360;
+	   //*(this->base_robotFB->yaw_speed) = yaw + 360;
    }
 }
-
+*/
 void Base_Control::inverseKinematics()
 {
 	double w1_speed, w2_speed, w3_speed;
