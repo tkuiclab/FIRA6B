@@ -23,6 +23,7 @@ extern "C"{
   ******************************/
 //#define DEBUG
 //#define DEBUG_CSSL
+//#define DEBUG_CSSLCALLBACK
 
 class Base_Control{
 public:
@@ -37,7 +38,7 @@ private:
 	void	shoot_regularization();
 	void	speed_regularization(double, double, double);
 	void	inverseKinematics();
-//	void	forwardKinematics();	
+	void	forwardKinematics();	
 private:
 	const double m1_Angle = -M_PI/3;
 	const double m2_Angle =  M_PI/3;
@@ -55,20 +56,20 @@ private:
 	robot_command *base_robotCMD;
 	robot_command *base_robotFB;
 	serial_tx *base_TX;
-	//static serial_rx* base_RX;
+	static serial_rx* base_RX;
 
 //	double w1_speed, w1_speed_percent;
 //	double w2_speed, w2_speed_percent;
 //	double w3_speed, w3_speed_percent;
 	unsigned char en1,en2,en3,stop1,stop2,stop3;
 //	unsigned char w1_dir,w2_dir,w3_dir;
-//	static	unsigned char cssl_buffer[50];
-//	static	int count_buffer;
+	//static	unsigned char cssl_buffer[50];
+	//static	int count_buffer;
 	//void send();
 	//void get();
 public:
 	void send(robot_command*);
-	robot_command* get_feedback(){return base_robotFB;}
+	robot_command* get_feedback();
 //	int 	mcssl_init();
 };
 #endif
