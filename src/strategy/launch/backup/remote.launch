@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<launch> 
+	<arg name="NodeNS" value="FIRA/Strategy"/>
+	<arg name="Opponent" value="false"/>
+
+	<!--<include file="$(find node_manager_fkie)/launch/demo_capabilities.launch"/>-->
+
+	<group ns="$(arg NodeNS)">
+		<node name="Coach" pkg="strategy" type="teamStrategy" output="screen" args="-opt $(arg Opponent)">
+			<!--<param name="paramTest" value="Hokuyo"/>-->
+		</node>
+	</group>
+
+</launch>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

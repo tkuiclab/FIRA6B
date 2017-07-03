@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="BlueGoal">
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://blue_goal/meshes/BlueGoal.DAE</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://blue_goal/meshes/BlueGoal.DAE</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <plugin filename="libobj_pub_plugin.so" name="obj_pub_plugin" />
+  </model>
+</sdf>

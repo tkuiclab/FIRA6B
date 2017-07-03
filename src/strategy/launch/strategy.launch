@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<launch> 
+	<arg name="NodeNS" value="FIRA/Strategy"/>
+	<arg name="Opponent" value="true"/>
+
+	<!--<include file="$(find node_manager_fkie)/launch/demo_capabilities.launch"/>-->
+
+	<group ns="$(arg NodeNS)">
+		<!-- remote -->
+		<node name="Coach" pkg="strategy" type="teamStrategy" output="screen" args="-opt $(arg Opponent)" />
+
+		<!-- robot -->
+		<node name="strategy" pkg="strategy" type="FIRA_strategy" output="screen" args="-opt $(arg Opponent)" />
+
+					
+	</group>
+
+</launch>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

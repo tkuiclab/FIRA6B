@@ -1,0 +1,60 @@
+/*====================================================*/
+
+
+/*form*/
+
+.TeamStrategyDialog {
+    width: 500px;
+}
+
+.TeamStrategyContent {
+    position: relative;
+    background-color: #FFF;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+/*=====================================================*/
+/*Module*/
+
+#RobotModule{
+  height:200px;
+  text-align:left;
+  border-style:solid;
+  overflow:scroll;
+}
+/*====================================================*/
+#auto{
+  background-image: none;
+  background-color: #E6E6E6;
+  font-size: 14px;
+  color: #999999;
+}
+#auto.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 14px;
+  color: #1A1A65;
+}
+#manual{
+  background-image: none;
+  background-color: #E6E6E6;
+  font-size: 14px;
+  color: #999999;
+}
+#manual.ui-state-active{
+  background-color: #FFCC00;
+  font-size: 14px;
+  color: #1A1A65;
+}
+
+/*=====================================================*/
+/*Save*/
+#TeamStrategyExecute{
+  text-align:center;
+}
