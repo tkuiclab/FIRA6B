@@ -12,7 +12,7 @@ Strategy_nodeHandle(int argc, char** argv):
 
 void Strategy_nodeHandle::ros_comms_init(){
     n = new ros::NodeHandle();
-    shoot = n->advertise<std_msgs::Int32>("/shoot",1000);
+    shoot = n->advertise<std_msgs::Int32>("/motion/shoot",1000);
     std::string robot_prefix = Robot_Topic_Prefix;
     std::string robotOpt_prefix = RobotOpt_Topic_Prefix;
     std::string robotPos_suffix = Robot_Position_Topic_Suffix;

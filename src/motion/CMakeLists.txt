@@ -14,16 +14,17 @@ catkin_package(CATKIN_DEPENDS
  std_msgs
  roscpp
 )
+#add_library(csslLib cssl/cssl.h cssl/cssl.h cssl/uty.c)
+foreach(subdir
+		common
+		Attack_motion
+		test
+		)
+	add_subdirectory(${subdir})
+endforeach()
 
-#foreach(subdir
-#		common
-#		Attack_motion
-#		)
-#	add_subdirectory(${subdir})
-#endforeach()
-add_library(csslLib cssl/cssl.h cssl/cssl.c cssl/uty.c)
-
-add_executable(motion motion.cpp MotorControl.h)
-target_link_libraries(motion ${catkin_LIBRARIES})
-target_link_libraries(motion csslLib)
+#add_executable(motion_attack motion.cpp MotorControl.h)
+#target_link_libraries(motion_attack ${catkin_LIBRARIES})
+##target_link_libraries(motion_test qnode)
+#target_link_libraries(motion_attack csslLib)
 

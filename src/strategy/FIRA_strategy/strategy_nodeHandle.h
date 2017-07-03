@@ -52,6 +52,10 @@
 #define TeamColor_Topic "/FIRA/TeamColor"
 #define Vision_Topic "/vision/object"
 
+//BlackObject_distance
+#define  BlackObject_Topic "/vision/BlackRealDis"
+//one_Robot speed
+#define Robot_Topic_Speed "/motion/cmd_vel"
 //robot suffix
 #define Robot_Position_Topic_Suffix "/Strategy/WorldMap/RobotPos"
 #define Robot_Role_Topic_Suffix "/Strategy/Coach/role"
