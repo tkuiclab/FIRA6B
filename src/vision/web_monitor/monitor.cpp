@@ -28,11 +28,12 @@ const char *parampath = param.c_str();
 
 void InterfaceProc::Parameter_getting(const int x)
 {
-  /*if(ifstream(parampath)){
+  if(ifstream(parampath)){
     cout<<visionpath<<endl;
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
-    system(load);*/
+    system(load);
+    }
     cout<<"Read the yaml file"<<endl;
     nh.getParam("/FIRA/HSV/Ball",HSV_red);
     nh.getParam("/FIRA/HSV/Blue",HSV_blue);
@@ -750,7 +751,6 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
 
   vision::Two_point Two_point_msg;
 
-  int x_1,y_1,x_2,y_2,x_3,y_3,x_4,y_4;
   double blue_angle_max;
   double blue_angle_min;
   double yellow_angle_max;
@@ -758,16 +758,20 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   int x[4],y[4];
 
   if(color = BLUEITEM){
-     blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
-     blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
+     blue_angle_max = Angle_Adjustment(Blue_Item.ang_max)+center_front;
+     if(blue_angle_max>360) blue_angle_max = blue_angle_max-360;
+     blue_angle_min = Angle_Adjustment(Blue_Item.ang_min)+center_front;
+     if(blue_angle_min>360) blue_angle_min = blue_angle_min-360;
 
       Two_point_msg.blue_dis = Blue_Item.dis_min;
       Two_point_msg.blue_ang1 = blue_angle_max;
       Two_point_msg.blue_ang2 = blue_angle_min;}
 
   if(color = YELLOWITEM){
-      yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
-      yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
+      yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max)+center_front;
+      if(yellow_angle_max>360)yellow_angle_max = yellow_angle_max-360;
+      yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min)+center_front;
+      if(yellow_angle_min>360)yellow_angle_min = yellow_angle_min-360;
 
       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
       Two_point_msg.yellow_ang1 = yellow_angle_max;

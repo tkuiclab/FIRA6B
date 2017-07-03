@@ -1,4 +1,4 @@
-#define PI 3.14159265
+﻿#define PI 3.14159265
 #include "interface.hpp"
 #include "math.h"
 #include <time.h>
@@ -280,7 +280,7 @@ InterfaceProc::InterfaceProc()
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
   //white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
   //black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
-  Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
+  //Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
   s1 = nh.subscribe("interface/parameterbutton", 1000, &InterfaceProc::ParameterButtonCall, this);
   s2 = nh.subscribe("interface/color", 1000, &InterfaceProc::colorcall,this);
   s3 = nh.subscribe("interface/center", 1000, &InterfaceProc::centercall,this);
