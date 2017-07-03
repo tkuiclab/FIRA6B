@@ -14,7 +14,6 @@ function GetJoystickSpeed() {
         y: Yspeed,
         z: 0
     });
-
     PublishTopicCmdVel(vec3);
 }
 
@@ -227,7 +226,8 @@ joystick_canvas.addEventListener("mouseup", function(e) {
         joystick_V.y = 0;
         joy_ctx.clearRect(0, 0, joystick_canvas.width, joystick_canvas.height);
         drawjoystick(joystickcenter.x, joystickcenter.y);
-        setTimeout(StandBy, 300);
+        //setTimeout(StandBy, 0);
+        StandBy();
     }
 })
 

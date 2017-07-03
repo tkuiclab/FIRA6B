@@ -76,6 +76,11 @@ var IsSimulator3 = new ROSLIB.Topic({
     messageType: 'std_msgs/Int32'
 });
 
+
+setTimeout(PublishTopicSimulator, 0,false);
+setTimeout(PublishTopicSimulator, 100,false);
+setTimeout(PublishTopicSimulator, 200,false);
+
 function PublishTopicSimulator(checked) {
     var temp;
     if (checked == true) {
@@ -104,18 +109,18 @@ function PublishTopicSimulator(checked) {
 //vector
 var cmdVel1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/motion/cmd_vel',
+    name: '/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 
 var cmdVel2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/motion/cmd_vel',
+    name: '/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 var cmdVel3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/motion/cmd_vel',
+    name: '/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 
@@ -172,17 +177,17 @@ function PublishTopicCmdVel(vec3) {
 //shoot
 var TopicShoot1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/motion/shoot',
+    name: '/shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/motion/shoot',
+    name: '/shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/motion/shoot',
+    name: '/shoot',
     messageType: 'std_msgs/Int32'
 });
 
@@ -331,7 +336,7 @@ TSInfoListen1.subscribe(function(msg) {
     var Box = [];
     var item;
     var info;
-    for (item = 0; item < 4; item++) {
+    for (item = 0; item < 3; item++) {
         Box.push(parseFloat(msg.data[item]));
     }
     info = new ROSLIB.Message({
@@ -347,7 +352,7 @@ TSInfoListen2.subscribe(function(msg) {
     var Box = [];
     var item;
     var info;
-    for (item = 0; item < 4; item++) {
+    for (item = 0; item < 3; item++) {
         Box.push(parseFloat(msg.data[item]));
     }
     info = new ROSLIB.Message({
@@ -365,7 +370,7 @@ TSInfoListen3.subscribe(function(msg) {
     var Box = [];
     var item;
     var info;
-    for (item = 0; item < 4; item++) {
+    for (item = 0; item < 3; item++) {
         Box.push(parseFloat(msg.data[item]));
     }
     info = new ROSLIB.Message({
