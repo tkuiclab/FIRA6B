@@ -104,18 +104,18 @@ function PublishTopicSimulator(checked) {
 //vector
 var cmdVel1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/cmd_vel',
+    name: '/motion/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 
 var cmdVel2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/cmd_vel',
+    name: '/motion/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 var cmdVel3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/cmd_vel',
+    name: '/motion/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 
@@ -172,17 +172,17 @@ function PublishTopicCmdVel(vec3) {
 //shoot
 var TopicShoot1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 
