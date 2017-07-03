@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 #define PI 3.14159265
-=======
-﻿#define PI 3.14159265
->>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
 #include "interface.hpp"
 #include "math.h"
 #include <time.h>
@@ -277,23 +273,14 @@ InterfaceProc::InterfaceProc()
   ros::NodeHandle n("~");	
   Parameter_getting(1);	
   init_data();
-<<<<<<< HEAD
   image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
-=======
-  //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
-  image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
->>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
   image_pub_threshold_ = it_.advertise("/camera/image", 1);//http://localhost:8080/stream?topic=/camera/image webfor /camera/image
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
   //white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
   //black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
-<<<<<<< HEAD
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
-=======
-  //Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
->>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
   s1 = nh.subscribe("interface/parameterbutton", 1000, &InterfaceProc::ParameterButtonCall, this);
   s2 = nh.subscribe("interface/color", 1000, &InterfaceProc::colorcall,this);
   s3 = nh.subscribe("interface/center", 1000, &InterfaceProc::centercall,this);

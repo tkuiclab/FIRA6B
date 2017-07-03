@@ -28,20 +28,11 @@ const char *parampath = param.c_str();
 
 void InterfaceProc::Parameter_getting(const int x)
 {
-<<<<<<< HEAD
   /*if(ifstream(parampath)){
     cout<<visionpath<<endl;
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
     system(load);*/
-=======
-  if(ifstream(parampath)){
-    cout<<visionpath<<endl;
-    std::string temp = "rosparam load " + param; 
-    const char *load = temp.c_str(); 
-    system(load);
-    }
->>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
     cout<<"Read the yaml file"<<endl;
     nh.getParam("/FIRA/HSV/Ball",HSV_red);
     nh.getParam("/FIRA/HSV/Blue",HSV_blue);
@@ -117,13 +108,8 @@ InterfaceProc::InterfaceProc()
   ros::NodeHandle n("~");	
   Parameter_getting(1);	
   init_data();
-<<<<<<< HEAD
   image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
-=======
-  //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
-  image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
->>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
   image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
@@ -764,10 +750,7 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
 
   vision::Two_point Two_point_msg;
 
-<<<<<<< HEAD
   int x_1,y_1,x_2,y_2,x_3,y_3,x_4,y_4;
-=======
->>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
   double blue_angle_max;
   double blue_angle_min;
   double yellow_angle_max;
@@ -775,30 +758,16 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   int x[4],y[4];
 
   if(color = BLUEITEM){
-<<<<<<< HEAD
      blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
      blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
-=======
-     blue_angle_max = Angle_Adjustment(Blue_Item.ang_max)+center_front;
-     if(blue_angle_max>360) blue_angle_max = blue_angle_max-360;
-     blue_angle_min = Angle_Adjustment(Blue_Item.ang_min)+center_front;
-     if(blue_angle_min>360) blue_angle_min = blue_angle_min-360;
->>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
 
       Two_point_msg.blue_dis = Blue_Item.dis_min;
       Two_point_msg.blue_ang1 = blue_angle_max;
       Two_point_msg.blue_ang2 = blue_angle_min;}
 
   if(color = YELLOWITEM){
-<<<<<<< HEAD
       yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
       yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
-=======
-      yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max)+center_front;
-      if(yellow_angle_max>360)yellow_angle_max = yellow_angle_max-360;
-      yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min)+center_front;
-      if(yellow_angle_min>360)yellow_angle_min = yellow_angle_min-360;
->>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
 
       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
       Two_point_msg.yellow_ang1 = yellow_angle_max;
