@@ -148,9 +148,10 @@ always @(posedge iCLK) begin
 		rData[95:88]	<= iFB_Motor3[23:16];
 		rData[103:96]	<= iFB_Motor3[15:8];
 		rData[111:104]	<= iFB_Motor3[7:0];
-		rData[119:112]	<= (rData[23:16]+rData[31:24]+rData[39:32]+rData[47:40]+
-								rData[55:48]+rData[63:56]+rData[71:64]+rData[79:72]+
-								rData[87:80]+rData[95:88]+rData[103:96]+rData[111:104]);	//checksum
+		rData[119:112]	<= (iFB_Motor1[31:24]+iFB_Motor1[23:16]+iFB_Motor1[15:8]+iFB_Motor1[7:0]+
+							iFB_Motor2[31:24]+iFB_Motor2[23:16]+iFB_Motor2[15:8]+iFB_Motor2[7:0]+
+							iFB_Motor3[31:24]+iFB_Motor3[23:16]+iFB_Motor3[15:8]+iFB_Motor3[7:0]);	//checksum
+
 	end
 	rTx_busy	<=	iTx_busy;
 end
