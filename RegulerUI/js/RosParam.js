@@ -1265,3 +1265,40 @@ StrategySelectBox3.get(function(value) {
 });
 
 //============================================================================
+
+/*========================================================*/
+
+//IsSimulator
+var IsSimulator1 = new ROSLIB.Param({
+    ros: ros,
+    name: '/FIRA/IsSimulator',
+});
+var IsSimulator2 = new ROSLIB.Param({
+    ros: ros2,
+    name: '/FIRA/IsSimulator',
+});
+var IsSimulator3 = new ROSLIB.Param({
+    ros: ros3,
+    name: '/FIRA/IsSimulator',
+});
+
+function SetParamIsSimulator(checked) {
+    var temp;
+    if (checked == true) {
+        temp = 1;
+        if (CheckIP[0] == 1)
+            IsSimulator1.set(temp);
+        if (CheckIP[1] == 1)
+            IsSimulator2.set(temp);
+        if (CheckIP[2] == 1)
+            IsSimulator3.set(temp);
+    } else {
+        temp = 0;
+        if (CheckIP[0] == 1)
+            IsSimulator1.set(temp);
+        if (CheckIP[1] == 1)
+            IsSimulator2.set(temp);
+        if (CheckIP[2] == 1)
+            IsSimulator3.set(temp);
+    }
+}

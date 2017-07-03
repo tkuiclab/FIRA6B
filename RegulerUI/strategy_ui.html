@@ -80,7 +80,7 @@
                         <tr>
                             <td>
                                 <div>
-                                    <input id="SimulatorButton" type="checkbox" name="SimulatorButton" onclick="PublishTopicSimulator(this.checked)" />
+                                    <input id="SimulatorButton" type="checkbox" name="SimulatorButton" onclick="SetParamIsSimulator(this.checked)" />
                                     <label id="SimulatorButton" for="SimulatorButton">IsSimulator</label>
                                 </div>
                             </td>
@@ -135,7 +135,7 @@
                                 <tr>
                                     <td>
                                         <div style="width: 120px">
-                                            <input id="RobotTwoButton" type="radio" name="RobotStateButton" onclick="GetChooseRobot(2)" />
+                                            <input id="RobotTwoButton" type="radio" checked="checked" name="RobotStateButton" onclick="GetChooseRobot(2)" />
                                             <label id="RobotTwoButton" for="RobotTwoButton">Robot 2</label>
                                         </div>
                                     </td>
@@ -157,7 +157,7 @@
                                 <tr>
                                     <td>
                                         <div style="width: 120px">
-                                            <input id="StandByButton" type="radio" checked="checked" name="RobotStateButton" onclick="GetChooseRobot(0);StandBy();" />
+                                            <input id="StandByButton" type="checkbox" name="RobotRemoteButton" onclick="RemoteSwitch(this.checked)" />
                                             <label id="StandByButton" for="StandByButton">Stand By</label>
                                         </div>
                                     </td>
@@ -406,7 +406,7 @@
                                 <tr>
                                     <td class="GDetail SP1">(double)Vdis_max</td>
                                     <td>
-                                        <input type="text" name="SPlanningVelocityElement1" value="1.1" />
+                                        <input type="text" name="SPlanningVelocityElement1" value="2.2" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -454,7 +454,7 @@
                                 <tr>
                                     <td class="GDetail SP9">(double)VTsupport_min</td>
                                     <td>
-                                        <input type="text" name="SPlanningVelocityElement1" value="0.0" />
+                                        <input type="text" name="SPlanningVelocityElement1" value="12.0" />
                                     </td>
                                 </tr>
                             </table>
@@ -559,7 +559,7 @@
                                 <tr>
                                     <td class="GDetail SP9">(double)VTsupport_min</td>
                                     <td>
-                                        <input type="text" name="SPlanningVelocityElement2" value="0.0" />
+                                        <input type="text" name="SPlanningVelocityElement2" value="0" />
                                     </td>
                                 </tr>
                             </table>
@@ -664,7 +664,7 @@
                                 <tr>
                                     <td class="GDetail SP9">(double)VTsupport_min</td>
                                     <td>
-                                        <input type="text" name="SPlanningVelocityElement3" value="0.0" />
+                                        <input type="text" name="SPlanningVelocityElement3" value="0" />
                                     </td>
                                 </tr>
                             </table>

@@ -227,7 +227,7 @@ joystick_canvas.addEventListener("mouseup", function(e) {
         joy_ctx.clearRect(0, 0, joystick_canvas.width, joystick_canvas.height);
         drawjoystick(joystickcenter.x, joystickcenter.y);
         //setTimeout(StandBy, 0);
-        StandBy();
+        //StandBy();
     }
 })
 
