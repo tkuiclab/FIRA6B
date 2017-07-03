@@ -38,8 +38,13 @@ InterfaceProc::InterfaceProc()
    :it_(nh)
 {
   ros::NodeHandle n("~");	
+<<<<<<< HEAD
     //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
     image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+=======
+    image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
+    //image_sub_ = it_.subscribe("/camera/image_raw", 1, &ImageConverter::imageCb, this);
+>>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
     black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
   frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );

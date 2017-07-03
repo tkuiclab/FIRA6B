@@ -1,5 +1,6 @@
 FIRA:
   Attack_Strategy: [0]
+<<<<<<< HEAD
   Camera: {Focal: 13.971313932573906, High: 650.0}
   Center: {Camera_high: 650, Center_X: 309, Center_Y: 268, Front: 273, Inner: 39,
     Outer: 255, X: 308, Y: 266}
@@ -27,6 +28,26 @@ FIRA:
     black: {angle: 41, gray: 106}
     white: {angle: 32, gray: 115}
   Parameterbutton: 4
+=======
+  Camera: {Focal: 11.144465290806757, High: 650.0}
+  Center: {Camera_high: 650, Center_X: 348, Center_Y: 268, Front: 274, Inner: 40,
+    Outer: 265, X: 332, Y: 258}
+  Chase_Strategy: [0]
+  Corner_Kick: [1.2, 60, 90, 50]
+  Distance_Settings: [0, 0, 0]
+  Dorsad_Attack: [8, 90, 180, 2, 1, 2]
+  FPS: 14
+  HSV:
+    Ball: [47, 120, 28, 100, 0, 100]
+    Blue: [189, 264, 19, 45, 5, 39]
+    ColorMode: 1
+    Green: [43, 187, 41, 74, 21, 100]
+    White: [0, 359, 0, 359, 0, 359]
+    Yellow: [0, 30, 21, 38, 12, 67]
+    black: {angle: 41, gray: 106}
+    white: {angle: 32, gray: 31}
+  Parameterbutton: 2
+>>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
         <!-- ===================================================================================\
@@ -106,6 +127,7 @@ FIRA:
   SCAN: {Angle_Near_Gap: 4, Angle_range_1: 1, Angle_range_2_3: 4, Dont_Search_Angle_1: 330,
     Dont_Search_Angle_2: 88, Dont_Search_Angle_3: 208, Magn_Far_End: 240, Magn_Far_Start: 165,
     Magn_Middle_Start: 117, Magn_Near_Gap: 1, Magn_Near_Start: 40}
+<<<<<<< HEAD
   SPlanning_Velocity: [2.3, 0.3, 70, 40, 20, 2, 144, 5]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
@@ -1523,11 +1545,29 @@ FIRA_Behavior:
   Attack_Strategy: [5, 1, 0.43]
   Chase_Strategy: [5, 0.15, 0.2, 6, 0.39]
   Corner_Kick: [120, 0.45]
+=======
+  SPlanning_Velocity: [2.2, 0.3, 80, 50, 20, 3, 144, 5]
+  Scan:
+    Parameter: [4, 3, 40, 88, 142, 202, 87, 93, 207, 213, 327, 333]
+  SideSpeedUp: [0.73, 1.2, 0.7, 5, 17.6]
+  TypeS_Attack: [2, 0.2]
+  TypeU_Attack: [0.8, 1, -90, 90, 0.6, 0.3, 10, 20]
+  Zone_Attack: [1.5, 2.2]
+  blackItem: {angle: 3, gray: 50}
+FIRA_Behavior:
+  Attack_Strategy: [30, 1, 1]
+  Chase_Strategy: [3, 0.05, 0.08, 16.5, 0.35]
+  Corner_Kick: [10, 0.45]
+>>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
   Side_Speed_UP: [10, 0.45]
   TypeS_Attack: [20, 1, 1.5]
   TypeU_Chase: [30, 0.3]
   Zone_Attack: [0.6]
+<<<<<<< HEAD
 StrategySelection: [0, 1, 0, 0, 1, 0]
+=======
+StrategySelection: [1, 0, 1, 0, 0, 0]
+>>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
 auto_adjust_stream_bytes_per_second: true
 auto_exposure: false
 auto_gain: false
@@ -1561,7 +1601,11 @@ gazebo: {auto_disable_bodies: false, cfm: 0.0, contact_max_correcting_vel: 100.0
   sor_pgs_rms_error_tol: 0.0, sor_pgs_w: 1.3, time_step: 0.001}
 height: 493
 prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
+<<<<<<< HEAD
   auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.022,
+=======
+  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.014,
+>>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
   exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
   gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
   trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
@@ -1581,6 +1625,7 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__42278: 'http://iclab2-To-be-filled-by-O-E-M:42278/',
     host_iclab2_to_be_filled_by_o_e_m__45546: 'http://iclab2-To-be-filled-by-O-E-M:45546/',
     host_iclab2_to_be_filled_by_o_e_m__45579: 'http://iclab2-To-be-filled-by-O-E-M:45579/',
+<<<<<<< HEAD
     host_iclab__32960: 'http://iclab:32960/', host_iclab__33876: 'http://iclab:33876/',
     host_iclab__35121: 'http://iclab:35121/', host_iclab__36840: 'http://iclab:36840/',
     host_iclab__37106: 'http://iclab:37106/', host_iclab__37245: 'http://iclab:37245/',
@@ -1693,6 +1738,31 @@ rosversion: '1.11.16
 
   '
 run_id: 66a84b02-b9f7-11e6-a217-b8aeed74ba50
+=======
+    host_iclab_desktop__33237: 'http://iclab-desktop:33237/', host_iclab_desktop__33506: 'http://iclab-desktop:33506/',
+    host_iclab_desktop__33568: 'http://iclab-desktop:33568/', host_iclab_desktop__33695: 'http://iclab-desktop:33695/',
+    host_iclab_desktop__33955: 'http://iclab-desktop:33955/', host_iclab_desktop__34557: 'http://iclab-desktop:34557/',
+    host_iclab_desktop__35844: 'http://iclab-desktop:35844/', host_iclab_desktop__36104: 'http://iclab-desktop:36104/',
+    host_iclab_desktop__37341: 'http://iclab-desktop:37341/', host_iclab_desktop__37841: 'http://iclab-desktop:37841/',
+    host_iclab_desktop__37888: 'http://iclab-desktop:37888/', host_iclab_desktop__38006: 'http://iclab-desktop:38006/',
+    host_iclab_desktop__38032: 'http://iclab-desktop:38032/', host_iclab_desktop__38461: 'http://iclab-desktop:38461/',
+    host_iclab_desktop__38595: 'http://iclab-desktop:38595/', host_iclab_desktop__38844: 'http://iclab-desktop:38844/',
+    host_iclab_desktop__38966: 'http://iclab-desktop:38966/', host_iclab_desktop__38987: 'http://iclab-desktop:38987/',
+    host_iclab_desktop__39094: 'http://iclab-desktop:39094/', host_iclab_desktop__39268: 'http://iclab-desktop:39268/',
+    host_iclab_desktop__39606: 'http://iclab-desktop:39606/', host_iclab_desktop__40252: 'http://iclab-desktop:40252/',
+    host_iclab_desktop__40833: 'http://iclab-desktop:40833/', host_iclab_desktop__41110: 'http://iclab-desktop:41110/',
+    host_iclab_desktop__41464: 'http://iclab-desktop:41464/', host_iclab_desktop__41942: 'http://iclab-desktop:41942/',
+    host_iclab_desktop__42001: 'http://iclab-desktop:42001/', host_iclab_desktop__42089: 'http://iclab-desktop:42089/',
+    host_iclab_desktop__42535: 'http://iclab-desktop:42535/', host_iclab_desktop__43785: 'http://iclab-desktop:43785/',
+    host_iclab_desktop__44452: 'http://iclab-desktop:44452/', host_iclab_desktop__44621: 'http://iclab-desktop:44621/',
+    host_iclab_desktop__44954: 'http://iclab-desktop:44954/', host_iclab_desktop__45644: 'http://iclab-desktop:45644/',
+    host_iclab_desktop__45691: 'http://iclab-desktop:45691/', host_iclab_desktop__45916: 'http://iclab-desktop:45916/',
+    host_iclab_desktop__45996: 'http://iclab-desktop:45996/', host_iclab_desktop__46546: 'http://iclab-desktop:46546/'}
+rosversion: '1.11.20
+
+  '
+run_id: 931121b6-3a33-11e7-83cf-b8aeed7cea2c
+>>>>>>> ad69e3e1688a8e1ae820ead2669d5682fbdf03ce
 stream_bytes_per_second: 45000000
 tf_prefix: FIRA/R3
 trig_rate: 15.0
