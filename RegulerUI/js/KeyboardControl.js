@@ -47,7 +47,7 @@ function keysdown(e) {
                 y: parseFloat(speed / Math.pow(2, 0.5)),
                 z: 0
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[87] && keys[65]) {
             vec3 = new ROSLIB.Message({
@@ -55,7 +55,7 @@ function keysdown(e) {
                 y: parseFloat(speed / Math.pow(2, 0.5)),
                 z: 0
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[83] && keys[68]) {
             vec3 = new ROSLIB.Message({
@@ -63,7 +63,7 @@ function keysdown(e) {
                 y: -parseFloat(speed / Math.pow(2, 0.5)),
                 z: 0
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[83] && keys[65]) {
             vec3 = new ROSLIB.Message({
@@ -71,7 +71,7 @@ function keysdown(e) {
                 y: -parseFloat(speed / Math.pow(2, 0.5)),
                 z: 0
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[87]) {
             vec3 = new ROSLIB.Message({
@@ -79,7 +79,7 @@ function keysdown(e) {
                 y: parseFloat(speed),
                 z: 0
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[68]) {
             vec3 = new ROSLIB.Message({
@@ -87,7 +87,7 @@ function keysdown(e) {
                 y: 0,
                 z: 0
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[83]) {
             vec3 = new ROSLIB.Message({
@@ -95,7 +95,7 @@ function keysdown(e) {
                 y: -parseFloat(speed),
                 z: 0
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[65]) {
             vec3 = new ROSLIB.Message({
@@ -103,7 +103,7 @@ function keysdown(e) {
                 y: 0,
                 z: 0
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[69]) {
             if (speed > 30)
@@ -113,7 +113,7 @@ function keysdown(e) {
                 y: 0,
                 z: -parseFloat(speed)
             });
-            console.log(vec3);
+            PublishTopicCmdVel(vec3);
             PublishTopicCmdVel(vec3);
         } else if (keys[81]) {
             if (speed > 30)
@@ -123,8 +123,14 @@ function keysdown(e) {
                 y: 0,
                 z: parseFloat(speed)
             });
-            console.log(vec3);
             PublishTopicCmdVel(vec3);
+            PublishTopicCmdVel(vec3);
+        }
+        //SwitchRobot
+        if (keys[80]) {
+            PublishTopicGameState(0);
+        }else if (keys[79]) {
+            PublishTopicGameState(1);
         }
 
     }
@@ -136,7 +142,7 @@ function releasebutton() {
         y: 0,
         z: 0
     });
-    console.log(vec3);
+    PublishTopicCmdVel(vec3);
     PublishTopicCmdVel(vec3);
 }
 

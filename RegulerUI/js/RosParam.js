@@ -1041,13 +1041,19 @@ function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1,
 }
 
 function SetBehaviorKeyborard(box1) {
-    console.log(box1);
-    if (CheckIP[0] == 1)
-        StrategySelectBox1.set(box1);
-    if (CheckIP[1] == 1)
-        StrategySelectBox2.set(box1);
-    if (CheckIP[2] == 1)
-        StrategySelectBox3.set(box1);
+    if (ChooseRobot == 1) {
+        if (CheckIP[0] == 1)
+            StrategySelectBox1.set(box1);
+        console.log("1 ", box1);
+    } else if (ChooseRobot == 2) {
+        if (CheckIP[1] == 1)
+            StrategySelectBox2.set(box1);
+        console.log("2 ", box1);
+    } else if (ChooseRobot == 3) {
+        if (CheckIP[2] == 1)
+            StrategySelectBox3.set(box1);
+        console.log("3 ", box1);
+    }
 }
 
 
@@ -1259,3 +1265,40 @@ StrategySelectBox3.get(function(value) {
 });
 
 //============================================================================
+
+/*========================================================*/
+
+//IsSimulator
+var IsSimulator1 = new ROSLIB.Param({
+    ros: ros,
+    name: '/FIRA/IsSimulator',
+});
+var IsSimulator2 = new ROSLIB.Param({
+    ros: ros2,
+    name: '/FIRA/IsSimulator',
+});
+var IsSimulator3 = new ROSLIB.Param({
+    ros: ros3,
+    name: '/FIRA/IsSimulator',
+});
+
+function SetParamIsSimulator(checked) {
+    var temp;
+    if (checked == true) {
+        temp = 1;
+        if (CheckIP[0] == 1)
+            IsSimulator1.set(temp);
+        if (CheckIP[1] == 1)
+            IsSimulator2.set(temp);
+        if (CheckIP[2] == 1)
+            IsSimulator3.set(temp);
+    } else {
+        temp = 0;
+        if (CheckIP[0] == 1)
+            IsSimulator1.set(temp);
+        if (CheckIP[1] == 1)
+            IsSimulator2.set(temp);
+        if (CheckIP[2] == 1)
+            IsSimulator3.set(temp);
+    }
+}
