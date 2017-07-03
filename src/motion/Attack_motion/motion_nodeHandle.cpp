@@ -11,6 +11,7 @@ Motion_nodeHandle::Motion_nodeHandle(int argc, char **argv)
 	std::memset(this->node_robotCMD->y_speed, 0, sizeof(double));
 	std::memset(this->node_robotCMD->yaw_speed, 0, sizeof(double));
 	std::memset(this->node_robotCMD->shoot_power, 0, sizeof(int));
+	this->remote = false;
 #ifdef DEBUG
 	std::cout << "Motion_nodeHandle(DEBUG)\n";
 	std::cout << "x_speed: " <<*this->node_robotCMD->x_speed << std::endl;
@@ -40,6 +41,7 @@ void Motion_nodeHandle::init(int argc, char **argv)
 	motionFB_pub = n->advertise<geometry_msgs::Twist>(motion_feedback_topic_name,1000);
 	motion_sub = n->subscribe<geometry_msgs::Twist>(motion_topic_name, 1000, &Motion_nodeHandle::motionCallback, this);
 	shoot_sub = n->subscribe<std_msgs::Int32>(shoot_topic_name, 1000, &Motion_nodeHandle::shootCallback, this);
+	remote_sub = n->subscribe<std_msgs::Bool>(remote_topic_name, 1000, &Motion_nodeHandle::remoteCallback, this);
 }
 
 void Motion_nodeHandle::motionCallback(const geometry_msgs::Twist::ConstPtr &motion_msg)
@@ -72,6 +74,18 @@ void Motion_nodeHandle::shootCallback(const std_msgs::Int32::ConstPtr &shoot_msg
 #endif
 }
 
+void Motion_nodeHandle::remoteCallback(const std_msgs::Bool::ConstPtr &remote_msg)
+{
+	this->remote = remote_msg->data;
+#ifdef DEBUG
+	std::cout << "remoteCallback(DEBUG)\n";
+	//std::cout << std::dec;
+	std::cout << "remote : " << this->remote << std::endl;
+	std::cout << std::endl;
+
+#endif
+}
+
 void Motion_nodeHandle::pub(const geometry_msgs::Twist &pub_msgs)
 {
 	motionFB_pub.publish(pub_msgs);
@@ -93,8 +107,10 @@ void Motion_nodeHandle::pub_robotFB(robot_command* node_robotFB)
 
 void Motion_nodeHandle::clear()
 {
+	if(this->remote == false){
+		*(this->node_robotCMD->x_speed) = 0;
+		*(this->node_robotCMD->y_speed) = 0;
+		*(this->node_robotCMD->yaw_speed) = 0;
+	}
 	*(this->node_robotCMD->shoot_power) = 0;
-	*(this->node_robotCMD->x_speed) = 0;
-	*(this->node_robotCMD->y_speed) = 0;
-	*(this->node_robotCMD->yaw_speed) = 0;
 }

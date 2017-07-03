@@ -35,14 +35,14 @@ int main(int argc, char **argv)
 	//		exit(EXIT_FAILURE);
 	//	}
 	//}
-	ros::Rate loop_rate(30);
+	ros::Rate loop_rate(20);
 	while(ros::ok()){
 		main_robotCMD = main_nodeHandle.getMotion();
 		main_Base_Control.send(main_robotCMD);
 		
 		main_nodeHandle.clear();
-//		main_robotFB = main_Base_Control.get_feedback();
-//		main_nodeHandle.pub_robotFB(main_robotFB);
+		main_robotFB = main_Base_Control.get_feedback();
+		main_nodeHandle.pub_robotFB(main_robotFB);
 		ros::spinOnce();
 		loop_rate.sleep();
 	}
