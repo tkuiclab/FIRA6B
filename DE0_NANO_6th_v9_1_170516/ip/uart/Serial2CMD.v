@@ -50,7 +50,6 @@ parameter END	=	8'b10000000;
 //=============================================================================
 //	divide information to 6 part and 8 bits per part
 reg		[7:0]	rData_0, rData_1, rData_2, rData_3, rData_4, rData_5,rData_6,rData_7;
-reg		[7:0]	rTmpData_0, rTmpData_1, rTmpData_2, rTmpData_3, rTmpData_4, rTmpData_5,rTmpData_6, rTmpData_7;
 
 reg		[SIZE-1:0]	state;
 
@@ -83,7 +82,7 @@ always @(posedge iCLK) begin
 	end
 	// Take apart Data
 	else begin
-		rChecksum <= (rData_2 + rData_3) + (rData_4 + rData_5) + rData_6;
+		
 
 		if(~rRx_ready & iRx_ready) begin
 			case(state)
@@ -147,16 +146,7 @@ always @(posedge iCLK) begin
 //			oSignal 	<= rData_5;
 //			okick 		<= rData_6;
 //			
-			rData_0 <= rData_0;
-			rData_1 <= rData_1;
-			rData_2 <= rData_2;
-			rData_3 <= rData_3;
-			rData_4 <= rData_4;
-			rData_5 <= rData_5;
-			rData_6 <= rData_6;
-			rData_7 <= rData_7;
-			state <= state;
-			oRx_done	<=	0;
+			rChecksum <= (rData_2 + rData_3) + (rData_4 + rData_5) + rData_6;
 			if((rChecksum == rData_7) && (rData_0 == 8'hFF) && (rData_1 == 8'hFA))begin
 				rError <= 0;
 				oCMD_Motor1 <= rData_2;
@@ -173,6 +163,16 @@ always @(posedge iCLK) begin
 				oSignal 		<= 	oSignal;
 				okick			<= 	okick;
 			end
+			rData_0 <= rData_0;
+			rData_1 <= rData_1;
+			rData_2 <= rData_2;
+			rData_3 <= rData_3;
+			rData_4 <= rData_4;
+			rData_5 <= rData_5;
+			rData_6 <= rData_6;
+			rData_7 <= rData_7;
+			state <= state;
+			oRx_done	<=	0;
 		end
 		
 		rRx_ready	<=	iRx_ready;
