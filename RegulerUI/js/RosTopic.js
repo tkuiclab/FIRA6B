@@ -2,28 +2,29 @@
 //MotionRemote
 var Remote1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/motion/Remote',
-    messageType: 'std_msgs/Int32'
+    name: '/motion/remote',
+    messageType: 'std_msgs/Bool'
 });
 var Remote2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/motion/Remote',
-    messageType: 'std_msgs/Int32'
+    name: '/motion/remote',
+    messageType: 'std_msgs/Bool'
 });
 var Remote3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/motion/Remote',
-    messageType: 'std_msgs/Int32'
+    name: '/motion/remote',
+    messageType: 'std_msgs/Bool'
 });
 function RemoteSwitch(state){
     var check;
 	if(state){
-		RemoteState = parseInt(1);
+        console.log(123);
+		RemoteState = true;
         check = new ROSLIB.Message({
             data: RemoteState
         });
     }else{
-		RemoteState = parseInt(0);
+		RemoteState = false;
         check = new ROSLIB.Message({
             data: RemoteState
         });
@@ -170,17 +171,17 @@ function PublishTopicCmdVel(vec3) {
 //shoot
 var TopicShoot1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 
