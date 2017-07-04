@@ -137,6 +137,8 @@ int main(int argc, char **argv)
         else if(global_env->teamcolor == "Yellow")Team_color = Team_Yellow;
         global_env->gameState = mNodeHandle.getGameState();
         global_env->issimulator=mNodeHandle.getIsSimulator();
+        // global_env->issimulator=1;
+        printf("global_env->issimulator=%d\n",global_env->issimulator);
         shoot_value = mpathplan.getShoot();
         if(shoot_value>0){
            mNodeHandle.pubShoot(shoot_value);
@@ -148,11 +150,11 @@ int main(int argc, char **argv)
         mbehavior.setEnv(*global_env);
         mbehavior.setTeam(Team_color);
         if((global_env->issimulator)==true){
+            mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
             for(int i=0; i<PLAYERS_PER_SIDE;i++){
                 mbehavior.readroleAry(i,roleAry[i]);
             }
             actionAry = mbehavior.getactionAry();
-
             mpathplan.setEnv(*global_env);
             mpathplan.setTeam(Team_color);
             for(int i=0; i<PLAYERS_PER_SIDE;i++){
@@ -182,15 +184,14 @@ int main(int argc, char **argv)
             global_env->home[global_env->RobotNumber].v_y = tEnv->home[global_env->RobotNumber].v_y;
             global_env->home[global_env->RobotNumber].v_yaw = tEnv->home[global_env->RobotNumber].v_yaw*deg2rad;
         }
-
-
         if(actionAry[global_env->RobotNumber] == 0){
 
         }else{
             mNodeHandle.pubGrpSpeed();
         }
+
         ros::spinOnce();
-        loop_rate.sleep();
+        // loop_rate.sleep();
 
     }
 

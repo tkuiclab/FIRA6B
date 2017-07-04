@@ -40,10 +40,6 @@
 *****************************************************************************/
 #define Ball_Topic_Name         "/FIRA/Strategy/WorldMap/soccer"
 #define ModelState_Topic_Name  "/gazebo/model_states"
-#define IsSimulator_Topic "/FIRA/IsSimulator"
-
-//RobotNumber
-#define RobotNumber_Topic "/FIRA/RobotNumber"
 
 //robot prefix
 #define Robot_Topic_Prefix "/FIRA/R"
@@ -63,9 +59,6 @@
 
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
-
-//one_Robot speed
-#define Robot_Topic_Speed "/cmd_vel"
 
 #define Node_Name "PersonalStrategy"
 
@@ -127,7 +120,7 @@ public:
     ros::NodeHandle* getNodeHandle(){return n;}
     long getGameState(){return gamestate;}
     std::string getTeamColor(){return teamcolor;}
-    int getIsSimulator(){return issimulator;}
+    int getIsSimulator(){return IsSimulator;}
 
     //BlackObject
     int Blackangle;
@@ -148,7 +141,6 @@ private:
     ros::NodeHandle *n;
     long gamestate;
     std::string teamcolor;
-    int  issimulator;
 
     //gazebo_ModelStates subscriber
     ros::Subscriber Gazebo_Model_Name_sub;
@@ -167,7 +159,6 @@ private:
     ros::Subscriber GameState;
     ros::Subscriber TeamColor;
     ros::Subscriber Vision;
-    ros::Subscriber IsSimulator;
 
     //BlackObject
     ros::Subscriber BlackObject;
@@ -191,6 +182,7 @@ private:
     /// load param begin
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
+    int IsSimulator;
     /// load param end
 
     bool run_one = false;
@@ -550,27 +542,6 @@ private:
 
 
 
-
-    }
-    void subIsSimulator(const std_msgs::Int32::ConstPtr &msg){
-        issimulator=msg->data;
-        if(issimulator==1){
-            //Use_topic_gazebo_msgs_Model_States to get model position
-            ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::ball_sub_fun,this);
-
-            //robot subscriber
-            robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_1_pos_fun,this);
-            robot_2_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_2_pos_fun,this);
-            robot_3_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_3_pos_fun,this);
-            robotOpt_1_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_1_pos_fun,this);
-            robotOpt_2_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_2_pos_fun,this);
-            robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_3_pos_fun,this);
-        }
-        else{
-            //contact image
-            Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
-            BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
-        }
 
     }
 };
