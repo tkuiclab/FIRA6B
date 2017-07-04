@@ -52,10 +52,10 @@ private:
 
   double WhiteDis;
   double BlackDis;
-  int dis_gap;
-  int white_gray,white_angle;
-
-  std::vector<int>whiteline_pixel;
+  vector<double> Angle_sin;
+  vector<double> Angle_cos;
+  vector<int>whiteItem_pixel;
+  vector<int>blackItem_pixel;
 public:
   InterfaceProc();
   ~InterfaceProc();
