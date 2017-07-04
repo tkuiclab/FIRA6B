@@ -1,4 +1,41 @@
 /*========================================================*/
+//MotionRemote
+var Remote1 = new ROSLIB.Topic({
+    ros: ros,
+    name: '/motion/Remote',
+    messageType: 'std_msgs/Int32'
+});
+var Remote2 = new ROSLIB.Topic({
+    ros: ros2,
+    name: '/motion/Remote',
+    messageType: 'std_msgs/Int32'
+});
+var Remote3 = new ROSLIB.Topic({
+    ros: ros3,
+    name: '/motion/Remote',
+    messageType: 'std_msgs/Int32'
+});
+function RemoteSwitch(state){
+    var check;
+	if(state){
+		RemoteState = parseInt(1);
+        check = new ROSLIB.Message({
+            data: RemoteState
+        });
+    }else{
+		RemoteState = parseInt(0);
+        check = new ROSLIB.Message({
+            data: RemoteState
+        });
+    }
+    if (CheckIP[0] == 1)
+        Remote1.publish(check);
+    if (CheckIP[1] == 1)
+        Remote2.publish(check);
+    if (CheckIP[2] == 1)
+        Remote3.publish(check);	
+}
+/*========================================================*/
 //GameState
 var GameState1 = new ROSLIB.Topic({
     ros: ros,
@@ -58,69 +95,23 @@ function PublishTopicTeamColor(color) {
     if (CheckIP[2] == 1)
         TeamColor3.publish(teamcolor);
 }
-/*========================================================*/
-//IsSimulator
-var IsSimulator1 = new ROSLIB.Topic({
-    ros: ros,
-    name: '/FIRA/IsSimulator',
-    messageType: 'std_msgs/Int32'
-});
-var IsSimulator2 = new ROSLIB.Topic({
-    ros: ros2,
-    name: '/FIRA/IsSimulator',
-    messageType: 'std_msgs/Int32'
-});
-var IsSimulator3 = new ROSLIB.Topic({
-    ros: ros3,
-    name: '/FIRA/IsSimulator',
-    messageType: 'std_msgs/Int32'
-});
 
-
-setTimeout(PublishTopicSimulator, 0,false);
-setTimeout(PublishTopicSimulator, 100,false);
-setTimeout(PublishTopicSimulator, 200,false);
-
-function PublishTopicSimulator(checked) {
-    var temp;
-    if (checked == true) {
-        temp = new ROSLIB.Message({
-            data: 1
-        });
-        if (CheckIP[0] == 1)
-            IsSimulator1.publish(temp);
-        if (CheckIP[1] == 1)
-            IsSimulator2.publish(temp);
-        if (CheckIP[2] == 1)
-            IsSimulator3.publish(temp);
-    } else {
-        temp = new ROSLIB.Message({
-            data: 0
-        });
-        if (CheckIP[0] == 1)
-            IsSimulator1.publish(temp);
-        if (CheckIP[1] == 1)
-            IsSimulator2.publish(temp);
-        if (CheckIP[2] == 1)
-            IsSimulator3.publish(temp);
-    }
-}
 /*========================================================*/
 //vector
 var cmdVel1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/cmd_vel',
+    name: '/motion/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 
 var cmdVel2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/cmd_vel',
+    name: '/motion/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 var cmdVel3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/cmd_vel',
+    name: '/motion/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 
@@ -164,12 +155,14 @@ function PublishTopicCmdVel(vec3) {
             z: vec3.z
         }
     });
-    if (ChooseRobot == 1) {
-        cmdVel1.publish(twist);
-    } else if (ChooseRobot == 2) {
-        cmdVel2.publish(twist);
-    } else if (ChooseRobot == 3) {
-        cmdVel3.publish(twist);
+    if(RemoteState){
+        if (ChooseRobot == 1) {
+            cmdVel1.publish(twist);
+        } else if (ChooseRobot == 2) {
+            cmdVel2.publish(twist);
+        } else if (ChooseRobot == 3) {
+            cmdVel3.publish(twist);
+        }
     }
 }
 
@@ -197,13 +190,14 @@ function PublishTopicShoot(size) {
     var Shoot = new ROSLIB.Message({
         data: size
     });
-
-    if (ChooseRobot == 1) {
-        TopicShoot1.publish(Shoot);
-    } else if (ChooseRobot == 2) {
-        TopicShoot2.publish(Shoot);
-    } else if (ChooseRobot == 3) {
-        TopicShoot3.publish(Shoot);
+    if(RemoteState){
+        if (ChooseRobot == 1) {
+            TopicShoot1.publish(Shoot);
+        } else if (ChooseRobot == 2) {
+            TopicShoot2.publish(Shoot);
+        } else if (ChooseRobot == 3) {
+            TopicShoot3.publish(Shoot);
+        }
     }
 }
 /*========================================================*/

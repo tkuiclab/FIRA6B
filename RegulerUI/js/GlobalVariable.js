@@ -9,7 +9,10 @@ var CheckGetParm = 0;
 var obj;
 
 //Choose_Robot
-var ChooseRobot = 0;
+var ChooseRobot = 2;
+
+//Remote_state
+var RemoteState = 0;
 
 //Joystick
 var boom = new Image();
