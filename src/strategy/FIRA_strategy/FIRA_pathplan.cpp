@@ -1049,8 +1049,8 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
     if(fabs(des_angle-goal_angle)<=7){
         if(shoot_count = 1){
             shoot = 30;
+            shoot_count = 0;
         }
-        shoot_count = 0;
     }else{
         shoot = 0;
     }

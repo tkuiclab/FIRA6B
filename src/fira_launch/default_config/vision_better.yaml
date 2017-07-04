@@ -16,9 +16,10 @@ FIRA:
     Redrange: [36, 0, 255, 118, 255, 0]
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-  IsSimulator: 1
-  RobotNumber: 0
-  SPlanning_Velocity: [2.3, 0.3, 70, 40, 20, 2, 144, 5, 999]
+  IsSimulator: 0
+  Penalty_Kick: [-45]
+  RobotNumber: 1
+  SPlanning_Velocity: [2.3, 0.3, 70, 40, 250, 0, 144, 5, 999]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,
@@ -1464,6 +1465,7 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__44234: 'http://iclab2-To-be-filled-by-O-E-M:44234/',
     host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
     host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
+    host_iclab__38594: 'http://iclab:38594/', host_iclab__46155: 'http://iclab:46155/',
     host_iclab_desktop__32798: 'http://iclab-desktop:32798/', host_iclab_desktop__32839: 'http://iclab-desktop:32839/',
     host_iclab_desktop__32879: 'http://iclab-desktop:32879/', host_iclab_desktop__32931: 'http://iclab-desktop:32931/',
     host_iclab_desktop__33020: 'http://iclab-desktop:33020/', host_iclab_desktop__33100: 'http://iclab-desktop:33100/',
