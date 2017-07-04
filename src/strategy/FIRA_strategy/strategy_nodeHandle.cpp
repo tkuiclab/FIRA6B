@@ -12,7 +12,7 @@ Strategy_nodeHandle(int argc, char** argv):
 
 void Strategy_nodeHandle::ros_comms_init(){
     n = new ros::NodeHandle();
-    shoot = n->advertise<std_msgs::Int32>("/shoot",1000);
+    shoot = n->advertise<std_msgs::Int32>("/motion/shoot",1000);
     std::string robot_prefix = Robot_Topic_Prefix;
     std::string robotOpt_prefix = RobotOpt_Topic_Prefix;
     std::string robotPos_suffix = Robot_Position_Topic_Suffix;
@@ -21,7 +21,6 @@ void Strategy_nodeHandle::ros_comms_init(){
     Gazebo_Model_Name_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::find_gazebo_model_name_fun,this);
 
     //Is Gazabo simulation mode?
-    IsSimulator = n->subscribe<std_msgs::Int32>(IsSimulator_Topic,1000,&Strategy_nodeHandle::subIsSimulator,this);
 
     GameState = n->subscribe<std_msgs::Int32>(GameState_Topic,1000,&Strategy_nodeHandle::subGameState,this);
     TeamColor = n->subscribe<std_msgs::String>(TeamColor_Topic,1000,&Strategy_nodeHandle::subTeamColor,this);
@@ -47,6 +46,21 @@ void Strategy_nodeHandle::ros_comms_init(){
     //one_Robot speed publish
     std::string robotSpeed= Robot_Topic_Speed;
     robot_speed_pub = n->advertise<geometry_msgs::Twist>(Robot_Topic_Speed,1000);
+
+    //Use_topic_gazebo_msgs_Model_States to get model position
+    ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::ball_sub_fun,this);
+    //robot subscriber
+    robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_1_pos_fun,this);
+    robot_2_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_2_pos_fun,this);
+    robot_3_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_3_pos_fun,this);
+    robotOpt_1_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_1_pos_fun,this);
+    robotOpt_2_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_2_pos_fun,this);
+    robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_3_pos_fun,this);
+    //contact image
+    Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
+    BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
+
+    IsSimulator = false;
 }
 
 void Strategy_nodeHandle::Transfer(int r_number){
@@ -133,11 +147,11 @@ void Strategy_nodeHandle::pubSpeed(ros::Publisher *puber,double v_x,double v_y,d
     speedMsg.linear.y = /*r_*/v_y;
     speedMsg.angular.z = v_yaw ;
 
-    if(issimulator==true){
+    if(IsSimulator==true){
       speedMsg.linear.x = /*r_*/v_y;
       speedMsg.linear.y = /*r_*/-v_x;
       puber->publish(speedMsg);
-    }else if(issimulator==false){
+    }else if(IsSimulator==false){
         velocity_S_planning(&speedMsg);
         puber->publish(speedMsg);
     }
@@ -204,7 +218,9 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
 //                                                   //
 //###################################################//
 void Strategy_nodeHandle::pubGrpSpeed(){
-    if(issimulator==true){
+    
+    
+    if(IsSimulator==true){
         ////--------------------speed test----------------
         double dVectorMax = VectorMax;
         double dVectorMin = VectorMin;
@@ -234,8 +250,9 @@ void Strategy_nodeHandle::pubGrpSpeed(){
             pubSpeed(&robotOpt_2_speed_pub,global_env->opponent[1].v_x,global_env->opponent[1].v_y,global_env->opponent[1].v_yaw,global_env->opponent[1].rotation);
             pubSpeed(&robotOpt_3_speed_pub,global_env->opponent[2].v_x,global_env->opponent[2].v_y,global_env->opponent[2].v_yaw,global_env->opponent[2].rotation);
         }
-    }else if(issimulator==false){
+    }else if(IsSimulator==false){
        pubSpeed(&robot_speed_pub,global_env->home[global_env->RobotNumber].v_x,global_env->home[global_env->RobotNumber].v_y,global_env->home[global_env->RobotNumber].v_yaw,global_env->home[global_env->RobotNumber].rotation);
+       
     }
 }
 //###################################################//
@@ -251,14 +268,18 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
 //     std::cout << "param RobotNumber=" << global_env->RobotNumber<<std::endl;
     }
      if(n->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity)){
-//         for(int i=0;i<8;i++)
-//             std::cout<< "param SPlanning_Velocity["<< i << "]=" << SPlanning_Velocity[i] << std::endl;
-//     std::cout << "====================================" << std::endl;
+    //     for(int i=0;i<8;i++)
+    //         std::cout<< "param SPlanning_Velocity["<< i << "]=" << SPlanning_Velocity[i] << std::endl;
+    // std::cout << "====================================" << std::endl;
      }
     if(n->getParam("/FIRA/Distance_Settings", Distance_Settings)){
 //        for(int i=0;i<3;i++)
 //            std::cout<< "param Distance_Settings["<< i << "]=" << Distance_Settings[i] << std::endl;
 //     std::cout << "====================================" << std::endl;
+    }
+    if(n->getParam("/FIRA/IsSimulator",IsSimulator)){
+        // global_env->issimulator = IsSimulator;
+        // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
 }
 

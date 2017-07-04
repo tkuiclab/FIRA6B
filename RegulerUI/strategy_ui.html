@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title>Strategy UI</title>
     <!-- style -->
     <link rel="shortcut icon" href="img/champion.ico" />
@@ -27,6 +28,7 @@
     <script src="js/roslib.js"></script>
     <script src="js/CloseReverseOut.js"></script>
     <script src="js/CloseCenterRightButton.js"></script>
+
 </head>
 
 <body onload="joystick_main()">
@@ -78,13 +80,13 @@
                         <tr>
                             <td>
                                 <div>
-                                    <input id="SimulatorButton" type="checkbox" name="SimulatorButton" onclick="PublishTopicSimulator(this.checked)" />
+                                    <input id="SimulatorButton" type="checkbox" name="SimulatorButton" onclick="SetParamIsSimulator(this.checked)" />
                                     <label id="SimulatorButton" for="SimulatorButton">IsSimulator</label>
                                 </div>
                             </td>
                             <td>
                                 <div>
-                                    <input id="KeyboardControlButton" type="checkbox" name="KeyboardControl" />
+                                    <input id="KeyboardControlButton" type="checkbox" name="KeyboardControl" onclick="KeyboardState(this.checked)" />
                                     <label id="KeyboardControlButton" for="KeyboardControlButton">KeyboardControl</label>
                                 </div>
                             </td>
@@ -133,7 +135,7 @@
                                 <tr>
                                     <td>
                                         <div style="width: 120px">
-                                            <input id="RobotTwoButton" type="radio" name="RobotStateButton" onclick="GetChooseRobot(2)" />
+                                            <input id="RobotTwoButton" type="radio" checked="checked" name="RobotStateButton" onclick="GetChooseRobot(2)" />
                                             <label id="RobotTwoButton" for="RobotTwoButton">Robot 2</label>
                                         </div>
                                     </td>
@@ -155,7 +157,7 @@
                                 <tr>
                                     <td>
                                         <div style="width: 120px">
-                                            <input id="StandByButton" type="radio" checked="checked" name="RobotStateButton" onclick="GetChooseRobot(0);StandBy();" />
+                                            <input id="StandByButton" type="checkbox" name="RobotRemoteButton" onclick="RemoteSwitch(this.checked)" />
                                             <label id="StandByButton" for="StandByButton">Stand By</label>
                                         </div>
                                     </td>
@@ -402,51 +404,57 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)Vdis_max</td>
+                                    <td class="GDetail SP1">(double)Vdis_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="2.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Vdis_min</td>
+                                    <td class="GDetail SP2">(double)Vdis_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="0.3" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)VTdis_max</td>
+                                    <td class="GDetail SP3">(double)VTdis_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="80.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)VTdis_min</td>
+                                    <td class="GDetail SP4">(double)VTdis_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="50.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Tangle_max</td>
+                                    <td class="GDetail SP5">(double)Tangle_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="20.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Tangle_min</td>
+                                    <td class="GDetail SP6">(double)Tangle_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="3.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Angle_max</td>
+                                    <td class="GDetail SP7">(double)Angle_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="144.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Angle_min</td>
+                                    <td class="GDetail SP8">(double)Angle_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="5.0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP9">(double)VTsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement1" value="12.0" />
                                     </td>
                                 </tr>
                             </table>
@@ -501,51 +509,57 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)Vdis_max</td>
+                                    <td class="GDetail SP1">(double)Vdis_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="2.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Vdis_min</td>
+                                    <td class="GDetail SP2">(double)Vdis_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="0.3" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)VTdis_max</td>
+                                    <td class="GDetail SP3">(double)VTdis_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="80.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)VTdis_min</td>
+                                    <td class="GDetail SP4">(double)VTdis_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="50.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Tangle_max</td>
+                                    <td class="GDetail SP5">(double)Tangle_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="20.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Tangle_min</td>
+                                    <td class="GDetail SP6">(double)Tangle_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="3.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Angle_max</td>
+                                    <td class="GDetail SP7">(double)Angle_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="144.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Angle_min</td>
+                                    <td class="GDetail SP8">(double)Angle_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="5.0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP9">(double)VTsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement2" value="0" />
                                     </td>
                                 </tr>
                             </table>
@@ -600,51 +614,57 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)Vdis_max</td>
+                                    <td class="GDetail SP1">(double)Vdis_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="2.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Vdis_min</td>
+                                    <td class="GDetail SP2">(double)Vdis_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="0.3" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)VTdis_max</td>
+                                    <td class="GDetail SP3">(double)VTdis_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="80.0" />
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>(double)VTdis_min</td>
+                                <tr> 
+                                    <td class="GDetail SP4">(double)VTdis_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="50.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Tangle_max</td>
+                                    <td class="GDetail SP5">(double)Tangle_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="20.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Tangle_min</td>
+                                    <td class="GDetail SP6">(double)Tangle_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="3.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Angle_max</td>
+                                    <td class="GDetail SP7">(double)Angle_max</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="144.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)Angle_min</td>
+                                    <td class="GDetail SP8">(double)Angle_min</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="5.0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP9">(double)VTsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement3" value="0" />
                                     </td>
                                 </tr>
                             </table>
@@ -675,6 +695,8 @@
                                 </tr>
                             </table>
                         </div>
+                    </div>
+                    <div id="GeneralDetail" class="form-group" style="border: 1px solid#999;width: 100%;height: 80px;word-break: break-all;text-align:left">
                     </div>
                 </div>
                 <div class="modal-footer" id="SetGeneralExecute">
@@ -751,11 +773,15 @@
                                 <tr>
                                     <td>
                                         <input type="radio" id="DorsadAttack1" name="PathplanStrategy1" />
-                                        <label id="DorsadAttack1" for="DorsadAttack1">Dorsad-Attack</label>
+                                        <label id="DorsadAttack1" for="DorsadAttack1">Dorsad Attack</label>
                                     </td>
                                     <td>
                                         <input type="radio" id="CornerKick1" name="PathplanStrategy1" />
-                                        <label id="CornerKick1" for="CornerKick1">Corner_Kick</label>
+                                        <label id="CornerKick1" for="CornerKick1">Corner Kick</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="PenaltyKick1" name="PathplanStrategy1" />
+                                        <label id="PenaltyKick1" for="PenaltyKick1">Penalty Kick</label>
                                     </td>
                                 </tr>
                             </table>
@@ -798,13 +824,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_backward</td>
+                                    <td class="PathDetail ZA1">(double)distance_backward</td>
                                     <td>
                                         <input type="text" name="ZoneAttackElement1" value="1.5" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_forward</td>
+                                    <td class="PathDetail ZA2">(double)distance_forward</td>
                                     <td>
                                         <input type="text" name="ZoneAttackElement1" value="2.2" />
                                     </td>
@@ -819,13 +845,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)cycle</td>
+                                    <td class="PathDetail PTSA1">(double)cycle</td>
                                     <td>
                                         <input type="text" name="TypeSAttackElement1" value="2.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)speedMin</td>
+                                    <td class="PathDetail PTSA2">(double)speedMin</td>
                                     <td>
                                         <input type="text" name="TypeSAttackElement1" value="0.2" />
                                     </td>
@@ -897,31 +923,31 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)beta_parm</td>
+                                    <td class="PathDetail PSSU1">(double)beta_parm</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement1" value="0.73" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_angle_mult</td>
+                                    <td class="PathDetail PSSU2">(double)const_angle_mult</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement1" value="1.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_dis</td>
+                                    <td class="PathDetail PSSU3">(double)const_dis</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement1" value="0.7" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_mult</td>
+                                    <td class="PathDetail PSSU4">(double)const_mult</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement1" value="5.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_only</td>
+                                    <td class="PathDetail PSSU5">(double)const_only</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement1" value="17.6" />
                                     </td>
@@ -936,37 +962,37 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)deceleration</td>
+                                    <td class="PathDetail PDA1">(double)deceleration</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement1" value="8" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle2opr1</td>
+                                    <td class="PathDetail PDA2">(double)angle2opr1</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement1" value="90" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle2opr2</td>
+                                    <td class="PathDetail PDA3">(double)angle2opr2</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement1" value="180" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2turn1</td>
+                                    <td class="PathDetail PDA4">(double)distance2turn1</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement1" value="2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2turn2</td>
+                                    <td class="PathDetail PDA5">(double)distance2turn2</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement1" value="1" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2rush</td>
+                                    <td class="PathDetail PDA6">(double)distance2rush</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement1" value="2" />
                                     </td>
@@ -1001,6 +1027,21 @@
                                     <td>(double)criticalAng</td>
                                     <td>
                                         <input type="text" name="CornerKickElement1" value="50" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- Penalty Kick Module -->
+                        <div class="form-group" id="PenaltyKickModule1">
+                            <table>
+                                <tr>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td class="PathDetail PPK1">(double)Turn</td>
+                                    <td>
+                                        <input type="text" name="PenaltyKickElement1" value="1.0" />
                                     </td>
                                 </tr>
                             </table>
@@ -1040,11 +1081,15 @@
                                 <tr>
                                     <td>
                                         <input type="radio" id="DorsadAttack2" name="PathplanStrategy2" />
-                                        <label id="DorsadAttack2" for="DorsadAttack2">Dorsad-Attack</label>
+                                        <label id="DorsadAttack2" for="DorsadAttack2">Dorsad Attack</label>
                                     </td>
                                     <td>
                                         <input type="radio" id="CornerKick2" name="PathplanStrategy2" />
-                                        <label id="CornerKick2" for="CornerKick2">Corner_Kick</label>
+                                        <label id="CornerKick2" for="CornerKick2">Corner Kick</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="PenaltyKick2" name="PathplanStrategy2" />
+                                        <label id="PenaltyKick2" for="PenaltyKick2">Penalty Kick</label>
                                     </td>
                                 </tr>
                             </table>
@@ -1087,13 +1132,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_backward</td>
+                                    <td class = "PathDetail ZA1">(double)distance_backward</td>
                                     <td>
                                         <input type="text" name="ZoneAttackElement2" value="1.5" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_forward</td>
+                                    <td class = "PathDetail ZA2">(double)distance_forward</td>
                                     <td>
                                         <input type="text" name="ZoneAttackElement2" value="2.2" />
                                     </td>
@@ -1108,13 +1153,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)cycle</td>
+                                    <td class="PathDetail PTSA1">(double)cycle</td>
                                     <td>
                                         <input type="text" name="TypeSAttackElement2" value="2.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)speedMin</td>
+                                    <td class="PathDetail PTSA2">(double)speedMin</td>
                                     <td>
                                         <input type="text" name="TypeSAttackElement2" value="0.2" />
                                     </td>
@@ -1186,31 +1231,31 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)beta_parm</td>
+                                    <td class="PathDetail PSSU1">(double)beta_parm</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement2" value="0.73" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_angle_mult</td>
+                                    <td class="PathDetail PSSU2">(double)const_angle_mult</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement2" value="1.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_dis</td>
+                                    <td class="PathDetail PSSU3">(double)const_dis</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement2" value="0.7" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_mult</td>
+                                    <td class="PathDetail PSSU4">(double)const_mult</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement2" value="5.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_only</td>
+                                    <td class="PathDetail PSSU5">(double)const_only</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement2" value="17.6" />
                                     </td>
@@ -1225,37 +1270,37 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)deceleration</td>
+                                    <td class="PathDetail PDA1">(double)deceleration</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement2" value="8" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle2opr1</td>
+                                    <td class="PathDetail PDA2">(double)angle2opr1</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement2" value="90" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle2opr2</td>
+                                    <td class="PathDetail PDA3">(double)angle2opr2</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement2" value="180" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2turn1</td>
+                                    <td class="PathDetail PDA4">(double)distance2turn1</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement2" value="2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2turn2</td>
+                                    <td class="PathDetail PDA5">(double)distance2turn2</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement2" value="1" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2rush</td>
+                                    <td class="PathDetail PDA6">(double)distance2rush</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement2" value="2" />
                                     </td>
@@ -1290,6 +1335,21 @@
                                     <td>(double)criticalAng</td>
                                     <td>
                                         <input type="text" name="CornerKickElement2" value="50" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- Penalty Kick Module -->
+                        <div class="form-group" id="PenaltyKickModule2">
+                            <table>
+                                <tr>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td class="PathDetail PPK1">(double)Turn</td>
+                                    <td>
+                                        <input type="text" name="PenaltyKickElement2" value="1.0" />
                                     </td>
                                 </tr>
                             </table>
@@ -1329,11 +1389,15 @@
                                 <tr>
                                     <td>
                                         <input type="radio" id="DorsadAttack3" name="PathplanStrategy3" />
-                                        <label id="DorsadAttack3" for="DorsadAttack3">Dorsad-Attack</label>
+                                        <label id="DorsadAttack3" for="DorsadAttack3">Dorsad Attack</label>
                                     </td>
                                     <td>
                                         <input type="radio" id="CornerKick3" name="PathplanStrategy3" />
-                                        <label id="CornerKick3" for="CornerKick3">Corner_Kick</label>
+                                        <label id="CornerKick3" for="CornerKick3">Corner Kick</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="PenaltyKick3" name="PathplanStrategy3" />
+                                        <label id="PenaltyKick3" for="PenaltyKick3">Penalty Kick</label>
                                     </td>
                                 </tr>
                             </table>
@@ -1376,13 +1440,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_backward</td>
+                                    <td  class = "PathDetail ZA1">(double)distance_backward</td>
                                     <td>
                                         <input type="text" name="ZoneAttackElement3" value="1.5" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_forward</td>
+                                    <td  class = "PathDetail ZA2">(double)distance_forward</td>
                                     <td>
                                         <input type="text" name="ZoneAttackElement3" value="2.2" />
                                     </td>
@@ -1397,13 +1461,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)cycle</td>
+                                    <td class="PathDetail PTSA1">(double)cycle</td>
                                     <td>
                                         <input type="text" name="TypeSAttackElement3" value="2.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)speedMin</td>
+                                    <td class="PathDetail PTSA2">(double)speedMin</td>
                                     <td>
                                         <input type="text" name="TypeSAttackElement3" value="0.2" />
                                     </td>
@@ -1475,31 +1539,31 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)beta_parm</td>
+                                    <td class="PathDetail PSSU1">(double)beta_parm</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement3" value="0.73" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_angle_mult</td>
+                                    <td class="PathDetail PSSU2">(double)const_angle_mult</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement3" value="1.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_dis</td>
+                                    <td class="PathDetail PSSU3">(double)const_dis</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement3" value="0.7" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_mult</td>
+                                    <td class="PathDetail PSSU4">(double)const_mult</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement3" value="5.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)const_only</td>
+                                    <td class="PathDetail PSSU5">(double)const_only</td>
                                     <td>
                                         <input type="text" name="SideSpeedUpElement3" value="17.6" />
                                     </td>
@@ -1514,37 +1578,37 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)deceleration</td>
+                                    <td class="PathDetail PDA1">(double)deceleration</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement3" value="8" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle2opr1</td>
+                                    <td class="PathDetail PDA2">(double)angle2opr1</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement3" value="90" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle2opr2</td>
+                                    <td class="PathDetail PDA3">(double)angle2opr2</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement3" value="180" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2turn1</td>
+                                    <td class="PathDetail PDA4">(double)distance2turn1</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement3" value="2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2turn2</td>
+                                    <td class="PathDetail PDA5">(double)distance2turn2</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement3" value="1" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance2rush</td>
+                                    <td class="PathDetail PDA6">(double)distance2rush</td>
                                     <td>
                                         <input type="text" name="DorsadAttackElement3" value="2" />
                                     </td>
@@ -1583,6 +1647,23 @@
                                 </tr>
                             </table>
                         </div>
+                        <!-- Penalty Kick Module -->
+                        <div class="form-group" id="PenaltyKickModule3">
+                            <table>
+                                <tr>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td class="PathDetail PPK1">(double)Turn</td>
+                                    <td>
+                                        <input type="text" name="PenaltyKickElement3" value="1.0" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="PathplanDetail" class="form-group" style="border: 1px solid#999;width: 100%;height: 80px;word-break: break-all;text-align:left">
                     </div>
                 </div>
                 <!-- SelfStraExecute -->
@@ -1676,31 +1757,31 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)ary_length</td>
+                                    <td class="BDetail BSC1">(double)ary_length</td>
                                     <td>
                                         <input type="text" name="StateChaseElement1" value="5.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)open_condition</td>
+                                    <td class="BDetail BSC2">(double)open_condition</td>
                                     <td>
                                         <input type="text" name="StateChaseElement1" value="0.15" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)calculate_time</td>
+                                    <td class="BDetail BSC3">(double)calculate_time</td>
                                     <td>
                                         <input type="text" name="StateChaseElement1" value="0.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_chase</td>
+                                    <td class="BDetail BSC4">(double)angle_chase</td>
                                     <td>
                                         <input type="text" name="StateChaseElement1" value="16.5" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_chase</td>
+                                    <td class="BDetail BSC5">(double)distance_chase</td>
                                     <td>
                                         <input type="text" name="StateChaseElement1" value="0.27" />
                                     </td>
@@ -1714,19 +1795,19 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_attack</td>
+                                    <td class="BDetail BSA1">(double)angle_attack</td>
                                     <td>
                                         <input type="text" name="StateAttackElement1" value="30.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_attack</td>
+                                    <td class="BDetail BSA2">(double)distance_attack</td>
                                     <td>
                                         <input type="text" name="StateAttackElement1" value="1.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_chase</td>
+                                    <td class="BDetail BSA3">(double)distance_chase</td>
                                     <td>
                                         <input type="text" name="StateAttackElement1" value="1.0" />
                                     </td>
@@ -1786,13 +1867,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_side</td>
+                                    <td class="BDetail BSSSU1">(double)angle_side</td>
                                     <td>
                                         <input type="text" name="StateSideSpeedUPElement1" value="10.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_side</td>
+                                    <td class="BDetail BSSSU2">(double)distance_side</td>
                                     <td>
                                         <input type="text" name="StateSideSpeedUPElement1" value="0.45" />
                                     </td>
@@ -1806,7 +1887,7 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_zone</td>
+                                    <td class="BDetail BSZA1">(double)distance_zone</td>
                                     <td>
                                         <input type="text" name="StateZoneAttackElement1" value="0.6" />
                                     </td>
@@ -1919,31 +2000,31 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)ary_length</td>
+                                    <td class="BDetail BSC1">(double)ary_length</td>
                                     <td>
                                         <input type="text" name="StateChaseElement2" value="5.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)open_condition</td>
+                                    <td class="BDetail BSC2">(double)open_condition</td>
                                     <td>
                                         <input type="text" name="StateChaseElement2" value="0.15" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)calculate_time</td>
+                                    <td class="BDetail BSC3">(double)calculate_time</td>
                                     <td>
                                         <input type="text" name="StateChaseElement2" value="0.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_chase</td>
+                                    <td class="BDetail BSC4">(double)angle_chase</td>
                                     <td>
                                         <input type="text" name="StateChaseElement2" value="16.5" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_chase</td>
+                                    <td class="BDetail BSC5">(double)distance_chase</td>
                                     <td>
                                         <input type="text" name="StateChaseElement2" value="0.27" />
                                     </td>
@@ -1957,19 +2038,19 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_attack</td>
+                                    <td class="BDetail BSA1">(double)angle_attack</td>
                                     <td>
                                         <input type="text" name="StateAttackElement2" value="30.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_attack</td>
+                                    <td class="BDetail BSA2">(double)distance_attack</td>
                                     <td>
                                         <input type="text" name="StateAttackElement2" value="1.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_chase</td>
+                                    <td class="BDetail BSA3">(double)distance_chase</td>
                                     <td>
                                         <input type="text" name="StateAttackElement2" value="1.0" />
                                     </td>
@@ -2029,13 +2110,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_side</td>
+                                    <td class="BDetail BSSSU1">(double)angle_side</td>
                                     <td>
                                         <input type="text" name="StateSideSpeedUPElement2" value="10.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_side</td>
+                                    <td class="BDetail BSSSU2">(double)distance_side</td>
                                     <td>
                                         <input type="text" name="StateSideSpeedUPElement2" value="0.45" />
                                     </td>
@@ -2049,7 +2130,7 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_zone</td>
+                                    <td class="BDetail BSZA1">(double)distance_zone</td>
                                     <td>
                                         <input type="text" name="StateZoneAttackElement2" value="0.6" />
                                     </td>
@@ -2162,31 +2243,31 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)ary_length</td>
+                                    <td class="BDetail BSC1">(double)ary_length</td>
                                     <td>
                                         <input type="text" name="StateChaseElement3" value="5.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)open_condition</td>
+                                    <td class="BDetail BSC2">(double)open_condition</td>
                                     <td>
                                         <input type="text" name="StateChaseElement3" value="0.15" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)calculate_time</td>
+                                    <td class="BDetail BSC3">(double)calculate_time</td>
                                     <td>
                                         <input type="text" name="StateChaseElement3" value="0.2" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_chase</td>
+                                    <td class="BDetail BSC4">(double)angle_chase</td>
                                     <td>
                                         <input type="text" name="StateChaseElement3" value="16.5" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_chase</td>
+                                    <td class="BDetail BSC5">(double)distance_chase</td>
                                     <td>
                                         <input type="text" name="StateChaseElement3" value="0.27" />
                                     </td>
@@ -2200,19 +2281,19 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_attack</td>
+                                    <td class="BDetail BSA1">(double)angle_attack</td>
                                     <td>
                                         <input type="text" name="StateAttackElement3" value="30.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_attack</td>
+                                    <td class="BDetail BSA2">(double)distance_attack</td>
                                     <td>
                                         <input type="text" name="StateAttackElement3" value="1.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_chase</td>
+                                    <td class="BDetail BSA3">(double)distance_chase</td>
                                     <td>
                                         <input type="text" name="StateAttackElement3" value="1.0" />
                                     </td>
@@ -2272,13 +2353,13 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_side</td>
+                                    <td  class="BDetail BSSSU1">(double)angle_side</td>
                                     <td>
                                         <input type="text" name="StateSideSpeedUPElement3" value="10.0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_side</td>
+                                    <td class="BDetail BSSSU2">(double)distance_side</td>
                                     <td>
                                         <input type="text" name="StateSideSpeedUPElement3" value="0.45" />
                                     </td>
@@ -2292,7 +2373,7 @@
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_zone</td>
+                                    <td class="BDetail BSZA1">(double)distance_zone</td>
                                     <td>
                                         <input type="text" name="StateZoneAttackElement3" value="0.6" />
                                     </td>
@@ -2353,6 +2434,8 @@
                                 </tr>
                             </table>
                         </div>
+                    </div>
+                    <div id="BehaviorDetail" class="form-group" style="border: 1px solid#999;width: 100%;height: 80px;word-break: break-all;text-align:left">
                     </div>
                 </div>
                 <div class="modal-footer" id="SetBehaviorExecute">
@@ -2780,6 +2863,7 @@
         $("#SideSpeedUpModule1").hide();
         $("#DorsadAttackModule1").hide();
         $("#CornerKickModule1").hide();
+        $("#PenaltyKickModule1").hide();
 
         $("#AttackStrategy1").click(function() {
             $("#AttackStrategyModule1").show();
@@ -2790,6 +2874,7 @@
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
         });
         $("#ChaseStrategy1").click(function() {
             $("#ChaseStrategyModule1").show();
@@ -2800,6 +2885,7 @@
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
         });
         $("#ZoneAttack1").click(function() {
             $("#ZoneAttackModule1").show();
@@ -2810,6 +2896,7 @@
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
         });
         $("#TypeSAttack1").click(function() {
             $("#TypeSAttackModule1").show();
@@ -2820,6 +2907,7 @@
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
         });
         $("#TypeUAttack1").click(function() {
             $("#TypeUAttackModule1").show();
@@ -2830,6 +2918,7 @@
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
         });
         $("#SideSpeedUp1").click(function() {
             $("#SideSpeedUpModule1").show();
@@ -2840,6 +2929,7 @@
             $("#TypeUAttackModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
         });
         $("#DorsadAttack1").click(function() {
             $("#DorsadAttackModule1").show();
@@ -2850,6 +2940,7 @@
             $("#TypeUAttackModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#CornerKickModule1").hide();
+            $("#PenaltyKickModule1").hide();
         });
         $("#CornerKick1").click(function() {
             $("#CornerKickModule1").show();
@@ -2860,6 +2951,18 @@
             $("#TypeUAttackModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
+            $("#PenaltyKickModule1").hide();
+        });
+        $("#PenaltyKick1").click(function() {
+            $("#PenaltyKickModule1").show();
+            $("#AttackStrategyModule1").hide();
+            $("#ChaseStrategyModule1").hide();
+            $("#ZoneAttackModule1").hide();
+            $("#TypeSAttackModule1").hide();
+            $("#TypeUAttackModule1").hide();
+            $("#SideSpeedUpModule1").hide();
+            $("#DorsadAttackModule1").hide();
+            $("#CornerKickModule1").hide();
         });
         //Robot 2
         $("#PathplanButton2").buttonset();
@@ -2871,6 +2974,7 @@
         $("#SideSpeedUpModule2").hide();
         $("#DorsadAttackModule2").hide();
         $("#CornerKickModule2").hide();
+        $("#PenaltyKickModule2").hide();
 
         $("#AttackStrategy2").click(function() {
             $("#AttackStrategyModule2").show();
@@ -2881,6 +2985,7 @@
             $("#SideSpeedUpModule2").hide();
             $("#DorsadAttackModule2").hide();
             $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
         });
         $("#ChaseStrategy2").click(function() {
             $("#ChaseStrategyModule2").show();
@@ -2891,6 +2996,7 @@
             $("#SideSpeedUpModule2").hide();
             $("#DorsadAttackModule2").hide();
             $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
         });
         $("#ZoneAttack2").click(function() {
             $("#ZoneAttackModule2").show();
@@ -2901,6 +3007,7 @@
             $("#SideSpeedUpModule2").hide();
             $("#DorsadAttackModule2").hide();
             $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
         });
         $("#TypeSAttack2").click(function() {
             $("#TypeSAttackModule2").show();
@@ -2911,6 +3018,7 @@
             $("#SideSpeedUpModule2").hide();
             $("#DorsadAttackModule2").hide();
             $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
         });
         $("#TypeUAttack2").click(function() {
             $("#TypeUAttackModule2").show();
@@ -2921,6 +3029,7 @@
             $("#SideSpeedUpModule2").hide();
             $("#DorsadAttackModule2").hide();
             $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
         });
         $("#SideSpeedUp2").click(function() {
             $("#SideSpeedUpModule2").show();
@@ -2931,6 +3040,7 @@
             $("#TypeUAttackModule2").hide();
             $("#DorsadAttackModule2").hide();
             $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
         });
         $("#DorsadAttack2").click(function() {
             $("#DorsadAttackModule2").show();
@@ -2941,6 +3051,7 @@
             $("#TypeUAttackModule2").hide();
             $("#SideSpeedUpModule2").hide();
             $("#CornerKickModule2").hide();
+            $("#PenaltyKickModule2").hide();
         });
         $("#CornerKick2").click(function() {
             $("#CornerKickModule2").show();
@@ -2951,6 +3062,19 @@
             $("#TypeUAttackModule2").hide();
             $("#SideSpeedUpModule2").hide();
             $("#DorsadAttackModule2").hide();
+            $("#PenaltyKickModule2").hide();
+        });
+
+        $("#PenaltyKick2").click(function() {
+            $("#PenaltyKickModule2").show();
+            $("#AttackStrategyModule2").hide();
+            $("#ChaseStrategyModule2").hide();
+            $("#ZoneAttackModule2").hide();
+            $("#TypeSAttackModule2").hide();
+            $("#TypeUAttackModule2").hide();
+            $("#SideSpeedUpModule2").hide();
+            $("#DorsadAttackModule2").hide();
+            $("#CornerKickModule2").hide();
         });
 
         //Robot 3
@@ -2963,6 +3087,7 @@
         $("#SideSpeedUpModule3").hide();
         $("#DorsadAttackModule3").hide();
         $("#CornerKickModule3").hide();
+        $("#PenaltyKickModule3").hide();
 
         $("#AttackStrategy3").click(function() {
             $("#AttackStrategyModule3").show();
@@ -2973,6 +3098,7 @@
             $("#SideSpeedUpModule3").hide();
             $("#DorsadAttackModule3").hide();
             $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
         });
         $("#ChaseStrategy3").click(function() {
             $("#ChaseStrategyModule3").show();
@@ -2983,6 +3109,7 @@
             $("#SideSpeedUpModule3").hide();
             $("#DorsadAttackModule3").hide();
             $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
         });
         $("#ZoneAttack3").click(function() {
             $("#ZoneAttackModule3").show();
@@ -2993,6 +3120,7 @@
             $("#SideSpeedUpModule3").hide();
             $("#DorsadAttackModule3").hide();
             $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
         });
         $("#TypeSAttack3").click(function() {
             $("#TypeSAttackModule3").show();
@@ -3003,6 +3131,7 @@
             $("#SideSpeedUpModule3").hide();
             $("#DorsadAttackModule3").hide();
             $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
         });
         $("#TypeUAttack3").click(function() {
             $("#TypeUAttackModule3").show();
@@ -3013,6 +3142,7 @@
             $("#SideSpeedUpModule3").hide();
             $("#DorsadAttackModule3").hide();
             $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
         });
         $("#SideSpeedUp3").click(function() {
             $("#SideSpeedUpModule3").show();
@@ -3023,6 +3153,7 @@
             $("#TypeUAttackModule3").hide();
             $("#DorsadAttackModule3").hide();
             $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
         });
         $("#DorsadAttack3").click(function() {
             $("#DorsadAttackModule3").show();
@@ -3033,6 +3164,7 @@
             $("#TypeUAttackModule3").hide();
             $("#SideSpeedUpModule3").hide();
             $("#CornerKickModule3").hide();
+            $("#PenaltyKickModule3").hide();
         });
         $("#CornerKick3").click(function() {
             $("#CornerKickModule3").show();
@@ -3043,6 +3175,18 @@
             $("#TypeUAttackModule3").hide();
             $("#SideSpeedUpModule3").hide();
             $("#DorsadAttackModule3").hide();
+            $("#PenaltyKickModule3").hide();
+        });
+        $("#PenaltyKick3").click(function() {
+            $("#PenaltyKickModule3").show();
+            $("#AttackStrategyModule3").hide();
+            $("#ChaseStrategyModule3").hide();
+            $("#ZoneAttackModule3").hide();
+            $("#TypeSAttackModule3").hide();
+            $("#TypeUAttackModule3").hide();
+            $("#SideSpeedUpModule3").hide();
+            $("#DorsadAttackModule3").hide();
+            $("#CornerKickModule3").hide();
         });
     </script>
     <!-- Behavior -->
@@ -3372,10 +3516,12 @@
         });
     </script>
     <script src="js/GlobalVariable.js"></script>
+    <script src="js/KeyboardControl.js"></script>
     <script src="js/RobotConnect.js"></script>
     <script src="js/RosParam.js"></script>
     <script src="js/RosService.js"></script>
     <script src="js/RosTopic.js"></script>
+    <script src="js/detail.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/InterfaceControl.js"></script>
     <script src="js/SliderControl.js"></script>

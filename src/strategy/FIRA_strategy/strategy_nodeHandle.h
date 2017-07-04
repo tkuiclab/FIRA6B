@@ -41,7 +41,6 @@
 *****************************************************************************/
 #define Ball_Topic_Name         "/FIRA/Strategy/WorldMap/soccer"
 #define ModelState_Topic_Name  "/gazebo/model_states"
-#define IsSimulator_Topic "/FIRA/IsSimulator"
 //robot prefix
 #define Robot_Topic_Prefix "/FIRA/R"
 #define RobotOpt_Topic_Prefix "/FIRA/Opt_R"
@@ -52,7 +51,7 @@
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
 //one_Robot speed
-#define Robot_Topic_Speed "/cmd_vel"
+#define Robot_Topic_Speed "/motion/cmd_vel"
 //robot suffix
 #define Robot_Position_Topic_Suffix "/Strategy/WorldMap/RobotPos"
 #define Robot_Role_Topic_Suffix "/Strategy/Coach/role"
@@ -123,7 +122,7 @@ public:
     ros::NodeHandle* getNodeHandle(){return n;}
     long getGameState(){return gamestate;}
     std::string getTeamColor(){return teamcolor;}
-    int getIsSimulator(){return issimulator;}
+    int getIsSimulator(){return IsSimulator;}
 
     //BlackObject
     int Blackangle;
@@ -144,7 +143,6 @@ private:
     ros::NodeHandle *n;
     long gamestate;
     std::string teamcolor;
-    int  issimulator;
 
     //gazebo_ModelStates subscriber
     ros::Subscriber Gazebo_Model_Name_sub;
@@ -164,7 +162,6 @@ private:
     ros::Subscriber TeamColor;
     ros::Subscriber Vision;
     ros::Subscriber Vision_Two_point;
-    ros::Subscriber IsSimulator;
 
     //BlackObject
     ros::Subscriber BlackObject;
@@ -190,6 +187,7 @@ private:
     /// load param begin
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
+    int IsSimulator;
     /// load param end
 
     bool run_one = false;
@@ -561,6 +559,7 @@ private:
 
 
 
+<<<<<<< HEAD
     void subIsSimulator(const std_msgs::Int32::ConstPtr &msg){
         issimulator=msg->data;
         if(issimulator==1){
@@ -581,6 +580,8 @@ private:
             BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
             Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1000,&Strategy_nodeHandle::subVision_Two_point,this);
         }
+=======
+>>>>>>> b286f93bad939449b9bc5c65ec8378ae1b167a41
 
     }
 };
