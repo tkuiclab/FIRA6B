@@ -18,6 +18,7 @@ var Remote3 = new ROSLIB.Topic({
 function RemoteSwitch(state){
     var check;
 	if(state){
+        console.log(123);
 		RemoteState = true;
         check = new ROSLIB.Message({
             data: RemoteState
@@ -170,17 +171,17 @@ function PublishTopicCmdVel(vec3) {
 //shoot
 var TopicShoot1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/shoot',
+    name: '/motion//shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/shoot',
+    name: '/motion//shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/shoot',
+    name: '/motion//shoot',
     messageType: 'std_msgs/Int32'
 });
 
