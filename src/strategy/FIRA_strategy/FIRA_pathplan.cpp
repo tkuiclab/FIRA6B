@@ -1017,6 +1017,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
     double degree = Penalty_Kick[0];
     static double des_angle = first_goal_angle + degree;
     static double last_degree = degree;
+    static int shoot_count = 0;
 
     if(last_degree != degree){
         first_goal_angle = goal_angle;
@@ -1028,6 +1029,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             des_angle = des_angle + 360;
         }
         last_degree = degree;
+        shoot_count = 1;
     }
     double yaw_speed=goal_angle-des_angle;
 
@@ -1045,7 +1047,10 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
     printf("degree=%f\n",degree);
 
     if(fabs(des_angle-goal_angle)<=7){
-        shoot = 50;
+        if(shoot_count = 1){
+            shoot = 30;
+        }
+        shoot_count = 0;
     }else{
         shoot = 0;
     }
