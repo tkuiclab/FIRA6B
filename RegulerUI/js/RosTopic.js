@@ -171,17 +171,17 @@ function PublishTopicCmdVel(vec3) {
 //shoot
 var TopicShoot1 = new ROSLIB.Topic({
     ros: ros,
-    name: '/motion//shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot2 = new ROSLIB.Topic({
     ros: ros2,
-    name: '/motion//shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 var TopicShoot3 = new ROSLIB.Topic({
     ros: ros3,
-    name: '/motion//shoot',
+    name: '/motion/shoot',
     messageType: 'std_msgs/Int32'
 });
 
