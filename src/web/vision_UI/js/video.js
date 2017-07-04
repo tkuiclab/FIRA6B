@@ -243,8 +243,17 @@ function CheckCamera(check) {
 
 function MonitorSwitch(value) {
     var video = document.getElementById("player");
-    if (value == 7)
-        video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image_monitor";
-    else
-        video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image";
+    var check = document.getElementById("CameraSwitch").checked;
+
+    if (value == 7){
+        if (check)
+            video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image_monitor";
+        else
+            video.src = "img/offline.png";
+    }else {
+        if (check)
+            video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image";
+        else
+            video.src = "img/offline.png";
+    }
 }

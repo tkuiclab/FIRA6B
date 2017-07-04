@@ -273,8 +273,8 @@ InterfaceProc::InterfaceProc()
   ros::NodeHandle n("~");	
   Parameter_getting(1);	
   init_data();
-  //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
-  image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
+  image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+  //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
   image_pub_threshold_ = it_.advertise("/camera/image", 1);//http://localhost:8080/stream?topic=/camera/image webfor /camera/image
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
