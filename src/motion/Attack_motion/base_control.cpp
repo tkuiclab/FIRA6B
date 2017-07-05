@@ -88,7 +88,6 @@ int Base_Control::mcssl_init()
 	std::cout << "mcssl_init(DEBUG_CSSL)\n";
 #else
 	cssl_start();
-	std::cout << "test\n";
 	if(!serial){
 		devs = "/dev/ttyUSB0";
 		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
