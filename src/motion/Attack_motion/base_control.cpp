@@ -88,50 +88,49 @@ int Base_Control::mcssl_init()
 	std::cout << "mcssl_init(DEBUG_CSSL)\n";
 #else
 	cssl_start();
-	std::cout << "test\n";
 	if(!serial){
 		devs = "/dev/ttyUSB0";
 		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB1";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB2";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB3";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB4";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB5";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB6";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB7";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB8";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB9";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB10";
-		serial = cssl_open(devs, /*msccl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		std::cout << cssl_geterrormsg() << std::endl;
@@ -190,7 +189,7 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 #ifdef DEBUG_CSSLCALLBACK
 	std::cout << "mcssl_Callback(DEBUG_CSSLCALLBACK)\n";
 	std::cout << std::hex;
-//	std::cout << "buf: " << (int)*(buf) << "\n";
+	std::cout << "buf: " << (int)*(buf) << "\n";
 	std::cout << "RX: ";
 	for(int j=i; j<i+15; j++){
 		std::cout << (int)cssl_buffer[j] << " ";
@@ -280,9 +279,9 @@ void Base_Control::speed_regularization(double w1, double w2, double w3)
 	unsigned char w2_dir = (w2>0)? 0x80 : 0;
 	unsigned char w3_dir = (w3>0)? 0x80 : 0;
 
-	double w1_speed_percent = (fabs(w1)<0.5)? 0 : fabs(w1);
-	double w2_speed_percent = (fabs(w2)<0.5)? 0 : fabs(w2);
-	double w3_speed_percent = (fabs(w3)<0.5)? 0 : fabs(w3);
+	double w1_speed_percent = (fabs(w1)<0.1)? 0 : fabs(w1);
+	double w2_speed_percent = (fabs(w2)<0.1)? 0 : fabs(w2);
+	double w3_speed_percent = (fabs(w3)<0.1)? 0 : fabs(w3);
 //	enable
 	this->en1 = (w1_speed_percent > 0)? 1 : 0;
 	this->en2 = (w2_speed_percent > 0)? 1 : 0;
@@ -310,9 +309,9 @@ void Base_Control::speed_regularization(double w1, double w2, double w3)
 */
 //	speed -> speed_byte
 	
-	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.8*w1_speed_percent/100) + 12.7 + w1_dir) : 0;
-	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.8*w2_speed_percent/100) + 12.7 + w2_dir) : 0;
-	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.8*w3_speed_percent/100) + 12.7 + w3_dir) : 0;
+	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.9*w1_speed_percent/100) + 12.7 + w1_dir) : 0;
+	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.9*w2_speed_percent/100) + 12.7 + w2_dir) : 0;
+	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.9*w3_speed_percent/100) + 12.7 + w3_dir) : 0;
 	*(this->base_TX->enable_and_stop) = (this->en1<<7)+(this->en2<<6)+(this->en3<<5)+(this->stop1<<4)+(this->stop2<<3)+(this->stop3<<2);
 #ifdef DEBUG
 	std::cout << "speed_regularization(DEBUG)\n";
