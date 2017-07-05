@@ -1,8 +1,8 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Camera_high: 650, Center_X: 309, Center_Y: 268, Front: 273, Inner: 39,
-    Outer: 255, X: 308, Y: 266}
+  Center: {Camera_high: 651, Center_X: 341, Center_Y: 258, Front: 330, Inner: 39,
+    Outer: 253, X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -11,22 +11,23 @@ FIRA:
     Space: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]
   Distance_Settings: [0, 0, 0]
   Dorsad_Attack: [6, 90, 180, 2, 1, 2]
-  FPS: 22
+  FPS: 18
   HSV:
     Ball: [0, 30, 57, 100, 24, 100]
-    Blue: [188, 236, 64, 100, 0, 100]
+    Blue: [188, 236, 86, 100, 30, 94]
     Bluerange: [245, 204, 255, 179, 255, 72]
     ColorMode: 1
     Green: [43, 187, 41, 74, 21, 100]
     Greenrange: [188, 114, 255, 130, 255, 0]
     Redrange: [36, 0, 255, 118, 255, 0]
-    White: [0, 359, 0, 359, 0, 359]
+    White: [107, 268, 0, 68, 59, 100]
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellow: [23, 110, 0, 77, 68, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
     black: {angle: 41, gray: 106}
     white: {angle: 32, gray: 115}
-  Parameterbutton: 4
+  IsSimulator: 1
+  Parameterbutton: 2
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
         <!-- ===================================================================================\
@@ -1561,7 +1562,7 @@ gazebo: {auto_disable_bodies: false, cfm: 0.0, contact_max_correcting_vel: 100.0
   sor_pgs_rms_error_tol: 0.0, sor_pgs_w: 1.3, time_step: 0.001}
 height: 493
 prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
-  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.022,
+  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.016666,
   exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
   gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
   trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
@@ -1573,14 +1574,31 @@ rosdistro: 'indigo
   '
 roslaunch:
   uris: {host_angus_aspire_5742g__48051: 'http://angus-Aspire-5742G:48051/', host_angus_aspire_5742g__55935: 'http://angus-Aspire-5742G:55935/',
-    host_iclab2_to_be_filled_by_o_e_m__36463: 'http://iclab2-To-be-filled-by-O-E-M:36463/',
+    host_iclab1_desktop__33526: 'http://iclab1-desktop:33526/', host_iclab1_desktop__35643: 'http://iclab1-desktop:35643/',
+    host_iclab1_desktop__35795: 'http://iclab1-desktop:35795/', host_iclab1_desktop__39301: 'http://iclab1-desktop:39301/',
+    host_iclab1_desktop__40099: 'http://iclab1-desktop:40099/', host_iclab1_desktop__40862: 'http://iclab1-desktop:40862/',
+    host_iclab1_desktop__41530: 'http://iclab1-desktop:41530/', host_iclab1_desktop__45079: 'http://iclab1-desktop:45079/',
+    host_iclab1_desktop__45852: 'http://iclab1-desktop:45852/', host_iclab1_desktop__46956: 'http://iclab1-desktop:46956/',
+    host_iclab1_desktop__47977: 'http://iclab1-desktop:47977/', host_iclab1_desktop__50529: 'http://iclab1-desktop:50529/',
+    host_iclab1_desktop__52506: 'http://iclab1-desktop:52506/', host_iclab1_desktop__53584: 'http://iclab1-desktop:53584/',
+    host_iclab1_desktop__53667: 'http://iclab1-desktop:53667/', host_iclab1_desktop__53957: 'http://iclab1-desktop:53957/',
+    host_iclab1_desktop__55070: 'http://iclab1-desktop:55070/', host_iclab1_desktop__56224: 'http://iclab1-desktop:56224/',
+    host_iclab1_desktop__56538: 'http://iclab1-desktop:56538/', host_iclab1_desktop__57182: 'http://iclab1-desktop:57182/',
+    host_iclab1_desktop__59739: 'http://iclab1-desktop:59739/', host_iclab2_to_be_filled_by_o_e_m__36463: 'http://iclab2-To-be-filled-by-O-E-M:36463/',
+    host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
+    host_iclab2_to_be_filled_by_o_e_m__38690: 'http://iclab2-To-be-filled-by-O-E-M:38690/',
     host_iclab2_to_be_filled_by_o_e_m__38996: 'http://iclab2-To-be-filled-by-O-E-M:38996/',
     host_iclab2_to_be_filled_by_o_e_m__39169: 'http://iclab2-To-be-filled-by-O-E-M:39169/',
+    host_iclab2_to_be_filled_by_o_e_m__39936: 'http://iclab2-To-be-filled-by-O-E-M:39936/',
     host_iclab2_to_be_filled_by_o_e_m__39948: 'http://iclab2-To-be-filled-by-O-E-M:39948/',
     host_iclab2_to_be_filled_by_o_e_m__40772: 'http://iclab2-To-be-filled-by-O-E-M:40772/',
+    host_iclab2_to_be_filled_by_o_e_m__41139: 'http://iclab2-To-be-filled-by-O-E-M:41139/',
     host_iclab2_to_be_filled_by_o_e_m__42278: 'http://iclab2-To-be-filled-by-O-E-M:42278/',
+    host_iclab2_to_be_filled_by_o_e_m__44234: 'http://iclab2-To-be-filled-by-O-E-M:44234/',
     host_iclab2_to_be_filled_by_o_e_m__45546: 'http://iclab2-To-be-filled-by-O-E-M:45546/',
     host_iclab2_to_be_filled_by_o_e_m__45579: 'http://iclab2-To-be-filled-by-O-E-M:45579/',
+    host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
+    host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
     host_iclab__32960: 'http://iclab:32960/', host_iclab__33876: 'http://iclab:33876/',
     host_iclab__35121: 'http://iclab:35121/', host_iclab__36840: 'http://iclab:36840/',
     host_iclab__37106: 'http://iclab:37106/', host_iclab__37245: 'http://iclab:37245/',
