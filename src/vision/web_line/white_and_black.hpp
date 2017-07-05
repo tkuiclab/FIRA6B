@@ -37,7 +37,6 @@ private:
   ros::NodeHandle nh;
   image_transport::ImageTransport it_;
   image_transport::Subscriber image_sub_;
-
   ros::Publisher white_pub;
   ros::Publisher black_pub;
 
@@ -74,7 +73,6 @@ public:
   double Camera_f;
   int center_x, center_y, center_inner, center_outer, center_front;
   void imageCb(const sensor_msgs::ImageConstPtr&);
-
   void Parameter_getting(const int x) ;
   double Omni_distance(double dis_pixel);
   double camera_f(double Omni_pixel);

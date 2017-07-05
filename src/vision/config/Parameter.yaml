@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Camera_high: 650, Center_X: 309, Center_Y: 268, Front: 273, Inner: 39,
+  Center: {Camera_high: 650, Center_X: 312, Center_Y: 268, Front: 273, Inner: 39,
     Outer: 255, X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
@@ -11,9 +11,9 @@ FIRA:
     Space: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]
   Distance_Settings: [0, 0, 0]
   Dorsad_Attack: [6, 90, 180, 2, 1, 2]
-  FPS: 22
+  FPS: 14
   HSV:
-    Ball: [0, 359, 0, 100, 0, 100]
+    Ball: [0, 39, 63, 100, 20, 100]
     Blue: [188, 236, 64, 100, 0, 100]
     Bluerange: [245, 204, 255, 179, 255, 72]
     ColorMode: 1
@@ -22,10 +22,10 @@ FIRA:
     Redrange: [36, 0, 255, 118, 255, 0]
     White: [0, 359, 0, 359, 0, 359]
     Whiterange: [227, 146, 166, 13, 255, 134]
-    Yellow: [23, 110, 0, 77, 68, 100]
+    Yellow: [0, 109, 31, 100, 45, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-    black: {angle: 41, gray: 106}
-    white: {angle: 32, gray: 115}
+    black: {angle: 30, gray: 20}
+    white: {angle: 52, gray: 76}
   Parameterbutton: 3
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
@@ -1561,7 +1561,7 @@ gazebo: {auto_disable_bodies: false, cfm: 0.0, contact_max_correcting_vel: 100.0
   sor_pgs_rms_error_tol: 0.0, sor_pgs_w: 1.3, time_step: 0.001}
 height: 493
 prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
-  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.022,
+  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.014,
   exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
   gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
   trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
@@ -1588,7 +1588,8 @@ roslaunch:
     host_iclab__37626: 'http://iclab:37626/', host_iclab__37715: 'http://iclab:37715/',
     host_iclab__37778: 'http://iclab:37778/', host_iclab__38418: 'http://iclab:38418/',
     host_iclab__38631: 'http://iclab:38631/', host_iclab__39589: 'http://iclab:39589/',
-    host_iclab__40787: 'http://iclab:40787/', host_iclab__41447: 'http://iclab:41447/',
+    host_iclab__40230: 'http://iclab:40230/', host_iclab__40787: 'http://iclab:40787/',
+    host_iclab__41230: 'http://iclab:41230/', host_iclab__41447: 'http://iclab:41447/',
     host_iclab__41845: 'http://iclab:41845/', host_iclab__43740: 'http://iclab:43740/',
     host_iclab__44205: 'http://iclab:44205/', host_iclab__44941: 'http://iclab:44941/',
     host_iclab__45460: 'http://iclab:45460/', host_iclab__46294: 'http://iclab:46294/',

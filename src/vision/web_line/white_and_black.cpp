@@ -17,11 +17,6 @@ const char *parampath = param.c_str();
 
 void InterfaceProc::Parameter_getting(const int x)
 {
-if(ifstream(parampath)){
-    cout<<visionpath<<endl;
-    /*std::string temp = "rosparam load " + param; 
-    const char *load = temp.c_str(); 
-    system(load);*/
     nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
     nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
     nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
@@ -31,8 +26,7 @@ if(ifstream(parampath)){
     nh.getParam("/FIRA/Center/Inner",InnerMsg);
     nh.getParam("/FIRA/Center/Outer",OuterMsg);
     nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
-    cout<<"Read the yaml file"<<endl;
- }
+  cout<<WhiteAngleMsg<<endl;
 }
 int Frame_area(int num,int range){
   if(num < 0) num = 0;
@@ -42,28 +36,22 @@ int Frame_area(int num,int range){
 InterfaceProc::InterfaceProc()
    :it_(nh)
 {
-  ros::NodeHandle n("~");	
+    ros::NodeHandle n("~");
+    //Parameter_getting(1);	
     //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
     image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
     black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
-  frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );
-  Parameter_getting(1);
-  /*nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
-  nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
-  nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
-  nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
-  nh.getParam("/FIRA/Center/Center_X",CenterXMsg);
-  nh.getParam("/FIRA/Center/Center_Y",CenterYMsg);
-  nh.getParam("/FIRA/Center/Inner",InnerMsg);
-  nh.getParam("/FIRA/Center/Outer",OuterMsg);
-  nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
-  center_x=CenterXMsg;
-  center_y=CenterYMsg;
-  center_inner=InnerMsg;
-  center_outer=OuterMsg;
-  center_front=FrontMsg;
-  Camera_H=Camera_HighMsg;*/
+    frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );
+    nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
+    nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
+    nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
+    nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
+    nh.getParam("/FIRA/Center/Center_X",CenterXMsg);
+    nh.getParam("/FIRA/Center/Center_Y",CenterYMsg);
+    nh.getParam("/FIRA/Center/Inner",InnerMsg);
+    nh.getParam("/FIRA/Center/Outer",OuterMsg);
+    nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
 } 
 InterfaceProc::~InterfaceProc()
 {
@@ -86,7 +74,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 
     Mat frame;
     cv::flip(cv_ptr->image, frame, 1);
-    nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
+    /*nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
     nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
     nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
     nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
@@ -94,10 +82,14 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     nh.getParam("/FIRA/Center/Center_Y",CenterYMsg);
     nh.getParam("/FIRA/Center/Inner",InnerMsg);
     nh.getParam("/FIRA/Center/Outer",OuterMsg);
-    nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
-
+    nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);*/
+    double ang_PI;
+    for(int ang=0 ; ang<360; ang++){
+     ang_PI = ang*PI/180;
+     Angle_sin.push_back(sin(ang_PI));
+     Angle_cos.push_back(cos(ang_PI));
+  	}
 ///////////////////////////////White_Line///////////////////////////////
-
   cv::Mat whiteframe(cv::Size(frame.cols,frame.rows), CV_8UC3);
   whiteframe=frame;
   int white_dis;
@@ -116,17 +108,19 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
         whiteframe.data[(i*whiteframe.cols*3)+(j*3)+2] = 255;
       }
     }
-  }
+
     whiteItem_pixel.clear();
     WhiteRealDis.data.clear();
- for(int angle = 0; angle < 360; angle = angle + WhiteGrayMsg){
-          int angle_be = angle+center_front;
+    Parameter_getting(1);
+ for(int angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
+          int angle_be = angle+FrontMsg;
 
           if(angle_be >= 360) angle_be -= 360;
 
-          double x_ = Angle_cos[angle_be];
-          double y_ = Angle_sin[angle_be];
-          for(int r = center_inner; r <= center_outer; r++){
+          double x_ = cos((angle_be*PI)/180);//Angle_cos[angle_be];
+          double y_ = sin((angle_be*PI)/180);//Angle_sin[angle_be];
+
+          for(int r = InnerMsg; r <= OuterMsg; r++){
               int dis_x = x_*r;
               int dis_y = y_*r;
 
@@ -136,28 +130,25 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
               if( whiteframe.data[(image_y*whiteframe.cols + image_x)*3+0] == 255
                 &&whiteframe.data[(image_y*whiteframe.cols + image_x)*3+1] == 255
                 &&whiteframe.data[(image_y*whiteframe.cols + image_x)*3+2] == 255){
-                  blackItem_pixel.push_back(hypot(dis_x,dis_y));
+                  whiteItem_pixel.push_back(hypot(dis_x,dis_y));
                   break;
               }else{
                   whiteframe.data[(image_y*whiteframe.cols + image_x)*3+0] = 0;
                   whiteframe.data[(image_y*whiteframe.cols + image_x)*3+1] = 0;
                   whiteframe.data[(image_y*whiteframe.cols + image_x)*3+2] = 255;
               }
-              if(r==center_outer){
-                whiteItem_pixel.push_back(hypot(dis_x,dis_y));
+              if(r==OuterMsg){
+                whiteItem_pixel.push_back(999);
               }
           }
       }
-
-      //ROS_INFO("%d , blackangle=%d",blackItem_pixel.size(),black_angle);
-      for(int j=0;j<blackItem_pixel.size();j++){
+      for(int j=0;j<whiteItem_pixel.size();j++){
         white_dis = Omni_distance(whiteItem_pixel[j]);
         WhiteRealDis.data.push_back(white_dis);
       }
       white_pub.publish(WhiteRealDis);
-      //////////////////////////////////////////////////////////b
+///////////////////////////////////////////////////////////////////////b
 ///////////////////////////////BlackItem////////////////////////////////
-
   cv::Mat blackframe(cv::Size(frame.cols,frame.rows), CV_8UC3);
   blackframe = frame;
   int black_dis;
@@ -179,15 +170,15 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   }
       blackItem_pixel.clear();
       BlackRealDis.data.clear();
-
-      for(int angle = 0; angle < 360; angle = angle + BlackGrayMsg){
-          int angle_be = angle+center_front;
+      Parameter_getting(1);
+      for(int angle = 0; angle < 360; angle = angle + BlackAngleMsg){
+          int angle_be = angle+FrontMsg;
 
           if(angle_be >= 360) angle_be -= 360;
 
-          double x_ = Angle_cos[angle_be];
-          double y_ = Angle_sin[angle_be];
-          for(int r = center_inner; r <= center_outer; r++){
+          double x_ = cos((angle_be*PI)/180);//Angle_cos[angle_be];
+          double y_ = sin((angle_be*PI)/180);//Angle_sin[angle_be];
+          for(int r = InnerMsg; r <= OuterMsg; r++){
               int dis_x = x_*r;
               int dis_y = y_*r;
 
@@ -204,18 +195,18 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
                   blackframe.data[(image_y*blackframe.cols + image_x)*3+1] = 0;
                   blackframe.data[(image_y*blackframe.cols + image_x)*3+2] = 255;
               }
-              if(r==center_outer){
-                blackItem_pixel.push_back(hypot(dis_x,dis_y));
+              if(r==OuterMsg){
+                blackItem_pixel.push_back(999);
               }
           }
       }
 
-      //ROS_INFO("%d , blackangle=%d",blackItem_pixel.size(),black_angle);
       for(int j=0;j<blackItem_pixel.size();j++){
         black_dis = Omni_distance(blackItem_pixel[j]);
         BlackRealDis.data.push_back(black_dis);
       }
       black_pub.publish(BlackRealDis);
+    }
       //////////////////////////////////////////////////////////
 }
 double InterfaceProc::Omni_distance(double pixel_dis)
