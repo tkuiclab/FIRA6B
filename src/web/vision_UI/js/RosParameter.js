@@ -378,7 +378,7 @@ ParameterScan11.get(function(value) {
 
 
 function ParameterScanTransfer11() {
-    var value = parseInt(document.getElementsByName('ScanElement')[0].value);
+    var value = parseInt(document.getElementsByName('ScanElement')[10].value);
     console.log(value);
     ParameterScan11.set(value);
 }

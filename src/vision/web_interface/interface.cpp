@@ -337,13 +337,14 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   *outputframe = *frame;
 //////////////////////////////////////////////////////////////
   vision_path = ros::package::getPath("vision");
-  /*color_map = ColorFile();
+  //color_map = ColorFile();
   double ang_PI;
   for(int ang=0 ; ang<360; ang++){
     ang_PI = ang*PI/180;
     Angle_sin.push_back(sin(ang_PI));
     Angle_cos.push_back(cos(ang_PI));
   }
+/*
   //cv::imshow(OPENCV_WINDOW, *frame);
   // Image Output
   //cv::imshow(OPENCV_WINDOW, *ColorModels);
@@ -918,10 +919,6 @@ cv::Mat InterfaceProc::White_Line(const cv::Mat iframe)
         oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+0] = 0;
         oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+1] = 0;
         oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+2] = 255;
-        whiteline_pixel.push_back(hypot(x,y));
-      }
-       if(r==center_outer){
-       WhiteRealDis.data.push_back(999);
       }
     }
   }
