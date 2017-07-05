@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 	geometry_msgs::Twist motion_msg;
 	std_msgs::Int32 shoot_msg;
 	shoot_msg.data=0;
-	ros::Rate loop_rate(30);
+	ros::Rate loop_rate(50);
 	int counter = 0;
 	while(ros::ok()){
 		counter = counter%720;

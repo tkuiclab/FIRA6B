@@ -35,7 +35,8 @@ int main(int argc, char **argv)
 	//		exit(EXIT_FAILURE);
 	//	}
 	//}
-	ros::Rate loop_rate(20);
+	std::cout << "ATTACK MOTION IS RUNNING!\n";
+	ros::Rate loop_rate(30);
 	while(ros::ok()){
 		main_robotCMD = main_nodeHandle.getMotion();
 		main_Base_Control.send(main_robotCMD);
@@ -48,7 +49,7 @@ int main(int argc, char **argv)
 	}
 	delete main_robotCMD;
 //	ros::shutdown();
-	std::cout << "close Attack Motion\n";
+	std::cout << "Close Attack Motion\n";
 #ifdef DEBUG
 #else
 #endif
