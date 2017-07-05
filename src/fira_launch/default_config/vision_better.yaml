@@ -17,7 +17,7 @@ FIRA:
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellowrange: [103, 59, 255, 70, 255, 137]
   IsSimulator: 1
-  RobotNumber: 0
+  RobotNumber: 2
   SPlanning_Velocity: [2.3, 0.3, 70, 40, 20, 2, 144, 5, 999]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
@@ -1457,7 +1457,8 @@ rosdistro: 'indigo
 
   '
 roslaunch:
-  uris: {host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
+  uris: {host_iclab1_desktop__35643: 'http://iclab1-desktop:35643/', host_iclab1_desktop__53957: 'http://iclab1-desktop:53957/',
+    host_iclab1_desktop__55070: 'http://iclab1-desktop:55070/', host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
     host_iclab2_to_be_filled_by_o_e_m__38690: 'http://iclab2-To-be-filled-by-O-E-M:38690/',
     host_iclab2_to_be_filled_by_o_e_m__39936: 'http://iclab2-To-be-filled-by-O-E-M:39936/',
     host_iclab2_to_be_filled_by_o_e_m__41139: 'http://iclab2-To-be-filled-by-O-E-M:41139/',
