@@ -300,7 +300,8 @@ void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
         double opgoal_dis = env.home[r_number].op_goal.distance;
 
         if( ball_distance + opgoal_dis < 1.2 && ball_distance < 0.7){
-            state_GoalKeeper = state_GoalKeeper_catching;
+            printf("state_catching");
+//          state_GoalKeeper = state_GoalKeeper_catching;
         }
 }
 

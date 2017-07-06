@@ -226,6 +226,8 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     env.home[r_number].v_y =vectornt(1);
     env.home[r_number].v_yaw = ball_angle;
 
+    printf("angle_1 = %d\nangle_2 = %d",opgoal_edge_angle1,opgoal_edge_angle2);
+
     /*****/
 //    double ball_x = -ball_dis * sin(ball_angle * deg2rad);
 //    double ball_y = ball_dis*cos(ball_angle*deg2rad);

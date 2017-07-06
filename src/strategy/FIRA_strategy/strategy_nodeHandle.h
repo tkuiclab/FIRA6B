@@ -358,15 +358,26 @@ private:
     }
 
         void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
-            if(global_env->teamcolor == "Blue"){
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis;
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = msg->blue_ang1;
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = msg->blue_ang2;
-            }else if(global_env->teamcolor == "Yellow"){
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->yellow_dis;
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = msg->yellow_ang1;
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = msg->yellow_ang2;
+            if(global_env->teamcolor == "Blue" && msg->blue_ang1 != msg->blue_ang2){
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = Two_point_angle_fix(msg->blue_dis);
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = Two_point_angle_fix(msg->blue_ang1);
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = Two_point_angle_fix(msg->blue_ang2);
+            }else if(global_env->teamcolor == "Yellow" && msg->yellow_ang1 != msg->yellow_ang2){
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = Two_point_angle_fix(msg->yellow_dis);
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = Two_point_angle_fix(msg->yellow_ang1);
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = Two_point_angle_fix(msg->yellow_ang2);
             }
+        }
+
+        int Two_point_angle_fix(int angle){
+            if(angle >= 45 && angle <= 225){
+                angle = 45 - angle;
+            }else if(angle < 45){
+                angle = 45 - angle;
+            }else{
+                angle = 405 - angle;
+            }
+            return angle;
         }
 
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
