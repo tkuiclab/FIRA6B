@@ -90,47 +90,47 @@ int Base_Control::mcssl_init()
 	cssl_start();
 	if(!serial){
 		devs = "/dev/ttyUSB0";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB1";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB2";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB3";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB4";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB5";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB6";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB7";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB8";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB9";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB10";
-		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		std::cout << cssl_geterrormsg() << std::endl;
@@ -282,6 +282,9 @@ void Base_Control::speed_regularization(double w1, double w2, double w3)
 	double w1_speed_percent = (fabs(w1)<0.1)? 0 : fabs(w1);
 	double w2_speed_percent = (fabs(w2)<0.1)? 0 : fabs(w2);
 	double w3_speed_percent = (fabs(w3)<0.1)? 0 : fabs(w3);
+	if(w1_speed_percent >= 100)w1_speed_percent = 100;
+	if(w2_speed_percent >= 100)w2_speed_percent = 100;
+	if(w3_speed_percent >= 100)w3_speed_percent = 100;
 //	enable
 	this->en1 = (w1_speed_percent > 0)? 1 : 0;
 	this->en2 = (w2_speed_percent > 0)? 1 : 0;
