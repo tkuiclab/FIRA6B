@@ -21,7 +21,7 @@ extern "C"{
 /*******************************
   * Define 
   ******************************/
-//#define DEBUG
+#define DEBUG
 //#define DEBUG_CSSL
 //#define DEBUG_CSSLCALLBACK
 
@@ -36,37 +36,25 @@ private:
 	void 	mcssl_send2motor();
 	int 	mcssl_init();
 	void	shoot_regularization();
-	void	speed_regularization(double, double, double);
+	void	speed_regularization(double, double, double, double);
 	void	inverseKinematics();
 	void	forwardKinematics();	
 private:
-	const double m1_Angle = -M_PI/3;
-	const double m2_Angle =  M_PI/3;
-	const double m3_Angle = -M_PI;
-	const double robot_radius = 0.15;
+	const double m1_Angle =  M_PI/4;
+	const double m2_Angle = (-1)*M_PI/4;
+	const double m3_Angle = 3*M_PI/4;
+	const double m4_Angle = (-1)*3*M_PI/4;
+	
+	const double robot_radius = 0.2;
 	const double wheel_radius = 0.00508;
-	const double yaw_inv = 2.3251;
 
 	cssl_t *serial;
-	//unsigned char w1_dir,w2_dir,w3_dir;
-	//unsigned char w1_byte,w2_byte,w3_byte;
-	//unsigned char en1,en2,en3,stop1,stop2,stop3;
-	//unsigned char shoot_byte;
 
 	robot_command *base_robotCMD;
 	robot_command *base_robotFB;
 	serial_tx *base_TX;
 	static serial_rx* base_RX;
-
-//	double w1_speed, w1_speed_percent;
-//	double w2_speed, w2_speed_percent;
-//	double w3_speed, w3_speed_percent;
 	unsigned char en1,en2,en3,stop1,stop2,stop3;
-//	unsigned char w1_dir,w2_dir,w3_dir;
-	//static	unsigned char cssl_buffer[50];
-	//static	int count_buffer;
-	//void send();
-	//void get();
 public:
 	void send(robot_command*);
 	robot_command* get_feedback();
