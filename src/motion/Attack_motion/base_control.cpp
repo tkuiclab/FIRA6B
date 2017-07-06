@@ -30,7 +30,7 @@ Base_Control::Base_Control()
 	memset(Base_Control::base_RX->w1, 0, sizeof(int));
 	memset(Base_Control::base_RX->w2, 0, sizeof(int));
 	memset(Base_Control::base_RX->w3, 0, sizeof(int));
-	memset(Base_Control::base_RX->shoot, 0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->shoot, 1, sizeof(unsigned char));
 	memset(Base_Control::base_RX->batery, 0, sizeof(unsigned char));
 
 	this->base_TX = new serial_tx;
@@ -161,13 +161,13 @@ void Base_Control::mcssl_finish()
 
 void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 {
-	static unsigned char cssl_buffer[50]={0};
+	static unsigned char cssl_buffer[30]={0};
 	static int count_buffer=0;
 	cssl_buffer[count_buffer++] = *buf;
-	count_buffer = (count_buffer)%50;
+	count_buffer = (count_buffer)%30;
 	unsigned char checksum;
 	int i;
-	for(i=0; i<30; i++){
+	for(i=0; i<15; i++){
 		if((cssl_buffer[i]==0xff)&&(cssl_buffer[i+1]==0xfa)){
 			checksum = cssl_buffer[i+2]+cssl_buffer[i+3]+cssl_buffer[i+4]+cssl_buffer[i+5]+cssl_buffer[i+6]+cssl_buffer[i+7]+cssl_buffer[i+8]+cssl_buffer[i+9]+cssl_buffer[i+10]+cssl_buffer[i+11]+cssl_buffer[i+12]+cssl_buffer[i+13];
 			if(cssl_buffer[i+14]==checksum){
@@ -190,7 +190,14 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 	std::cout << "mcssl_Callback(DEBUG_CSSLCALLBACK)\n";
 	std::cout << std::hex;
 	std::cout << "buf: " << (int)*(buf) << "\n";
-	std::cout << "RX: ";
+	std::cout << "RX SERIAL: ";
+	for(int j=0; j<30; j++){
+		std::cout << (int)cssl_buffer[j] << " ";
+	}
+	std::cout << std::endl;
+	std::cout << std::dec;
+	std::cout << "RX(" << i << "): ";
+	std::cout << std::hex;
 	for(int j=i; j<i+15; j++){
 		std::cout << (int)cssl_buffer[j] << " ";
 	}
@@ -259,7 +266,9 @@ void Base_Control::mcssl_send2motor()
 
 void Base_Control::shoot_regularization()
 {
-	if(*(this->base_robotCMD->shoot_power)>=100){
+	if(*(this->base_robotCMD->shoot_power)==0){
+		*(this->base_TX->shoot) = 1;
+	}else if(*(this->base_robotCMD->shoot_power)>=100){
 		*(this->base_TX->shoot) = 255;
 	}
 	else{
@@ -309,10 +318,10 @@ void Base_Control::speed_regularization(double w1, double w2, double w3)
 */
 //	speed -> speed_byte
 	
-	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.9*w1_speed_percent/100) + 12.7 + w1_dir) : 0;
-	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.9*w2_speed_percent/100) + 12.7 + w2_dir) : 0;
-	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.9*w3_speed_percent/100) + 12.7 + w3_dir) : 0;
-	*(this->base_TX->enable_and_stop) = (this->en1<<7)+(this->en2<<6)+(this->en3<<5)+(this->stop1<<4)+(this->stop2<<3)+(this->stop3<<2);
+	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.9*w1_speed_percent/100) + 12.7 + w1_dir) : 0x80;
+	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.9*w2_speed_percent/100) + 12.7 + w2_dir) : 0x80;
+	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.9*w3_speed_percent/100) + 12.7 + w3_dir) : 0x80;
+	*(this->base_TX->enable_and_stop) = (this->en1<<7)+(this->en2<<6)+(this->en3<<5)+(this->stop1<<4)+(this->stop2<<3)+(this->stop3<<2)+1; 
 #ifdef DEBUG
 	std::cout << "speed_regularization(DEBUG)\n";
 	std::cout << std::hex;
