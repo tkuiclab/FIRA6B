@@ -16,13 +16,12 @@ using namespace std;
 namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
-std::string visionpath = ros::package::getPath("vision");
+//std::string visionpath = ros::package::getPath("vision");
+std::string visionpath = ros::package::getPath("fira_launch");
 
-std::string defaultpath = "/config/default.yaml";
-std::string parameterpath = "/config/Parameter.yaml";
-std::string def = visionpath + defaultpath;
+std::string parameterpath = "/default_config/vision_better.yaml";
+//std::string parameterpath = "/config/Parameter.yaml";
 std::string param = visionpath + parameterpath; 
-const char *defpath = def.c_str();
 const char *parampath = param.c_str();
 
 
@@ -90,7 +89,6 @@ void InterfaceProc::Parameter_getting(const int x)
     Camera_H=Camera_HighMsg;
 
     nh.getParam("/FIRA/Parameterbutton",buttonmsg);
-    cout<<center_x<<endl;
   
 }
 void InterfaceProc::SaveButton_setting(const vision::bin msg)

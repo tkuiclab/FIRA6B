@@ -16,13 +16,12 @@ using namespace std;
 namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
-std::string visionpath = ros::package::getPath("vision");
+//std::string visionpath = ros::package::getPath("vision");
+std::string visionpath = ros::package::getPath("fira_launch");
 
-std::string defaultpath = "/config/default.yaml";
-std::string parameterpath = "/config/Parameter.yaml";
-std::string def = visionpath + defaultpath;
+std::string parameterpath = "/default_config/vision_better.yaml";
+//std::string parameterpath = "/config/Parameter.yaml";
 std::string param = visionpath + parameterpath; 
-const char *defpath = def.c_str();
 const char *parampath = param.c_str();
 
 void onMouse(int Event,int x,int y,int flags,void* param);
@@ -125,12 +124,11 @@ void InterfaceProc::positioncall(const vision::position msg)
 void InterfaceProc::Parameter_getting(const int x)
 {
   if(ifstream(parampath)){
-    cout<<visionpath<<endl;
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
     system(load);
     cout<<"Read the yaml file"<<endl;
-  }else{
+  }/*else{
     HSV_Ball[0] = 0;  HSV_Ball[1] = 37;
     HSV_Ball[2] = 28; HSV_Ball[3] = 100;
     HSV_Ball[4] = 20; HSV_Ball[5] = 100;
@@ -185,10 +183,9 @@ void InterfaceProc::Parameter_getting(const int x)
 	
 ///////////////////////////////////////////////////////////////////////////////////////////
     nh.setParam("/FIRA/Parameterbutton",1);
-    system("rosparam dump src/vision/config/Parameter.yaml");
-    system("rosparam dump src/vision/config/default.yaml");
+    system("rosparam dump"+parampath);
     cout<<"Parameter is created "<<endl;
-  }
+  }*/
   nh.getParam("/FIRA/HSV/Ball",HSV_red);
   nh.getParam("/FIRA/HSV/Blue",HSV_blue);
   nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
@@ -273,8 +270,8 @@ InterfaceProc::InterfaceProc()
   ros::NodeHandle n("~");	
   Parameter_getting(1);	
   init_data();
-  image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
-  //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
+  //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+  image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
   image_pub_threshold_ = it_.advertise("/camera/image", 1);//http://localhost:8080/stream?topic=/camera/image webfor /camera/image
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
@@ -908,7 +905,7 @@ cv::Mat InterfaceProc::White_Line(const cv::Mat iframe)
   }
 
 
-  for(int angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
+  for(double angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
     for(int r = InnerMsg; r <= OuterMsg; r++){
       int x = r*cos(angle*PI/180), y = r*sin(angle*PI/180);
       if( oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+0] == 255
@@ -955,7 +952,7 @@ cv::Mat InterfaceProc::Black_Line(const cv::Mat iframe)
       }
     }
   }
-  for(int angle = 0; angle < 360; angle = angle + BlackAngleMsg){
+  for(double angle = 0; angle < 360; angle = angle + BlackAngleMsg){
     for(int r = InnerMsg; r <= OuterMsg; r++){
       int x = r*cos(angle*PI/180), y = r*sin(angle*PI/180);
       if( oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+0] == 0

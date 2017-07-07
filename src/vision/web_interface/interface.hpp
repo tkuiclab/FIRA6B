@@ -161,9 +161,9 @@ public:
   int Angle_range_1Msg;
   int Angle_range_2_3Msg;
   int BlackGrayMsg;
-  int BlackAngleMsg;
+  double BlackAngleMsg;
   int WhiteGrayMsg;
-  int WhiteAngleMsg;
+  double WhiteAngleMsg;
   int fpsMsg;
   int BallHSVBoxMsg[6];
   int GreenHSVBoxMsg[6];

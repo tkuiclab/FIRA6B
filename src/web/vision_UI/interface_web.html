@@ -49,19 +49,19 @@
                                 <tr width="100%" height="50%">
                                     <td>
                                         <div class="auto" >
-                                            <input type="radio" id="CameraButton" name="ButtonElement" checked="checked" autocomplete="on" onclick="topicROSParameterButton(1);ParameterbuttonTransfer(1);topicROSCheckButton(value)" />
+                                            <input type="radio" id="CameraButton" name="ButtonElement" checked="checked" autocomplete="on" onclick="topicROSParameterButton(1);ParameterbuttonTransfer(1)" />
                                             <label id="CameraButton" for="CameraButton">Camera</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="CenterButton" name="ButtonElement" onclick="topicROSParameterButton(2);ParameterbuttonTransfer(2);topicROSCheckButton(value)" />
+                                            <input type="radio" id="CenterButton" name="ButtonElement" onclick="topicROSParameterButton(2);ParameterbuttonTransfer(2)" />
                                             <label id="CenterButton" for="CenterButton">Center</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="ScanButton" name="ButtonElement" onclick="topicROSParameterButton(3);ParameterbuttonTransfer(3);topicROSCheckButton(value)" />
+                                            <input type="radio" id="ScanButton" name="ButtonElement" onclick="topicROSParameterButton(3);ParameterbuttonTransfer(3)" />
                                             <label id="ScanButton" for="ScanButton">Scan</label>
                                         </div>
                                     </td>
@@ -81,7 +81,7 @@
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="MonitorButton" name="ButtonElement" onclick="topicROSParameterButton(7);ParameterbuttonTransfer(7);topicROSCheckButton(value);"/>
+                                            <input type="radio" id="MonitorButton" name="ButtonElement" onclick="topicROSParameterButton(7);ParameterbuttonTransfer(7)"/>
                                             <label id="MonitorButton" for="MonitorButton">Monitor</label>
                                         </div>
                                     </td>
@@ -96,7 +96,7 @@
                                             <label>FPS</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CameraElement" type="range" min="0" max="100" value="0" oninput="showLabel(this.value,'CameraLabel',0);topicROSCamera(this.value)"onchange="topicROSCheckButton(this.value);ParameterCameraValue()" />
+                                            <input name="CameraElement" type="range" min="0" max="100" value="0" oninput="showLabel(this.value,'CameraLabel',0);"onchange="topicROSCamera(this.value);" />
                                         </td>
                                         <td>
                                             <label name="CameraLabel">num</label>
@@ -108,7 +108,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <input id="CameraButton1" class="Button" type="button" value="Sent" onclick="ParameterCameraValue();topicROSCheckButton(this.value);topicROSCamera(this.value)" />
+                                            <input id="CameraButton1" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value);ParameterCameraValue();" />
                                         </td>
                                     </tr>
                                 </table>
@@ -122,7 +122,7 @@
                                             <label>Center X</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CenterElement" type="range" min="0" max="659" value="0" oninput="showValue(this.value,'CenterLabel',0);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_X()" />
+                                            <input name="CenterElement" type="range" min="0" max="659" value="0" oninput="showValue(this.value,'CenterLabel',0)" onchange="topicCenterTransfer()" />
                                         </td>
                                         <td>
                                             <input name="CenterLabel" type = "number" class="RBS2" min="0" max="659" value="0" oninput="rangeValue(this.value,'CenterElement',0);topicCenterTransfer()" />
@@ -133,7 +133,7 @@
                                             <label>Center Y</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CenterElement" type="range" min="0" max="493" value="0" oninput="showValue(this.value,'CenterLabel',1);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Y()" />
+                                            <input name="CenterElement" type="range" min="0" max="493" value="0" oninput="showValue(this.value,'CenterLabel',1)" onchange="topicCenterTransfer()" />
                                         </td>
                                         <td>
                                             <input name="CenterLabel" type = "number" class="RBS2" min="0" max="493" value="0" oninput="rangeValue(this.value,'CenterElement',1);topicCenterTransfer()" />
@@ -144,7 +144,7 @@
                                             <label>Inner</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CenterElement" type="range" min="1" max="360" value="1" oninput="showValue(this.value,'CenterLabel',2);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Inner()" />
+                                            <input name="CenterElement" type="range" min="1" max="360" value="1" oninput="showValue(this.value,'CenterLabel',2)" onchange="topicCenterTransfer()" />
                                         </td>
                                         <td>
                                             <input name="CenterLabel" type = "number" class="RBS2" min="1" max="360" value="1" oninput="rangeValue(this.value,'CenterElement',2);topicCenterTransfer()" />
@@ -155,7 +155,7 @@
                                             <label>Outer</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CenterElement" type="range" min="1" max="360" value="1" oninput="showValue(this.value,'CenterLabel',3);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Outer()" />
+                                            <input name="CenterElement" type="range" min="1" max="360" value="1" oninput="showValue(this.value,'CenterLabel',3)" onchange="topicCenterTransfer()"/>
                                         </td>
                                         <td>
                                             <input name="CenterLabel" type = "number" class="RBS2" min="1" max="360" value="1" oninput="rangeValue(this.value,'CenterElement',3);topicCenterTransfer()" />
@@ -166,7 +166,7 @@
                                             <label>Front</label>
                                         </td>
                                         <td class="Slider1Input">
-                                            <input name="CenterElement" type="range" min="0" max="360" value="0" oninput="showValue(this.value,'CenterLabel',4);topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Front()"  />
+                                            <input name="CenterElement" type="range" min="0" max="360" value="0" oninput="showValue(this.value,'CenterLabel',4)" onchange="topicCenterTransfer()"  />
                                         </td>
                                         <td>
                                             <input name="CenterLabel" type = "number" class="RBS2" min="0" max="360" value="0" oninput="rangeValue(this.value,'CenterElement',4);topicCenterTransfer()" />
@@ -182,7 +182,7 @@
                                         </td>
                                         <td>
                                             <input id="CameraHighInput" name="CenterElement" placeholder="Speed" value="0" title="speed value: 0~999%" type="number" min="0" max="999" 
-                                            oninput="topicCenterTransfer()" onchange="topicROSCheckButton(this.value);ParameterCenterTransfer_Camera_high()"  />
+                                            oninput="topicCenterTransfer()"  />
                                         </td>
                                     </tr>
                                     <tr>
@@ -199,7 +199,7 @@
                             <div id="CenterButtonDiv">
                                 <table>
                                     <td>
-                                        <input id="Button2" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value);topicCenterTransfer()">
+                                        <input id="Button2" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value);ParameterCenterTransfer_X();ParameterCenterTransfer_Y();ParameterCenterTransfer_Inner();ParameterCenterTransfer_Outer();ParameterCenterTransfer_Front();ParameterCenterTransfer_Camera_high()">
                                     </td>
                                 </table>
                             </div>
@@ -217,7 +217,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="4" max="36" value="4" oninput="showValue(this.value,'ScanLabel',0);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer1()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="4" max="36" value="4" oninput="showValue(this.value,'ScanLabel',0);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -230,7 +230,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',1);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer2()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',1);topicScanTransfer()"  />
                                         </td>
                                     </tr>
                                     <tr>
@@ -244,7 +244,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',2);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer3()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',2);topicScanTransfer()"  />
                                         </td>
                                     </tr>
                                     <tr>
@@ -258,7 +258,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',3);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer4()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',3);topicScanTransfer()"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -272,7 +272,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="0" oninput="showValue(this.value,'ScanLabel',4);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer5()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="0" oninput="showValue(this.value,'ScanLabel',4);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -286,7 +286,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',5);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer6()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="240" value="1" oninput="showValue(this.value,'ScanLabel',5);topicScanTransfer()"   />
                                         </td>
                                     </tr>
                                 </table>
@@ -303,7 +303,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="0" max="350" value="0" oninput="showValue(this.value,'ScanLabel',6);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer7()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="0" max="350" value="0" oninput="showValue(this.value,'ScanLabel',6);topicScanTransfer()"  />
                                         </td>
                                     </tr>
                                     <tr>
@@ -316,7 +316,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="0" max="350" value="0" oninput="showValue(this.value,'ScanLabel',7);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer8()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="0" max="350" value="0" oninput="showValue(this.value,'ScanLabel',7);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -329,7 +329,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="0" max="350" value="0" oninput="showValue(this.value,'ScanLabel',8);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer9()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="0" max="350" value="0" oninput="showValue(this.value,'ScanLabel',8);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                 </table>
@@ -341,12 +341,12 @@
                                             <label>Angle_range_1:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="9" value="0" oninput="rangeValue(this.value,'ScanElement',9);topicScanTransfer()" />
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="9" value="1" oninput="rangeValue(this.value,'ScanElement',9);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="90" value="0" oninput="showValue(this.value,'ScanLabel',9);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer10()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="90" value="1" oninput="showValue(this.value,'ScanLabel',9);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -354,12 +354,12 @@
                                             <label align="left">Angle_range_2_3:</label>
                                         </td>
                                         <td align="center" rowspan="2">
-                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="45" value="0" oninput="rangeValue(this.value,'ScanElement',10);topicScanTransfer()" />
+                                            <input name="ScanLabel" type = "number" class="RBS1" min="1" max="45" value="1" oninput="rangeValue(this.value,'ScanElement',10);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="45" value="0" oninput="showValue(this.value,'ScanLabel',10);topicScanTransfer()" onchange="topicROSCheckButton(this.value);ParameterScanTransfer11()"  />
+                                            <input name="ScanElement" class="RobotRange3" type="range" min="1" max="45" value="1" oninput="showValue(this.value,'ScanLabel',10);topicScanTransfer()" />
                                         </td>
                                     </tr>
                                 </table>
@@ -367,7 +367,7 @@
                             <div id="ScanButtonDiv">
                                 <table>
                                     <td>
-                                        <input id="ScanButton1" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value);topicScanTransfer()">
+                                        <input id="ScanButton1" class="Button" type="button" value="Sent" onclick="topicROSCheckButton(this.value);topicROSCheckButton(this.value);ParameterScanTransfer1();ParameterScanTransfer2();ParameterScanTransfer3();ParameterScanTransfer4();ParameterScanTransfer5();ParameterScanTransfer6();ParameterScanTransfer7();ParameterScanTransfer8();ParameterScanTransfer9();ParameterScanTransfer10();ParameterScanTransfer11()">
                                     </td>
                                 </table>
                             </div>
@@ -458,18 +458,18 @@
                                                 <label>Hue</label>
                                             </td>
                                             <td>
-                                                <input id="slider_Hue_Bar_min" class="RobotRange5" name="HSVElement" type="range" min="0" max="358" oninput='sliderBarHue(this.value,"min");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="slider_Hue_Bar_min" class="RobotRange5" name="HSVElement" type="range" min="0" max="358" oninput='sliderBarHue(this.value,"min");topicColorTransfer()'  ></input>
                                             </td>
                                             <td>
-                                                <input id="inputHue_min" class="RBS2" type="number" name="HSVElement2" oninput='inputHue(this.value,"min");topicColorTransfer()' onchange="topicROSCheckButton(this.value);" ></input>
+                                                <input id="inputHue_min" class="RBS2" type="number" name="HSVElement2" oninput='inputHue(this.value,"min");topicColorTransfer()'></input>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <input id="slider_Hue_Bar_Max" class="RobotRange5" name="HSVElement" type="range" min="1" max="359" oninput='sliderBarHue(this.value,"Max");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="slider_Hue_Bar_Max" class="RobotRange5" name="HSVElement" type="range" min="1" max="359" oninput='sliderBarHue(this.value,"Max");topicColorTransfer()' ></input>
                                             </td>
                                             <td>
-                                                <input id="inputHue_Max" class="RBS2" type="number" name="HSVElement2" oninput='inputHue(this.value,"Max");topicColorTransfer();topicROSCheckButton(this.value);ParameterHSVTransfer()'></input>
+                                                <input id="inputHue_Max" class="RBS2" type="number" name="HSVElement2" oninput='inputHue(this.value,"Max");topicColorTransfer()'></input>
                                             </td>
                                         </tr>
                                         <tr>
@@ -477,18 +477,18 @@
                                                 <label>Saturation</label>
                                             </td>
                                             <td>
-                                                <input id="slider_Sat_Bar_min" class="RobotRange5" name="HSVElement" type="range" min="0" max="99" oninput='sliderBarSat(this.value,"min");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="slider_Sat_Bar_min" class="RobotRange5" name="HSVElement" type="range" min="0" max="99" oninput='sliderBarSat(this.value,"min");topicColorTransfer()' ></input>
                                             </td>
                                             <td>
-                                                <input id="inputSat_min" class="RBS2" type="number" name="HSVElement2" oninput='inputSat(this.value,"min");topicColorTransfer()topicROSCheckButton(this.value);ParameterHSVTransfer()'></input>
+                                                <input id="inputSat_min" class="RBS2" type="number" name="HSVElement2" oninput='inputSat(this.value,"min");topicColorTransfer()'></input>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <input id="slider_Sat_Bar_Max" class="RobotRange5" name="HSVElement" type="range" min="1" max="100" oninput='sliderBarSat(this.value,"Max");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="slider_Sat_Bar_Max" class="RobotRange5" name="HSVElement" type="range" min="1" max="100" oninput='sliderBarSat(this.value,"Max");topicColorTransfer()' ></input>
                                             </td>
                                             <td>
-                                                <input id="inputSat_Max" class="RBS2" type="number" name="HSVElement2" oninput='inputSat(this.value,"Max");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="inputSat_Max" class="RBS2" type="number" name="HSVElement2" oninput='inputSat(this.value,"Max");topicColorTransfer()' ></input>
                                             </td>
                                         </tr>
                                         <tr>
@@ -496,18 +496,18 @@
                                                 <label>Value</label>
                                             </td>
                                             <td>
-                                                <input id="slider_Val_Bar_min" class="RobotRange5" name="HSVElement" type="range" min="0" max="99" oninput='sliderBarVal(this.value,"min");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="slider_Val_Bar_min" class="RobotRange5" name="HSVElement" type="range" min="0" max="99" oninput='sliderBarVal(this.value,"min");topicColorTransfer()'></input>
                                             </td>
                                             <td>
-                                                <input id="inputVal_min" class="RBS2" type="number" name="HSVElement2" oninput='inputVal(this.value,"min");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="inputVal_min" class="RBS2" type="number" name="HSVElement2" oninput='inputVal(this.value,"min");topicColorTransfer()'></input>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <input id="slider_Val_Bar_Max" class="RobotRange5" name="HSVElement" type="range" min="1" max="100" oninput='sliderBarVal(this.value,"Max");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="slider_Val_Bar_Max" class="RobotRange5" name="HSVElement" type="range" min="1" max="100" oninput='sliderBarVal(this.value,"Max");topicColorTransfer()' ></input>
                                             </td>
                                             <td>
-                                                <input id="inputVal_Max" class="RBS2" type="number" name="HSVElement2" oninput='inputVal(this.value,"Max");topicColorTransfer()' onchange="topicROSCheckButton(this.value);ParameterHSVTransfer()" ></input>
+                                                <input id="inputVal_Max" class="RBS2" type="number" name="HSVElement2" oninput='inputVal(this.value,"Max");topicColorTransfer()'></input>
                                             </td>
                                         </tr>
                                     </table>
@@ -531,7 +531,7 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <button id="sendHSV" type="button" class="Button" onmousedown="showHsvColor();ParameterHSVTransfer();topicROSCheckButton(value);ParameterHSVTransfer();topicROSSaveButton()">Save</button>
+                                                <button id="sendHSV" type="button" class="Button" onmousedown="showHsvColor();topicROSCheckButton(value);ParameterHSVTransfer();topicROSSaveButton()">Save</button>
                                             </td>
                                             <td>
                                                 <select id="HSVSelect" onchange="ColorRecord(this.value);topicColorTransfer(this.value);showHsvColor()">
@@ -557,7 +557,7 @@
                                                 <label>Gray</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="WhiteElement" type="range" min="0" max="255" value="0" oninput="showLabel(this.value,'WhiteLabel',0);topicWhiteTransfer();" onchange="topicROSCheckButton(this.value);ParameterWhite_grayTransfer()" />
+                                                <input name="WhiteElement" type="range" min="0" max="255" value="0" oninput="showLabel(this.value,'WhiteLabel',0);topicWhiteTransfer()" />
                                             </td>
                                             <td>
                                                 <label name="WhiteLabel">num</label>
@@ -568,7 +568,7 @@
                                                 <label>Angle</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="WhiteElement" type="range" min="1" max="120" value="0" oninput="showLabel(this.value,'WhiteLabel',1);topicWhiteTransfer()" onchange="topicROSCheckButton(this.value);ParameterWhite_angleTransfer()"  />
+                                                <input name="WhiteElement" type="range" min="0.5" max="120" value="0.5" step="0.5" oninput="showLabel(this.value,'WhiteLabel',1);topicWhiteTransfer()"  />
                                             </td>
                                             <td>
                                                 <label name="WhiteLabel">num</label>
@@ -593,7 +593,7 @@
                                                 <label>Gray</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="BlackElement" type="range" min="0" max="255" value="0" oninput="showLabel(this.value,'BlackLabel',0);topicBlackTransfer();"onchange="topicROSCheckButton(this.value);ParameterBlack_grayTransfer()" />
+                                                <input name="BlackElement" type="range" min="0" max="255" value="0" oninput="showLabel(this.value,'BlackLabel',0);topicBlackTransfer();"/>
                                             </td>
                                             <td>
                                                 <label name="BlackLabel">num</label>
@@ -604,7 +604,7 @@
                                                 <label>Angle</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="BlackElement" type="range" min="1" max="120" value="0" oninput="showLabel(this.value,'BlackLabel',1);topicBlackTransfer()" onchange="topicROSCheckButton(this.value);ParameterBlack_angleTransfer()"  />
+                                                <input name="BlackElement" type="range" min="0.5" max="120" value="0.5" step="0.5" oninput="showLabel(this.value,'BlackLabel',1);topicBlackTransfer()"  />
                                             </td>
                                             <td>
                                                 <label name="BlackLabel">num</label>
