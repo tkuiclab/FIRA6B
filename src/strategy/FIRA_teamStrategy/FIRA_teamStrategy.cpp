@@ -139,7 +139,7 @@ void FIRA_teamStrategy_class::role_FreeKick(){
 
 void FIRA_teamStrategy_class::role_PenaltyKick(){
     roleAry[1] = Role_PenaltyKick;
-    roleAry[2] = Role_Halt;
+    roleAry[2] = Role_PenaltyKick;
 }
 
 void FIRA_teamStrategy_class::role_FreeBall(){
