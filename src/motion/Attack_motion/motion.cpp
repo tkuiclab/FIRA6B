@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	//	}
 	//}
 	std::cout << "ATTACK MOTION IS RUNNING!\n";
-	ros::Rate loop_rate(30);
+	ros::Rate loop_rate(25);
 	while(ros::ok()){
 		main_robotCMD = main_nodeHandle.getMotion();
 		main_Base_Control.send(main_robotCMD);
