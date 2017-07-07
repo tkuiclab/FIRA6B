@@ -24,6 +24,7 @@ extern "C"{
 //#define DEBUG
 //#define DEBUG_CSSL
 //#define DEBUG_CSSLCALLBACK
+//#define DEBUG_CSSLCALLBACK_TEST
 
 class Base_Control{
 public:
@@ -44,7 +45,7 @@ private:
 	const double m2_Angle =  M_PI/3;
 	const double m3_Angle = -M_PI;
 	const double robot_radius = 0.15;
-	const double wheel_radius = 0.00508;
+	const double wheel_radius = 0.0508;
 	const double yaw_inv = 2.3251;
 
 	cssl_t *serial;

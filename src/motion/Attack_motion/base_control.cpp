@@ -161,14 +161,15 @@ void Base_Control::mcssl_finish()
 
 void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 {
-	static unsigned char cssl_buffer[30]={0};
+	static unsigned char cssl_buffer[50]={0};
 	static int count_buffer=0;
 	cssl_buffer[count_buffer++] = *buf;
-	count_buffer = (count_buffer)%30;
+	count_buffer = (count_buffer)%50;
 	unsigned char checksum;
+	bool error = true;
 	int i;
-	for(i=0; i<15; i++){
-		if((cssl_buffer[i]==0xff)&&(cssl_buffer[i+1]==0xfa)){
+	for(i=0; i<30; i++){
+		if((cssl_buffer[i]==0xff)&&(cssl_buffer[i+1]==0xfa)&&(cssl_buffer[i+15]==0xff)&&(cssl_buffer[i+16])==0xfa){
 			checksum = cssl_buffer[i+2]+cssl_buffer[i+3]+cssl_buffer[i+4]+cssl_buffer[i+5]+cssl_buffer[i+6]+cssl_buffer[i+7]+cssl_buffer[i+8]+cssl_buffer[i+9]+cssl_buffer[i+10]+cssl_buffer[i+11]+cssl_buffer[i+12]+cssl_buffer[i+13];
 			if(cssl_buffer[i+14]==checksum){
 				*(base_RX->head1) = cssl_buffer[i];
@@ -178,6 +179,7 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 				*(base_RX->w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
 				*(base_RX->shoot) = 0;
 				*(base_RX->batery) = 0;
+				error = false;
 				break;
 			}else{
 				continue;
@@ -186,22 +188,62 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 			continue;
 		}
 	}
+#ifdef DEBUG_CSSLCALLBACK_TEST
+	double x,y,z,yaw;
+	int round;
+	x = (*(base_RX->w1)*(-0.3333) + *(base_RX->w2)*(-0.3333) + *(base_RX->w3)*(0.6667))*2*M_PI*0.0508/(26)/2000;
+    y = (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*0.0508/26/2000;
+	z = (*(base_RX->w1)*(2.3251) + *(base_RX->w2)*(2.3251) + *(base_RX->w3)*(2.3251))*2*M_PI*0.0508/2000/26;
+	round = yaw/(2*M_PI);
+	yaw = (z - round*2*M_PI);
+	if(x>1){
+		std::cout << "mcssl_Callback(DEBUG_CSSLCALLBACK)\n";
+		std::cout << "Forward Kinematics\n";
+		std::cout << std::dec;
+		std::cout << "x: " << x << "\t";
+		std::cout << "y: " << y << "\t";
+		std::cout << "yaw: "<< yaw << std::endl;
+		std::cout << std::endl;
+		for(int j=0; j<50; j++){
+			std::cout << std::hex << (int)cssl_buffer[j] << " ";
+		}
+		std::cout << std::endl;
+		std::cout << std::dec << "RX(" << i << "): ";
+		std::cout << std::hex;
+		for(int j=i; j<i+15; j++){
+			std::cout << std::hex << (int)cssl_buffer[j] << " ";
+		}
+		std::cout << std::endl << std::hex;
+		std::cout << "head1: " << (int)*(base_RX->head1) << "\n";
+		std::cout << "head2: " << (int)*(base_RX->head2) << "\n";
+		std::cout << "w1: " << (int)*(base_RX->w1) << "\n";
+		std::cout << "w2: " << (int)*(base_RX->w2) << "\n";
+		std::cout << "w3: " << (int)*(base_RX->w3) << "\n";
+		std::cout << "shoot: " << (int)*(base_RX->shoot) << "\n";
+		std::cout << "batery: " << (int)*(base_RX->batery) << "\n";
+		std::cout << std::endl;
+		exit(1);
+	}
+#endif
 #ifdef DEBUG_CSSLCALLBACK
 	std::cout << "mcssl_Callback(DEBUG_CSSLCALLBACK)\n";
 	std::cout << std::hex;
 	std::cout << "buf: " << (int)*(buf) << "\n";
 	std::cout << "RX SERIAL: ";
-	for(int j=0; j<30; j++){
+	for(int j=0; j<50; j++){
 		std::cout << (int)cssl_buffer[j] << " ";
 	}
 	std::cout << std::endl;
-	std::cout << std::dec;
-	std::cout << "RX(" << i << "): ";
-	std::cout << std::hex;
-	for(int j=i; j<i+15; j++){
-		std::cout << (int)cssl_buffer[j] << " ";
+	std::cout << std::dec << "RX(" << i << "): ";
+	if(!error){
+		std::cout << std::hex;
+		for(int j=i; j<i+15; j++){
+			std::cout << std::hex << (int)cssl_buffer[j] << " ";
+		}
+	}else{
+		std::cout << "=========->ERROR<========";
 	}
-	std::cout << std::endl;
+	std::cout << std::endl << std::dec;
 	std::cout << "head1: " << (int)*(base_RX->head1) << "\n";
 	std::cout << "head2: " << (int)*(base_RX->head2) << "\n";
 	std::cout << "w1: " << (int)*(base_RX->w1) << "\n";
@@ -370,14 +412,9 @@ void Base_Control::forwardKinematics()
 	int round=0;
 	*(this->base_robotFB->x_speed) = (*(base_RX->w1)*(-0.3333) + *(base_RX->w2)*(-0.3333) + *(base_RX->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
     *(this->base_robotFB->y_speed) = (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
-   yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*wheel_radius/2000/26;
-   round = yaw/360;
-   yaw = yaw-(360*round);
-   if(yaw>180){
-	   *(this->base_robotFB->yaw_speed) = yaw - 360;
-   }else if(yaw < -180){
-	   *(this->base_robotFB->yaw_speed) = yaw + 360;
-   }
+	yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*2*M_PI*wheel_radius/2000/26;
+	round = yaw/(2*M_PI);
+	*(this->base_robotFB->yaw_speed) = yaw - round*2*M_PI;
 }
 
 void Base_Control::inverseKinematics()
