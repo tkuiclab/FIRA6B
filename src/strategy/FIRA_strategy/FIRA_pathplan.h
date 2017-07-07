@@ -19,7 +19,6 @@ private:
     int mTeam;
     //end  ---simulator---
 
-
     //start---utility---
     double head2Obj(Vector3D robot,Vector3D dst,double robotRot);
     double vecAngle(Vector2d a,Vector2d b);

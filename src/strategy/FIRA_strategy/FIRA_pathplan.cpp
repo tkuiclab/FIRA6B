@@ -1018,7 +1018,6 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
     static double des_angle = first_goal_angle + degree;
     static double last_degree = degree;
     static int shoot_count = 0;
-
     if(last_degree != degree){
         first_goal_angle = goal_angle;
         des_angle = first_goal_angle + degree;
@@ -1045,9 +1044,8 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
     printf("goal_angle-des_angle=%f\n",goal_angle-des_angle);
     printf("last_degree=%f\n",last_degree);
     printf("degree=%f\n",degree);
-
     if(fabs(des_angle-goal_angle)<=7){
-        if(shoot_count = 1){
+        if(shoot_count == 1){
             shoot = 30;
             shoot_count = 0;
         }
