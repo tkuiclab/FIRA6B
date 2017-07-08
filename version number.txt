@@ -1,0 +1,25 @@
+Version description:
+
+version 9.1:
+	The version must to arrange in pairs with the motion of version1.1 or after.
+	
+	Function:
+	1. receive checksum from PC, and transmit checksum to PC.
+	2. shoot control(0~255), with 3s waited times.
+	3. send feedback.(position)
+
+version DE0_NANO_6th_v2_0_170708:
+	The version must to arrange in pairs with the motion of version2.0. (Attack Motion V2.0)
+	It must open the node named "Attack_Motion_Node".
+
+	Function:
+	1. receive checksum from PC, and transmit checksum to PC.
+	2. shoot control(0~255), with 2s waited times.
+	3. send feedback.(position)
+
+version DE0_NANO_5th
+	The version must to arrange in pairs with the motion of version2.0. (Attack Motion V2.0)
+	It must open the node named "Defend_Motion_Node".
+
+	Function:
+	1. receive checksum from PC, and doesn't feedback to PC.
