@@ -30,7 +30,7 @@ Base_Control::Base_Control()
 	memset(Base_Control::base_RX->w1, 0, sizeof(int));
 	memset(Base_Control::base_RX->w2, 0, sizeof(int));
 	memset(Base_Control::base_RX->w3, 0, sizeof(int));
-	memset(Base_Control::base_RX->shoot, 1, sizeof(unsigned char));
+	memset(Base_Control::base_RX->shoot, 0, sizeof(unsigned char));
 	memset(Base_Control::base_RX->batery, 0, sizeof(unsigned char));
 
 	this->base_TX = new serial_tx;
@@ -52,7 +52,7 @@ Base_Control::Base_Control()
 	memset(this->base_TX->w3, 0, sizeof(unsigned char));
 	memset(this->base_TX->w4, 0, sizeof(unsigned char));
 	memset(this->base_TX->enable_and_stop, 0, sizeof(unsigned char));
-	memset(this->base_TX->shoot, 0, sizeof(unsigned char));
+	memset(this->base_TX->shoot, 1, sizeof(unsigned char));
 	memset(this->base_TX->checksum, 0, sizeof(unsigned char));
 
 	this->serial = NULL;
