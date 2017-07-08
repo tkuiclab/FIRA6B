@@ -12,6 +12,10 @@
 //   Ver  :| Author            :| Mod. Date  :|  Changes Made:
 //   0.1  :| Chih-en Wu        :| 2012/07/19 :|  Initial Version
 // --------------------------------------------------------------------
+// --------------------------------------------------------------------
+//   Ver  :| Author            :| Mod. Date  :|  Changes Made:
+//   1.8  :| Chun-Jui Huang    :| 2017/07/07 :|  Add Checksum and Shoot Control
+// --------------------------------------------------------------------
 
 module Serial2CMD (
 //===========================================================================
@@ -29,8 +33,7 @@ output	reg	[7:0]	oAX_12,
 output	reg	[7:0]	okick,			// shoot a ball at the goal
 output	reg			oBrush,
 output	reg			oRx_done,
-output	reg			rError,
-output	reg	[7:0]	rTmpChecksum
+output	reg			rError
 );
 
 //===========================================================================
@@ -52,7 +55,7 @@ parameter END	=	8'b10000000;
 //=============================================================================
 //	divide information to 6 part and 8 bits per part
 reg		[7:0]	rData_0, rData_1, rData_2, rData_3, rData_4, rData_5,rData_6,rData_7;
-reg		[7:0]	rTmpData_2, rTmpData_3, rTmpData_4, rTmpData_5,rTmpData_6;
+reg		[7:0]	rTmpData_0, rTmpData_1, rTmpData_2, rTmpData_3, rTmpData_4, rTmpData_5, rTmpData_6, rTmpData_7;
 
 
 
@@ -85,23 +88,19 @@ always @(posedge iCLK) begin
 		okick		<=	0;
 		rError		<=	1;
 		rChecksum	<=	0;
-		rTmpChecksum<=	0;
+		rTmpData_0	<=	0;
+		rTmpData_1	<=	0;
 		rTmpData_2	<=	0;
 		rTmpData_3	<=	0;
 		rTmpData_4	<=	0;
 		rTmpData_5	<=	0;
 		rTmpData_6	<=	0;
-
+		rTmpData_7	<=	0;
 	end
 	// Take apart Data
 	else begin
 		
 		rChecksum <= rData_2 + rData_3 + rData_4 + rData_5 + rData_6;
-		rTmpChecksum <= rChecksum;
-		rTmpData_2	<=	rTmpData_2;
-		rTmpData_3	<=	rTmpData_3;
-		rTmpData_4	<=	rTmpData_4;
-		rTmpData_5	<=	rTmpData_5;
 
 		if(~rRx_ready & iRx_ready) begin
 			case(state)
@@ -173,6 +172,8 @@ always @(posedge iCLK) begin
 			rData_5 <= rData_5;
 			rData_6 <= rData_6;
 			rData_7 <= rData_7;
+			rTmpData_0	<=	rData_0;
+			rTmpData_1	<=	rData_1;
 			rTmpData_2	<=	rData_2;
 			rTmpData_3	<=	rData_3;
 			rTmpData_4	<=	rData_4;
@@ -183,10 +184,12 @@ always @(posedge iCLK) begin
 			else begin
 				rTmpData_6	<=	rData_6;
 			end
+			rTmpData_7 	<=	rData_7;
 			state <= state;
 			
 			
-			if((rChecksum == rData_7) && (rData_0 == 8'hFF) && (rData_1 == 8'hFA))begin
+			if(((rChecksum == rTmpData_7) && (rTmpData_0 == 8'hFF)) && 
+				((rTmpData_1 == 8'hFA) && (rTmpData_5[1:0] == 2'b01)))begin
 				rError <= 0;
 				oCMD_Motor1 <= rTmpData_2;
 				oCMD_Motor2 <= rTmpData_3;
