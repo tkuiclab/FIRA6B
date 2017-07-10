@@ -300,7 +300,7 @@ void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
         double opgoal_dis = env.home[r_number].op_goal.distance;
 
         if( ball_distance + opgoal_dis < 1.2 && ball_distance < 0.7){
-            printf("state_catching");
+            //printf("state_catching");
 //          state_GoalKeeper = state_GoalKeeper_catching;
         }
 }
@@ -388,19 +388,25 @@ void FIRA_behavior_class::behavior_Goalkeeper(int robotIndex){
         case state_GoalKeeper_init:
             state_GoalKeeper = state_GoalKeeper_init;
             StateGoalKeeperInit(robotIndex);
-            ROS_INFO("GoalKeeper init state\n");
+            //ROS_INFO("GoalKeeper init state\n");
             actionAry[robotIndex] = action_Goalkeeper_init;
+            break;
+
+        case state_GoalKeeper_waiting:
+            StateGoalKeeperWaiting(robotIndex);
+            //ROS_INFO("GoalKeeper waiting\n");
+            actionAry[robotIndex] = action_Goalkeeper_waiting;
             break;
 
         case state_GoalKeeper_blocking:
             StateGoalKeeperBlocking(robotIndex);
-            ROS_INFO("GoalKeeper blocking\n");
+            //ROS_INFO("GoalKeeper blocking\n");
             actionAry[robotIndex] = action_Goalkeeper_blocking;
         break;
 
         case state_GoalKeeper_catching:
             StateGoalKeeperCatching(robotIndex);
-            ROS_INFO("GoalKeeper catching\n");
+            //ROS_INFO("GoalKeeper catching\n");
             actionAry[robotIndex] = action_Goalkeeper_catching;
         break;
     }

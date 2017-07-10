@@ -47,7 +47,7 @@
 #define GameState_Topic "/FIRA/GameState"
 #define TeamColor_Topic "/FIRA/TeamColor"
 #define Vision_Topic "/vision/object"
-#define Vision_Two_point_Topic "/vision/Two_point"
+#define Vision_Two_point_Topic "/interface/Two_point"
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
 //one_Robot speed
@@ -170,6 +170,7 @@ private:
 
     //robot role publisher
     //no robot_1_role_sub, because robot_1 is always goal keeper
+    ros::Subscriber robot_1_role_sub;
     ros::Subscriber robot_2_role_sub;
     ros::Subscriber robot_3_role_sub;
 
@@ -321,6 +322,10 @@ private:
         global_env->opponent[2].rotation = yaw;
     }
 
+    void robot_1_role_fun(const std_msgs::Int32::ConstPtr &msg){
+        roleAry[0] = msg->data;
+    }
+
     void  robot_2_role_fun(const std_msgs::Int32::ConstPtr &msg){
         roleAry[1] = msg->data;
     }
@@ -358,27 +363,63 @@ private:
     }
 
         void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
-            if(global_env->teamcolor == "Blue" && msg->blue_ang1 != msg->blue_ang2){
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = Two_point_angle_fix(msg->blue_dis);
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = Two_point_angle_fix(msg->blue_ang1);
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = Two_point_angle_fix(msg->blue_ang2);
+            if(global_env->teamcolor == "Blue"){
+                double ang1 = msg->blue_ang1;
+                double ang2 = msg->blue_ang2;
+                if(ang1 == ang2){
+                    return;
+                }
+                ang1 = two_point_angle_fix(ang1);
+                ang2 = two_point_angle_fix(ang2);
+                if(ang1 < 61){
+                    ang1 = ang2 + 180;
+                }else if(ang2 > -62){
+                    ang2 = ang1 - 180;
+                }
+                ang1 = angle_fix(ang1);
+                ang2 = angle_fix(ang2);
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
+
             }else if(global_env->teamcolor == "Yellow" && msg->yellow_ang1 != msg->yellow_ang2){
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = Two_point_angle_fix(msg->yellow_dis);
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = Two_point_angle_fix(msg->yellow_ang1);
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = Two_point_angle_fix(msg->yellow_ang2);
+                double ang1 = msg->yellow_ang1;
+                double ang2 = msg->yellow_ang2;
+                if(ang1 == ang2){
+                    return;
+                }
+                ang1 = two_point_angle_fix(ang1);
+                ang2 = two_point_angle_fix(ang2);
+                if(ang1 < 61){
+                    ang1 = ang2 + 180;
+                }else if(ang2 > -62){
+                    ang2 = ang1 - 180;
+                }
+                ang1 = angle_fix(ang1);
+                ang2 = angle_fix(ang2);
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->yellow_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
+                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
             }
         }
-
-        int Two_point_angle_fix(int angle){
-            if(angle >= 45 && angle <= 225){
-                angle = 45 - angle;
-            }else if(angle < 45){
+        //for goalkeeper on 5th robot with ros
+        double two_point_angle_fix(double angle){
+            if(angle <= 225){
                 angle = 45 - angle;
             }else{
                 angle = 405 - angle;
             }
             return angle;
         }
+        double angle_fix(double angle){
+            if(angle > 180){
+                angle = angle -360;
+            }else if(angle < -180){
+                angle = angle =360;
+            }
+            return angle;
+        }
+
 
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
         static int counter=0;

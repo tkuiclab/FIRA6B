@@ -123,7 +123,7 @@ void FIRA_teamStrategy_class::role_Play(){
 //    }
     roleAry[0]=Role_Goalkeeper;
     roleAry[1]=Role_Attack;
-    roleAry[2]=Role_Goalkeeper;
+    roleAry[2]=Role_Attack;
 }
 
 

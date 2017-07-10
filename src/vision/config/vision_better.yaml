@@ -1,6 +1,6 @@
 FIRA:
-  Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Front: 270, Inner: 46, Outer: 255, X: 307, Y: 266}
+  Camera: {Focal: 13.971313932573906, High: 620.0}
+  Center: {Front: 45, Inner: 40, Outer: 248, X: 338, Y: 255}
   HSV:
     Bluerange: [253, 214, 241, 166, 255, 101]
     Greenrange: [202, 153, 255, 130, 255, 0]

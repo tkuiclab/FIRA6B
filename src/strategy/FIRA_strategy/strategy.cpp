@@ -145,7 +145,6 @@ int main(int argc, char **argv)
            mpathplan.shoot_init();
         }
         roleAry = mNodeHandle.getRoleAry();
-
         //============Strategy============//
         mbehavior.setEnv(*global_env);
         mbehavior.setTeam(Team_color);

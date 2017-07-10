@@ -17,13 +17,18 @@ namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
 std::string visionpath = ros::package::getPath("vision");
+std::string firalaunchpath = ros::package::getPath("fira_launch");
+
 
 std::string defaultpath = "/config/default.yaml";
 std::string parameterpath = "/config/Parameter.yaml";
+std::string visionbetterpath = "/default_config/vision_better.yaml";
 std::string def = visionpath + defaultpath;
-std::string param = visionpath + parameterpath; 
+std::string param = visionpath + parameterpath;
+std::string visionbetter = firalaunchpath + visionbetterpath; 
 const char *defpath = def.c_str();
 const char *parampath = param.c_str();
+const char *betterpath = visionbetter.c_str();
 
 void onMouse(int Event,int x,int y,int flags,void* param);
 int mousex=-1 , mousey=-1 , onclick=0;
@@ -126,7 +131,7 @@ void InterfaceProc::Parameter_getting(const int x)
 {
   if(ifstream(parampath)){
     cout<<visionpath<<endl;
-    std::string temp = "rosparam load " + param; 
+    std::string temp = "rosparam load " + visionbetter; 
     const char *load = temp.c_str(); 
     system(load);
     cout<<"Read the yaml file"<<endl;
@@ -185,8 +190,11 @@ void InterfaceProc::Parameter_getting(const int x)
 	
 ///////////////////////////////////////////////////////////////////////////////////////////
     nh.setParam("/FIRA/Parameterbutton",1);
-    system("rosparam dump src/vision/config/Parameter.yaml");
-    system("rosparam dump src/vision/config/default.yaml");
+    //system("rosparam dump src/vision/config/Parameter.yaml");
+    //system("rosparam dump src/vision/config/default.yaml");
+    std::string temp = "rosparam dump " + visionbetter; 
+    const char *dump = temp.c_str();
+    system(dump);
     cout<<"Parameter is created "<<endl;
   }
   nh.getParam("/FIRA/HSV/Ball",HSV_red);
@@ -252,7 +260,7 @@ void InterfaceProc::Parameter_setting(const vision::parametercheck msg)
   paraMeterCheck=msg.checkpoint;
 ////////////////////////////////////如果有新的topic進來////////////////////////////
   if(paraMeterCheck!=0){
-    std::string temp = "rosparam dump " + param; 
+    std::string temp = "rosparam dump " + visionbetter; 
     const char *save = temp.c_str(); 
     system(save);
     paraMeterCheck=0;

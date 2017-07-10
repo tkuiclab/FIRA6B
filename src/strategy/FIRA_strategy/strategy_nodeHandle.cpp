@@ -6,7 +6,7 @@ Strategy_nodeHandle::
 Strategy_nodeHandle(int argc, char** argv):
     BaseNode(argc,argv,Node_Name)
 {
-    roleAry[0] = Role_Goalkeeper;
+//    roleAry[0] = Role_Goalkeeper;
 }
 
 
@@ -31,6 +31,7 @@ void Strategy_nodeHandle::ros_comms_init(){
     std::string robot_role_suffix = Robot_Role_Topic_Suffix;
 
     //role subscriber
+    robot_1_role_sub = n->subscribe<std_msgs::Int32>(robot_role_prefix  +"1"+robot_role_suffix,1000,&Strategy_nodeHandle::robot_1_role_fun,this);
     robot_2_role_sub = n->subscribe<std_msgs::Int32>(robot_role_prefix  +"2"+robot_role_suffix,1000,&Strategy_nodeHandle::robot_2_role_fun,this);
     robot_3_role_sub = n->subscribe<std_msgs::Int32>(robot_role_prefix  +"3"+robot_role_suffix,1000,&Strategy_nodeHandle::robot_3_role_fun,this);
 
