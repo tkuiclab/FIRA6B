@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Camera_high: 620, Center_X: 338, Center_Y: 255, Front: 41, Inner: 42, Outer: 247,
+  Center: {Camera_high: 620, Center_X: 338, Center_Y: 255, Front: 45, Inner: 42, Outer: 247,
     X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
@@ -26,7 +26,7 @@ FIRA:
     Yellowrange: [103, 59, 255, 70, 255, 137]
     black: {angle: 33, gray: 60}
     white: {angle: 16, gray: 33}
-  IsSimulator: 1
+  IsSimulator: 0
   Parameterbutton: 2
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
@@ -1577,8 +1577,9 @@ roslaunch:
     host_iclab1_desktop__33401: 'http://iclab1-desktop:33401/', host_iclab1_desktop__37143: 'http://iclab1-desktop:37143/',
     host_iclab1_desktop__37474: 'http://iclab1-desktop:37474/', host_iclab1_desktop__38024: 'http://iclab1-desktop:38024/',
     host_iclab1_desktop__40908: 'http://iclab1-desktop:40908/', host_iclab1_desktop__42549: 'http://iclab1-desktop:42549/',
-    host_iclab1_desktop__46069: 'http://iclab1-desktop:46069/', host_iclab1_desktop__51857: 'http://iclab1-desktop:51857/',
-    host_iclab1_desktop__54213: 'http://iclab1-desktop:54213/', host_iclab2_to_be_filled_by_o_e_m__33648: 'http://iclab2-To-be-filled-by-O-E-M:33648/',
+    host_iclab1_desktop__45236: 'http://iclab1-desktop:45236/', host_iclab1_desktop__46069: 'http://iclab1-desktop:46069/',
+    host_iclab1_desktop__51857: 'http://iclab1-desktop:51857/', host_iclab1_desktop__54213: 'http://iclab1-desktop:54213/',
+    host_iclab2_to_be_filled_by_o_e_m__33648: 'http://iclab2-To-be-filled-by-O-E-M:33648/',
     host_iclab2_to_be_filled_by_o_e_m__35456: 'http://iclab2-To-be-filled-by-O-E-M:35456/',
     host_iclab2_to_be_filled_by_o_e_m__36463: 'http://iclab2-To-be-filled-by-O-E-M:36463/',
     host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
