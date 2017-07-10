@@ -33,7 +33,7 @@ void InterfaceProc::Parameter_getting(const int x)
     const char *load = temp.c_str(); 
 
     system(load);}*/
-    cout<<"Read the yaml file"<<endl;
+    //cout<<"Read the yaml file"<<endl;
     nh.getParam("/FIRA/HSV/Ball",HSV_red);
     nh.getParam("/FIRA/HSV/Blue",HSV_blue);
     nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
@@ -96,8 +96,10 @@ void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
   
   SaveButton = msg.bin;
+  cout<<HSV_blue[0]<<endl;
   Parameter_getting(1);
   HSVmap();
+  
 }
 
 
@@ -966,7 +968,7 @@ void InterfaceProc::HSVmap()
 
     string Filename = vision_path+FILE_PATH;
     const char *Filename_Path = Filename.c_str();
-    
+  cout<<HSV_blue[0]<<endl;    
     if(SaveButton!=0){
     FILE *file=fopen(Filename_Path,"rb+"); //開啟檔案來寫
     fwrite( HSVmap, 1, 256*256*256 , file );
