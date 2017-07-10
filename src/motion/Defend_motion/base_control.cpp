@@ -239,10 +239,15 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 	if((w3_speed_percent>0.1) && (w3_speed_percent<2))w3_speed_percent=2;
 	if((w4_speed_percent>0.1) && (w4_speed_percent<2))w4_speed_percent=2;
 
-	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.8*w1_speed_percent/100) + w1_dir) : 0;
-	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.8*w2_speed_percent/100) + w2_dir) : 0;
-	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.8*w3_speed_percent/100) + w3_dir) : 0;
-	*(this->base_TX->w4) = (w4_speed_percent>0)? (unsigned char)((127*0.8*w4_speed_percent/100) + w4_dir) : 0;
+	if((w1_speed_percent>=100))w1_speed_percent=100;
+	if((w2_speed_percent>=100))w2_speed_percent=100;
+	if((w3_speed_percent>=100))w3_speed_percent=100;
+	if((w4_speed_percent>=100))w4_speed_percent=100;
+
+	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*w1_speed_percent/100) + w1_dir) : 0;
+	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*w2_speed_percent/100) + w2_dir) : 0;
+	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*w3_speed_percent/100) + w3_dir) : 0;
+	*(this->base_TX->w4) = (w4_speed_percent>0)? (unsigned char)((127*w4_speed_percent/100) + w4_dir) : 0;
 #ifdef DEBUG
 	std::cout << "speed_regularization(DEBUG)\n";
 	std::cout << std::hex;
@@ -271,16 +276,16 @@ void Base_Control::inverseKinematics()
 	w4_speed = *(this->base_robotCMD->x_speed)*cos(m4_Angle)+*(this->base_robotCMD->y_speed)*sin(m4_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
 
 	for(int i=0;i<10;i++){
-		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed>100)||fabs(w4_speed)){
+		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed>100)||fabs(w4_speed)>100){
 			w1_speed = w1_speed*0.9;
 			w2_speed = w2_speed*0.9;
 			w3_speed = w3_speed*0.9;
 			w4_speed = w4_speed*0.9;
 		}else{
-			w1_speed = w1_speed;
-			w2_speed = w2_speed;
-			w3_speed = w3_speed;
-			w4_speed = w4_speed;
+			w1_speed = w1_speed*7/5;
+			w2_speed = w2_speed*7/5;
+			w3_speed = w3_speed*7/5;
+			w4_speed = w4_speed*7/5;
 			break;
 		}
 	}

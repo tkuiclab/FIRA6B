@@ -40,10 +40,10 @@ private:
 	void	inverseKinematics();
 	void	forwardKinematics();	
 private:
-	const double m1_Angle = (-1)*M_PI/2;
-	const double m2_Angle =  M_PI/2;
-	const double m3_Angle = 3*M_PI/2;
-	const double m4_Angle = (-1)*3*M_PI/2;
+	const double m1_Angle =  M_PI/4;
+	const double m2_Angle = (-1)*M_PI/4;
+	const double m3_Angle = 3*M_PI/4;
+	const double m4_Angle = (-1)*3*M_PI/4;
 	const double robot_radius = 0.2;
 	const double wheel_radius = 0.00508;
 

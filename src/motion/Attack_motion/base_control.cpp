@@ -411,25 +411,18 @@ void Base_Control::forwardKinematics()
 	double x,y;
 	double yaw=0;
 	int round=0;
-	x = (*(base_RX->w1)*(-0.3333) + *(base_RX->w2)*(-0.3333) + *(base_RX->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
-    y = (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
-	yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*2*M_PI*wheel_radius/2000/26;
-	if(fabs(x-*(this->base_robotFB->x_speed)<0.1)){
-		*(this->base_robotFB->x_speed) = x;
-	}
-    if(fabs(y-*(this->base_robotFB->y_speed)<0.1)){
-		*(this->base_robotFB->y_speed) = y;
-	}
+	*(this->base_robotFB->x_speed) = (*(base_RX->w1)*(-0.3333) + *(base_RX->w2)*(-0.3333) + *(base_RX->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
+    *(this->base_robotFB->y_speed)-= (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
 	yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*2*M_PI*wheel_radius/2000/26;
 	round = yaw/(2*M_PI);
-	double yaw_regular;
-	yaw_regular = (yaw - round*2*M_PI)*180/M_PI;
-	if(yaw_regular>180){
-		*(this->base_robotFB->yaw_speed) = yaw_regular-180;
-	}else if(yaw_regular<(-180)){
-		*(this->base_robotFB->yaw_speed) = yaw_regular+180;
+	double yaw_degree;
+	yaw_degree = (yaw - round*2*M_PI)*180/M_PI;
+	if(yaw_degree>180){
+		*(this->base_robotFB->yaw_speed) = yaw_degree-360;
+	}else if(yaw_degree<(-180)){
+		*(this->base_robotFB->yaw_speed) = yaw_degree+360;
 	}else{
-		*(this->base_robotFB->yaw_speed) = yaw_regular;
+		*(this->base_robotFB->yaw_speed) = yaw_degree;
 	}
 	
 }
@@ -473,7 +466,6 @@ void Base_Control::send(robot_command* CMD)
 	this->base_robotCMD = CMD;
 	shoot_regularization();
 	inverseKinematics();
-	//speed_regularization();
 	mcssl_send2motor();
 }
 
