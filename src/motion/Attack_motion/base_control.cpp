@@ -90,47 +90,47 @@ int Base_Control::mcssl_init()
 	cssl_start();
 	if(!serial){
 		devs = "/dev/ttyUSB0";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB1";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB2";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB3";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB4";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB5";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB6";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB7";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB8";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB9";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		devs = "/dev/ttyUSB10";
-		serial = cssl_open(devs, /*mcssl_Callback*/NULL, 0, 115200, 8, 0, 1);
+		serial = cssl_open(devs, mcssl_Callback/*NULL*/, 0, 115200, 8, 0, 1);
 	}
 	if(!serial){
 		std::cout << cssl_geterrormsg() << std::endl;
@@ -439,7 +439,7 @@ void Base_Control::inverseKinematics()
 	w3_speed = *(this->base_robotCMD->x_speed)*cos(m3_Angle)+*(this->base_robotCMD->y_speed)*sin(m3_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
 
 	for(int i=0;i<10;i++){
-		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed>100)){
+		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed)>100){
 			w1_speed = w1_speed*0.9;
 			w2_speed = w2_speed*0.9;
 			w3_speed = w3_speed*0.9;
