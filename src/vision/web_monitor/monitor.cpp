@@ -31,10 +31,9 @@ void InterfaceProc::Parameter_getting(const int x)
     cout<<visionpath<<endl;
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
-    system(load);
-    cout<<"Read the yaml file"<<endl;}*/
 
-cout<<"Read the yaml file"<<endl;
+    system(load);}*/
+    cout<<"Read the yaml file"<<endl;
     nh.getParam("/FIRA/HSV/Ball",HSV_red);
     nh.getParam("/FIRA/HSV/Blue",HSV_blue);
     nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
@@ -127,7 +126,8 @@ InterfaceProc::~InterfaceProc()
 /////////////////////////////////影像讀進來//////////////////////////////////////////
 void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 {
- Parameter_getting(1);
+
+  Parameter_getting(1);	
   cv_bridge::CvImagePtr cv_ptr;
   try {
     cv_ptr = cv_bridge::toCvCopy(msg, enc::BGR8);
