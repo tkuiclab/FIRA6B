@@ -1,6 +1,4 @@
-
 FIRA: {Parameterbutton: 3}
-
 camera:
   image:
     compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}

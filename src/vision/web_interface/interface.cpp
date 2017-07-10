@@ -22,9 +22,7 @@ std::string visionpath = ros::package::getPath("fira_launch");
 std::string parameterpath = "/default_config/vision_better.yaml";
 //std::string parameterpath = "/config/Parameter.yaml";
 std::string param = visionpath + parameterpath; 
-
 const char *parampath = param.c_str();
-const char *betterpath = visionbetter.c_str();
 
 void onMouse(int Event,int x,int y,int flags,void* param);
 int mousex=-1 , mousey=-1 , onclick=0;
@@ -126,7 +124,6 @@ void InterfaceProc::positioncall(const vision::position msg)
 void InterfaceProc::Parameter_getting(const int x)
 {
   if(ifstream(parampath)){
-
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
     system(load);
@@ -186,7 +183,6 @@ void InterfaceProc::Parameter_getting(const int x)
 	
 ///////////////////////////////////////////////////////////////////////////////////////////
     nh.setParam("/FIRA/Parameterbutton",1);
-
     system("rosparam dump"+parampath);
     cout<<"Parameter is created "<<endl;
   }*/
@@ -253,7 +249,7 @@ void InterfaceProc::Parameter_setting(const vision::parametercheck msg)
   paraMeterCheck=msg.checkpoint;
 ////////////////////////////////////如果有新的topic進來////////////////////////////
   if(paraMeterCheck!=0){
-    std::string temp = "rosparam dump " + visionbetter; 
+    std::string temp = "rosparam dump " + param; 
     const char *save = temp.c_str(); 
     system(save);
     paraMeterCheck=0;
