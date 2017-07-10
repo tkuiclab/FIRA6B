@@ -60,9 +60,9 @@ public:
   ~InterfaceProc();
 
   int BlackGrayMsg;
-  int BlackAngleMsg;
+  double BlackAngleMsg;
   int WhiteGrayMsg;
-  int WhiteAngleMsg;
+  double WhiteAngleMsg;
   int InnerMsg;
   int OuterMsg;
   int CenterXMsg;

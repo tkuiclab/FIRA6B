@@ -1,7 +1,9 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Camera_high: 620, Center_X: 340, Center_Y: 257, Front: 45, Inner: 39, Outer: 255,
+
+  Center: {Camera_high: 65, Center_X: 251, Center_Y: 268, Front: 273, Inner: 39, Outer: 255,
+
     X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
@@ -11,10 +13,12 @@ FIRA:
     Space: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]
   Distance_Settings: [0, 0, 0]
   Dorsad_Attack: [6, 90, 180, 2, 1, 2]
-  FPS: 16
+
+  FPS: 84
   HSV:
-    Ball: [0, 39, 63, 100, 19, 100]
-    Blue: [217, 246, 75, 100, 17, 100]
+    Ball: [20, 136, 46, 33, 60, 79]
+    Blue: [188, 236, 64, 100, 0, 100]
+
     Bluerange: [245, 204, 255, 179, 255, 72]
     ColorMode: 1
     Green: [107, 209, 63, 77, 9, 100]
@@ -24,10 +28,11 @@ FIRA:
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellow: [45, 116, 31, 100, 45, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-    black: {angle: 30, gray: 20}
-    white: {angle: 52, gray: 76}
-  IsSimulator: 0
-  Parameterbutton: 2
+
+    black: {angle: 96, gray: 72}
+    white: {angle: 50, gray: 183}
+  Parameterbutton: 5
+
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
         <!-- ===================================================================================\
@@ -103,10 +108,12 @@ FIRA:
         \      <odometryTopic>odom</odometryTopic>\n      <odometryFrame>odom</odometryFrame>\n\
         \      <odometryRate>20.0</odometryRate>\n      <robotBaseFrame>base_footprint</robotBaseFrame>\n\
         \    </plugin>\n  </gazebo>\n</robot>\n\n"}
-  RobotNumber: 0
-  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 1, Angle_range_2_3: 1, Dont_Search_Angle_1: 346,
-    Dont_Search_Angle_2: 95, Dont_Search_Angle_3: 222, Magn_Far_End: 240, Magn_Far_Start: 165,
-    Magn_Middle_Start: 117, Magn_Near_Gap: 1, Magn_Near_Start: 40}
+
+  RobotNumber: 1
+  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 2, Angle_range_2_3: 26, Dont_Search_Angle_1: 271,
+    Dont_Search_Angle_2: 266, Dont_Search_Angle_3: 194, Magn_Far_End: 212, Magn_Far_Start: 152,
+    Magn_Middle_Start: 97, Magn_Near_Gap: 11, Magn_Near_Start: 25}
+
   SPlanning_Velocity: [2.3, 0.3, 70, 40, 20, 2, 144, 5]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
@@ -1574,42 +1581,12 @@ rosdistro: 'indigo
   '
 roslaunch:
   uris: {host_angus_aspire_5742g__48051: 'http://angus-Aspire-5742G:48051/', host_angus_aspire_5742g__55935: 'http://angus-Aspire-5742G:55935/',
-    host_iclab1_desktop__33051: 'http://iclab1-desktop:33051/', host_iclab1_desktop__33526: 'http://iclab1-desktop:33526/',
-    host_iclab1_desktop__34651: 'http://iclab1-desktop:34651/', host_iclab1_desktop__35643: 'http://iclab1-desktop:35643/',
-    host_iclab1_desktop__35795: 'http://iclab1-desktop:35795/', host_iclab1_desktop__36204: 'http://iclab1-desktop:36204/',
-    host_iclab1_desktop__37194: 'http://iclab1-desktop:37194/', host_iclab1_desktop__37527: 'http://iclab1-desktop:37527/',
-    host_iclab1_desktop__38228: 'http://iclab1-desktop:38228/', host_iclab1_desktop__38530: 'http://iclab1-desktop:38530/',
-    host_iclab1_desktop__39007: 'http://iclab1-desktop:39007/', host_iclab1_desktop__39301: 'http://iclab1-desktop:39301/',
-    host_iclab1_desktop__39524: 'http://iclab1-desktop:39524/', host_iclab1_desktop__39821: 'http://iclab1-desktop:39821/',
-    host_iclab1_desktop__40099: 'http://iclab1-desktop:40099/', host_iclab1_desktop__40566: 'http://iclab1-desktop:40566/',
-    host_iclab1_desktop__40862: 'http://iclab1-desktop:40862/', host_iclab1_desktop__41530: 'http://iclab1-desktop:41530/',
-    host_iclab1_desktop__41656: 'http://iclab1-desktop:41656/', host_iclab1_desktop__42164: 'http://iclab1-desktop:42164/',
-    host_iclab1_desktop__43256: 'http://iclab1-desktop:43256/', host_iclab1_desktop__44232: 'http://iclab1-desktop:44232/',
-    host_iclab1_desktop__44828: 'http://iclab1-desktop:44828/', host_iclab1_desktop__45079: 'http://iclab1-desktop:45079/',
-    host_iclab1_desktop__45465: 'http://iclab1-desktop:45465/', host_iclab1_desktop__45852: 'http://iclab1-desktop:45852/',
-    host_iclab1_desktop__46046: 'http://iclab1-desktop:46046/', host_iclab1_desktop__46956: 'http://iclab1-desktop:46956/',
-    host_iclab1_desktop__47074: 'http://iclab1-desktop:47074/', host_iclab1_desktop__47346: 'http://iclab1-desktop:47346/',
-    host_iclab1_desktop__47977: 'http://iclab1-desktop:47977/', host_iclab1_desktop__48060: 'http://iclab1-desktop:48060/',
-    host_iclab1_desktop__48161: 'http://iclab1-desktop:48161/', host_iclab1_desktop__48608: 'http://iclab1-desktop:48608/',
-    host_iclab1_desktop__49007: 'http://iclab1-desktop:49007/', host_iclab1_desktop__49102: 'http://iclab1-desktop:49102/',
-    host_iclab1_desktop__49946: 'http://iclab1-desktop:49946/', host_iclab1_desktop__50419: 'http://iclab1-desktop:50419/',
-    host_iclab1_desktop__50529: 'http://iclab1-desktop:50529/', host_iclab1_desktop__50568: 'http://iclab1-desktop:50568/',
-    host_iclab1_desktop__51434: 'http://iclab1-desktop:51434/', host_iclab1_desktop__51665: 'http://iclab1-desktop:51665/',
-    host_iclab1_desktop__51961: 'http://iclab1-desktop:51961/', host_iclab1_desktop__52206: 'http://iclab1-desktop:52206/',
-    host_iclab1_desktop__52321: 'http://iclab1-desktop:52321/', host_iclab1_desktop__52506: 'http://iclab1-desktop:52506/',
-    host_iclab1_desktop__52892: 'http://iclab1-desktop:52892/', host_iclab1_desktop__53074: 'http://iclab1-desktop:53074/',
-    host_iclab1_desktop__53584: 'http://iclab1-desktop:53584/', host_iclab1_desktop__53667: 'http://iclab1-desktop:53667/',
-    host_iclab1_desktop__53957: 'http://iclab1-desktop:53957/', host_iclab1_desktop__54970: 'http://iclab1-desktop:54970/',
-    host_iclab1_desktop__55070: 'http://iclab1-desktop:55070/', host_iclab1_desktop__55817: 'http://iclab1-desktop:55817/',
-    host_iclab1_desktop__56224: 'http://iclab1-desktop:56224/', host_iclab1_desktop__56538: 'http://iclab1-desktop:56538/',
-    host_iclab1_desktop__57182: 'http://iclab1-desktop:57182/', host_iclab1_desktop__58473: 'http://iclab1-desktop:58473/',
-    host_iclab1_desktop__59489: 'http://iclab1-desktop:59489/', host_iclab1_desktop__59549: 'http://iclab1-desktop:59549/',
-    host_iclab1_desktop__59714: 'http://iclab1-desktop:59714/', host_iclab1_desktop__59739: 'http://iclab1-desktop:59739/',
-    host_iclab1_desktop__59770: 'http://iclab1-desktop:59770/', host_iclab1_desktop__59839: 'http://iclab1-desktop:59839/',
-    host_iclab1_desktop__60120: 'http://iclab1-desktop:60120/', host_iclab1_desktop__60689: 'http://iclab1-desktop:60689/',
+
+    host_iclab2_to_be_filled_by_o_e_m__33648: 'http://iclab2-To-be-filled-by-O-E-M:33648/',
+    host_iclab2_to_be_filled_by_o_e_m__35456: 'http://iclab2-To-be-filled-by-O-E-M:35456/',
     host_iclab2_to_be_filled_by_o_e_m__36463: 'http://iclab2-To-be-filled-by-O-E-M:36463/',
-    host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
-    host_iclab2_to_be_filled_by_o_e_m__38690: 'http://iclab2-To-be-filled-by-O-E-M:38690/',
+    host_iclab2_to_be_filled_by_o_e_m__37110: 'http://iclab2-To-be-filled-by-O-E-M:37110/',
+
     host_iclab2_to_be_filled_by_o_e_m__38996: 'http://iclab2-To-be-filled-by-O-E-M:38996/',
     host_iclab2_to_be_filled_by_o_e_m__39169: 'http://iclab2-To-be-filled-by-O-E-M:39169/',
     host_iclab2_to_be_filled_by_o_e_m__39936: 'http://iclab2-To-be-filled-by-O-E-M:39936/',
@@ -1617,11 +1594,13 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__40772: 'http://iclab2-To-be-filled-by-O-E-M:40772/',
     host_iclab2_to_be_filled_by_o_e_m__41139: 'http://iclab2-To-be-filled-by-O-E-M:41139/',
     host_iclab2_to_be_filled_by_o_e_m__42278: 'http://iclab2-To-be-filled-by-O-E-M:42278/',
-    host_iclab2_to_be_filled_by_o_e_m__44234: 'http://iclab2-To-be-filled-by-O-E-M:44234/',
+
+    host_iclab2_to_be_filled_by_o_e_m__44341: 'http://iclab2-To-be-filled-by-O-E-M:44341/',
     host_iclab2_to_be_filled_by_o_e_m__45546: 'http://iclab2-To-be-filled-by-O-E-M:45546/',
     host_iclab2_to_be_filled_by_o_e_m__45579: 'http://iclab2-To-be-filled-by-O-E-M:45579/',
-    host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
-    host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
+    host_iclab2_to_be_filled_by_o_e_m__45628: 'http://iclab2-To-be-filled-by-O-E-M:45628/',
+    host_iclab2_to_be_filled_by_o_e_m__46434: 'http://iclab2-To-be-filled-by-O-E-M:46434/',
+
     host_iclab__32960: 'http://iclab:32960/', host_iclab__33876: 'http://iclab:33876/',
     host_iclab__35121: 'http://iclab:35121/', host_iclab__36315: 'http://iclab:36315/',
     host_iclab__36840: 'http://iclab:36840/', host_iclab__37106: 'http://iclab:37106/',
@@ -1732,7 +1711,7 @@ roslaunch:
     host_iclab_desktop__59592: 'http://iclab-desktop:59592/', host_iclab_desktop__59703: 'http://iclab-desktop:59703/',
     host_iclab_desktop__60240: 'http://iclab-desktop:60240/', host_iclab_desktop__60400: 'http://iclab-desktop:60400/',
     host_iclab_desktop__60948: 'http://iclab-desktop:60948/'}
-rosversion: '1.11.16
+rosversion: '1.11.20
 
   '
 rqt_gui_cpp_node_20519:
