@@ -4,10 +4,8 @@
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "whiteLine");
-  while(ros::ok()){
   InterfaceProc imageCb;
-  imageCb.Parameter_getting(1);
-  ros::spinOnce();
-  }
+  //imageCb.Parameter_getting(1);
+  ros::spin();
   return 0;
 }

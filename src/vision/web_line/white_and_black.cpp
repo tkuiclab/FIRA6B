@@ -36,7 +36,7 @@ InterfaceProc::InterfaceProc()
    :it_(nh)
 {
     ros::NodeHandle n("~");
-    //Parameter_getting(1);	
+    Parameter_getting(1);	
     image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
     //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
@@ -59,6 +59,7 @@ InterfaceProc::~InterfaceProc()
 }
 void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 {
+    Parameter_getting(1);	
     int StartTime = ros::Time::now().toNSec();
     cv_bridge::CvImagePtr cv_ptr;
     try
