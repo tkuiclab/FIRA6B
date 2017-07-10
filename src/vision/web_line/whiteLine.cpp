@@ -3,8 +3,8 @@
 
 int main(int argc, char** argv)
 {
-  while(ros::ok()){
   ros::init(argc, argv, "whiteLine");
+  while(ros::ok()){
   InterfaceProc imageCb;
   imageCb.Parameter_getting(1);
   ros::spinOnce();

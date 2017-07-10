@@ -31,7 +31,7 @@ void InterfaceProc::Parameter_getting(const int x)
     cout<<visionpath<<endl;
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
-    system(load);*/
+    system(load);}*/
     cout<<"Read the yaml file"<<endl;
     nh.getParam("/FIRA/HSV/Ball",HSV_red);
     nh.getParam("/FIRA/HSV/Blue",HSV_blue);
