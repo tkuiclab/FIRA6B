@@ -82,6 +82,10 @@ public:
     void behavior_ThrowIn(int);
     void behavior_CornerKick(int);
     void behavior_AvoidBarrier(int);
+    void behavior_Test1(int);
+    void behavior_Test2(int);
+    void behavior_Test3(int);
+    void behavior_NewSupport(int);
 //--------------------------------------------------
     void readroleAry(int, int);
     int* getactionAry();

@@ -90,12 +90,17 @@ int main(int argc, char **argv)
     mteam.loadParam(mNodeHandle.getNodeHandle());
     
     int *roleAry;
+    int *sendOrder;
     while(ros::ok())
     {
+        mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
         mteam.setEnv(*global_env);
         mteam.teamStrategy();
         roleAry = mteam.getRoleAry();
+        sendOrder =mteam.getOrder();
         mNodeHandle.pubRole(roleAry);
+        mNodeHandle.pubOrder(sendOrder);
+        mNodeHandle.this_robot_info_publish(global_env->RobotNumber);
         
         ros::spinOnce();
         loop_rate.sleep();

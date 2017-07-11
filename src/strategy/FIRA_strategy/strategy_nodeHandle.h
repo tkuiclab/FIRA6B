@@ -34,6 +34,7 @@
 #include "nav_msgs/Odometry.h"
 #include "gazebo_msgs/ModelStates.h"
 #include "std_msgs/Int32MultiArray.h"
+#include "std_msgs/Float32MultiArray.h"
 
 /*****************************************************************************
 ** Define
@@ -166,6 +167,8 @@ private:
     //no robot_1_role_sub, because robot_1 is always goal keeper
     ros::Subscriber robot_2_role_sub;
     ros::Subscriber robot_3_role_sub;
+    std::vector<double> Chase_Strategy;
+    ros::Subscriber another_robot_info_sub;
 
     //robot speed publisher
     ros::Publisher robot_1_speed_pub;
@@ -174,6 +177,7 @@ private:
     ros::Publisher robotOpt_1_speed_pub;
     ros::Publisher robotOpt_2_speed_pub;
     ros::Publisher robotOpt_3_speed_pub;
+
 
     //one_robot speed
     ros::Publisher robot_speed_pub;
@@ -542,6 +546,21 @@ private:
 
 
 
+    }
+    void  another_robot_info(const std_msgs::Float32MultiArray::ConstPtr &msg){
+
+        global_env->AnotherRobotNumber=msg->data[0];//another robot number
+        global_env->AnotherBallDistance=msg->data[1];//another robot Ball distance
+        global_env->home[global_env->AnotherRobotNumber].ball.distance=msg->data[1];
+        global_env->AnotherGetBall=msg->data[2];//another robot is get ball (Yes=1,No=0)
+        global_env->AnotherGoalDistance=msg->data[3];//another robot Goal distance
+        global_env->home[global_env->AnotherRobotNumber].goal.distance=msg->data[3];
+        global_env->R1OrderR2=msg->data[4];
+//        printf("msg->data[0]=%f\n",msg->data[0]);
+//        printf("msg->data[1]=%f\n",msg->data[1]);
+//        printf("msg->data[2]=%f\n",msg->data[2]);
+//        printf("msg->data[3]=%f\n",msg->data[3]);
+//        printf("msg->data[3]=%f\n",msg->data[4]);
     }
 };
 

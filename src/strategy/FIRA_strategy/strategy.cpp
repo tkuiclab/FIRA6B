@@ -138,7 +138,7 @@ int main(int argc, char **argv)
         global_env->gameState = mNodeHandle.getGameState();
         global_env->issimulator=mNodeHandle.getIsSimulator();
         // global_env->issimulator=1;
-        printf("global_env->issimulator=%d\n",global_env->issimulator);
+        //printf("global_env->issimulator=%d\n",global_env->issimulator);
         shoot_value = mpathplan.getShoot();
         if(shoot_value>0){
            mNodeHandle.pubShoot(shoot_value);

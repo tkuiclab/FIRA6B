@@ -31,6 +31,10 @@ const long PLAYERS_PER_SIDE = 3;
 #define Role_ThrowIn            5
 #define Role_CornerKick         6
 #define Role_AvoidBarrier       7
+#define Role_Test1              8
+#define Role_Test2              9
+#define Role_Test3             10
+#define Role_NewSupport        11
 
 #define action_Halt             0
 #define action_Goalkeeper       1
@@ -52,6 +56,21 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_Dorsad_Attack   17
 #define action_Shoot_Attack    18
 #define action_Straight_Chase  19
+#define action_PenaltyKick     20
+#define action_ThrowIn         21
+#define action_Support_CatchBallState   22
+#define action_Support_LostBallState    23
+#define action_Support_Test1            24
+#define action_Support_Test2            25
+#define action_Support_Test3            26
+#define action_Support_Positioning      27
+#define action_MovetoBlueGate           28
+#define action_MovetoYellowGate         29
+#define action_LeaveBall                30
+#define action_LeaveLimitArea           31
+#define action_LeftRightMove            32
+#define action_inv_LeftRightMove        33
+#define action_Support_LostInternet     34
 
 #define state_Init              0
 #define state_Chase             1
@@ -109,6 +128,11 @@ typedef struct
     //long whosBall;
     //void *userData;
     Goal yellow, blue;
+    int AnotherGetBall;
+    double AnotherBallDistance;
+    int AnotherRobotNumber;
+    double AnotherGoalDistance;
+    int R1OrderR2;
 
 } Environment;
 //static Environment global_env;

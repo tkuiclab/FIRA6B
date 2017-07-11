@@ -69,6 +69,19 @@ public:
     void strategy_KO5_Chase(int);
     void strategy_KO5_Attack(int);
     void strategy_SideSpeedUp(int);
+    void strategy_Support_CatchBallState(int);
+    void strategy_Support_LostBallState(int);
+    void strategy_Support_Positioning(int);
+    void strategy_Support_Test1(int);
+    void strategy_Support_Test2(int);
+    void strategy_Support_Test3(int);
+    void strategy_MovetoYellowGate(int);
+    void strategy_MovetoBlueGate(int);
+    void strategy_LeaveBall(int);
+    void strategy_LeaveLimitArea(int);
+    void strategy_LeftRightMove(int);
+    void strategy_invLeftRightMove(int);
+    void strategy_Support_LostInternet(int);
 //--------------------------------------------------
 
 //--------------role case-------------------

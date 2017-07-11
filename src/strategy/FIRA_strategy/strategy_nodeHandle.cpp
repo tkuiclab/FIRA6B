@@ -177,6 +177,13 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     double Vdis_min = SPlanning_Velocity[1];//0.3
     double VTdis_max = SPlanning_Velocity[2];//60
     double VTdis_min = SPlanning_Velocity[3];//30
+    if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if robot is support or Newsupport, v_min=0;
+        VTdis_min = SPlanning_Velocity[8];
+        if(VTdis_min>VTdis_max){
+            VTdis_min=0;
+        }
+        //printf("VTdis_min=%f\n",VTdis_min);
+    }
     double VTdis;
     double Tangle_max = SPlanning_Velocity[4];// 20
     double angle_max = SPlanning_Velocity[6];//144;
@@ -267,6 +274,14 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
     }
      if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){
 //     std::cout << "param RobotNumber=" << global_env->RobotNumber<<std::endl;
+         std::string another_robot_info_topic_name;
+         if(global_env->RobotNumber==1){
+             another_robot_info_topic_name="r3_info";
+         }else if(global_env->RobotNumber==2){
+             another_robot_info_topic_name="r2_info";
+         }
+         another_robot_info_sub = n->subscribe<std_msgs::Float32MultiArray>(another_robot_info_topic_name,1000,&Strategy_nodeHandle::another_robot_info,this);
+
     }
      if(n->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity)){
     //     for(int i=0;i<8;i++)
@@ -281,6 +296,11 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
     if(n->getParam("/FIRA/IsSimulator",IsSimulator)){
         // global_env->issimulator = IsSimulator;
         // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
+    }
+    if(n->getParam("/FIRA_Behavior/Chase_Strategy", Chase_Strategy)){
+    //        for(int i=0;i<5;i++)
+    //            std::cout<< "param Chase_Strategy["<< i << "]=" << Chase_Strategy[i] << std::endl;
+    //    std::cout << "====================================" << std::endl;
     }
 }
 

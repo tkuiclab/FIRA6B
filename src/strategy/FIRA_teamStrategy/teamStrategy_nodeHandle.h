@@ -21,6 +21,7 @@
 #include "../common/BaseNode.h"
 #include "std_msgs/String.h"
 #include "std_msgs/Int32.h"
+#include "std_msgs/Float32MultiArray.h"
 #include "FIRA_status_plugin/RobotSpeedMsg.h"
 #include "FIRA_status_plugin/ModelMsg.h"
 #include "geometry_msgs/Twist.h"
@@ -46,6 +47,11 @@
 #define Node_Name "TeamStrategy"
 
 #define ModelState_Topic_Name  "/gazebo/model_states"
+
+#include "vision/Object.h"
+#include "std_msgs/Int32MultiArray.h"
+#define Vision_Topic "/vision/object"
+#define  BlackObject_Topic "/vision/BlackRealDis"
 /*****************************************************************************
  ** Class
  *****************************************************************************/
@@ -68,8 +74,34 @@ public:
         robot_3_role.data = roleAry[2];  //roleAry[3-1]
         robot_3_role_pub.publish(robot_3_role);
     }
-    
-    
+    void pubOrder(int *msg){
+        sendOrder = *msg;
+    }
+    void this_robot_info_publish(int rolearray){
+        std_msgs::Float32MultiArray pubMsg;
+        pubMsg.data.push_back(rolearray);
+        pubMsg.data.push_back(global_env->home[rolearray].ball.distance);
+        //Chase_Strategy[3]=angle, [4]=dis
+        if((fabs(Chase_Strategy[3])>=fabs(global_env->home[rolearray].ball.angle))&&(Chase_Strategy[4]>=global_env->home[rolearray].ball.distance)){
+          pubMsg.data.push_back(1);
+        }else{
+          pubMsg.data.push_back(0);
+        }
+        pubMsg.data.push_back(global_env->home[rolearray].goal.distance);
+
+        pubMsg.data.push_back(sendOrder);
+//        printf("Chase_Strategy[3]=%lf\n",fabs(Chase_Strategy[3]));
+//        printf("ball.angle=%lf\n",global_env->home[rolearray].ball.angle);
+//        printf("Chase_Strategy[4]=%lf\n",fabs(Chase_Strategy[4]));
+//        printf("ball.distance=%lf\n",global_env->home[rolearray].ball.distance);
+        this_robot_info_pub.publish(pubMsg);
+
+    }
+    ros::Publisher this_robot_info_pub;
+    int Blackangle;
+    int *blackobject;
+    void loadParam(ros::NodeHandle *n);
+    int* getBlackObject(){return blackobject;}
     ros::NodeHandle* getNodeHandle(){return n;}
     
 protected:
@@ -85,7 +117,9 @@ private:
     
     std::string model_array[11];
     ros::NodeHandle *n;
-    
+
+    int sendOrder;
+
     ros::Subscriber GameState;
     long gamestate;
 
@@ -106,13 +140,37 @@ private:
     ros::Subscriber robotOpt_1_pos_sub  ;
     ros::Subscriber robotOpt_2_pos_sub  ;
     ros::Subscriber robotOpt_3_pos_sub  ;
+
+    ros::Subscriber Vision;
+    ros::Subscriber BlackObject;
     
     //robot publisher
     //no robot_1_role_pub, because robot_1 is always goal keeper
     ros::Publisher robot_2_role_pub;
     ros::Publisher robot_3_role_pub;
     
-    
+    ros::Subscriber another_robot_info_sub;
+    /// load param begin
+    std::vector<double> SPlanning_Velocity;
+    std::vector<double> Distance_Settings;
+    std::vector<double> Chase_Strategy;
+    /// load param end
+    void  another_robot_info(const std_msgs::Float32MultiArray::ConstPtr &msg){
+
+        global_env->AnotherRobotNumber=msg->data[0];//another robot number
+        global_env->AnotherBallDistance=msg->data[1];//another robot Ball distance
+        global_env->home[global_env->AnotherRobotNumber].ball.distance=msg->data[1];
+        global_env->AnotherGetBall=msg->data[2];//another robot is get ball (Yes=1,No=0)
+        global_env->AnotherGoalDistance=msg->data[3];//another robot Goal distance
+        global_env->home[global_env->AnotherRobotNumber].goal.distance=msg->data[3];
+        global_env->R1OrderR2=msg->data[4];
+//        printf("msg->data[0]=%f\n",msg->data[0]);
+//        printf("msg->data[1]=%f\n",msg->data[1]);
+//        printf("msg->data[2]=%f\n",msg->data[2]);
+//        printf("msg->data[3]=%f\n",msg->data[3]);
+//        printf("msg->data[3]=%f\n",msg->data[4]);
+    }
+
     void find_gazebo_model_name_fun(const gazebo_msgs::ModelStates::ConstPtr &msg){//----------------------------------printf here is ok, but printf next row will crash if i open over one robot map
         
         if(run_one) return;
@@ -233,7 +291,30 @@ private:
         double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
         global_env->opponent[2].rotation = yaw;
     }
-    
+    void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
+        static int counter=0;
+        int All_Line_distance[360];
+        int angle[360];
+        int place;
+
+        for(int i=0; i<360/Blackangle-23; i++){
+            All_Line_distance[i] = msg -> data[i];
+        }
+        global_env->mindis[0] = All_Line_distance[0];
+        for(int i=1; i<360/Blackangle-23; i++){
+            if(All_Line_distance[i] < global_env->mindis[0]){
+                if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){
+                    global_env->mindis[0] = All_Line_distance[i];
+                    place = i;
+                }
+            }
+        }
+
+     global_env->blackangle[0] = place*3;
+     if(global_env->blackangle[0] > 180){
+        global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
+     }
+    }
 };
 
 #endif /* NODE_HPP_ */

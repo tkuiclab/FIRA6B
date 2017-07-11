@@ -3,6 +3,7 @@
 #include <math.h>
 #include "../common/Env.h"
 #include <ros/ros.h>
+#include "std_msgs/Int32MultiArray.h"
 
 class FIRA_teamStrategy_class
 {
@@ -12,8 +13,11 @@ private:
     Environment env;
     int mTeam;
     int roleAry[PLAYERS_PER_SIDE];
+    int send_order;
     //end  ---simulator---
     double vecAngle(Vector2d a,Vector2d b);
+    ros::Subscriber TeamColor;
+    std::vector<double> Chase_Strategy;
 public:
     //start---simulator---
     void setOpponent(bool iBool){opponent = iBool;}
@@ -37,7 +41,7 @@ public:
     void role_AvoidBarrier();
 //--------------------------------------------------
     int* getRoleAry();
-
+    int* getOrder();
     //==========for ROS special===============//
     void loadParam(ros::NodeHandle *n);
 

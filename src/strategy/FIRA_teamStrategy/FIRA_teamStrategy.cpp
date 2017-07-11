@@ -1,6 +1,7 @@
 #include "FIRA_teamStrategy.h"
 #include "math.h"
-
+#define counter_delay 3
+#define change_charactor_dis 0.1
 
 FIRA_teamStrategy_class::FIRA_teamStrategy_class(){
    opponent = false;
@@ -60,7 +61,10 @@ void FIRA_teamStrategy_class::teamStrategy(){
 int* FIRA_teamStrategy_class::getRoleAry(){
     return roleAry;
 }
-
+int* FIRA_teamStrategy_class::getOrder(){
+    //printf("FIRA_teamStrategy_class::getOrder=%d\n",send_order);
+    return &send_order;
+}
 
 //-------------------------Role Choose start-----------------------
 void FIRA_teamStrategy_class::role_Play(){
@@ -121,9 +125,9 @@ void FIRA_teamStrategy_class::role_Play(){
 //            printf("roleAry[%d]=Role_Support\n",2);
 //        }
 //    }
-    roleAry[0]=Role_Attack;
-    roleAry[1]=Role_Attack;
-    roleAry[2]=Role_Attack;
+    roleAry[0]=Role_Goalkeeper;
+    roleAry[1]=Role_Test1;
+    roleAry[2]=Role_Test1;
 }
 
 
@@ -134,7 +138,107 @@ void FIRA_teamStrategy_class::role_Halt(){
 }
 
 void FIRA_teamStrategy_class::role_FreeKick(){
+    roleAry[0]=Role_Goalkeeper;
+    roleAry[1]=Role_Halt;
+    roleAry[2]=Role_Halt;
+ //   printf("AttackerIs r[%d]\n",env.AttackerIs);
+    printf("Another robot is Get Ball = %d\n",env.AnotherGetBall);
+    printf("global_env->RobotNumber=%d\n",env.RobotNumber);
+    double angle_chase = Chase_Strategy[3];//16.5
+    double distance_chase = Chase_Strategy[4];//0.4
+    double distance_br=env.home[env.RobotNumber].ball.distance;//this robot
+    double distance_dr=env.home[env.RobotNumber].goal.distance;
+    double angle_br=env.home[env.RobotNumber].ball.angle;//this robot
 
+    static int attacker_select=0;
+    static int this_attacker_select_counter=0;
+    static int another_attacker_select_counter=0;
+    static int two_robot_get_ball_counter=0;
+    switch(attacker_select){
+        case 0:// lost ball state
+            printf("lost ball state\n");
+            roleAry[env.RobotNumber]=Role_Attack;
+            roleAry[env.AnotherRobotNumber]=Role_Attack;
+            if((distance_br<=distance_chase)&&(fabs(angle_br)<=angle_chase)){//this robot catch ball
+                this_attacker_select_counter++;
+                printf("this_attacker_select_counter=%d\n",this_attacker_select_counter);
+                if(this_attacker_select_counter>=counter_delay){
+                    attacker_select=1;
+                    this_attacker_select_counter=0;
+                    another_attacker_select_counter=0;
+                }
+            }else{
+                this_attacker_select_counter=0;
+            }
+
+            if(env.AnotherGetBall==1){//this robot catch ball
+                another_attacker_select_counter++;
+                printf("another_attacker_select_counter=%d\n",another_attacker_select_counter);
+                if(another_attacker_select_counter>=counter_delay){
+                    attacker_select=2;
+                    this_attacker_select_counter=0;
+                    another_attacker_select_counter=0;
+                }
+            }else{
+                another_attacker_select_counter=0;
+            }
+        break;
+        case 1:// this robot catch ball state
+            printf("case 1\n");
+            printf("r%d catch ball\n",env.RobotNumber);
+            roleAry[env.RobotNumber]=Role_Attack;
+            roleAry[env.AnotherRobotNumber]=Role_NewSupport;
+            if((distance_br>distance_chase)||(fabs(angle_br)>angle_chase)){
+                this_attacker_select_counter++;
+                if(this_attacker_select_counter>=counter_delay){
+                    attacker_select=0;
+                    this_attacker_select_counter=0;
+                    another_attacker_select_counter=0;
+                }
+            }else{
+                this_attacker_select_counter=0;
+            }
+        break;
+        case 2:// another robot catch ball state
+            printf("case 2\n");
+            printf("r%d catch ball\n",env.AnotherRobotNumber);
+            roleAry[env.RobotNumber]=Role_NewSupport;
+            roleAry[env.AnotherRobotNumber]=Role_Attack;
+            if(env.AnotherGetBall==0){
+                another_attacker_select_counter++;
+                if(another_attacker_select_counter>=counter_delay){
+                    attacker_select=0;
+                    this_attacker_select_counter=0;
+                    another_attacker_select_counter=0;
+                }
+            }else{
+                another_attacker_select_counter=0;
+            }
+        break;
+    }
+
+
+    if(((distance_br<=distance_chase)&&(fabs(angle_br)<=angle_chase))&&(env.AnotherGetBall==1)){//means two robot get ball bug
+        two_robot_get_ball_counter++;
+        printf("two_robot_get_ball_counter=%d\n",two_robot_get_ball_counter);
+        if(two_robot_get_ball_counter>=counter_delay){
+            if(distance_dr<env.AnotherGoalDistance){//this robot attack,case 1
+                attacker_select=1;
+                this_attacker_select_counter=0;
+                another_attacker_select_counter=0;
+                two_robot_get_ball_counter=0;
+            }else{// this robot support
+                attacker_select=2;
+                this_attacker_select_counter=0;
+                another_attacker_select_counter=0;
+                two_robot_get_ball_counter=0;
+            }
+        }
+    }else{
+        two_robot_get_ball_counter=0;
+    }
+    printf("r[%d] ball dis:%f\n",env.RobotNumber,env.home[env.RobotNumber].ball.distance);
+    printf("r[%d] ball dis:%f\n",env.AnotherRobotNumber,env.AnotherBallDistance);
 }
 
 void FIRA_teamStrategy_class::role_PenaltyKick(){
