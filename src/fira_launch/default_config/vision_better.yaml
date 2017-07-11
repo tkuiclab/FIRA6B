@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Front: 273, Inner: 39, Outer: 255, X: 308, Y: 266}
+  Center: {Front: 271, Inner: 39, Outer: 255, X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -17,7 +17,7 @@ FIRA:
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellowrange: [103, 59, 255, 70, 255, 137]
   IsSimulator: 0
-  Penalty_Kick: [-40]
+  Penalty_Kick: [-45]
   RobotNumber: 1
   SPlanning_Velocity: [2.3, 0.3, 70, 40, 200, 0, 144, 5, 0]
   Scan:
@@ -1466,10 +1466,11 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__44234: 'http://iclab2-To-be-filled-by-O-E-M:44234/',
     host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
     host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
-    host_iclab__33227: 'http://iclab:33227/', host_iclab__35543: 'http://iclab:35543/',
-    host_iclab__37782: 'http://iclab:37782/', host_iclab__38220: 'http://iclab:38220/',
-    host_iclab__39437: 'http://iclab:39437/', host_iclab__39811: 'http://iclab:39811/',
-    host_iclab__40430: 'http://iclab:40430/', host_iclab__43688: 'http://iclab:43688/',
+    host_iclab__34974: 'http://iclab:34974/', host_iclab__38971: 'http://iclab:38971/',
+    host_iclab__39348: 'http://iclab:39348/', host_iclab__39472: 'http://iclab:39472/',
+    host_iclab__41231: 'http://iclab:41231/', host_iclab__42311: 'http://iclab:42311/',
+    host_iclab__42875: 'http://iclab:42875/', host_iclab__43629: 'http://iclab:43629/',
+    host_iclab__44578: 'http://iclab:44578/', host_iclab__45938: 'http://iclab:45938/',
     host_iclab_desktop__32798: 'http://iclab-desktop:32798/', host_iclab_desktop__32839: 'http://iclab-desktop:32839/',
     host_iclab_desktop__32879: 'http://iclab-desktop:32879/', host_iclab_desktop__32931: 'http://iclab-desktop:32931/',
     host_iclab_desktop__33020: 'http://iclab-desktop:33020/', host_iclab_desktop__33100: 'http://iclab-desktop:33100/',
