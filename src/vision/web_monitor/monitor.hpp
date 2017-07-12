@@ -70,7 +70,7 @@ private:
   object_Item FIND_Item,Red_Item,Yellow_Item,Blue_Item;
   object_Item *Obstacle_Item;
   int dont_angle[6];
-
+  int frame_counter;
   vector<double> Angle_sin;
   vector<double> Angle_cos;
   vector<BYTE> color_map;
@@ -85,7 +85,7 @@ private:
   int Camera_H;
   double Camera_f;
   int center_x, center_y, center_inner, center_outer, center_front;
-
+  long int EndTime;
   std::string vision_path;
 
   int dis_gap;
@@ -186,7 +186,7 @@ public:
   }
 ///////////////////////////////////////////////////////////
 ///////////////////////FPS/////////////////////////////////
-  int frame_counter=0;
+  //int frame_counter=0;
   int topic_counter=0;
   // long int EndTime;
   double dt;

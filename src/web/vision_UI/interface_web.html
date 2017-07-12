@@ -568,7 +568,7 @@
                                                 <label>Angle</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="WhiteElement" type="range" min="1" max="120" value="20"  oninput="showLabel(this.value,'WhiteLabel',1);topicWhiteTransfer()"  />
+                                                <input name="WhiteElement" type="range" min="0.5" max="120" value="0.5" step="0.5" oninput="showLabel(this.value,'WhiteLabel',1);topicWhiteTransfer()"  />
                                             </td>
                                             <td>
                                                 <label name="WhiteLabel">num</label>
@@ -604,7 +604,7 @@
                                                 <label>Angle</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="BlackElement" type="range" min="1" max="120" value="20" oninput="showLabel(this.value,'BlackLabel',1);topicBlackTransfer()"  />
+                                                <input name="BlackElement" type="range" min="0.5" max="120" value="0.5" step="0.5" oninput="showLabel(this.value,'BlackLabel',1);topicBlackTransfer()"  />
                                             </td>
                                             <td>
                                                 <label name="BlackLabel">num</label>
@@ -624,8 +624,7 @@
                         </form>
                         <form id="ParameterMonitor">
                             <div id="MonitorViewCheck">
-                                <label>
-                                    <input type="checkbox" name="MonitorCheck" onchecked="Monitor.subscribe"> View </label>
+                                    <input type="button" name="MonitorCheck" onclick="topicROSSaveButton()" value="View"/>  
                             </div>
                             <div id="MonitorInformation">
                                 <table>
