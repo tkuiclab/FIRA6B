@@ -24,6 +24,11 @@ ImageConverter::ImageConverter()
     Angle_cos.push_back(cos(ang_PI));
   }
 } 
+int Frame_area(int num,int range){
+  if(num < 0) num = 0;
+  else if(num >= range) num = range-1;
+  return num;
+}
 
 ImageConverter::~ImageConverter()
 {
@@ -43,7 +48,7 @@ void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
     ROS_ERROR("cv_bridge exception: %s", e.what());
     return;
   }
-
+  int object_dis;
   cv::flip(cv_ptr->image, Main_frame, 1);
 
   for(int i=0;i<Main_frame.rows;i++){
@@ -76,6 +81,10 @@ void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
       for(int r = center_inner; r <= center_outer; r++){
           int dis_x = x_*r;
           int dis_y = y_*r;
+
+          int image_x = Frame_area(center_x+dis_x,Main_frame.cols);
+          int image_y = Frame_area(center_y-dis_y,Main_frame.rows);
+
           if( Main_frame.data[((center_y-dis_y)*Main_frame.cols + center_x+dis_x)*3+0] == 0
             &&Main_frame.data[((center_y-dis_y)*Main_frame.cols + center_x+dis_x)*3+1] == 0
             &&Main_frame.data[((center_y-dis_y)*Main_frame.cols + center_x+dis_x)*3+2] == 0){
@@ -86,10 +95,13 @@ void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
               Main_frame.data[((center_y-dis_y)*Main_frame.cols + center_x+dis_x)*3+1] = 0;
               Main_frame.data[((center_y-dis_y)*Main_frame.cols + center_x+dis_x)*3+2] = 255;
           }
+          if(r==center_outer){
+            blackItem_pixel.push_back(hypot(dis_x,dis_y));
+          }
       }
   }
 
-  int object_dis;
+
   for(int j=0;j<blackItem_pixel.size();j++){
     object_dis = Omni_distance(blackItem_pixel[j]);
     BlackRealDis.data.push_back(object_dis);

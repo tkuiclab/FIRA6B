@@ -82,6 +82,7 @@ public:
     void behavior_ThrowIn(int);
     void behavior_CornerKick(int);
     void behavior_AvoidBarrier(int);
+    void behavior_test(int);
 //--------------------------------------------------
     void readroleAry(int, int);
     int* getactionAry();

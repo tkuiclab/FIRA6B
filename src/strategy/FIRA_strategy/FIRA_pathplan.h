@@ -69,6 +69,7 @@ public:
     void strategy_KO5_Chase(int);
     void strategy_KO5_Attack(int);
     void strategy_SideSpeedUp(int);
+    void strategy_test(int);
 //--------------------------------------------------
 
 //--------------role case-------------------

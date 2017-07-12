@@ -282,5 +282,11 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
         // global_env->issimulator = IsSimulator;
         // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
+    if(n->getParam("/FIRA/Scan/Parameter", scan_parameter)){
+//        for(int i=0;i<12;i++){
+//            printf("FIRA_Scan_Parameter:%d\t",scan_parameter[i]);
+//        }
+//        printf("\t");
+    }
 }
 

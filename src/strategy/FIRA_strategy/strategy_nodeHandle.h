@@ -120,6 +120,10 @@ public:
     long getGameState(){return gamestate;}
     std::string getTeamColor(){return teamcolor;}
     int getIsSimulator(){return IsSimulator;}
+    //apf_test
+    std::vector<int>angle_start;
+    std::vector<int>apf_dis;
+    std::vector<int>angle_end;
 
     //BlackObject
     int Blackangle;
@@ -140,6 +144,7 @@ private:
     ros::NodeHandle *n;
     long gamestate;
     std::string teamcolor;
+
 
     //gazebo_ModelStates subscriber
     ros::Subscriber Gazebo_Model_Name_sub;
@@ -181,6 +186,7 @@ private:
     /// load param begin
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
+    std::vector<int>scan_parameter;
     int IsSimulator;
     /// load param end
 
@@ -353,28 +359,122 @@ private:
 
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
-        static int counter=0;
+
         int All_Line_distance[360];
         int angle[360];
-        int place;
+        //angle_cal
+        int angle_apf=0;
+        int reg_angle=0;
+        int first_angle_count=0;
+        int second_angle_count=0;
+        int thrid_angle_count=0;
 
-        for(int i=0; i<360/Blackangle-23; i++){
+        for(int i=0; i<360/Blackangle; i++){
             All_Line_distance[i] = msg -> data[i];
-        }
-        global_env->mindis[0] = All_Line_distance[0];
-        for(int i=1; i<360/Blackangle-23; i++){
-            if(All_Line_distance[i] < global_env->mindis[0]){
-				if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
-					global_env->mindis[0] = All_Line_distance[i];
-					place = i;
-				}
-			}
+            if(i==0){
+                angle_apf=0;
+            }else{
+                angle_apf=Blackangle+angle_apf;
+            }
+            reg_angle=angle_apf;
+            if(reg_angle>(scan_parameter[6]+90)&&reg_angle<(scan_parameter[7]+90)){
+                reg_angle=(scan_parameter[9]+90)+first_angle_count*Blackangle;
+                first_angle_count++;
+            }
+            else if(reg_angle>(scan_parameter[8]+90)&&reg_angle<(scan_parameter[9]+90)){
+                reg_angle=(scan_parameter[9]+90)+second_angle_count*Blackangle;
+                second_angle_count++;
+            }
+            else if(reg_angle>(scan_parameter[10]-270)&&reg_angle<(scan_parameter[11]-270)){
+                reg_angle=(scan_parameter[11]-270)+thrid_angle_count*Blackangle;
+                thrid_angle_count++;
+            }
+            angle[i]=reg_angle;
+            angle_apf=reg_angle;
+            //printf("dis[%d]:%d\t%d\n",i,All_Line_dis[i],angle[i]);
         }
 
-     global_env->blackangle[0] = place*3;
-     if(global_env->blackangle[0] > 180){
-        global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
-     }
+        first_angle_count=0;
+        second_angle_count=0;
+        thrid_angle_count=0;
+        angle_apf=0;
+
+        int count=0;
+        int dis_avg=0;
+        int apf_data[3];
+        int dis=50;
+
+        for(int i=0; i<360/Blackangle; i++){
+            int k=0;
+            if(abs(All_Line_distance[i]-All_Line_distance[i+1])<=10&&All_Line_distance[i]<dis&&All_Line_distance[i+1]<dis){
+                if(count==0){
+                    apf_data[0]=angle[i];
+                    dis_avg=dis_avg+All_Line_distance[i];
+                    count++;
+                }
+                else{
+                    dis_avg=dis_avg+All_Line_distance[i];
+                    count++;
+                }
+            }else{
+                if(count!=0){
+                    count++;
+                    apf_data[1]=angle[i];
+                    apf_data[2]=(dis_avg+All_Line_distance[i])/count;
+                    angle_start.push_back(apf_data[0]);
+                    angle_end.push_back(apf_data[1]);
+                    apf_dis.push_back(apf_data[2]);
+
+                    printf("angle_start:%d\tangle:%d\tdis:%d\n",apf_data[0],apf_data[1],apf_data[2]);
+                    printf("angle_start:%d\tangle:%d\tdis:%d\n",angle_start[k],angle_end[k],apf_dis[k]);
+                    k++;
+
+                    dis_avg=0;
+                    count=0;
+                }
+                else
+                {
+                    dis_avg=0;
+                    count=0;
+                }
+            }
+            k=0;
+        }
+        printf("=========start\n\n");
+        if(angle_end.size()!=0){
+            for(int i=0;i<=angle_end.size()-1;i++){
+                printf("angle_start:%d\tangle:%d\tdis:%d\n",angle_start[i],angle_end[i],apf_dis[i]);
+            }
+            printf("====filter=====\n\n");
+            for(int i=0;i<=angle_end.size();i++){
+                if((angle_end[i]-angle_start[i+1])<=3*Blackangle+1&&abs(apf_dis[i]-apf_dis[i+1])<=15){
+                    angle_end[i]=angle_end[i+1];
+                    angle_end.erase(angle_end.begin()+sizeof(int)*i+1);
+                    apf_dis.erase(apf_dis.begin()+sizeof(int)*i+1);
+                    angle_start.erase(angle_start.begin()+sizeof(int)*i+1);
+                }
+            }
+            global_env->global_angle_end.clear();
+            global_env->global_angle_start.clear();
+            global_env->global_apf_dis.clear();
+            for(int i=0;i<=angle_end.size()-1;i++){
+
+                printf("angle_start:%d\tangle_end:%d\tdis:%d\n",angle_start[i],angle_end[i],apf_dis[i]);
+                global_env->global_angle_end.push_back(angle_end[i]);
+                global_env->global_angle_start.push_back(angle_start[i]);
+                global_env->global_apf_dis.push_back(apf_dis[i]);
+            }
+        }
+        printf("============end_node\n\n");
+        angle_end.clear();
+        angle_start.clear();
+        apf_dis.clear();
+
+
+//     global_env->blackangle[0] = place*3;
+//     if(global_env->blackangle[0] > 180){
+//        global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
+//     }
 //ROS_INFO("blackangle[0]=%d,mindis[0]=%d\n",global_env->blackangle[0],global_env->mindis[0]);
         /*}else counter++;*/
    //        std_msgs::Int32MultiArray blackdis;
