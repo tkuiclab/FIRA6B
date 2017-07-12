@@ -568,7 +568,7 @@
                                                 <label>Angle</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="WhiteElement" type="range" min="0.5" max="120" value="0.5" step="0.5" oninput="showLabel(this.value,'WhiteLabel',1);topicWhiteTransfer()"  />
+                                                <input name="WhiteElement" type="range" min="1" max="120" value="1" oninput="showLabel(this.value,'WhiteLabel',1);topicWhiteTransfer()"  />
                                             </td>
                                             <td>
                                                 <label name="WhiteLabel">num</label>
@@ -580,7 +580,7 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <input id="WhiteButton1" class="Button" type="button" value="Sent" onclick="ParameterWhite_angleTransfer();topicROSCheckButton(this.value);ParameterWhite_grayTransfer()">
+                                                <input id="WhiteButton1" class="Button" type="button" value="Sent" onclick="ParameterWhite_angleTransfer();topicROSCheckButton(this.value);ParameterWhite_grayTransfer();topicROSSaveButton()">
                                             </td>
                                     </table>
                                 </div>
@@ -604,7 +604,7 @@
                                                 <label>Angle</label>
                                             </td>
                                             <td class="Slider1Input">
-                                                <input name="BlackElement" type="range" min="0.5" max="120" value="0.5" step="0.5" oninput="showLabel(this.value,'BlackLabel',1);topicBlackTransfer()"  />
+                                                <input name="BlackElement" type="range" min="1" max="120" value="1" oninput="showLabel(this.value,'BlackLabel',1);topicBlackTransfer()"  />
                                             </td>
                                             <td>
                                                 <label name="BlackLabel">num</label>
@@ -616,7 +616,7 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <input id="BlackButton1" class="Button" type="button" value="Sent" onclick="ParameterBlack_angleTransfer();topicROSCheckButton(this.value);ParameterBlack_grayTransfer()">
+                                                <input id="BlackButton1" class="Button" type="button" value="Sent" onclick="ParameterBlack_angleTransfer();topicROSCheckButton(this.value);ParameterBlack_grayTransfer();topicROSSaveButton()">
                                             </td>
                                     </table>
                                 </div>
@@ -624,8 +624,7 @@
                         </form>
                         <form id="ParameterMonitor">
                             <div id="MonitorViewCheck">
-                                <label>
-                                    <input type="checkbox" name="MonitorCheck" onchecked="Monitor.subscribe"> View </label>
+                                    <input type="button" name="MonitorCheck" onclick="topicROSSaveButton()" value="View"/>  
                             </div>
                             <div id="MonitorInformation">
                                 <table>

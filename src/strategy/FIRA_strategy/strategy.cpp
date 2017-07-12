@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     mNodeHandle.setOpponent(isOpponent);
     mNodeHandle.on_init();
 
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(100);
 
     FIRA_behavior_class mbehavior;
 

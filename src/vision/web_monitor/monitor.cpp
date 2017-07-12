@@ -108,8 +108,15 @@ InterfaceProc::InterfaceProc()
 {
   ros::NodeHandle n("~");	
   Parameter_getting(1);
-  	
+  frame_counter = 0;	
   init_data();
+
+  double ang_PI;
+  for(int ang=0 ; ang<360; ang++){
+    ang_PI = ang*PI/180;
+    Angle_sin.push_back(sin(ang_PI));
+    Angle_cos.push_back(cos(ang_PI));
+  }
  
   image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
@@ -128,8 +135,8 @@ InterfaceProc::~InterfaceProc()
 /////////////////////////////////影像讀進來//////////////////////////////////////////
 void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 {
-
-  Parameter_getting(1);	
+  //ros::Rate loop_rate(1000);
+  //Parameter_getting(1);	
   cv_bridge::CvImagePtr cv_ptr;
   try {
     cv_ptr = cv_bridge::toCvCopy(msg, enc::BGR8);
@@ -143,14 +150,15 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 //////////////////////////////////////////////////////////////
   vision_path = ros::package::getPath("vision");
   color_map = ColorFile();
+/*
   double ang_PI;
   for(int ang=0 ; ang<360; ang++){
     ang_PI = ang*PI/180;
     Angle_sin.push_back(sin(ang_PI));
     Angle_cos.push_back(cos(ang_PI));
   }
-
-  cv::waitKey(3);
+*/
+  //cv::waitKey(3);
   Obstaclemap = Mat(Size(Main_frame.cols,Main_frame.rows),CV_8UC3,Scalar(0,0,0));
 
   object_Item_reset(Red_Item);
@@ -208,12 +216,13 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   }
 /////////////////////FPS///////////////////////
   frame_counter++;
-  static long int StartTime = time(NULL);//ros::Time::now().toNSec();
-  static long int EndTime;
+  //static long int StartTime = time(NULL);//ros::Time::now().toNSec();
+  static long int StartTime = ros::Time::now().toNSec();
+  //static long int EndTime;
   static long double FrameRate = 0.0;
 
 //time(NULL);
-  if(frame_counter == 17){
+  /*if(frame_counter == 17){
     EndTime = time(NULL);//ros::Time::now().toNSec();
     dt = (EndTime - StartTime)*10000/frame_counter;
     StartTime = EndTime;
@@ -226,6 +235,17 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     }
     frame_counter = 0;
     //dt = 0;
+  }*/
+  if(frame_counter == 10){
+      EndTime = ros::Time::now().toNSec();
+      dt = (EndTime - StartTime)/frame_counter;
+      StartTime = EndTime;
+      if( dt!=0 )
+      {
+              FrameRate = ( 1000000000.0 / dt ) * ALPHA + FrameRate * ( 1.0 - ALPHA );
+              //cout << "FPS: " << FrameRate << endl;
+      }
+      frame_counter = 0;
   }
   object_msg.fps = FrameRate;
 ///////////////////////////////////////////////
@@ -234,19 +254,20 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   Obstaclemap.release();
   Erodemap.release();
   Dilatemap.release();
-   //object_pub.publish(object_msg);
+  object_pub.publish(object_msg);
+/*
   topic_counter++;
   if(topic_counter==10){
   object_pub.publish(object_msg);
   topic_counter=0;
-}
+}*/
   //imshow(OPENCV_WINDOW, Main_frame);
 
 
  sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
   image_pub_threshold_.publish(thresholdMsg);
 
-   cv::waitKey(3);
+   //cv::waitKey(3);
 
 
 
@@ -765,22 +786,28 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   int x[4],y[4];
 
   if(color = BLUEITEM){
-     blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
-     blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
+      blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
+      blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
 
-      Two_point_msg.blue_dis = Blue_Item.dis_min;
-      Two_point_msg.blue_ang1 = blue_angle_max;
-      Two_point_msg.blue_ang2 = blue_angle_min;}
+       Two_point_msg.blue_dis = Blue_Item.dis_min;
+       Two_point_msg.blue_ang1 = blue_angle_max;
+       Two_point_msg.blue_ang2 = blue_angle_min;
+       }
 
-  if(color = YELLOWITEM){
-      yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
-      yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
+   if(color = YELLOWITEM){
+       yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
+       yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
 
-      Two_point_msg.yellow_dis = Yellow_Item.dis_min;
-      Two_point_msg.yellow_ang1 = yellow_angle_max;
-      Two_point_msg.yellow_ang2 = yellow_angle_min;}
+      
 
-  Two_point_pub.publish(Two_point_msg);
+
+       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
+       Two_point_msg.yellow_ang1 = yellow_angle_max;
+       Two_point_msg.yellow_ang2 = yellow_angle_min;
+       }
+
+       Two_point_pub.publish(Two_point_msg);
+
 
 
   }

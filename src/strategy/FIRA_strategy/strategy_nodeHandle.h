@@ -362,6 +362,8 @@ private:
        global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
     }
 
+
+/*****/    //for goalkeeper on 5th robot with ros  //front = 45
         void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
             if(global_env->teamcolor == "Blue"){
                 double ang1 = msg->blue_ang1;
@@ -371,17 +373,21 @@ private:
                 }
                 ang1 = two_point_angle_fix(ang1);
                 ang2 = two_point_angle_fix(ang2);
-                if(ang1 < 61){
-                    ang1 = ang2 + 180;
-                }else if(ang2 > -62){
-                    ang2 = ang1 - 180;
+//                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
+                //angle cannot scan fix
+                double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
+                if(opgoal_dis < 0.51){
+                    if(ang1 < 57){
+                        ang1 = ang2 + 180;
+                    }else if(ang2 > -56){
+                        ang2 = ang1 - 180;
+                    }
                 }
                 ang1 = angle_fix(ang1);
                 ang2 = angle_fix(ang2);
                 global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
-
             }else if(global_env->teamcolor == "Yellow" && msg->yellow_ang1 != msg->yellow_ang2){
                 double ang1 = msg->yellow_ang1;
                 double ang2 = msg->yellow_ang2;
@@ -390,24 +396,29 @@ private:
                 }
                 ang1 = two_point_angle_fix(ang1);
                 ang2 = two_point_angle_fix(ang2);
-                if(ang1 < 61){
-                    ang1 = ang2 + 180;
-                }else if(ang2 > -62){
-                    ang2 = ang1 - 180;
+//                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
+                //angle cannot scan fix
+                double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
+                if(opgoal_dis < 0.51){
+                    if(ang1 < 57){
+                        ang1 = ang2 + 180;
+                    }else if(ang2 > -56){
+                        ang2 = ang1 - 180;
+                    }
                 }
                 ang1 = angle_fix(ang1);
                 ang2 = angle_fix(ang2);
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->yellow_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
             }
         }
-        //for goalkeeper on 5th robot with ros
+
         double two_point_angle_fix(double angle){
             if(angle <= 225){
-                angle = 45 - angle;
+                angle = angle - 45;
             }else{
-                angle = 405 - angle;
+                angle = angle -405;
             }
             return angle;
         }
@@ -419,6 +430,7 @@ private:
             }
             return angle;
         }
+/*****/
 
 
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
