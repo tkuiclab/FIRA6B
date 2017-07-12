@@ -78,12 +78,17 @@ typedef struct{
 }Vector3D;
 
 typedef struct{
+    double angle_1, angle_2;
+}Two_point;
+
+typedef struct{
     Vector3D pos;
     Vector3D ball;
     Vector3D goal;
     Vector3D op_goal;
     double rotation;
     double v_x,v_y,v_yaw;
+    Two_point goal_edge, op_goal_edge;
     //double velocityLeft, velocityRight;
 }Robot;
 

@@ -1012,47 +1012,133 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
 //    }
 ////Original end
 
-    double goal_angle = env.home[Robot_index].goal.angle;
-    static double first_goal_angle = goal_angle;
+////goal angle start (not stable)
+//    double goal_angle = env.home[Robot_index].goal.angle;
+//    static double first_goal_angle = goal_angle;
+//    double degree = Penalty_Kick[0];
+//    static double des_angle = first_goal_angle + degree;
+//    static double last_degree = degree;
+//    static int shoot_count = 0;
+//    if(last_degree != degree){
+//        first_goal_angle = goal_angle;
+//        des_angle = first_goal_angle + degree;
+//        if(des_angle > 180){
+//            des_angle = des_angle - 360;
+//        }
+//        if(des_angle < -180){
+//            des_angle = des_angle + 360;
+//        }
+//        last_degree = degree;
+//        shoot_count = 1;
+//    }
+//    double yaw_speed=goal_angle-des_angle;
+
+//    if(yaw_speed> 180){
+//        yaw_speed = yaw_speed - 360;
+//    }
+//    if(yaw_speed < -180){
+//        yaw_speed = yaw_speed + 360;
+//    }
+//    env.home[Robot_index].v_yaw = (yaw_speed)*2;
+//    printf("goal_angle=%f\n",goal_angle);
+//    printf("des_angle=%f\n",des_angle);
+//    printf("goal_angle-des_angle=%f\n",goal_angle-des_angle);
+//    printf("last_degree=%f\n",last_degree);
+//    printf("degree=%f\n",degree);
+//    if(fabs(des_angle-goal_angle)<=7){
+//        if(shoot_count == 1){
+//            shoot = 50;
+//            shoot_count = 0;
+//        }
+//    }else{
+//        shoot = 0;
+//    }
+////goal angle end
+    double right_goal_angle = env.home[Robot_index].goal_edge.angle_1;
+    double left_goal_angle = env.home[Robot_index].goal_edge.angle_2;
+    static double first_right_goal_angle = right_goal_angle;
     double degree = Penalty_Kick[0];
-    static double des_angle = first_goal_angle + degree;
+    static double des_angle = first_right_goal_angle + degree;
     static double last_degree = degree;
+    double yaw_speed;
     static int shoot_count = 0;
-    if(last_degree != degree){
-        first_goal_angle = goal_angle;
-        des_angle = first_goal_angle + degree;
-        if(des_angle > 180){
-            des_angle = des_angle - 360;
-        }
-        if(des_angle < -180){
-            des_angle = des_angle + 360;
-        }
-        last_degree = degree;
-        shoot_count = 1;
-    }
-    double yaw_speed=goal_angle-des_angle;
+    int action = Penalty_Kick[1];
+    switch(action){
+        case 0:
+            if(last_degree != degree){
+                first_right_goal_angle = right_goal_angle;
+                des_angle = first_right_goal_angle + degree;
+                if(des_angle > 180){
+                    des_angle = des_angle - 360;
+                }
+                if(des_angle < -180){
+                    des_angle = des_angle + 360;
+                }
+                last_degree = degree;
+                shoot_count = 1;
+            }
+            yaw_speed=right_goal_angle-des_angle;
 
-    if(yaw_speed> 180){
-        yaw_speed = yaw_speed - 360;
+            if(yaw_speed > 180){
+                yaw_speed = yaw_speed - 360;
+            }
+            if(yaw_speed < -180){
+                yaw_speed = yaw_speed + 360;
+            }
+            env.home[Robot_index].v_yaw = (yaw_speed)*2;
+            printf("right_goal_angle=%f\n",right_goal_angle);
+            printf("des_angle=%f\n",des_angle);
+            printf("right_goal_angle-des_angle=%f\n",right_goal_angle-des_angle);
+            printf("last_degree=%f\n",last_degree);
+            printf("degree=%f\n",degree);
+            if(fabs(des_angle-right_goal_angle)<=7){
+                if(shoot_count == 1){
+                    shoot = 50;
+                    shoot_count = 0;
+                }
+            }else{
+                shoot = 0;
+            }
+            break;
+        case 1:
+            des_angle = left_goal_angle;
+            yaw_speed = des_angle;
+            if(yaw_speed > 180){
+                yaw_speed = yaw_speed - 360;
+            }
+            if(yaw_speed < -180){
+                yaw_speed = yaw_speed + 360;
+            }
+            env.home[Robot_index].v_yaw = (yaw_speed)*2;
+            if(fabs(des_angle)<=7){
+                if(shoot_count == 1){
+                    shoot = 50;
+                    shoot_count = 0;
+                }
+            }else{
+                shoot = 0;
+            }
+            break;
+        case 2:
+            des_angle = right_goal_angle;
+            yaw_speed = des_angle;
+            if(yaw_speed > 180){
+                yaw_speed = yaw_speed - 360;
+            }
+            if(yaw_speed < -180){
+                yaw_speed = yaw_speed + 360;
+            }
+            env.home[Robot_index].v_yaw = (yaw_speed)*2;
+            if(fabs(des_angle)<=7){
+                if(shoot_count == 1){
+                    shoot = 50;
+                    shoot_count = 0;
+                }
+            }else{
+                shoot = 0;
+            }
+            break;
     }
-    if(yaw_speed < -180){
-        yaw_speed = yaw_speed + 360;
-    }
-    env.home[Robot_index].v_yaw = (yaw_speed)*2;
-    printf("goal_angle=%f\n",goal_angle);
-    printf("des_angle=%f\n",des_angle);
-    printf("goal_angle-des_angle=%f\n",goal_angle-des_angle);
-    printf("last_degree=%f\n",last_degree);
-    printf("degree=%f\n",degree);
-    if(fabs(des_angle-goal_angle)<=7){
-        if(shoot_count == 1){
-            shoot = 30;
-            shoot_count = 0;
-        }
-    }else{
-        shoot = 0;
-    }
-
 
 }
 

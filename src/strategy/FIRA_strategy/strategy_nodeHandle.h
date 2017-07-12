@@ -28,6 +28,7 @@
 #include "std_msgs/String.h"
 #include "std_msgs/Int32.h"
 #include "vision/Object.h"
+#include "vision/Two_point.h"
 #include "FIRA_status_plugin/RobotSpeedMsg.h"
 #include "FIRA_status_plugin/ModelMsg.h"
 #include "geometry_msgs/Twist.h"
@@ -47,7 +48,7 @@
 #define GameState_Topic "/FIRA/GameState"
 #define TeamColor_Topic "/FIRA/TeamColor"
 #define Vision_Topic "/vision/object"
-
+#define Vision_Two_point_Topic "/interface/Two_point"
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
 //one_Robot speed
@@ -159,6 +160,7 @@ private:
     ros::Subscriber GameState;
     ros::Subscriber TeamColor;
     ros::Subscriber Vision;
+    ros::Subscriber Vision_Two_point;
 
     //BlackObject
     ros::Subscriber BlackObject;
@@ -352,6 +354,51 @@ private:
        global_env->home[global_env->RobotNumber].ball.distance = ball_distance/100;
        global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
 
+    }
+    void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
+        if(global_env->teamcolor == "Blue"){
+            double ang1 = msg->yellow_ang1;
+            double ang2 = msg->yellow_ang2;
+            if(ang1 == ang2){
+                return;
+            }
+            ang1 = two_point_angle_fix(ang1);
+            ang2 = two_point_angle_fix(ang2);
+            ang1 = angle_fix(ang1);
+            ang2 = angle_fix(ang2);
+            global_env->home[global_env->RobotNumber].goal_edge.angle_1 = ang1;
+            global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
+
+        }else if(global_env->teamcolor == "Yellow" && msg->yellow_ang1 != msg->yellow_ang2){
+            double ang1 = msg->blue_ang1;
+            double ang2 = msg->blue_ang2;
+            if(ang1 == ang2){
+                return;
+            }
+            ang1 = two_point_angle_fix(ang1);
+            ang2 = two_point_angle_fix(ang2);
+            ang1 = angle_fix(ang1);
+            ang2 = angle_fix(ang2);
+            global_env->home[global_env->RobotNumber].goal_edge.angle_1 = ang1;
+            global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
+        }
+    }
+//for goalkeeper on 5th robot with ros
+    double two_point_angle_fix(double angle){
+        if(angle <= 225){
+            angle = 45 - angle;
+        }else{
+            angle = 405 - angle;
+        }
+        return angle;
+    }
+    double angle_fix(double angle){
+        if(angle > 180){
+            angle = angle - 360;
+        }else if(angle < -180){
+            angle = angle + 360;
+        }
+        return angle;
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
         static int counter=0;
