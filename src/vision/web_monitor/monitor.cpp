@@ -200,20 +200,20 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   }
 /////////////////////FPS///////////////////////
   frame_counter++;
-  static long int StartTime = time(NULL);//ros::Time::now().toNSec();
+  static long int StartTime = ros::Time::now().toNSec();
   static long int EndTime;
   static long double FrameRate = 0.0;
 
 //time(NULL);
-  if(frame_counter == 17){
-    EndTime = time(NULL);//ros::Time::now().toNSec();
-    dt = (EndTime - StartTime)*10000/frame_counter;
+  if(frame_counter == 10){
+    EndTime = ros::Time::now().toNSec();
+    dt = (EndTime - StartTime)/frame_counter;
     StartTime = EndTime;
     EndTime = 0;
     if( dt!=0 )
     {
-      //FrameRate = ( 1000000000.0 / dt ) * ALPHA + FrameRate * ( 1.0 - ALPHA );
-      FrameRate = ( 10000.0 / dt ) + FrameRate * ( 1.0 - ALPHA );
+      FrameRate = ( 1000000000.0 / dt ) * ALPHA + FrameRate * ( 1.0 - ALPHA );
+      //FrameRate = ( 10000.0 / dt ) + FrameRate * ( 1.0 - ALPHA );
       //cout << "FPS: " << FrameRate << endl;
     }
     frame_counter = 0;
