@@ -58,22 +58,11 @@ void Img::load_map()
       else{
         img.at<uchar>(i,j)=100;
       }
+      if(i<72.5||i>477.5||j<72.5||j>677.5)
+        img.at<uchar>(i,j)=-1;  //clear bound area 
     }
   if(img.isContinuous())
     ary.assign(img.datastart, img.dataend);
-  // for(int i=0;i<img.rows;i++)
-  //   for(int j=0;j<img.cols;j++){
-  //     if(img.at<uchar>(i,j)==255){
-  //       ary.push_back(0);
-  //       // printf("1");
-  //     }
-  //     else{
-  //       ary.push_back(100);
-  //     }
-        // img.at<uchar>()
-      // ary.push_back(img.at<uchar>(i,j));
-      // ary.push_back();
-      // printf("%d: img value = %d\n",i,img.at<uchar>(i,j));
   //  imshow("likehood_map",img);
   //  waitKey(100);
 }

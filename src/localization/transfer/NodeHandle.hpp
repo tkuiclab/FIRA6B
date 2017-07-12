@@ -11,11 +11,12 @@
 #include "geometry_msgs/PoseWithCovarianceStamped.h"
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_broadcaster.h>
+#include <time.h>
 ///=========define==========
 #define deg2rad 3.1415926/180
 #define rad2deg 180/3.1415926
 #define WhiteLine_Topic "/vision/whiteRealDis"
-#define motorFB_Topic "/motorFB"
+#define motorFB_Topic "/motion/motionFB"
 #define imu3d_Topic "/imu_3d"
 ///=========include & define end==========
 class Client{
@@ -42,11 +43,13 @@ public:
     ~Client() {}
     void ros_comms_init();
 //    topic publish or subscriber
-    void whiteline_sub(const std_msgs::Int32MultiArray::ConstPtr &msg);
+    void whiteline_sub(const std_msgs::Int32MultiArray::ConstPtr &msg){
+        for(int i=0; i<360/WhiteAngle; i++)
+            All_Line_distance[i] = msg -> data[i];
+    }
     void whiteline_pub();
-    void imu_sub(const imu_3d::inertia &msg);
-    void motorFB_sub(const geometry_msgs::Twist &msg);
-    void estimateFB_pub();
+    void imu_sub(const imu_3d::inertia &msg){imu3d = msg.yaw;}
+    void motorFB_sub(const geometry_msgs::Twist &msg){FB_x = msg.linear.x;FB_y = msg.linear.y;}
     void odom_tf_pub();
     void initialpose_pub();
 //    param

@@ -11,45 +11,15 @@ void Client::ros_comms_init(){
     MotorFB_sub = nh->subscribe(motorFB_Topic,1000,&Client::motorFB_sub,this);
     Imu3d_sub = nh->subscribe(imu3d_Topic,10000,&Client::imu_sub,this);
     Odom_pub = nh->advertise<nav_msgs::Odometry>("/odom", 50);
-    // Initialpose_pub = nh->advertise<geometry_msgs::PoseWithCovarianceStamped>("/initialpose",1000);
 }
 void Client::loadParam(ros::NodeHandle* nh){
     nh->getParam("/FIRA/whiteline/angle",WhiteAngle);
-}
-void Client::whiteline_sub(const std_msgs::Int32MultiArray::ConstPtr &msg){
-    for(int i=0; i<360/WhiteAngle; i++){
-        All_Line_distance[i] = msg -> data[i];
-//        printf("i=%d,value=%d\n",i,All_Line_distance[i]);
-    }
-}
-void Client::imu_sub(const imu_3d::inertia &msg){
-    imu3d = msg.yaw;
-    // imu3d = imu3d*rad2deg;
-    // printf("yaw = %lf\n",imu3d);
-}
-void Client::motorFB_sub(const geometry_msgs::Twist &msg){
-    // printf("motorFB_X = %f\n",msg.linear.x);
-    // printf("motorFB_y = %f\n",msg.linear.y);
-    FB_x = msg.linear.x;
-    FB_y = msg.linear.y;
-    estimateFB_pub();
-}
-void Client::estimateFB_pub(){
-    printf("success pub the estimateFB value\n");
-    new_FB_x = cos(imu3d)*FB_x + sin(imu3d)*FB_y;
-    new_FB_y = -sin(imu3d)*FB_x + cos(imu3d)*FB_y;
-    printf("FB_x = %f\n",FB_x);
-    printf("FB_y = %f\n",FB_y);   
-    printf("new_FB_x = %f\n",new_FB_x);
-    printf("new_FB_y = %f\n",new_FB_y);
-    printf("imu3d = %lf\n",imu3d);
 }
 void Client::whiteline_pub(){
     if(WhiteAngle==0)
         WhiteAngle = 1;
     int num_readings = 360/WhiteAngle;
-    // printf("%d\n",num_readings);
-    int laser_frequency = 30; // fps is not sure
+    int laser_frequency = 90; // vision fps 
     sensor_msgs::LaserScan scan;
     ros::Time scan_time = ros::Time::now();
     scan.header.frame_id = "laser_frame";
@@ -57,56 +27,71 @@ void Client::whiteline_pub(){
     scan.angle_min = -180*deg2rad;
     scan.angle_max = 180*deg2rad;
     scan.angle_increment = WhiteAngle*deg2rad;
-    // printf("%f\n",WhiteAngle*deg2rad);
     scan.time_increment = (1 / (float)laser_frequency) / (float)(num_readings);
     scan.scan_time = (1 / (float)laser_frequency);
     scan.range_min = 0.0;
     scan.range_max = 999;
     scan.ranges.resize(num_readings);
-    for(int i = 0; i < num_readings; ++i){
-        scan.ranges[i] = All_Line_distance[i]/100.0;
-        // if(All_Line_distance[i]==999)
-        //     scan.ranges[i] = -1.0;
-//        printf("i=%d,value=%10lf\n",i,scan.ranges[i]);
+    // for(int i = 0; i < num_readings; ++i){
+    //     scan.ranges[i] = All_Line_distance[i]/100.0;
+    // }
+    int j = 0;
+    for(int i=90;i<num_readings;++i){
+        scan.ranges[j] = All_Line_distance[i]/100.0;
+        j++;
+    }
+    for(int i=0;i<90;++i){
+        scan.ranges[j] = All_Line_distance[i]/100.0;
+        j++;
     }
     LaserScan_pub.publish(scan);
 }
 void Client::odom_tf_pub(){
-    ros::Time current_time, last_time;
-    current_time = ros::Time::now();  
-    last_time = ros::Time::now();
+    ros::Time current_time = ros::Time::now();
     geometry_msgs::TransformStamped odom_trans;
     odom_trans.header.stamp = current_time;
     odom_trans.header.frame_id = "odom";
     odom_trans.child_frame_id = "base_link";
-    odom_trans.transform.translation.x = new_FB_x;
-    odom_trans.transform.translation.y = new_FB_y;
+    static double last_FB_x = FB_x;
+    static double last_FB_y = FB_y;
+    static double map_x = FB_x;
+    static double map_y = FB_y;
+    double delta_x,delta_y;
+    if(fabs(FB_x - last_FB_x)>0.1)
+        FB_x = last_FB_x;
+    if(fabs(FB_y - last_FB_y)>0.1)
+        FB_y = last_FB_y;
+    delta_x = FB_x - last_FB_x;
+    delta_y = FB_y - last_FB_y;
+    last_FB_x = FB_x;
+    last_FB_y = FB_y;
+    map_x += (delta_x * cos(-imu3d) - delta_y * sin(-imu3d));
+    map_y += (delta_x * sin(-imu3d) + delta_y * cos(-imu3d));
+    //imu3d  minerse is good  but i don't know why  :D
+    odom_trans.transform.translation.x = map_x;
+    odom_trans.transform.translation.y = map_y;
     odom_trans.transform.translation.z = 0;
-    // odom_trans.transform.rotation = imu3d;
-    odom_trans.transform.rotation.x = 0;
-    odom_trans.transform.rotation.y = 0;
-    odom_trans.transform.rotation.z = 0;
-    odom_trans.transform.rotation.w = 1;
+    odom_trans.transform.rotation.w = cos(0)*cos(0)*cos(-imu3d/2)+sin(0)*sin(0)*sin(-imu3d/2);
+    odom_trans.transform.rotation.x = sin(0)*cos(0)*cos(-imu3d/2)-cos(0)*sin(0)*sin(-imu3d/2);
+    odom_trans.transform.rotation.y = cos(0)*sin(0)*cos(-imu3d/2)+sin(0)*cos(0)*sin(-imu3d/2);
+    odom_trans.transform.rotation.z = cos(0)*cos(0)*sin(-imu3d/2)-sin(0)*sin(0)*cos(-imu3d/2);
     odom_broadcaster.sendTransform(odom_trans);
     nav_msgs::Odometry odom;
     odom.header.stamp = current_time;
     odom.header.frame_id = "odom";
- 
-    //set the position
-    odom.pose.pose.position.x = new_FB_x;
-    odom.pose.pose.position.y = new_FB_y;
-    odom.pose.pose.position.z = 0;
-    odom.pose.pose.orientation.x = 0;
-    odom.pose.pose.orientation.y = 0;
-    odom.pose.pose.orientation.z = 0;
-    odom.pose.pose.orientation.w = 1;
-    //set the velocity
     odom.child_frame_id = "base_link";
-    odom.twist.twist.linear.x = 0;
-    odom.twist.twist.linear.y = 0;
-    odom.twist.twist.angular.z = 0;
-    Odom_pub.publish(odom);
-    last_time = current_time;
+    //  //set the position
+    // odom.pose.pose.position.x = map_x;
+    // odom.pose.pose.position.y = map_y;
+    // odom.pose.pose.position.z = 0;
+    // //set the velocity
+    // odom.twist.twist.linear.x = 0;
+    // odom.twist.twist.linear.y = 0;
+    // odom.twist.twist.angular.z = imu3d;
+    // odom.twist.twist.angular.z = 0;
+    // std::cout << "o_x=" << FB_x << "\to_y=" << FB_y << std::endl;
+    std::cout << "x=" << map_x << "\ty=" << map_y << "\tyaw=" << imu3d << std::endl;
+    // Odom_pub.publish(odom);
 }
 void Client::initialpose_pub(){
     ros::Time current_time = ros::Time::now();  

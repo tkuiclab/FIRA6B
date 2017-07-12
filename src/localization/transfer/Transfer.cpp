@@ -7,20 +7,21 @@ int main(int argc, char **argv){
     
     ros::init(argc, argv, "localization_node");
     Client mNodeHandle(argc,argv,"NodeHandle");
-    Img imgNode(argc,argv,"imgNodeHandle");
+    Img imgNode(argc,argv,"imgNodeHandle");  //Building map
     mNodeHandle.ros_comms_init();
     imgNode.ros_comms_init();
+    imgNode.load_map();             //Building map
+    sleep(1);
     ros::Rate loop_rate(30);
     while(ros::ok())
     {
-        imgNode.load_map();
-        // imgNode.map_pub();
         mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
+        ros::spinOnce();
+        // imgNode.map_pub();
         mNodeHandle.whiteline_pub();
         mNodeHandle.odom_tf_pub();
         // printf("here\n");
         // mNodeHandle.initialpose_pub();
-        ros::spinOnce();
         loop_rate.sleep();
     }
 }
