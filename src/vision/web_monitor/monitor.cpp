@@ -754,25 +754,95 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   double blue_angle_min;
   double yellow_angle_max;
   double yellow_angle_min;
-  int x[4],y[4];
+  int x[6],y[6];
 
   if(color = BLUEITEM){
      blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
      blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
 
+      x_1= Blue_Item.dis_min*Angle_cos[blue_angle_max];
+      y_1= Blue_Item.dis_min*Angle_sin[blue_angle_max];
+
+      x_2= Blue_Item.dis_min*Angle_cos[blue_angle_min];
+      y_2= Blue_Item.dis_min*Angle_sin[blue_angle_min];
+
+      x[0] = Frame_Area(center_x+x_1,frame_.cols);
+      y[0] = Frame_Area(center_y-y_1,frame_.rows);
+
+      x[1] = Frame_Area(center_x+x_2,frame_.cols);
+      y[1] = Frame_Area(center_y-y_2,frame_.rows);
+
+      int temp_1=pow((center_x-x[0]),2);
+      int temp_2=pow((center_y-y[0]),2);
+      int line_1=sqrt(temp_1+temp_2);
+      
+      int temp_3=pow((center_x-x[1]),2);
+      int temp_4=pow((center_y-y[1]),2);
+      int line_2=sqrt(temp_3+temp_4);
+
+     /* int temp_5=pow((x[1]-x[0]),2);
+      int temp_6=pow((y[1]-y[0]),2);
+      int line_3=sqrt(temp_5+temp_6);*/
+     
+      //int side=line_3*(line_2/(line_1+line_2));
+      x[4]=x[1]+((line_2/(line_1+line_2))*(x[0]-x[1]));
+      y[4]=y[1]+((line_2/(line_1+line_2))*(y[0]-y[1]));
+
+      int angle=atan2(-y[4],x[4])*180/PI;
+      angle = angle-center_front;
+      if(angle>180) angle=360-angle;
+
       Two_point_msg.blue_dis = Blue_Item.dis_min;
       Two_point_msg.blue_ang1 = blue_angle_max;
-      Two_point_msg.blue_ang2 = blue_angle_min;}
+      Two_point_msg.blue_ang2 = blue_angle_min;
+      Two_point_msg.blue_ang3 = angle;
+      }
 
   if(color = YELLOWITEM){
       yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
       yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
+      
+      x_3= Yellow_Item.dis_min*Angle_cos[yellow_angle_max];
+      y_3= Yellow_Item.dis_min*Angle_sin[yellow_angle_max];
+
+      x_4= Yellow_Item.dis_min*Angle_cos[yellow_angle_min];
+      y_4= Yellow_Item.dis_min*Angle_sin[yellow_angle_min];
+
+      x[2] = Frame_Area(center_x+x_3,frame_.cols);
+      y[2] = Frame_Area(center_y-y_3,frame_.rows);
+
+      x[3] = Frame_Area(center_x+x_4,frame_.cols);
+      y[3] = Frame_Area(center_y-y_4,frame_.rows);
+
+
+
+      int temp_1=pow((center_x-x[2]),2);
+      int temp_2=pow((center_y-y[2]),2);
+      int line_1=sqrt(temp_1+temp_2);
+      
+      int temp_3=pow((center_x-x[3]),2);
+      int temp_4=pow((center_y-y[3]),2);
+      int line_2=sqrt(temp_3+temp_4);
+
+     /* int temp_5=pow((x[1]-x[0]),2);
+      int temp_6=pow((y[1]-y[0]),2);
+      int line_3=sqrt(temp_5+temp_6);*/
+     
+      //int side=line_3*(line_2/(line_1+line_2));
+      x[5]=x[3]+((line_2/(line_1+line_2))*(x[2]-x[3]));
+      y[5]=y[3]+((line_2/(line_1+line_2))*(y[2]-y[3]));
+
+      int angle=atan2(-y[5],x[5])*180/PI;
+      angle = angle-center_front;
+      if(angle>180) angle=360-angle;
 
       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
       Two_point_msg.yellow_ang1 = yellow_angle_max;
-      Two_point_msg.yellow_ang2 = yellow_angle_min;}
+      Two_point_msg.yellow_ang2 = yellow_angle_min;
+      Two_point_msg.yellow_ang3 = angle;
+      }
 
-  Two_point_pub.publish(Two_point_msg);
+      Two_point_pub.publish(Two_point_msg);
 
 
   }
