@@ -14,17 +14,20 @@ int main(int argc, char** argv)
 	geometry_msgs::Twist motion_msg;
 	std_msgs::Int32 shoot_msg;
 	shoot_msg.data=0;
-	ros::Rate loop_rate(30);
+	ros::Rate loop_rate(50);
 	int counter = 0;
 	while(ros::ok()){
+		shoot_msg.data = (shoot_msg.data%100);
 		counter = counter%720;
 		if(counter<240){
 			y_speed = 0;
 			yaw_speed = 0;
 			if(counter>120){
 				x_speed+=0.2;
+				shoot_msg.data++;
 			}else if(counter == 120){
 				x_speed = 0;
+				shoot_msg.data = 0;
 			}else{
 				x_speed-=0.2;
 			}
@@ -33,8 +36,10 @@ int main(int argc, char** argv)
 			yaw_speed = 0;
 			if(counter>360){
 				y_speed+=0.2;
+				shoot_msg.data++;
 			}else if(counter == 360){
 				y_speed = 0;
+				shoot_msg.data = 0;
 			}else{
 				y_speed-=0.2;
 			}
@@ -48,6 +53,7 @@ int main(int argc, char** argv)
 				yaw_speed = 0;
 			}else{
 				yaw_speed-=0.2;
+				shoot_msg.data++;
 			}
 		}
 		motion_msg.linear.x = x_speed;
