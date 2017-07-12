@@ -14,6 +14,7 @@ typedef struct{
 	unsigned char* w1;
 	unsigned char* w2;
 	unsigned char* w3;
+	unsigned char* w4;
 	unsigned char* enable_and_stop;
 	unsigned char* shoot;
 	unsigned char* checksum;

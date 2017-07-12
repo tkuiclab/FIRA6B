@@ -200,6 +200,9 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
     } else {
         obj = document.getElementsByName("PenaltyKickElement1");
         obj[0].value = 1.0;
+        obj[1].checked = true;
+        obj[2].checked = false;
+        obj[3].checked = false;
     }
 
     //Robot 2
@@ -305,6 +308,9 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
     } else {
         obj = document.getElementsByName("PenaltyKickElement2");
         obj[0].value = 1.0;
+        obj[1].checked = true;
+        obj[2].checked = false;
+        obj[3].checked = false;
     }
 
     // Robot 3
@@ -410,6 +416,9 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
     } else {
         obj = document.getElementsByName("PenaltyKickElement3");
         obj[0].value = 1.0;
+        obj[1].checked = true;
+        obj[2].checked = false;
+        obj[3].checked = false;
     }
 
     // BehaviorStorage

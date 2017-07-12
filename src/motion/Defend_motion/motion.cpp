@@ -28,7 +28,6 @@ int main(int argc, char **argv)
 
 	robot_command *main_robotCMD;
 	robot_command *main_robotFB;
-	int count = 0;
 	//while(ros::ok()){
 	//	if(Global_Motor_Control.mcssl_init()){
 	//		break;
@@ -36,29 +35,20 @@ int main(int argc, char **argv)
 	//		exit(EXIT_FAILURE);
 	//	}
 	//}
-	std::cout << "ATTACK MOTION IS RUNNING!\n";
-	ros::Rate loop_rate(25);
+	ros::Rate loop_rate(20);
 	while(ros::ok()){
 		main_robotCMD = main_nodeHandle.getMotion();
 		main_Base_Control.send(main_robotCMD);
-		if(*main_robotCMD->shoot_power > 0){
-			count++;
-			if(count>10){
-				main_nodeHandle.clear();
-				count = 0;
-			}
-		}else{
-			main_nodeHandle.clear();
-			count = 0;
-		}
-		main_robotFB = main_Base_Control.get_feedback();
-		main_nodeHandle.pub_robotFB(main_robotFB);
+		
+		main_nodeHandle.clear();
+//		main_robotFB = main_Base_Control.get_feedback();
+//		main_nodeHandle.pub_robotFB(main_robotFB);
 		ros::spinOnce();
 		loop_rate.sleep();
 	}
 	delete main_robotCMD;
 //	ros::shutdown();
-	std::cout << "Close Attack Motion\n";
+	std::cout << "close Attack Motion\n";
 #ifdef DEBUG
 #else
 #endif
