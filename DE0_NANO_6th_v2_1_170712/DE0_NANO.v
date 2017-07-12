@@ -452,6 +452,26 @@ MotorController MotorD (
 //assign GPIO_0_D[] = oMotor5_PWM;
 //assign oMotor5_DIR	=	2'b01;
 //assign oMotor5_PWM	=	wBrush ? 1'b1 : 1'b0;
+
+//持球----------------------------------------------------------------------------------------------------------
+
+/*wire 			oRH;
+wire			oLH;
+
+assign GPIO_0_D[4] = oRH;
+assign GPIO_0_D[6] = oLH;*/
+
+holdBall(.iC(CLOCK_50),
+			.oL(GPIO_0_D[4]),
+			.oR(GPIO_0_D[6]),
+			.iCMD1(wCMD_Motor1),
+			.iCMD2(wCMD_Motor2)
+			/*.oL1(LED[7]),
+			.oR1(LED[6])*/
+			);
+//------------------------------------------------------------------------------------------------------------
+//=======================================================
+
 ShootControl (
 			.iClk(CLOCK_50),
 			.iRst_n(iReset_n),
