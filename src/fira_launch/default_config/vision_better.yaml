@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
-  Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Front: 273, Inner: 39, Outer: 255, X: 308, Y: 266}
+  Camera: {Focal: 12.954387267412185, High: 650.0}
+  Center: {Front: 273, Inner: 47, Outer: 235, X: 274, Y: 270}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -16,9 +16,9 @@ FIRA:
     Redrange: [36, 0, 255, 118, 255, 0]
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-  IsSimulator: 1
-  RobotNumber: 2
-  SPlanning_Velocity: [2.3, 0.3, 70, 40, 20, 2, 144, 5, 999]
+  IsSimulator: 0
+  RobotNumber: 1
+  SPlanning_Velocity: [2.3, 0.3, 5, 3, 20, 2, 144, 5, 999]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,
@@ -1424,12 +1424,12 @@ FIRA:
       274, 351, 265, 356, 265, 361, 266, 366, 266, 371, 266, 376, 267, 381, 267, 386,
       267, 391, 268, 353, 263, 358, 263, 363, 263, 368, 263, 373, 263, 378, 263, 383,
       263, 388, 263, 393, 263]
-    Parameter: [4, 3, 39, 75, 143, 233, 87, 93, 207, 213, 325, 331]
+    Parameter: [4, 3, 39, 75, 143, 233, 90, 92, 211, 213, 328, 330]
   SideSpeedUp: [0.73, 1.2, 0.7, 5, 17.6]
   TypeS_Attack: [1.2, 0.2]
   TypeU_Attack: [0.8, 1, -90, 90, 0.6, 0.3, 10, 20]
   Zone_Attack: [0.85, 1.25]
-  blackItem: {angle: 3, gray: 40}
+  blackItem: {angle: 3, gray: 28}
   whiteline: {angle: 4, gray: 100}
 FIRA_Behavior:
   Attack_Strategy: [5, 1, 0.43]
@@ -1457,8 +1457,21 @@ rosdistro: 'indigo
 
   '
 roslaunch:
-  uris: {host_iclab1_desktop__35643: 'http://iclab1-desktop:35643/', host_iclab1_desktop__53957: 'http://iclab1-desktop:53957/',
-    host_iclab1_desktop__55070: 'http://iclab1-desktop:55070/', host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
+  uris: {host_127_0_0_1__33570: 'http://127.0.0.1:33570/', host_127_0_0_1__34117: 'http://127.0.0.1:34117/',
+    host_127_0_0_1__34521: 'http://127.0.0.1:34521/', host_127_0_0_1__35843: 'http://127.0.0.1:35843/',
+    host_127_0_0_1__36670: 'http://127.0.0.1:36670/', host_127_0_0_1__37056: 'http://127.0.0.1:37056/',
+    host_127_0_0_1__38158: 'http://127.0.0.1:38158/', host_127_0_0_1__38709: 'http://127.0.0.1:38709/',
+    host_127_0_0_1__38743: 'http://127.0.0.1:38743/', host_127_0_0_1__39262: 'http://127.0.0.1:39262/',
+    host_127_0_0_1__39326: 'http://127.0.0.1:39326/', host_127_0_0_1__40592: 'http://127.0.0.1:40592/',
+    host_127_0_0_1__41052: 'http://127.0.0.1:41052/', host_127_0_0_1__43389: 'http://127.0.0.1:43389/',
+    host_127_0_0_1__46704: 'http://127.0.0.1:46704/', host_127_0_0_1__47055: 'http://127.0.0.1:47055/',
+    host_127_0_0_1__49489: 'http://127.0.0.1:49489/', host_127_0_0_1__49704: 'http://127.0.0.1:49704/',
+    host_127_0_0_1__49813: 'http://127.0.0.1:49813/', host_127_0_0_1__51748: 'http://127.0.0.1:51748/',
+    host_127_0_0_1__53187: 'http://127.0.0.1:53187/', host_127_0_0_1__54007: 'http://127.0.0.1:54007/',
+    host_127_0_0_1__55094: 'http://127.0.0.1:55094/', host_127_0_0_1__58018: 'http://127.0.0.1:58018/',
+    host_127_0_0_1__60931: 'http://127.0.0.1:60931/', host_iclab1_desktop__35643: 'http://iclab1-desktop:35643/',
+    host_iclab1_desktop__53957: 'http://iclab1-desktop:53957/', host_iclab1_desktop__55070: 'http://iclab1-desktop:55070/',
+    host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
     host_iclab2_to_be_filled_by_o_e_m__38690: 'http://iclab2-To-be-filled-by-O-E-M:38690/',
     host_iclab2_to_be_filled_by_o_e_m__39936: 'http://iclab2-To-be-filled-by-O-E-M:39936/',
     host_iclab2_to_be_filled_by_o_e_m__41139: 'http://iclab2-To-be-filled-by-O-E-M:41139/',
