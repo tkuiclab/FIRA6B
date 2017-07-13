@@ -96,10 +96,18 @@ void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
   
   SaveButton = msg.bin;
-  cout<<HSV_blue[0]<<endl;
   Parameter_getting(1);
   HSVmap();
   
+}
+void InterfaceProc::View(const vision::view msg)
+{
+
+  viewcheck=msg.checkpoint;
+  if(viewcheck==64){
+	image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);
+  }
+  viewcheck=0;
 }
 
 
@@ -120,9 +128,10 @@ InterfaceProc::InterfaceProc()
  
   image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
-  image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
+  //image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
 
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
+  s1 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
 

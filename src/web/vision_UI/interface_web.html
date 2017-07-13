@@ -81,7 +81,7 @@
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="MonitorButton" name="ButtonElement" onclick="topicROSParameterButton(7);ParameterbuttonTransfer(7)"/>
+                                            <input type="radio" id="MonitorButton" name="ButtonElement" onclick="MonitorCheck(1)"/>
                                             <label id="MonitorButton" for="MonitorButton">Monitor</label>
                                         </div>
                                     </td>
@@ -624,7 +624,7 @@
                         </form>
                         <form id="ParameterMonitor">
                             <div id="MonitorViewCheck">
-                                    <input type="button" name="MonitorCheck" onclick="topicROSSaveButton()" value="View"/>  
+                                    <input type="button" name="MonitorCheck" onclick="topicROSSaveButton();topicROSParameterButton(7);ParameterbuttonTransfer(7);MonitorSwitch(7);ViewButton(64)" value="View"/>  
                             </div>
                             <div id="MonitorInformation">
                                 <table>
@@ -718,7 +718,7 @@
                         <div id="InterfaceCheckCamera" class="form-group">
                             <div>
                                 <label>
-                                    <input id="CameraSwitch" type="checkbox" onclick="CheckCamera(this.checked);"> Camera </label>
+                                    <input id="CameraSwitch" type="checkbox" onclick="MonitorSwitch(this.checked);"> Camera </label>
                                 &nbsp;
                                 <label>X = </label>
                                 <label id="CameraX"></label>

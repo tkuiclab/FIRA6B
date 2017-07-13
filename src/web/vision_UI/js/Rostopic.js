@@ -242,7 +242,18 @@ function topicROSCheckButton(value) {
     TopicParameterCheck.publish(ParameterCheck);
 }
 //===================================================================
-
+var View = new ROSLIB.Topic({
+    ros: ros,
+    name: '/vision/view',
+    messageType: '/vision/view'
+});
+function ViewButton(value){
+    console.log(value);
+    var ViewCheck = new ROSLIB.Message({
+        checkpoint: 64
+    });
+    View.publish(ViewCheck);
+}
 //Monitor
 var Monitor = new ROSLIB.Topic({
     ros: ros,
