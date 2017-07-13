@@ -49,19 +49,19 @@
                                 <tr width="100%" height="50%">
                                     <td>
                                         <div class="auto" >
-                                            <input type="radio" id="CameraButton" name="ButtonElement" checked="checked" autocomplete="on" onclick="topicROSParameterButton(1);ParameterbuttonTransfer(1)" />
+                                            <input type="radio" id="CameraButton" name="ButtonElement" checked="checked" autocomplete="on" onclick="topicROSParameterButton(1);ParameterbuttonTransfer(1);ViewButton(1)" />
                                             <label id="CameraButton" for="CameraButton">Camera</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="CenterButton" name="ButtonElement" onclick="topicROSParameterButton(2);ParameterbuttonTransfer(2)" />
+                                            <input type="radio" id="CenterButton" name="ButtonElement" onclick="topicROSParameterButton(2);ParameterbuttonTransfer(2);ViewButton(1)" />
                                             <label id="CenterButton" for="CenterButton">Center</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="ScanButton" name="ButtonElement" onclick="topicROSParameterButton(3);ParameterbuttonTransfer(3)" />
+                                            <input type="radio" id="ScanButton" name="ButtonElement" onclick="topicROSParameterButton(3);ParameterbuttonTransfer(3);ViewButton(1)" />
                                             <label id="ScanButton" for="ScanButton">Scan</label>
                                         </div>
                                     </td>
@@ -75,13 +75,13 @@
                                     </td> -->
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="ColorButton" name="ButtonElement" onclick="topicROSParameterButton(8)"  />
+                                            <input type="radio" id="ColorButton" name="ButtonElement" onclick="topicROSParameterButton(8);ViewButton(1)"  />
                                             <label id="ColorButton" for="ColorButton">Color</label>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="auto">
-                                            <input type="radio" id="MonitorButton" name="ButtonElement" onclick="topicROSParameterButton(7);ParameterbuttonTransfer(7)"/>
+                                            <input type="radio" id="MonitorButton" name="ButtonElement" onclick="MonitorCheck(1)"/>
                                             <label id="MonitorButton" for="MonitorButton">Monitor</label>
                                         </div>
                                     </td>
@@ -624,7 +624,7 @@
                         </form>
                         <form id="ParameterMonitor">
                             <div id="MonitorViewCheck">
-                                    <input type="button" name="MonitorCheck" onclick="topicROSSaveButton()" value="View"/>  
+                                    <input type="button" name="MonitorCheck" onclick="topicROSSaveButton();topicROSParameterButton(7);ParameterbuttonTransfer(7);MonitorSwitch(7);ViewButton(64)" value="View"/>  
                             </div>
                             <div id="MonitorInformation">
                                 <table>
@@ -718,7 +718,7 @@
                         <div id="InterfaceCheckCamera" class="form-group">
                             <div>
                                 <label>
-                                    <input id="CameraSwitch" type="checkbox" onclick="CheckCamera(this.checked);"> Camera </label>
+                                    <input id="CameraSwitch" type="checkbox" onclick="MonitorSwitch(this.checked);"> Camera </label>
                                 &nbsp;
                                 <label>X = </label>
                                 <label id="CameraX"></label>

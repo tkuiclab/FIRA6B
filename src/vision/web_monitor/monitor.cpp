@@ -96,10 +96,14 @@ void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
   
   SaveButton = msg.bin;
-  cout<<HSV_blue[0]<<endl;
   Parameter_getting(1);
   HSVmap();
   
+}
+void InterfaceProc::View(const vision::view msg)
+{
+
+  viewcheck=msg.checkpoint;
 }
 
 
@@ -123,6 +127,7 @@ InterfaceProc::InterfaceProc()
   image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
 
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
+  s1 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
 
@@ -263,9 +268,12 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 }*/
   //imshow(OPENCV_WINDOW, Main_frame);
 
-
- sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
-  image_pub_threshold_.publish(thresholdMsg);
+  if(viewcheck==64){
+   sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+	image_pub_threshold_.publish(thresholdMsg);
+  }
+  //sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+  //image_pub_threshold_.publish(thresholdMsg);
 
    //cv::waitKey(3);
 
@@ -400,7 +408,7 @@ void InterfaceProc::objectdet_change(Mat &frame_, int color, object_Item &obj_it
 
   find_object_point(obj_item,color);
 
-  draw_ellipse(Main_frame,Red_Item,REDITEM);
+  /*draw_ellipse(Main_frame,Red_Item,REDITEM);
   draw_ellipse(Main_frame,Yellow_Item,YELLOWITEM);
   draw_ellipse(Main_frame,Blue_Item,BLUEITEM);
 
