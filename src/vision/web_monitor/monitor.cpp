@@ -268,7 +268,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 }*/
   //imshow(OPENCV_WINDOW, Main_frame);
 
-  if(viewcheck==64){
+  if(buttonmsg==7){
    sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
 	image_pub_threshold_.publish(thresholdMsg);
   }
