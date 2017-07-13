@@ -408,7 +408,7 @@ void InterfaceProc::objectdet_change(Mat &frame_, int color, object_Item &obj_it
 
   find_object_point(obj_item,color);
 
-  /*draw_ellipse(Main_frame,Red_Item,REDITEM);
+  draw_ellipse(Main_frame,Red_Item,REDITEM);
   draw_ellipse(Main_frame,Yellow_Item,YELLOWITEM);
   draw_ellipse(Main_frame,Blue_Item,BLUEITEM);
 
