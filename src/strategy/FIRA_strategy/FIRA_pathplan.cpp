@@ -204,33 +204,41 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     double opgoal_dis = env.home[r_number].op_goal.distance;
     double opgoal_angle = env.home[r_number].op_goal.angle;
 
+    double goal_angle = env.home[r_number].goal.angle;
+
 //    printf("angle_2 = %f\n",env.home[r_number].opgoal_edge.angle_2);
 //    printf("opgoal_angle = %f\n",opgoal_angle);
-//    printf("ball_angle = %f\t",ball_angle);
-//    printf("opgoal_dis = %f\topgoal_edge_dis = %f\n",opgoal_dis,opgoal_edge_dis);
+    printf("ball_angle = %f\t",ball_angle);
+//    printf("opgoal_edge_dis = %f\n",opgoal_edge_dis);
 
     double opgoal_middle_angle = (opgoal_edge_angle1 + opgoal_edge_angle2)/2;
-//    printf("opgoal_middle_angle = %f\n",opgoal_middle_angle);
+    printf("opgoal_middle_angle = %f\n",opgoal_middle_angle);
     double x;
     double y;
-    double rotAngle = 10;
+    double rotAngle = 12;
 
-    if( ball_angle > opgoal_middle_angle-10 && ball_angle < opgoal_middle_angle+10 ){
+    if( opgoal_dis <0.5){
+        rotAngle = 20;
+    }
+    if( ball_angle < opgoal_middle_angle+10 && ball_angle > opgoal_middle_angle-10){ //stop
         x =0;
         y =0;
-        printf("stop !!\n");
-    }/*else if(ball_angle > opgoal_angle){*/
-//        x = -(1/ball_dis*2) * sin(opgoal_edge_angle2*deg2rad);
-//        y = (1/ball_dis*2) * cos(opgoal_edge_angle2*deg2rad);
-////        printf("robot go left\n");
-//        rotAngle = -rotAngle;
-//    }else{
-//        x = - (1/ball_dis*2) * sin(opgoal_edge_angle1*deg2rad);
-//        y = (1/ball_dis*2) * cos(opgoal_edge_angle1*deg2rad);
-////        printf("robot go right\n");
-//    }
+        printf("stop\n");
+    }else if(ball_angle > opgoal_middle_angle/*(opgoal_angle>0?opgoal_angle-180:opgoal_angle+180)*/){  //go left
+        x = -(1/ball_dis*2) * sin(opgoal_edge_angle2*deg2rad);
+        y = (1/ball_dis*2) * cos(opgoal_edge_angle2*deg2rad);
+        rotAngle = -rotAngle;
+        printf("left\n");
+    }else{    //go right
+        x = - (1/ball_dis*2) * sin(opgoal_edge_angle1*deg2rad);
+        y = (1/ball_dis*2) * cos(opgoal_edge_angle1*deg2rad);
+        printf("right\n");
+    }
 
 
+    /***/
+
+    /***/
 
     Vector2d vectorbr(x, y);
     Rotation2Dd rot( rotAngle * deg2rad);
