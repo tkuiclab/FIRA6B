@@ -78,7 +78,6 @@
     background-color: lightgrey;
 }
 
-
 /*==========================================================*/
 
 .Button {
@@ -1075,3 +1074,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 /*==================================================================*/
+body{
+    overflow-y: hidden;
+    overflow-x: hidden;
+}

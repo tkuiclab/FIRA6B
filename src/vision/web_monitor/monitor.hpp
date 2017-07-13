@@ -24,7 +24,7 @@
 #include <dynamic_reconfigure/Config.h>
 #include <ros/package.h>
 #include "vision/bin.h"
-
+#include "vision/view.h"
 #define FILE_PATH "/config/HSVcolormap.bin"
 using namespace cv;
 using namespace std;
@@ -55,7 +55,7 @@ private:
   ros::Publisher object_pub;
   ros::Publisher Two_point_pub;
   ros::Subscriber s1;
-
+  ros::Subscriber s2;
 
   cv::Mat *frame;
   cv::Mat *outputframe;
@@ -70,7 +70,7 @@ private:
   object_Item FIND_Item,Red_Item,Yellow_Item,Blue_Item;
   object_Item *Obstacle_Item;
   int dont_angle[6];
-
+  int frame_counter;
   vector<double> Angle_sin;
   vector<double> Angle_cos;
   vector<BYTE> color_map;
@@ -85,7 +85,7 @@ private:
   int Camera_H;
   double Camera_f;
   int center_x, center_y, center_inner, center_outer, center_front;
-
+  long int EndTime;
   std::string vision_path;
 
   int dis_gap;
@@ -129,6 +129,7 @@ public:
   int ColorModeMsg;
   int paraMeterCheck;
   int SaveButton;
+  int viewcheck;
   int image_fps;
   int   ball_x, ball_y, ball_ang, ball_dis;
   int   blue_x, blue_y,blue_ang, blue_dis;
@@ -138,7 +139,7 @@ public:
   void imageCb(const sensor_msgs::ImageConstPtr&);
   void Parameter_getting(const int x);
   void SaveButton_setting(const vision::bin msg);
-
+  void View(const vision::view msg);
   int mosue_x,mosue_y;
   int distance_space[100];
   int distance_pixel[100];
@@ -186,7 +187,7 @@ public:
   }
 ///////////////////////////////////////////////////////////
 ///////////////////////FPS/////////////////////////////////
-  int frame_counter=0;
+  //int frame_counter=0;
   int topic_counter=0;
   // long int EndTime;
   double dt;

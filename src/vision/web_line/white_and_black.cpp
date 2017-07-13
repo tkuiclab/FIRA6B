@@ -6,13 +6,12 @@
 using namespace std;
 using namespace cv;
 
-std::string visionpath = ros::package::getPath("vision");
+//std::string visionpath = ros::package::getPath("vision");
+std::string visionpath = ros::package::getPath("fira_launch");
 
-std::string defaultpath = "/config/default.yaml";
-std::string parameterpath = "/config/Parameter.yaml";
-std::string def = visionpath + defaultpath;
+std::string parameterpath = "/default_config/vision_better.yaml";
+//std::string parameterpath = "/config/Parameter.yaml";
 std::string param = visionpath + parameterpath; 
-const char *defpath = def.c_str();
 const char *parampath = param.c_str();
 
 void InterfaceProc::Parameter_getting(const int x)
@@ -28,6 +27,12 @@ void InterfaceProc::Parameter_getting(const int x)
     nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
   cout<<WhiteAngleMsg<<endl;
 }
+void InterfaceProc::SaveButton_setting(const vision::bin msg)
+{
+  
+  Parameter_getting(1);
+  
+}
 int Frame_area(int num,int range){
   if(num < 0) num = 0;
   else if(num >= range) num = range-1;
@@ -37,9 +42,10 @@ InterfaceProc::InterfaceProc()
    :it_(nh)
 {
     ros::NodeHandle n("~");
-    //Parameter_getting(1);	
+
     //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
     image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+  s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
     black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
     frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );
@@ -60,6 +66,7 @@ InterfaceProc::~InterfaceProc()
 }
 void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 {
+    Parameter_getting(1);	
     int StartTime = ros::Time::now().toNSec();
     cv_bridge::CvImagePtr cv_ptr;
     try
@@ -112,8 +119,8 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     whiteItem_pixel.clear();
     WhiteRealDis.data.clear();
     Parameter_getting(1);
- for(int angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
-          int angle_be = angle+FrontMsg;
+ for(double angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
+          double angle_be = angle+FrontMsg;
 
           if(angle_be >= 360) angle_be -= 360;
 
@@ -171,8 +178,8 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
       blackItem_pixel.clear();
       BlackRealDis.data.clear();
       Parameter_getting(1);
-      for(int angle = 0; angle < 360; angle = angle + BlackAngleMsg){
-          int angle_be = angle+FrontMsg;
+      for(double angle = 0; angle < 360; angle = angle + BlackAngleMsg){
+          double angle_be = angle+FrontMsg;
 
           if(angle_be >= 360) angle_be -= 360;
 

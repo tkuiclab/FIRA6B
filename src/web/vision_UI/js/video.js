@@ -240,11 +240,15 @@ function CheckCamera(check) {
         video.src = "img/offline.png";
 
 }
-
+function MonitorCheck(value){
+    var video = document.getElementById("player");
+    if(value==1){
+      video.src = "img/offline.png";
+    }
+}
 function MonitorSwitch(value) {
     var video = document.getElementById("player");
     var check = document.getElementById("CameraSwitch").checked;
-
     if (value == 7){
         if (check)
             video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image_monitor";

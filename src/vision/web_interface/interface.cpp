@@ -16,13 +16,12 @@ using namespace std;
 namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
-std::string visionpath = ros::package::getPath("vision");
+//std::string visionpath = ros::package::getPath("vision");
+std::string visionpath = ros::package::getPath("fira_launch");
 
-std::string defaultpath = "/config/default.yaml";
-std::string parameterpath = "/config/Parameter.yaml";
-std::string def = visionpath + defaultpath;
+std::string parameterpath = "/default_config/vision_better.yaml";
+//std::string parameterpath = "/config/Parameter.yaml";
 std::string param = visionpath + parameterpath; 
-const char *defpath = def.c_str();
 const char *parampath = param.c_str();
 
 void onMouse(int Event,int x,int y,int flags,void* param);
@@ -125,12 +124,11 @@ void InterfaceProc::positioncall(const vision::position msg)
 void InterfaceProc::Parameter_getting(const int x)
 {
   if(ifstream(parampath)){
-    cout<<visionpath<<endl;
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
     system(load);
     cout<<"Read the yaml file"<<endl;
-  }else{
+  }/*else{
     HSV_Ball[0] = 0;  HSV_Ball[1] = 37;
     HSV_Ball[2] = 28; HSV_Ball[3] = 100;
     HSV_Ball[4] = 20; HSV_Ball[5] = 100;
@@ -185,10 +183,9 @@ void InterfaceProc::Parameter_getting(const int x)
 	
 ///////////////////////////////////////////////////////////////////////////////////////////
     nh.setParam("/FIRA/Parameterbutton",1);
-    system("rosparam dump src/vision/config/Parameter.yaml");
-    system("rosparam dump src/vision/config/default.yaml");
+    system("rosparam dump"+parampath);
     cout<<"Parameter is created "<<endl;
-  }
+  }*/
   nh.getParam("/FIRA/HSV/Ball",HSV_red);
   nh.getParam("/FIRA/HSV/Blue",HSV_blue);
   nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
@@ -280,7 +277,7 @@ InterfaceProc::InterfaceProc()
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
   //white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
   //black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
-  Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
+  //Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
   s1 = nh.subscribe("interface/parameterbutton", 1000, &InterfaceProc::ParameterButtonCall, this);
   s2 = nh.subscribe("interface/color", 1000, &InterfaceProc::colorcall,this);
   s3 = nh.subscribe("interface/center", 1000, &InterfaceProc::centercall,this);
@@ -908,7 +905,7 @@ cv::Mat InterfaceProc::White_Line(const cv::Mat iframe)
   }
 
 
-  for(int angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
+  for(double angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
     for(int r = InnerMsg; r <= OuterMsg; r++){
       int x = r*cos(angle*PI/180), y = r*sin(angle*PI/180);
       if( oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+0] == 255
@@ -955,7 +952,7 @@ cv::Mat InterfaceProc::Black_Line(const cv::Mat iframe)
       }
     }
   }
-  for(int angle = 0; angle < 360; angle = angle + BlackAngleMsg){
+  for(double angle = 0; angle < 360; angle = angle + BlackAngleMsg){
     for(int r = InnerMsg; r <= OuterMsg; r++){
       int x = r*cos(angle*PI/180), y = r*sin(angle*PI/180);
       if( oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+0] == 0

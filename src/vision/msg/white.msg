@@ -1,2 +1,2 @@
 int64 Gray
-int64 Angle
+float32 Angle
