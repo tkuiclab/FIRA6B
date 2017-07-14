@@ -64,6 +64,7 @@ find_package(catkin REQUIRED COMPONENTS
    position.msg
    Two_point.msg
    bin.msg
+   view.msg
  )
 include_directories(${catkin_INCLUDE_DIRS})
 ## Generate services in the 'srv' folder

@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <unistd.h>
 #include <opencv2/opencv.hpp>
 #include <math.h>
@@ -25,6 +24,7 @@
 #include <dynamic_reconfigure/Config.h>
 #include <ros/package.h>
 #include "std_msgs/Int32MultiArray.h"
+#include "vision/bin.h"
 
 using namespace cv;
 using namespace std;
@@ -39,7 +39,7 @@ private:
   image_transport::Subscriber image_sub_;
   ros::Publisher white_pub;
   ros::Publisher black_pub;
-
+  ros::Subscriber s1;
   cv::Mat *frame;
 
 
@@ -74,6 +74,7 @@ public:
   int center_x, center_y, center_inner, center_outer, center_front;
   void imageCb(const sensor_msgs::ImageConstPtr&);
   void Parameter_getting(const int x) ;
+  void SaveButton_setting(const vision::bin msg);
   double Omni_distance(double dis_pixel);
   double camera_f(double Omni_pixel);
 /////////////////////////////////////////////////////////////

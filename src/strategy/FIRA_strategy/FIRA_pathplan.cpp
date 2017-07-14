@@ -781,21 +781,24 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
                angle_Speed = -angle_dr;
            }
        }
-       
        env.home[r_number].v_x = vectordr_x;
        env.home[r_number].v_y = vectordr_y;
+       std::cout << "flag1\t" << vectordr_x << std::endl;
     }else if(op_distance_rr < distance2turn2){
        angle_Speed = angle_dorsad;// * 2/3;
        env.home[r_number].v_x = vectordr_x * (op_distance_rr / deceleration);
        env.home[r_number].v_y = vectordr_y * (op_distance_rr / deceleration);
+       std::cout << "flag2\t" << op_distance_rr << std::endl;
     }else if(op_distance_rr < distance2turn1){
        angle_Speed = angle_vertical;/* * 2/3*/
        env.home[r_number].v_x = vectordr_x * (op_distance_rr / deceleration);
        env.home[r_number].v_y = vectordr_y * (op_distance_rr / deceleration);
+       std::cout << "flag3\t" << op_distance_rr << std::endl;
     }else{
        angle_Speed = angle_dr; //* 2/3;
        env.home[r_number].v_x = vectordr_x;
        env.home[r_number].v_y = vectordr_y;
+       std::cout << "flag4\t" << vectordr_x << std::endl;
     }
     env.home[r_number].v_yaw = angle_Speed;
 
@@ -1054,8 +1057,8 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
 //        shoot = 0;
 //    }
 ////goal angle end
-    double right_goal_angle = env.home[Robot_index].goal_edge.angle_1;
-    double left_goal_angle = env.home[Robot_index].goal_edge.angle_2;
+    double left_goal_angle = env.home[Robot_index].goal_edge.angle_1;
+    double right_goal_angle = env.home[Robot_index].goal_edge.angle_2;
     static double first_right_goal_angle = right_goal_angle;
     double degree = Penalty_Kick[0];
     static double des_angle = first_right_goal_angle + degree;
@@ -1086,7 +1089,9 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
                 yaw_speed = yaw_speed + 360;
             }
             env.home[Robot_index].v_yaw = (yaw_speed)*2;
+            printf("action=%d\n",action);
             printf("right_goal_angle=%f\n",right_goal_angle);
+            printf("left_goal_angle=%f\n",left_goal_angle);
             printf("des_angle=%f\n",des_angle);
             printf("right_goal_angle-des_angle=%f\n",right_goal_angle-des_angle);
             printf("last_degree=%f\n",last_degree);
@@ -1101,7 +1106,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             }
             break;
         case 1:
-            des_angle = left_goal_angle;
+            des_angle = left_goal_angle - 5;
             yaw_speed = des_angle;
             if(yaw_speed > 180){
                 yaw_speed = yaw_speed - 360;
@@ -1109,7 +1114,10 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             if(yaw_speed < -180){
                 yaw_speed = yaw_speed + 360;
             }
-            env.home[Robot_index].v_yaw = (yaw_speed)*2;
+            env.home[Robot_index].v_yaw = (yaw_speed);
+            printf("action=%d\n",action);
+            printf("right_goal_angle=%f\n",right_goal_angle);
+            printf("left_goal_angle=%f\n",left_goal_angle);
             if(fabs(des_angle)<=7){
                 if(shoot_count == 1){
                     shoot = 50;
@@ -1120,7 +1128,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             }
             break;
         case 2:
-            des_angle = right_goal_angle;
+            des_angle = right_goal_angle + 5;
             yaw_speed = des_angle;
             if(yaw_speed > 180){
                 yaw_speed = yaw_speed - 360;
@@ -1128,7 +1136,10 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             if(yaw_speed < -180){
                 yaw_speed = yaw_speed + 360;
             }
-            env.home[Robot_index].v_yaw = (yaw_speed)*2;
+            env.home[Robot_index].v_yaw = (yaw_speed);
+            printf("action=%d\n",action);
+            printf("right_goal_angle=%f\n",right_goal_angle);
+            printf("left_goal_angle=%f\n",left_goal_angle);
             if(fabs(des_angle)<=7){
                 if(shoot_count == 1){
                     shoot = 50;

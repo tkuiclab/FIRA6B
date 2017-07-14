@@ -1,8 +1,10 @@
 #include <ros/ros.h>
 #include "monitor.hpp"
 
+
 int main(int argc, char** argv)
 {
+
 ros::init(argc, argv, "monitor");//initial
 
   

@@ -362,10 +362,27 @@ private:
             if(ang1 == ang2){
                 return;
             }
-            ang1 = two_point_angle_fix(ang1);
-            ang2 = two_point_angle_fix(ang2);
-            ang1 = angle_fix(ang1);
-            ang2 = angle_fix(ang2);
+
+            if(ang1>180){
+                ang1=ang1-360;
+            }
+            ang1=ang1+90;
+            if(ang1>180){
+                ang1=ang1-360;
+            }else if(ang1<-180){
+                ang1=ang1+360;
+            }
+
+            if(ang2>180){
+                ang2=ang2-360;
+            }
+            ang2=ang2+90;
+            if(ang2>180){
+                ang2=ang2-360;
+            }else if(ang2<-180){
+                ang2=ang2+360;
+            }
+
             global_env->home[global_env->RobotNumber].goal_edge.angle_1 = ang1;
             global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
 
@@ -375,30 +392,30 @@ private:
             if(ang1 == ang2){
                 return;
             }
-            ang1 = two_point_angle_fix(ang1);
-            ang2 = two_point_angle_fix(ang2);
-            ang1 = angle_fix(ang1);
-            ang2 = angle_fix(ang2);
+
+            if(ang1>180){
+                ang1=ang1-360;
+            }
+            ang1=ang1+90;
+            if(ang1>180){
+                ang1=ang1-360;
+            }else if(ang1<-180){
+                ang1=ang1+360;
+            }
+
+            if(ang2>180){
+                ang2=ang2-360;
+            }
+            ang2=ang2+90;
+            if(ang2>180){
+                ang2=ang2-360;
+            }else if(ang2<-180){
+                ang2=ang2+360;
+            }
+
             global_env->home[global_env->RobotNumber].goal_edge.angle_1 = ang1;
             global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
         }
-    }
-//for goalkeeper on 5th robot with ros
-    double two_point_angle_fix(double angle){
-        if(angle <= 225){
-            angle = 45 - angle;
-        }else{
-            angle = 405 - angle;
-        }
-        return angle;
-    }
-    double angle_fix(double angle){
-        if(angle > 180){
-            angle = angle - 360;
-        }else if(angle < -180){
-            angle = angle + 360;
-        }
-        return angle;
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
         static int counter=0;

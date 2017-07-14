@@ -136,9 +136,9 @@ void FIRA_behavior_class::StateAttack(int r_number){
             counter_test = 0;
         }
     }else counter_test = 0;
-    if(distance_dr < distance_attack /*&& fabs(alpha)<=10*/ && distance_dr >= -100) {
-        state_attack=state_ZoneAttack;
-    }
+//    if(distance_dr < distance_attack /*&& fabs(alpha)<=10*/ && distance_dr >= -100) {
+//        state_attack=state_ZoneAttack;
+//    }
 }
 void FIRA_behavior_class::StateType_UChase(int r_number){
     /// ========== Init Begin ==========

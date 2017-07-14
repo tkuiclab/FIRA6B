@@ -25,7 +25,13 @@ void InterfaceProc::Parameter_getting(const int x)
     nh.getParam("/FIRA/Center/Inner",InnerMsg);
     nh.getParam("/FIRA/Center/Outer",OuterMsg);
     nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
-  cout<<WhiteAngleMsg<<endl;
+    //cout<<WhiteAngleMsg<<endl;
+}
+void InterfaceProc::SaveButton_setting(const vision::bin msg)
+{
+  
+  Parameter_getting(1);
+
 }
 int Frame_area(int num,int range){
   if(num < 0) num = 0;
@@ -36,21 +42,13 @@ InterfaceProc::InterfaceProc()
    :it_(nh)
 {
     ros::NodeHandle n("~");
-    Parameter_getting(1);	
-    image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
-    //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+    Parameter_getting(1);
+    //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
+    image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+  s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
     black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/blackRealDis",1);
     frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );
-    nh.getParam("/FIRA/HSV/white/gray",WhiteGrayMsg);
-    nh.getParam("/FIRA/HSV/white/angle",WhiteAngleMsg);
-    nh.getParam("/FIRA/HSV/black/gray",BlackGrayMsg);
-    nh.getParam("/FIRA/HSV/black/angle",BlackAngleMsg);
-    nh.getParam("/FIRA/Center/Center_X",CenterXMsg);
-    nh.getParam("/FIRA/Center/Center_Y",CenterYMsg);
-    nh.getParam("/FIRA/Center/Inner",InnerMsg);
-    nh.getParam("/FIRA/Center/Outer",OuterMsg);
-    nh.getParam("/FIRA/Center/Camera_high",Camera_HighMsg);
 } 
 InterfaceProc::~InterfaceProc()
 {
@@ -111,26 +109,28 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 
     whiteItem_pixel.clear();
     WhiteRealDis.data.clear();
-    Parameter_getting(1);
- for(double angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
-          double angle_be = angle+FrontMsg;
-
+   // Parameter_getting(1);
+ for(int angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
+          int angle_be = angle+FrontMsg;
+	  
           if(angle_be >= 360) angle_be -= 360;
-
+	  
           double x_ = cos((angle_be*PI)/180);//Angle_cos[angle_be];
           double y_ = sin((angle_be*PI)/180);//Angle_sin[angle_be];
-
+		
           for(int r = InnerMsg; r <= OuterMsg; r++){
               int dis_x = x_*r;
               int dis_y = y_*r;
-
-              int image_x = Frame_area(center_x+dis_x,whiteframe.cols);
-              int image_y = Frame_area(center_y-dis_y,whiteframe.rows);
-
-              if( whiteframe.data[(image_y*whiteframe.cols + image_x)*3+0] == 255
-                &&whiteframe.data[(image_y*whiteframe.cols + image_x)*3+1] == 255
-                &&whiteframe.data[(image_y*whiteframe.cols + image_x)*3+2] == 255){
+              int image_x = Frame_area(CenterXMsg+dis_x,whiteframe.cols);
+              int image_y = Frame_area(CenterYMsg-dis_y,whiteframe.rows);
+	      //cout<<r<<"\t"<<image_x<<"\t"<<image_y<<endl;
+	//cout<<dis_x<<endl;
+              if( whiteframe.data[((CenterYMsg-dis_y)*whiteframe.cols + (CenterXMsg+dis_x))*3+0] == 255
+                &&whiteframe.data[((CenterYMsg-dis_y)*whiteframe.cols + (CenterXMsg+dis_x))*3+1] == 255
+                &&whiteframe.data[((CenterYMsg-dis_y)*whiteframe.cols + (CenterXMsg+dis_x))*3+2] == 255){
+		  //cout<<"fuck you"<<endl;
                   whiteItem_pixel.push_back(hypot(dis_x,dis_y));
+		  //cout<<hypot(dis_x,dis_y)<<endl;
                   break;
               }else{
                   whiteframe.data[(image_y*whiteframe.cols + image_x)*3+0] = 0;
@@ -138,11 +138,13 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
                   whiteframe.data[(image_y*whiteframe.cols + image_x)*3+2] = 255;
               }
               if(r==OuterMsg){
+	       //cout<<"dsfa"<<endl;
                 whiteItem_pixel.push_back(999);
               }
           }
       }
       for(int j=0;j<whiteItem_pixel.size();j++){
+	//cout<<whiteItem_pixel[j]<<"\t"<<j<<endl;
         white_dis = Omni_distance(whiteItem_pixel[j]);
         WhiteRealDis.data.push_back(white_dis);
       }
@@ -170,7 +172,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   }
       blackItem_pixel.clear();
       BlackRealDis.data.clear();
-      Parameter_getting(1);
+      //Parameter_getting(1);
       for(double angle = 0; angle < 360; angle = angle + BlackAngleMsg){
           double angle_be = angle+FrontMsg;
 
@@ -182,8 +184,8 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
               int dis_x = x_*r;
               int dis_y = y_*r;
 
-              int image_x = Frame_area(center_x+dis_x,blackframe.cols);
-              int image_y = Frame_area(center_y-dis_y,blackframe.rows);
+              int image_x = Frame_area(CenterXMsg+dis_x,blackframe.cols);
+              int image_y = Frame_area(CenterYMsg-dis_y,blackframe.rows);
 
               if( blackframe.data[(image_y*blackframe.cols + image_x)*3+0] == 0
                 &&blackframe.data[(image_y*blackframe.cols + image_x)*3+1] == 0
@@ -213,6 +215,7 @@ double InterfaceProc::Omni_distance(double pixel_dis)
 {
   double Z = -1*Camera_HighMsg;  //Camera_HighMsg=65;
   //double c  =  D0/2;
+ //cout<<pixel_dis<<endl;
   double c = 83.125; 
   double b = c*0.8722;
   double f = camera_f(OuterMsg*2*0.9784);
@@ -220,6 +223,7 @@ double InterfaceProc::Omni_distance(double pixel_dis)
   double dis = Z*(pow(b,2)-pow(c,2))*cos(r) / ((pow(b,2)+pow(c,2))*sin(r) -2*b*c)*0.1;
   if(dis < 0 || dis > 999){dis = 999;}
   //ROS_INFO("%f %f %f %f",Z,c,r,dis);
+ //cout<<dis<<endl;
   return dis;
 }
 double InterfaceProc::camera_f(double Omni_pixel)

@@ -17,22 +17,23 @@ namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
 //std::string visionpath = ros::package::getPath("vision");
-std::string visionpath = ros::package::getPath("fira_launch");
+std::string launchpath = ros::package::getPath("fira_launch");
 
 std::string parameterpath = "/default_config/vision_better.yaml";
 //std::string parameterpath = "/config/Parameter.yaml";
-std::string param = visionpath + parameterpath; 
+std::string param = launchpath + parameterpath; 
 const char *parampath = param.c_str();
 
 
 void InterfaceProc::Parameter_getting(const int x)
 {
-  /*if(ifstream(parampath)){
+    /*	if(ifstream(parampath)){
     cout<<visionpath<<endl;
     std::string temp = "rosparam load " + param; 
     const char *load = temp.c_str(); 
+
     system(load);}*/
-    cout<<"Read the yaml file"<<endl;
+    //cout<<"Read the yaml file"<<endl;
     nh.getParam("/FIRA/HSV/Ball",HSV_red);
     nh.getParam("/FIRA/HSV/Blue",HSV_blue);
     nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
@@ -93,10 +94,23 @@ void InterfaceProc::Parameter_getting(const int x)
 }
 void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
-  
+
   SaveButton = msg.bin;
   Parameter_getting(1);
+
+  //cout<<HSV_red[0]<<endl;
   HSVmap();
+  
+}
+void InterfaceProc::View(const vision::view msg)
+{
+  cout<<"2"<<endl;
+  /*viewcheck=msg.checkpoint;
+  if(viewcheck==64){
+   sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+   image_pub_threshold_.publish(thresholdMsg);
+   }
+  viewcheck==0;*/
 }
 
 
@@ -104,14 +118,26 @@ InterfaceProc::InterfaceProc()
     :it_(nh) 
 {
   ros::NodeHandle n("~");	
-  Parameter_getting(1);	
+  Parameter_getting(1);
+  frame_counter = 0;	
   init_data();
+
+  double ang_PI;
+  for(int ang=0 ; ang<360; ang++){
+    ang_PI = ang*PI/180;
+    Angle_sin.push_back(sin(ang_PI));
+    Angle_cos.push_back(cos(ang_PI));
+  }
+ 
   image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
   image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
+
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
+  s2 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
+
 } 
 InterfaceProc::~InterfaceProc()
 {
@@ -121,7 +147,8 @@ InterfaceProc::~InterfaceProc()
 /////////////////////////////////影像讀進來//////////////////////////////////////////
 void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 {
-  Parameter_getting(1);	
+  //ros::Rate loop_rate(1000);
+  //Parameter_getting(1);	
   cv_bridge::CvImagePtr cv_ptr;
   try {
     cv_ptr = cv_bridge::toCvCopy(msg, enc::BGR8);
@@ -135,14 +162,15 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 //////////////////////////////////////////////////////////////
   vision_path = ros::package::getPath("vision");
   color_map = ColorFile();
+/*
   double ang_PI;
   for(int ang=0 ; ang<360; ang++){
     ang_PI = ang*PI/180;
     Angle_sin.push_back(sin(ang_PI));
     Angle_cos.push_back(cos(ang_PI));
   }
-
-  cv::waitKey(3);
+*/
+  //cv::waitKey(3);
   Obstaclemap = Mat(Size(Main_frame.cols,Main_frame.rows),CV_8UC3,Scalar(0,0,0));
 
   object_Item_reset(Red_Item);
@@ -200,12 +228,13 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   }
 /////////////////////FPS///////////////////////
   frame_counter++;
-  static long int StartTime = time(NULL);//ros::Time::now().toNSec();
-  static long int EndTime;
+  //static long int StartTime = time(NULL);//ros::Time::now().toNSec();
+  static long int StartTime = ros::Time::now().toNSec();
+  //static long int EndTime;
   static long double FrameRate = 0.0;
 
 //time(NULL);
-  if(frame_counter == 17){
+  /*if(frame_counter == 17){
     EndTime = time(NULL);//ros::Time::now().toNSec();
     dt = (EndTime - StartTime)*10000/frame_counter;
     StartTime = EndTime;
@@ -218,6 +247,17 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     }
     frame_counter = 0;
     //dt = 0;
+  }*/
+  if(frame_counter == 10){
+      EndTime = ros::Time::now().toNSec();
+      dt = (EndTime - StartTime)/frame_counter;
+      StartTime = EndTime;
+      if( dt!=0 )
+      {
+              FrameRate = ( 1000000000.0 / dt ) * ALPHA + FrameRate * ( 1.0 - ALPHA );
+              //cout << "FPS: " << FrameRate << endl;
+      }
+      frame_counter = 0;
   }
   object_msg.fps = FrameRate;
 ///////////////////////////////////////////////
@@ -226,20 +266,20 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   Obstaclemap.release();
   Erodemap.release();
   Dilatemap.release();
-   //object_pub.publish(object_msg);
+  object_pub.publish(object_msg);
+/*
   topic_counter++;
   if(topic_counter==10){
   object_pub.publish(object_msg);
   topic_counter=0;
-}
+}*/
   //imshow(OPENCV_WINDOW, Main_frame);
-
-
  sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+ if(buttonmsg==7){
+
   image_pub_threshold_.publish(thresholdMsg);
-
-   cv::waitKey(3);
-
+}
+   //cv::waitKey(3);
 
 
 
@@ -757,22 +797,28 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   int x[4],y[4];
 
   if(color = BLUEITEM){
-     blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
-     blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
+      blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
+      blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
 
-      Two_point_msg.blue_dis = Blue_Item.dis_min;
-      Two_point_msg.blue_ang1 = blue_angle_max;
-      Two_point_msg.blue_ang2 = blue_angle_min;}
+       Two_point_msg.blue_dis = Blue_Item.dis_min;
+       Two_point_msg.blue_ang1 = blue_angle_max;
+       Two_point_msg.blue_ang2 = blue_angle_min;
+       }
 
-  if(color = YELLOWITEM){
-      yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
-      yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
+   if(color = YELLOWITEM){
+       yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
+       yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
 
-      Two_point_msg.yellow_dis = Yellow_Item.dis_min;
-      Two_point_msg.yellow_ang1 = yellow_angle_max;
-      Two_point_msg.yellow_ang2 = yellow_angle_min;}
+      
 
-  Two_point_pub.publish(Two_point_msg);
+
+       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
+       Two_point_msg.yellow_ang1 = yellow_angle_max;
+       Two_point_msg.yellow_ang2 = yellow_angle_min;
+       }
+
+       Two_point_pub.publish(Two_point_msg);
+
 
 
   }
@@ -875,10 +921,10 @@ void InterfaceProc::Draw_cross(cv::Mat &frame_,char color){
 void InterfaceProc::HSVmap()
 {
      unsigned char *HSVmap = new unsigned char[256*256*256];
-     nh.getParam("/FIRA/HSV/Ball",HSV_red);
+     /*nh.getParam("/FIRA/HSV/Ball",HSV_red);
       nh.getParam("/FIRA/HSV/Blue",HSV_blue);
       nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
-      nh.getParam("/FIRA/HSV/Green",HSV_green);
+      nh.getParam("/FIRA/HSV/Green",HSV_green);*/
     for(int b=0;b<256;b++){
         for(int g=0;g<256;g++){
             for(int r=0;r<256;r++){
@@ -943,6 +989,7 @@ void InterfaceProc::HSVmap()
                       &&(V_sum >= HSV_yellow[4]) && (V_sum <= HSV_yellow[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | YELLOWITEM;
                 }
+ 
                 if(HSV_white[0] < HSV_white[1]){
                     if( (H_sum >= HSV_white[0]) && (H_sum <= HSV_white[1])
                       &&(S_sum >= HSV_white[2]) && (S_sum <= HSV_white[3])
@@ -957,10 +1004,10 @@ void InterfaceProc::HSVmap()
             }
         }
     }
-
     string Filename = vision_path+FILE_PATH;
+
     const char *Filename_Path = Filename.c_str();
-    
+  cout<<HSV_blue[0]<<endl;    
     if(SaveButton!=0){
     FILE *file=fopen(Filename_Path,"rb+"); //開啟檔案來寫
     fwrite( HSVmap, 1, 256*256*256 , file );
