@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 
     //=========Node Init=============//
 
-    Strategy_nodeHandle mNodeHandle(argc,argv);
+    Strategy_nodeHandle mNodeHandle(argc,argv);    
     mNodeHandle.setEnv(global_env);
     mNodeHandle.setOpponent(isOpponent);
     mNodeHandle.on_init();
@@ -117,6 +117,8 @@ int main(int argc, char **argv)
 
     //loadParam
     mpathplan.loadParam(mNodeHandle.getNodeHandle());
+    mbehavior.loadParam(mNodeHandle.getNodeHandle());
+    mNodeHandle.loadParam(mNodeHandle.getNodeHandle());    
     int Team_color;
     std::cout << "=======Strategy====170119===" << std::endl;
 
@@ -130,8 +132,12 @@ int main(int argc, char **argv)
     //return 0;
     while(ros::ok())
     {
-        mpathplan.loadParam(mNodeHandle.getNodeHandle());
-        mbehavior.loadParam(mNodeHandle.getNodeHandle());
+        if(global_env->SaveParam){
+            mpathplan.loadParam(mNodeHandle.getNodeHandle());
+            mbehavior.loadParam(mNodeHandle.getNodeHandle());
+            mNodeHandle.loadParam(mNodeHandle.getNodeHandle());           
+            global_env->SaveParam = 0;
+        }
         global_env->teamcolor = mNodeHandle.getTeamColor();
         if(global_env->teamcolor == "Blue")Team_color = Team_Blue;
         else if(global_env->teamcolor == "Yellow")Team_color = Team_Yellow;
@@ -148,7 +154,6 @@ int main(int argc, char **argv)
         mbehavior.setEnv(*global_env);
         mbehavior.setTeam(Team_color);
         if((global_env->issimulator)==true){
-            mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
             for(int i=0; i<PLAYERS_PER_SIDE;i++){
                 mbehavior.readroleAry(i,roleAry[i]);
             }
@@ -159,7 +164,6 @@ int main(int argc, char **argv)
                 mpathplan.personalStrategy(i,actionAry[i]);
             }
         }else if((global_env->issimulator)==false){
-            mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
             mbehavior.readroleAry(global_env->RobotNumber,roleAry[global_env->RobotNumber]);//robotIndex is not equal role
             actionAry = mbehavior.getactionAry();
             mpathplan.setEnv(*global_env);
@@ -186,14 +190,14 @@ int main(int argc, char **argv)
 
         
 
-        if(actionAry[global_env->RobotNumber] == 0){
 
+        if(actionAry[global_env->RobotNumber] == 0){
         }else{
             mNodeHandle.pubGrpSpeed();
         }
 
         ros::spinOnce();
-        // loop_rate.sleep();
+        loop_rate.sleep();
 
     }
 
