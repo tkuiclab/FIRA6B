@@ -269,7 +269,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
 
     // 暫時無條件進入
-    state_GoalKeeper = state_GoalKeeper_blocking;
+    state_GoalKeeper = state_GoalKeeper_catching;
 
 //        double ball_distance = env.home[r_number].ball.distance;
 //        double opgoal_distance = env.home[r_number].op_goal.distance;
@@ -286,7 +286,6 @@ void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
 void FIRA_behavior_class::StateGoalKeeperWaiting(int r_number){
 
 //        double ball_distance = env.home[r_number].ball.distance;
-
 //        if( ball_distance < 3 ){
 //            state_GoalKeeper = state_GoalKeeper_blocking;
 //        }
@@ -299,35 +298,22 @@ void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
         double ball_distance = env.home[r_number].ball.distance;
         double opgoal_dis = env.home[r_number].op_goal.distance;
 
-        if( ball_distance + opgoal_dis < 1.2 && ball_distance < 0.7){
+//        printf("%f\n",(ball_distance+opgoal_dis));
+
+
+        if( ball_distance + opgoal_dis < 1.5){
             //printf("state_catching");
-//          state_GoalKeeper = state_GoalKeeper_catching;
+          state_GoalKeeper = state_GoalKeeper_catching;
         }
 }
 
 void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
 
-        double opgoal_distance = env.home[r_number].op_goal.distance;
-        double ball_distance = env.home[r_number].ball.distance;
-
-        double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
-        double opgoal_edge_angle1 = env.home[r_number].opgoal_edge.angle_1;
-        double opgoal_edge_angle2 = env.home[r_number].opgoal_edge.angle_2;
-
-        static ros::Time start = ros::Time::now();
-        ros::Time current = ros::Time::now();
-        double start_time = (double)(start.sec+(double)start.nsec/1000000000);
-        double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-        double const reset_time = 0.5;
-
-        if(opgoal_edge_dis < 0.5 || opgoal_distance > 1.2 ){ //out of zoom reset
-            state_GoalKeeper = state_GoalKeeper_blocking;
-        }/*else if(current_time-start_time > reset_time){   //0.5sec reset
-            start.sec = current.sec;
-            start.nsec = current.nsec;
-            state_GoalKeeper = state_GoalKeeper_blocking;
-        }*/
-
+    double ball_dis = env.home[r_number].ball.distance;
+    double opgoal_dis = env.home[r_number].op_goal.distance;
+//    if(ball_dis + opgoal_dis > 1.75){ //out of zoom reset
+//        state_GoalKeeper = state_GoalKeeper_blocking;
+//    }
 }
 
 
@@ -400,13 +386,13 @@ void FIRA_behavior_class::behavior_Goalkeeper(int robotIndex){
 
         case state_GoalKeeper_blocking:
             StateGoalKeeperBlocking(robotIndex);
-            //ROS_INFO("GoalKeeper blocking\n");
+            ROS_INFO("GoalKeeper blocking\n");
             actionAry[robotIndex] = action_Goalkeeper_blocking;
         break;
 
         case state_GoalKeeper_catching:
             StateGoalKeeperCatching(robotIndex);
-            //ROS_INFO("GoalKeeper catching\n");
+            ROS_INFO("GoalKeeper catching\n");
             actionAry[robotIndex] = action_Goalkeeper_catching;
         break;
     }

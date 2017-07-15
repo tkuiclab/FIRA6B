@@ -415,10 +415,11 @@ private:
         }
 
         double two_point_angle_fix(double angle){
+            double front = 50;
             if(angle <= 225){
-                angle = angle - 45;
+                angle = angle - 50;
             }else{
-                angle = angle -405;
+                angle = angle -(360+50);
             }
             return angle;
         }

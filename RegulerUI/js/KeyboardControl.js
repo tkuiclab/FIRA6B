@@ -143,6 +143,7 @@ function releasebutton() {
         z: 0
     });
     PublishTopicCmdVel(vec3);
+    PublishTopicCmdVel(vec3);
 }
 
 function keyuped(e) {
