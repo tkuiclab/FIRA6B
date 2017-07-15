@@ -5,7 +5,9 @@
 Strategy_nodeHandle::
 Strategy_nodeHandle(int argc, char** argv):
     BaseNode(argc,argv,Node_Name)
-{
+{   
+    global_env = new Environment;
+    global_env->SaveParam = 0;
     roleAry[0] = Role_Goalkeeper;
 }
 
@@ -61,6 +63,8 @@ void Strategy_nodeHandle::ros_comms_init(){
     BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
     Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1000,&Strategy_nodeHandle::subVision_Two_point,this);
 
+
+    SAVEPARAM = n->subscribe<std_msgs::Int32>(SAVEPARAM_TOPIC,1000,&Strategy_nodeHandle::getSaveParam,this);
     IsSimulator = false;
 }
 

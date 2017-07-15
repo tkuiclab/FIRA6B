@@ -15,16 +15,17 @@ var Remote3 = new ROSLIB.Topic({
     name: '/motion/remote',
     messageType: 'std_msgs/Bool'
 });
-function RemoteSwitch(state){
+
+function RemoteSwitch(state) {
     var check;
-	if(state){
+    if (state) {
         console.log(123);
-		RemoteState = true;
+        RemoteState = true;
         check = new ROSLIB.Message({
             data: RemoteState
         });
-    }else{
-		RemoteState = false;
+    } else {
+        RemoteState = false;
         check = new ROSLIB.Message({
             data: RemoteState
         });
@@ -34,7 +35,7 @@ function RemoteSwitch(state){
     if (CheckIP[1] == 1)
         Remote2.publish(check);
     if (CheckIP[2] == 1)
-        Remote3.publish(check);	
+        Remote3.publish(check);
 }
 /*========================================================*/
 //GameState
@@ -156,7 +157,7 @@ function PublishTopicCmdVel(vec3) {
             z: vec3.z
         }
     });
-    if(RemoteState){
+    if (RemoteState) {
         if (ChooseRobot == 1) {
             cmdVel1.publish(twist);
         } else if (ChooseRobot == 2) {
@@ -191,7 +192,7 @@ function PublishTopicShoot(size) {
     var Shoot = new ROSLIB.Message({
         data: size
     });
-    if(RemoteState){
+    if (RemoteState) {
         if (ChooseRobot == 1) {
             TopicShoot1.publish(Shoot);
         } else if (ChooseRobot == 2) {
@@ -378,3 +379,33 @@ TSInfoListen3.subscribe(function(msg) {
         TSInfoPub32.publish(info);
     }
 });
+/*========================================================*/
+//SaveParam 
+var SaveParam1 = new ROSLIB.Topic({
+    ros: ros,
+    name: '/FIRA/SaveParam',
+    messageType: 'std_msgs/Int32'
+});
+var SaveParam2 = new ROSLIB.Topic({
+    ros: ros2,
+    name: '/FIRA/SaveParam',
+    messageType: 'std_msgs/Int32'
+});
+var SaveParam3 = new ROSLIB.Topic({
+    ros: ros3,
+    name: '/FIRA/SaveParam',
+    messageType: 'std_msgs/Int32'
+});
+
+function PublishTopicSaveParam() {
+    var SaveParam = new ROSLIB.Message({
+        data: 1
+    });
+
+    if (CheckIP[0] == 1)
+        SaveParam1.publish(SaveParam);
+    if (CheckIP[1] == 1)
+        SaveParam2.publish(SaveParam);
+    if (CheckIP[2] == 1)
+        SaveParam3.publish(SaveParam);
+}

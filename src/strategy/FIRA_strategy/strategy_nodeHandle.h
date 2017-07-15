@@ -48,7 +48,11 @@
 #define GameState_Topic "/FIRA/GameState"
 #define TeamColor_Topic "/FIRA/TeamColor"
 #define Vision_Topic "/vision/object"
+<<<<<<< HEAD
 #define Vision_Two_point_Topic "/interface/Two_point"
+=======
+#define SAVEPARAM_TOPIC "/FIRA/SaveParam"
+>>>>>>> ad469afbbf8fbd9adccf32bd2610c101e5df0712
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
 //one_Robot speed
@@ -169,6 +173,7 @@ private:
     //no robot_1_role_sub, because robot_1 is always goal keeper
     ros::Subscriber robot_2_role_sub;
     ros::Subscriber robot_3_role_sub;
+    ros::Subscriber SAVEPARAM;
 
     //robot speed publisher
     ros::Publisher robot_1_speed_pub;
@@ -602,6 +607,9 @@ private:
 
 
     }
+     void getSaveParam(const std_msgs::Int32::ConstPtr &msg){
+         global_env->SaveParam = msg->data;
+     }
 };
 
 #endif /* NODE_HPP_ */
