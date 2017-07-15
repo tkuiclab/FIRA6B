@@ -30,10 +30,10 @@ void FIRA_behavior_class::StateInitAttack(int r_number){
         double angle_dr = env.home[r_number].goal.angle;
         double alpha = angle_dr-angle_br;
         /// ========== Init End ==========
-        if(distance_br>Chase_Strategy[4])
-            state_attack = state_Chase;
-        else
+        if(distance_br<=Chase_Strategy[4] && angle_br<=Chase_Strategy[3])
             state_attack = state_Attack;
+        else
+            state_attack = state_Chase;
 }
 void FIRA_behavior_class::StateChase(int r_number){
     /// ========== Init Begin ==========

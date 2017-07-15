@@ -357,11 +357,8 @@ private:
     }
     void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
         if(global_env->teamcolor == "Blue"){
-            double ang1 = msg->yellow_ang1;
-            double ang2 = msg->yellow_ang2;
-            if(ang1 == ang2){
-                return;
-            }
+            int ang1 = msg->yellow_ang1;
+            int ang2 = msg->yellow_ang2;
 
             if(ang1>180){
                 ang1=ang1-360;
@@ -389,9 +386,6 @@ private:
         }else if(global_env->teamcolor == "Yellow" && msg->yellow_ang1 != msg->yellow_ang2){
             double ang1 = msg->blue_ang1;
             double ang2 = msg->blue_ang2;
-            if(ang1 == ang2){
-                return;
-            }
 
             if(ang1>180){
                 ang1=ang1-360;

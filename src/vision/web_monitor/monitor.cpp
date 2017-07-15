@@ -795,29 +795,31 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   double yellow_angle_max;
   double yellow_angle_min;
   int x[4],y[4];
-
   if(color = BLUEITEM){
-      blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
-      blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
+      
+      	blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
+      	blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
 
-       Two_point_msg.blue_dis = Blue_Item.dis_min;
-       Two_point_msg.blue_ang1 = blue_angle_max;
-       Two_point_msg.blue_ang2 = blue_angle_min;
-       }
+      	Two_point_msg.blue_dis = Blue_Item.dis_min;
+      	Two_point_msg.blue_ang1 = blue_angle_max;
+      	Two_point_msg.blue_ang2 = blue_angle_min;
+      
+  }
 
    if(color = YELLOWITEM){
-       yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
-       yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
+	
+       	   yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
+           yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
 
+           Two_point_msg.yellow_dis = Yellow_Item.dis_min;
+           Two_point_msg.yellow_ang1 = yellow_angle_max;
+           Two_point_msg.yellow_ang2 = yellow_angle_min;
       
-
-
-       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
-       Two_point_msg.yellow_ang1 = yellow_angle_max;
-       Two_point_msg.yellow_ang2 = yellow_angle_min;
-       }
-
-       Two_point_pub.publish(Two_point_msg);
+	
+   }
+	if(Blue_Item.dis_min && Yellow_Item.dis_min){
+       	   Two_point_pub.publish(Two_point_msg);
+	}
 
 
 

@@ -1056,6 +1056,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
 //    }else{
 //        shoot = 0;
 //    }
+
 ////goal angle end
     double left_goal_angle = env.home[Robot_index].goal_edge.angle_1;
     double right_goal_angle = env.home[Robot_index].goal_edge.angle_2;
@@ -1063,8 +1064,8 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
     double degree = Penalty_Kick[0];
     static double des_angle = first_right_goal_angle + degree;
     static double last_degree = degree;
-    double yaw_speed;
-    static int shoot_count = 0;
+    double yaw_speed=144;
+    static int shoot_count = 1;
     int action = Penalty_Kick[1];
     switch(action){
         case 0:
@@ -1107,19 +1108,31 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             break;
         case 1:
             des_angle = left_goal_angle - 5;
-            yaw_speed = des_angle;
-            if(yaw_speed > 180){
-                yaw_speed = yaw_speed - 360;
-            }
-            if(yaw_speed < -180){
-                yaw_speed = yaw_speed + 360;
-            }
-            env.home[Robot_index].v_yaw = (yaw_speed);
+//            yaw_speed = des_angle;
+//            if(yaw_speed > 180){
+//                yaw_speed = yaw_speed - 360;
+//            }
+//            if(yaw_speed < -180){
+//                yaw_speed = yaw_speed + 360;
+//            }
+            env.home[Robot_index].v_yaw = yaw_speed;
+//            if(fabs(yaw_speed) > 20){
+//                env.home[Robot_index].v_yaw = (yaw_speed);
+//            }else{
+//                env.home[Robot_index].v_yaw = (yaw_speed)/4;
+//            }
             printf("action=%d\n",action);
+            printf("yaw=%lf\n",yaw_speed);
             printf("right_goal_angle=%f\n",right_goal_angle);
             printf("left_goal_angle=%f\n",left_goal_angle);
-            if(fabs(des_angle)<=7){
-                if(shoot_count == 1){
+            printf("des_angle=%f\n",des_angle);
+            printf("rbdistance=%f\n",env.home[Robot_index].ball.distance);
+            printf("rbangle=%f\n",env.home[Robot_index].ball.angle);
+
+//            printf("right_goal_angle=%f \t time= %d\n",right_goal_angle,(int)fuck.nsec);
+            if(des_angle <= 0){
+                env.home[Robot_index].v_yaw = 0;
+                if(env.home[Robot_index].ball.distance < 0.4 /*&& fabs(env.home[Robot_index].ball.angle)<5*/ ){
                     shoot = 50;
                     shoot_count = 0;
                 }
@@ -1129,19 +1142,20 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             break;
         case 2:
             des_angle = right_goal_angle + 5;
-            yaw_speed = des_angle;
-            if(yaw_speed > 180){
-                yaw_speed = yaw_speed - 360;
-            }
-            if(yaw_speed < -180){
-                yaw_speed = yaw_speed + 360;
-            }
-            env.home[Robot_index].v_yaw = (yaw_speed);
+//            if(yaw_speed > 180){
+//                yaw_speed = yaw_speed - 360;
+//            }
+//            if(yaw_speed < -180){
+//                yaw_speed = yaw_speed + 360;
+//            }
+            env.home[Robot_index].v_yaw = -yaw_speed;
             printf("action=%d\n",action);
             printf("right_goal_angle=%f\n",right_goal_angle);
             printf("left_goal_angle=%f\n",left_goal_angle);
-            if(fabs(des_angle)<=7){
-                if(shoot_count == 1){
+            printf("des_angle=%f\n",des_angle);
+            if(des_angle >= 0){
+                env.home[Robot_index].v_yaw = 0;
+                if(env.home[Robot_index].ball.distance < 0.4 /*&& fabs(env.home[Robot_index].ball.angle)<5*/ ){
                     shoot = 50;
                     shoot_count = 0;
                 }
@@ -1150,7 +1164,6 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             }
             break;
     }
-
 }
 
 void FIRA_pathplan_class::strategy_ThrowIn(int Robot_index){
