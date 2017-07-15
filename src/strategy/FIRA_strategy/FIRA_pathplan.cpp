@@ -244,10 +244,16 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     Rotation2Dd rot( rotAngle * deg2rad);
     Vector2d vectornt = rot * vectorbr;
 
+    double yaw = ball_angle*2;
+    if(opgoal_edge_angle2 < 50 && yaw > 0){
+        yaw = -15;
+    }else if(opgoal_edge_angle1 > -50 && yaw < 0){
+        yaw = 15;
+    }
 
     env.home[r_number].v_x =vectornt(0);
     env.home[r_number].v_y =vectornt(1);
-    env.home[r_number].v_yaw = ball_angle*2;
+    env.home[r_number].v_yaw = yaw;
 }
 
 

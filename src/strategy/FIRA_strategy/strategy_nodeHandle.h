@@ -368,9 +368,6 @@ private:
             if(global_env->teamcolor == "Blue"){
                 double ang1 = msg->blue_ang1;
                 double ang2 = msg->blue_ang2;
-                if(ang1 == ang2){
-                    return;
-                }
                 ang1 = two_point_angle_fix(ang1);
                 ang2 = two_point_angle_fix(ang2);
 //                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
@@ -391,9 +388,6 @@ private:
             }else if(global_env->teamcolor == "Yellow"){
                 double ang1 = msg->yellow_ang1;
                 double ang2 = msg->yellow_ang2;
-                if(ang1 == ang2){
-                    return;
-                }
                 ang1 = two_point_angle_fix(ang1);
                 ang2 = two_point_angle_fix(ang2);
 //                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
@@ -417,9 +411,9 @@ private:
         double two_point_angle_fix(double angle){
             double front = 50;
             if(angle <= 225){
-                angle = angle - 50;
+                angle = angle - front;
             }else{
-                angle = angle -(360+50);
+                angle = angle -(360+front);
             }
             return angle;
         }
