@@ -269,7 +269,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
 
     // 暫時無條件進入
-    state_GoalKeeper = state_GoalKeeper_catching;
+    state_GoalKeeper = state_GoalKeeper_blocking;
 
 //        double ball_distance = env.home[r_number].ball.distance;
 //        double opgoal_distance = env.home[r_number].op_goal.distance;
@@ -301,8 +301,7 @@ void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
 //        printf("%f\n",(ball_distance+opgoal_dis));
 
 
-        if( ball_distance + opgoal_dis < 1.5){
-            //printf("state_catching");
+        if( ball_distance + opgoal_dis < 1.5 || ball_distance < 0.7){
           state_GoalKeeper = state_GoalKeeper_catching;
         }
 }
@@ -311,9 +310,9 @@ void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
 
     double ball_dis = env.home[r_number].ball.distance;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-//    if(ball_dis + opgoal_dis > 1.75){ //out of zoom reset
-//        state_GoalKeeper = state_GoalKeeper_blocking;
-//    }
+    if(ball_dis + opgoal_dis > 1.7){ //out of zoom reset
+        state_GoalKeeper = state_GoalKeeper_blocking;
+    }
 }
 
 

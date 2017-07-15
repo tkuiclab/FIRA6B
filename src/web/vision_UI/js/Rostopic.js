@@ -250,7 +250,7 @@ var View = new ROSLIB.Topic({
 function ViewButton(value){
     console.log(value);
     var ViewCheck = new ROSLIB.Message({
-        checkpoint: parseInt(value)
+        checkpoint: value
     });
     View.publish(ViewCheck);
 }

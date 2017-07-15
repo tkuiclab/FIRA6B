@@ -755,6 +755,73 @@ cv::Mat InterfaceProc::ColorModel(const cv::Mat iframe)
     }
   }
 */
+for (int i = 0; i < iframe.rows; i++) {
+    for (int j = 0; j < iframe.cols; j++) {
+	if(oframe.data[((i+20)*oframe.cols*3)+(j*3)+0] == 197&&oframe.data[((i-20)*oframe.cols*3)+(j*3)+0] == 197){
+	    oframe.data[(i*oframe.cols*3)+(j*3)+0] = 197;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 149;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 0 ;
+		}
+		if(oframe.data[(i*oframe.cols*3)+((j+20)*3)+0] == 197&&oframe.data[(i*oframe.cols*3)+((j-20)*3)+0]== 197){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 197;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 149;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 0 ;
+		}
+		if(oframe.data[((i+20)*oframe.cols*3)+(j*3)+0] == 127&&oframe.data[((i-20)*oframe.cols*3)+(j*3)+0] == 127){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 127;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 183;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 224;
+		}
+		if(oframe.data[(i*oframe.cols*3)+((j+20)*3)+0] == 127&&oframe.data[(i*oframe.cols*3)+((j-20)*3)+0] == 127){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 127;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 183;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 224;
+		}
+		if(oframe.data[((i+20)*oframe.cols*3)+(j*3)+0] == 207&&oframe.data[((i-20)*oframe.cols*3)+(j*3)+0] == 207){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 207;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 90;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 111;
+		}
+		if(oframe.data[(i*oframe.cols*3)+((j+20)*3)+0] == 207&&oframe.data[(i*oframe.cols*3)+((j-20)*3)+0] == 207){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 207;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 90;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 111;
+		}	
+	}
+  }for (int i = 0; i < iframe.rows; i++) {
+    for (int j = 0; j < iframe.cols; j++) {
+		if(oframe.data[((i+20)*oframe.cols*3)+(j*3)+0] == 197&&oframe.data[((i-20)*oframe.cols*3)+(j*3)+0]== 197){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 197;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 149;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 0 ;
+		}
+		if(oframe.data[(i*oframe.cols*3)+((j+20)*3)+0] == 197&&oframe.data[(i-20*oframe.cols*3)+((j-10)*3)+0] == 197){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 197;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 149;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 0 ;
+		}
+		if(oframe.data[((i+20)*oframe.cols*3)+(j*3)+0] == 127&&oframe.data[(i-20*oframe.cols*3)+(j*3)+0] == 127){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 127;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 183;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 224;
+		}
+		if(oframe.data[(i*oframe.cols*3)+((j+20)*3)+0] == 127&&oframe.data[(i-20*oframe.cols*3)+((j-20)*3)+0] == 127){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 127;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 183;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 224;
+		}
+		if(oframe.data[((i+20)*oframe.cols*3)+(j*3)+0] == 207&&oframe.data[(i-10*oframe.cols*3)+(j*3)+0] == 207){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 207;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 90;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 111;
+		}
+		if(oframe.data[(i*oframe.cols*3)+((j+20)*3)+0] == 207&&oframe.data[(i-10*oframe.cols*3)+((j-20)*3)+0] == 207){
+			oframe.data[(i*oframe.cols*3)+(j*3)+0] = 207;
+            oframe.data[(i*oframe.cols*3)+(j*3)+1] = 90;
+            oframe.data[(i*oframe.cols*3)+(j*3)+2] = 111;
+		}	
+	}
+  }
   return oframe;
 }
 
