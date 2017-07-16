@@ -285,7 +285,7 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
     }
     if(n->getParam("/FIRA/IsSimulator",IsSimulator)){
         // global_env->issimulator = IsSimulator;
-        // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
+//         std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
 }
 
