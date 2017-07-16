@@ -77,7 +77,6 @@ public:
 
     void setEnv(Environment *inEnv){
         global_env = inEnv;
-
     }
     // shoot signal
     ros::Publisher shoot;
@@ -120,10 +119,9 @@ public:
     ros::NodeHandle* getNodeHandle(){return n;}
     long getGameState(){return gamestate;}
     std::string getTeamColor(){return teamcolor;}
-    int getIsSimulator(){return IsSimulator;}
+    int getIsSimulator(){return global_env->param.IsSimulator;}
 
     //BlackObject
-    int Blackangle;
     int *blackobject;
     int* getBlackObject(){return blackobject;}
 protected:
@@ -145,6 +143,7 @@ private:
 
     //ball subscriber
     ros::Subscriber ball_sub;
+    int Blackangle;
 
     //robot subscriber
     ros::Subscriber robot_1_pos_sub  ;
@@ -178,9 +177,6 @@ private:
     ros::Publisher robot_speed_pub;
 
     /// load param begin
-    std::vector<double> SPlanning_Velocity;
-    std::vector<double> Distance_Settings;
-    int IsSimulator;
     /// load param end
 
     bool run_one = false;
@@ -334,21 +330,21 @@ private:
         yellow_distance = msg->yellow_dis;
         blue_distance = msg->blue_dis;
         if(global_env->teamcolor == "Blue"){
-            global_env->home[global_env->RobotNumber].op_goal.distance= blue_distance/100;
-            global_env->home[global_env->RobotNumber].op_goal.angle = msg->blue_ang;
-            global_env->home[global_env->RobotNumber].goal.distance = yellow_distance/100;
-            global_env->home[global_env->RobotNumber].goal.angle = msg->yellow_ang;
+            global_env->home[global_env->param.RobotNumber].op_goal.distance= blue_distance/100;
+            global_env->home[global_env->param.RobotNumber].op_goal.angle = msg->blue_ang;
+            global_env->home[global_env->param.RobotNumber].goal.distance = yellow_distance/100;
+            global_env->home[global_env->param.RobotNumber].goal.angle = msg->yellow_ang;
 
         }else if(global_env->teamcolor == "Yellow"){
-            global_env->home[global_env->RobotNumber].op_goal.distance= yellow_distance/100;
-            global_env->home[global_env->RobotNumber].op_goal.angle = msg->yellow_ang;
-            global_env->home[global_env->RobotNumber].goal.distance= blue_distance/100;
-            global_env->home[global_env->RobotNumber].goal.angle = msg->blue_ang;
+            global_env->home[global_env->param.RobotNumber].op_goal.distance= yellow_distance/100;
+            global_env->home[global_env->param.RobotNumber].op_goal.angle = msg->yellow_ang;
+            global_env->home[global_env->param.RobotNumber].goal.distance= blue_distance/100;
+            global_env->home[global_env->param.RobotNumber].goal.angle = msg->blue_ang;
         }
 
        ball_distance = msg->ball_dis;
-       global_env->home[global_env->RobotNumber].ball.distance = ball_distance/100;
-       global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
+       global_env->home[global_env->param.RobotNumber].ball.distance = ball_distance/100;
+       global_env->home[global_env->param.RobotNumber].ball.angle = msg->ball_ang;
 
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
@@ -570,42 +566,42 @@ private:
             // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
         }
 
-        if(n->getParam("/FIRA_Behavior/Attack_Strategy", global_env->param.Bahavior_Attack_Strategy)){
+        if(n->getParam("/FIRA_Behavior/Attack_Strategy", global_env->param.Behavior_Attack_Strategy)){
     //        for(int i=0;i<3;i++)
     //            std::cout<< "param Attack_Strategy["<< i << "]=" << Attack_Strategy[i] << std::endl;
     //    std::cout << "====================================" << std::endl;
         }
-        if(n->getParam("/FIRA_Behavior/Chase_Strategy", global_env->param.Bahavior_Chase_Strategy)){
+        if(n->getParam("/FIRA_Behavior/Chase_Strategy", global_env->param.Behavior_Chase_Strategy)){
     //        for(int i=0;i<5;i++)
     //            std::cout<< "param Chase_Strategy["<< i << "]=" << Chase_Strategy[i] << std::endl;
     //    std::cout << "====================================" << std::endl;
         }
-        if(n->getParam("/FIRA_Behavior/Corner_Kick", global_env->param.Bahavior_Corner_Kick)){
+        if(n->getParam("/FIRA_Behavior/Corner_Kick", global_env->param.Behavior_Corner_Kick)){
     //        for(int i=0;i<2;i++)
     //            std::cout<< "param Corner_Kick["<< i << "]=" << Corner_Kick[i] << std::endl;
     //    std::cout << "====================================" << std::endl;
         }
-        if(n->getParam("/FIRA_Behavior/Side_Speed_UP", global_env->param.Bahavior_Side_Speed_UP)){
+        if(n->getParam("/FIRA_Behavior/Side_Speed_UP", global_env->param.Behavior_Side_Speed_UP)){
     //        for(int i=0;i<2;i++)
     //            std::cout<< "param Side_Speed_UP["<< i << "]=" << Side_Speed_UP[i] << std::endl;
     //    std::cout << "====================================" << std::endl;
         }
-        if(n->getParam("/FIRA_Behavior/TypeS_Attack", global_env->param.Bahavior_TypeS_Attack)){
+        if(n->getParam("/FIRA_Behavior/TypeS_Attack", global_env->param.Behavior_TypeS_Attack)){
     //        for(int i=0;i<3;i++)
     //            std::cout<< "param TypeS_Attack["<< i << "]=" << TypeS_Attack[i] << std::endl;
     //    std::cout << "====================================" << std::endl;
         }
-        if(n->getParam("/FIRA_Behavior/TypeU_Chase", global_env->param.Bahavior_TypeU_Chase)){
+        if(n->getParam("/FIRA_Behavior/TypeU_Chase", global_env->param.Behavior_TypeU_Chase)){
     //        for(int i=0;i<2;i++)
     //            std::cout<< "param TypeU_Chase["<< i << "]=" << TypeU_Chase[i] << std::endl;
     //    std::cout << "====================================" << std::endl;
         }
-        if(n->getParam("/FIRA_Behavior/Zone_Attack", global_env->param.Bahavior_Zone_Attack)){
+        if(n->getParam("/FIRA_Behavior/Zone_Attack", global_env->param.Behavior_Zone_Attack)){
     //        for(int i=0;i<1;i++)
     //            std::cout<< "param Zone_Attack["<< i << "]=" << Zone_Attack[i] << std::endl;
     //    std::cout << "====================================" << std::endl;
         }
-        if(n->getParam("/StrategySelection", global_env->param.Bahavior_StrategySelection)){
+        if(n->getParam("/StrategySelection", global_env->param.Behavior_StrategySelection)){
 
         }
 

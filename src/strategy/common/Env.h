@@ -94,22 +94,23 @@ typedef struct{
 }Goal;
 typedef struct
 {
+    
     //nodeHandle
-    int Blackangle;
     int RobotNumber;
+    int Blackangle;
     int IsSimulator;
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
     //behavior
-    std::vector<double> Bahavior_Attack_Strategy;
-    std::vector<double> Bahavior_Chase_Strategy;
-    std::vector<double> Bahavior_Corner_Kick;
-    std::vector<double> Bahavior_Side_Speed_UP;
-    std::vector<double> Bahavior_TypeS_Attack;
-    std::vector<double> Bahavior_TypeU_Chase;
-    std::vector<double> Bahavior_Zone_Attack;
-    std::vector<double> Bahavior_Dorsad_Attack;
-    std::vector<int> Bahavior_StrategySelection;
+    std::vector<double> Behavior_Attack_Strategy;
+    std::vector<double> Behavior_Chase_Strategy;
+    std::vector<double> Behavior_Corner_Kick;
+    std::vector<double> Behavior_Side_Speed_UP;
+    std::vector<double> Behavior_TypeS_Attack;
+    std::vector<double> Behavior_TypeU_Chase;
+    std::vector<double> Behavior_Zone_Attack;
+    std::vector<double> Behavior_Dorsad_Attack;
+    std::vector<int> Behavior_StrategySelection;
     //pathplan
     std::vector<double> Pathplan_Attack_Strategy;
     std::vector<double> Pathplan_Chase_Strategy;
@@ -127,9 +128,7 @@ typedef struct
     Robot opponent[PLAYERS_PER_SIDE];
     Ball currentBall, lastBall, predictedBall;
     //Bounds fieldBounds, goalBounds;
-    long gameState;
-    int RobotNumber;
-    int  issimulator;
+    int gameState;
     std::string teamcolor;
     //BlackObject
     int blackangle[20];

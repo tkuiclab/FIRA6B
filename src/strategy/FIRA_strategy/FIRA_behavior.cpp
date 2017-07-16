@@ -150,7 +150,7 @@ void FIRA_behavior_class::StateType_UChase(int r_number){
         double alpha = angle_dr-angle_br;
     /// ========== Init End ==========
     ////========state change to Attack or not=================
-      double angle_chase = env.param..Behavior_Chase_Strategy[3];//16.5
+      double angle_chase = env.param.Behavior_Chase_Strategy[3];//16.5
       double distance_chase = env.param.Behavior_Chase_Strategy[4];//0.4
     ////========== normalization angle to -180~180 ==========
       if(alpha>180)
@@ -180,7 +180,7 @@ void FIRA_behavior_class::StateSideSpeedUp(int r_number){
     double alpha = angle_dr-angle_br;
     /// ========== Init End ==========
     double angle_side=env.param.Behavior_Side_Speed_UP[0];//10
-    double const distance_side=env.param.Behavior_Side_Speed_U[1];//0.45
+    double const distance_side=env.param.Behavior_Side_Speed_UP[1];//0.45
     ////========== normalization angle to -180~180 ==========
       if(alpha>180)
           alpha-=360;
@@ -239,7 +239,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
     /// ========== Init End ==========
      /// ========== param Begin ==========
       double angle_corner = env.param.Behavior_Corner_Kick[0];//10
-      double distance_corner = Corner_Kick[1];//0.45
+      double distance_corner = env.param.Behavior_Corner_Kick[1];//0.45
      /// ========== param End ==========
     if(fabs(angle_dr)<angle_corner && distance_br<=distance_corner)
         state_cornerkick=state_Attack;

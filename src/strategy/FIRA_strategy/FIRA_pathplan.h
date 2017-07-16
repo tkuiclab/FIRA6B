@@ -109,18 +109,6 @@ public:
     double goalkeeper_mid_speed;
     double goalkeeper_side_speed;
 
-    std::vector<double> SPlanning_Velocity;
-    std::vector<double> Distance_Settings;
-    std::vector<double> Attack_Strategy;
-    std::vector<double> Chase_Strategy;
-    std::vector<double> Zone_Attack;
-    std::vector<double> TypeS_Attack;
-    std::vector<double> TypeU_Attack;
-    std::vector<double> Dorsad_Attack;
-    std::vector<double> Corner_Kick;
-    std::vector<double> SideSpeedUp;
-
-
     // Robot shoot signal publisher
     int shoot = 0;
 };

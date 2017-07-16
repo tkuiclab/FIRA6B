@@ -62,7 +62,7 @@ void Strategy_nodeHandle::ros_comms_init(){
     Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
     BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
     SAVEPARAM = n->subscribe<std_msgs::Int32>(SAVEPARAM_TOPIC,1000,&Strategy_nodeHandle::getSaveParam,this);
-    env->param.IsSimulator = false;
+    global_env->param.IsSimulator = false;
 }
 
 void Strategy_nodeHandle::Transfer(int r_number){
@@ -150,11 +150,11 @@ void Strategy_nodeHandle::pubSpeed(ros::Publisher *puber,double v_x,double v_y,d
     speedMsg.linear.y = /*r_*/v_y;
     speedMsg.angular.z = v_yaw ;
 
-    if(env->param.IsSimulator==true){
+    if(global_env->param.IsSimulator==true){
       speedMsg.linear.x = /*r_*/v_y;
       speedMsg.linear.y = /*r_*/-v_x;
       puber->publish(speedMsg);
-    }else if(env->param.IsSimulator==false){
+    }else if(global_env->param.IsSimulator==false){
         velocity_S_planning(&speedMsg);
         puber->publish(speedMsg);
     }
@@ -175,15 +175,15 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     }
     double angle = msg->angular.z * rad2deg;
     bool IsVectorZero=0;
-    double Vdis_max = env->param.SPlanning_Velocity[0];//3
-    double Vdis_min = env->param.SPlanning_VelocitySPlanning_Velocity[1];//0.3
-    double VTdis_max = env->param.SPlanning_VelocitySPlanning_Velocity[2];//60
-    double VTdis_min = env->param.SPlanning_VelocitySPlanning_Velocity[3];//30
+    double Vdis_max = global_env->param.SPlanning_Velocity[0];//3
+    double Vdis_min = global_env->param.SPlanning_Velocity[1];//0.3
+    double VTdis_max = global_env->param.SPlanning_Velocity[2];//60
+    double VTdis_min = global_env->param.SPlanning_Velocity[3];//30
     double VTdis;
-    double Tangle_max = env->param.SPlanning_VelocitySPlanning_Velocity[4];// 20
-    double angle_max = env->param.SPlanning_VelocitySPlanning_Velocity[6];//144;
-    double Tangle_min = env->param.SPlanning_VelocitySPlanning_Velocity[5];//3
-    double angle_min = env->param.SPlanning_VelocitySPlanning_Velocity[7];
+    double Tangle_max = global_env->param.SPlanning_Velocity[4];// 20
+    double angle_max = global_env->param.SPlanning_Velocity[6];//144;
+    double Tangle_min = global_env->param.SPlanning_Velocity[5];//3
+    double angle_min = global_env->param.SPlanning_Velocity[7];
     double Tangle;
 ////Transfer vector to [0,100]
     if(Vdis==0)
@@ -223,7 +223,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
 void Strategy_nodeHandle::pubGrpSpeed(){
     
     
-    if(env->param.IsSimulator==true){
+    if(global_env->param.IsSimulator==true){
         ////--------------------speed test----------------
         double dVectorMax = VectorMax;
         double dVectorMin = VectorMin;
@@ -253,8 +253,8 @@ void Strategy_nodeHandle::pubGrpSpeed(){
             pubSpeed(&robotOpt_2_speed_pub,global_env->opponent[1].v_x,global_env->opponent[1].v_y,global_env->opponent[1].v_yaw,global_env->opponent[1].rotation);
             pubSpeed(&robotOpt_3_speed_pub,global_env->opponent[2].v_x,global_env->opponent[2].v_y,global_env->opponent[2].v_yaw,global_env->opponent[2].rotation);
         }
-    }else if(env->param.IsSimulator==false){
-       pubSpeed(&robot_speed_pub,global_env->home[global_env->RobotNumber].v_x,global_env->home[global_env->RobotNumber].v_y,global_env->home[global_env->RobotNumber].v_yaw,global_env->home[global_env->RobotNumber].rotation);
+    }else if(global_env->param.IsSimulator==false){
+       pubSpeed(&robot_speed_pub,global_env->home[global_env->param.RobotNumber].v_x,global_env->home[global_env->param.RobotNumber].v_y,global_env->home[global_env->param.RobotNumber].v_yaw,global_env->home[global_env->param.RobotNumber].rotation);
        
     }
 }

@@ -63,6 +63,7 @@ simulation
 *.swo
 *.autosave
 .vs
+*.vscode
 .catkin_workspace
 *.VC.db
 *.user
@@ -72,3 +73,4 @@ simulation
 *.qdf
 *.qws
 *.ddb
+
