@@ -344,13 +344,13 @@ private:
             global_env->home[global_env->RobotNumber].op_goal.distance= blue_distance/100;
             global_env->home[global_env->RobotNumber].op_goal.angle = msg->blue_ang;
             global_env->home[global_env->RobotNumber].goal.distance = yellow_distance/100;
-            global_env->home[global_env->RobotNumber].goal.angle = msg->yellow_ang;
+            //global_env->home[global_env->RobotNumber].goal.angle = msg->yellow_ang;
 
         }else if(global_env->teamcolor == "Yellow"){
             global_env->home[global_env->RobotNumber].op_goal.distance= yellow_distance/100;
             global_env->home[global_env->RobotNumber].op_goal.angle = msg->yellow_ang;
             global_env->home[global_env->RobotNumber].goal.distance= blue_distance/100;
-            global_env->home[global_env->RobotNumber].goal.angle = msg->blue_ang;
+            //global_env->home[global_env->RobotNumber].goal.angle = msg->blue_ang;
         }
 
        ball_distance = msg->ball_dis;
@@ -427,7 +427,7 @@ private:
                         apf_dis.push_back(apf_data[2]);
 
                         //printf("angle_start:%d\tangle:%d\tdis:%d\n",apf_data[0],apf_data[1],apf_data[2]);
-                        printf("angle_start:%d\tangle:%d\tdis:%d\n",angle_start[k],angle_end[k],apf_dis[k]);
+                        //printf("angle_start:%d\tangle:%d\tdis:%d\n",angle_start[k],angle_end[k],apf_dis[k]);
                         k++;
                     }
                     dis_avg=0;
@@ -441,12 +441,12 @@ private:
             }
             //k=0;
         }
-        printf("=========start\t%d=====\t\n",angle_end.size());
+        //printf("=========start\t%d=====\t\n",angle_end.size());
         //if(angle_end.size()!=0){
             //for(int i=0;i<=angle_end.size()-1;i++){
               // printf("angle_start:%d\tangle:%d\tdis:%d\n",angle_start[i],angle_end[i],apf_dis[i]);
             //}
-            printf("====global=====\n\n");
+            //printf("====global=====\n\n");
 //            for(int i=0;i<=angle_end.size();i++){
 //                if((angle_end[i]-angle_start[i+1])<=(3*Blackangle)&&abs(apf_dis[i]-apf_dis[i+1])<=15){
 //                    angle_end[i]=angle_end[i+1];
@@ -479,11 +479,11 @@ private:
                 global_env->global_angle_start.push_back(angle_start[j]);
                 global_env->global_apf_dis.push_back(apf_dis[j]);
                 j++;
-                printf("angle_start:%d\tangle_end:%d\t dis:%d\n",global_env->global_angle_start[i],global_env->global_angle_end[i],global_env->global_apf_dis[i]);
+                //printf("angle_start:%d\tangle_end:%d\t dis:%d\n",global_env->global_angle_start[i],global_env->global_angle_end[i],global_env->global_apf_dis[i]);
             }
             j=0;
         //}
-        printf("============end_node\n\n");
+       // printf("============end_node\n\n");
         angle_end.clear();
         angle_start.clear();
         apf_dis.clear();
