@@ -310,7 +310,9 @@ void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
 
     double ball_dis = env.home[r_number].ball.distance;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-    if(ball_dis + opgoal_dis > 1.7 && opgoal_dis > 1.5){ //out of zoom reset
+    if(ball_dis + opgoal_dis > 1.6 && opgoal_dis > 1.2){ //out of zoom reset
+        state_GoalKeeper = state_GoalKeeper_blocking;
+    }else if(ball_dis > 0.8 && opgoal_dis > 1.2){
         state_GoalKeeper = state_GoalKeeper_blocking;
     }
 }

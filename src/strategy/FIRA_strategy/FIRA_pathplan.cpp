@@ -212,7 +212,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
 //    printf("opgoal_edge_dis = %f\n",opgoal_edge_dis);
 
     double opgoal_middle_angle = (opgoal_edge_angle1 + opgoal_edge_angle2)/2;//not calculate as the other angle
-//    printf("opgoal_middle_angle = %f\n",opgoal_middle_angle);
+    printf("opgoal_middle_angle = %f\n",opgoal_middle_angle);
     double x;
     double y;
     double rotAngle = 12;
@@ -269,14 +269,14 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
     double y = (1/ball_dis) * cos(ball_angle * deg2rad);
 
     Vector2d vectorbr(x, y);
-    double rotAngle;
+    double rotAngle = 0.001;
 
     if(ball_angle > (opgoal_edge_angle2*0.3)){
         rotAngle = opgoal_edge_angle2/2;
     }else if(ball_angle < (opgoal_edge_angle1*0.3)){
         rotAngle = opgoal_edge_angle1/2;
     }else{
-        rotAngle = 0;
+        printf("Bug ? \n");
     }
 
     Rotation2Dd rot( rotAngle * deg2rad);
