@@ -30,7 +30,7 @@ void FIRA_behavior_class::StateInitAttack(int r_number){
         double angle_dr = env.home[r_number].goal.angle;
         double alpha = angle_dr-angle_br;
         /// ========== Init End ==========
-        if(distance_br>Chase_Strategy[4])
+        if(distance_br>env.param.Behavior_Chase_Strategy[4])
             state_attack = state_Chase;
         else
             state_attack = state_Attack;
@@ -56,8 +56,8 @@ void FIRA_behavior_class::StateChase(int r_number){
                 ros::Time current = ros::Time::now();
                 double start_time = (double)(start.sec+(double)start.nsec/1000000000);
                 double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-                double const open_condition = Chase_Strategy[1];//0.15
-                double const calculate_time = Chase_Strategy[2];//0.1
+                double const open_condition = env.param.Behavior_Chase_Strategy[1];//0.15
+                double const calculate_time = env.param.Behavior_Chase_Strategy[2];//0.1
                 if(current_time-start_time>calculate_time){
                     start.sec = current.sec;
                     start.nsec = current.nsec;
@@ -89,8 +89,8 @@ void FIRA_behavior_class::StateChase(int r_number){
                 /// ========== USE LINKED LIST TO SAVE DISTANCE ==========
 
         ////========state change to Attack or not=================
-          double angle_chase = Chase_Strategy[3];//16.5
-          double distance_chase = Chase_Strategy[4];//0.4
+          double angle_chase = env.param.Behavior_Chase_Strategy[3];//16.5
+          double distance_chase = env.param.Behavior_Chase_Strategy[4];//0.4
         ////========== normalization angle to -180~180 ==========
           if(alpha>180)
               alpha-=360;
@@ -118,9 +118,9 @@ void FIRA_behavior_class::StateAttack(int r_number){
     double op_angle_dr = env.home[r_number].op_goal.angle;
     double alpha = angle_dr-angle_br;
     /// ========== Init End ==========
-    double const angle_attack = Attack_Strategy[0];//30.0
-    double const distance_attack = Attack_Strategy[1];//1.0
-    double const distance_chase = Attack_Strategy[2];//1.0
+    double const angle_attack = env.param.Behavior_Attack_Strategy[0];//30.0
+    double const distance_attack = env.param.Behavior_Attack_Strategy[1];//1.0
+    double const distance_chase = env.param.Behavior_Attack_Strategy[2];//1.0
     ////========== normalization angle to -180~180 ==========
       if(alpha>180)
           alpha-=360;
@@ -150,8 +150,8 @@ void FIRA_behavior_class::StateType_UChase(int r_number){
         double alpha = angle_dr-angle_br;
     /// ========== Init End ==========
     ////========state change to Attack or not=================
-      double angle_chase = Chase_Strategy[3];//16.5
-      double distance_chase = Chase_Strategy[4];//0.4
+      double angle_chase = env.param..Behavior_Chase_Strategy[3];//16.5
+      double distance_chase = env.param.Behavior_Chase_Strategy[4];//0.4
     ////========== normalization angle to -180~180 ==========
       if(alpha>180)
           alpha-=360;
@@ -179,8 +179,8 @@ void FIRA_behavior_class::StateSideSpeedUp(int r_number){
     double angle_dr = env.home[r_number].goal.angle;
     double alpha = angle_dr-angle_br;
     /// ========== Init End ==========
-    double angle_side=Side_Speed_UP[0];//10
-    double const distance_side=Side_Speed_UP[1];//0.45
+    double angle_side=env.param.Behavior_Side_Speed_UP[0];//10
+    double const distance_side=env.param.Behavior_Side_Speed_U[1];//0.45
     ////========== normalization angle to -180~180 ==========
       if(alpha>180)
           alpha-=360;
@@ -210,7 +210,7 @@ void FIRA_behavior_class::StateZoneAttack(int r_number){
     double angle_dr = env.home[r_number].goal.angle;
     double alpha = angle_dr-angle_br;
     /// ========== Init End ==========
-    double distance_zone =Zone_Attack[0];//0.6
+    double distance_zone =env.param.Behavior_Zone_Attack[0];//0.6
     ////========== normalization angle to -180~180 ==========
       if(alpha>180)
           alpha-=360;
@@ -238,7 +238,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
     ////========== normalization end ==========
     /// ========== Init End ==========
      /// ========== param Begin ==========
-      double angle_corner = Corner_Kick[0];//10
+      double angle_corner = env.param.Behavior_Corner_Kick[0];//10
       double distance_corner = Corner_Kick[1];//0.45
      /// ========== param End ==========
     if(fabs(angle_dr)<angle_corner && distance_br<=distance_corner)
@@ -306,14 +306,14 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         if(run_onetime == 0)
         run_onetime = 1;
 
-        int chaseCase = StrategySelection[0];
-        int SchaseCase = StrategySelection[1];
-        int attackCase = StrategySelection[2];
-        int SattackCase = StrategySelection[3];
-        int DattackCase = StrategySelection[4];
-        int ShootCase = StrategySelection[5];
+        int chaseCase = env.param.Behavior_StrategySelection[0];
+        int SchaseCase = env.param.Behavior_StrategySelection[1];
+        int attackCase = env.param.Behavior_StrategySelection[2];
+        int SattackCase = env.param.Behavior_StrategySelection[3];
+        int DattackCase = env.param.Behavior_StrategySelection[4];
+        int ShootCase = env.param.Behavior_StrategySelection[5];
 
-        double rushDistance = TypeS_Attack[2];
+        double rushDistance = env.param.Behavior_TypeS_Attack[2];
 
         switch(state_attack){
             case state_Init:

@@ -417,8 +417,8 @@ void FIRA_pathplan_class::strategy_KO5_Attack(int Robot_index){
 
 void FIRA_pathplan_class::strategy_Zone_Attack(int Robot_index){
 //--------------------parameter--------------------------------//
-    double distance_backward = Zone_Attack[0];//0.6
-    double distance_forward = Zone_Attack[1];//1.4
+    double distance_backward = env.param.Pathplan_Zone_Attack[0];//0.6
+    double distance_forward = env.param.Pathplan_Zone_Attack[1];//1.4
 //-------------------------------------------------------------//
     int r_number = Robot_index;
 
@@ -470,8 +470,8 @@ void FIRA_pathplan_class::strategy_Zone_Attack(int Robot_index){
 void FIRA_pathplan_class::strategy_typeS_Attack(int Robot_index){
 
     //================parameter========================
-    double cycle = TypeS_Attack[0];//1.5
-    double speedMin = TypeS_Attack[1];//0.2
+    double cycle = env.param.Pathplan_TypeS_Attack[0];//1.5
+    double speedMin = env.param.Pathplan_TypeS_Attack[1];//0.2
     //=================================================
     int r_number = Robot_index; 	// assign which robot you are going to use
 
@@ -574,14 +574,14 @@ void FIRA_pathplan_class::strategy_typeS_Attack(int Robot_index){
 
 void FIRA_pathplan_class::strategy_typeU_Attack(int Robot_index){
 //--------------------parameter--------------------------------//
-    double cycle = TypeU_Attack[0];//0.8
-    double circle_y_speed = TypeU_Attack[1];//1.0
-    int circle_size_right = TypeU_Attack[2];//-90
-    int circle_size_left = TypeU_Attack[3];//90
-    double distance_br_min =TypeU_Attack[4];//0.25
-    double distance_dr_min =TypeU_Attack[5];//0.3
-    int angle_br_min =TypeU_Attack[6];//20
-    int angle_dr_min =TypeU_Attack[7];//30
+    double cycle = env.param.Pathplan_TypeU_Attack[0];//0.8
+    double circle_y_speed = env.param.Pathplan_TypeU_Attack[1];//1.0
+    int circle_size_right = env.param.Pathplan_TypeU_Attack[2];//-90
+    int circle_size_left = env.param.Pathplan_TypeU_Attack[3];//90
+    double distance_br_min =env.param.Pathplan_TypeU_Attack[4];//0.25
+    double distance_dr_min =env.param.Pathplan_TypeU_Attack[5];//0.3
+    int angle_br_min =env.param.Pathplan_TypeU_Attack[6];//20
+    int angle_dr_min =env.param.Pathplan_TypeU_Attack[7];//30
 //----------------------------------------------------------------//
     int r_number = Robot_index;
 
@@ -687,12 +687,12 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     int r_number = Robot_index;
 
     //-----------parameter-----------
-    double deceleration = Dorsad_Attack[0];//8    // level of deceleration when triggering the dorsad strategy
-    double angle2opr1 = Dorsad_Attack[1];//90     // angle to turn away from enemy
-    double angle2opr2 = Dorsad_Attack[2];//180
-    double distance2turn1 = Dorsad_Attack[3];//2   // condition to turn away from enemy (by distance to enemy's robot)
-    double distance2turn2 = Dorsad_Attack[4];//1
-    double distance2rush = Dorsad_Attack[5];//2   // condition to ignore the dorsad strategy (by distance to our goal)
+    double deceleration = env.param.Pathplan_Dorsad_Attack[0];//8    // level of deceleration when triggering the dorsad strategy
+    double angle2opr1 = env.param.Pathplan_Dorsad_Attack[1];//90     // angle to turn away from enemy
+    double angle2opr2 = env.param.Pathplan_Dorsad_Attack[2];//180
+    double distance2turn1 = env.param.Pathplan_Dorsad_Attack[3];//2   // condition to turn away from enemy (by distance to enemy's robot)
+    double distance2turn2 = env.param.Pathplan_Dorsad_Attack[4];//1
+    double distance2rush = env.param.Pathplan_Dorsad_Attack[5];//2   // condition to ignore the dorsad strategy (by distance to our goal)
     //-------------------------------
 
     //------in simulator-------------
@@ -804,11 +804,11 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
 
 void FIRA_pathplan_class::strategy_SideSpeedUp(int Robot_index){
     //-----------parameter--------------------------------------
-    double beta_param = SideSpeedUp[0]; //0.73
-    double const const_angle_mult = SideSpeedUp[1];//1.2
-    double const const_dis = SideSpeedUp[2];//0.7
-    double const const_mult = SideSpeedUp[3];//5.0
-    double const const_only = SideSpeedUp[4];//2.2*0.8*10=17.6
+    double beta_param = env.param.Pathplan_SideSpeedUp[0]; //0.73
+    double const const_angle_mult = env.param.Pathplan_SideSpeedUp[1];//1.2
+    double const const_dis = env.param.Pathplan_SideSpeedUp[2];//0.7
+    double const const_mult = env.param.Pathplan_SideSpeedUp[3];//5.0
+    double const const_only = env.param.Pathplan_SideSpeedUp[4];//2.2*0.8*10=17.6
     //-----------------------------------------------------------
     int r_number = Robot_index;
     double ball_dis = env.home[r_number].ball.distance;
@@ -1061,10 +1061,10 @@ void FIRA_pathplan_class::strategy_ThrowIn(int Robot_index){
 
 void FIRA_pathplan_class::strategy_CornerKick(int Robot_index){
     //---------------parameter---------------------------
-    double forwardV = Corner_Kick[0];//1.2
-    double step1Ang = Corner_Kick[1];//60
-    double step2Ang = Corner_Kick[2];//90
-    double criticalAng = Corner_Kick[3];//50
+    double forwardV = env.param.Pathplan_Corner_Kick[0];//1.2
+    double step1Ang = env.param.Pathplan_Corner_Kick[1];//60
+    double step2Ang = env.param.Pathplan_Corner_Kick[2];//90
+    double criticalAng = env.param.Pathplan_Corner_Kick[3];//50
     //--------------------------------------------------
 
     int r_number = Robot_index;   // assign which robot you are going to use
