@@ -800,7 +800,7 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
       blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
       blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
 
-       Two_point_msg.blue_dis = Blue_Item.dis_min;
+       Two_point_msg.blue_dis = Blue_Item.dis_max;
        Two_point_msg.blue_ang1 = blue_angle_max;
        Two_point_msg.blue_ang2 = blue_angle_min;
        }
@@ -809,11 +809,11 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
        yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
        yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
 
-       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
+       Two_point_msg.yellow_dis = Yellow_Item.dis_max;
        Two_point_msg.yellow_ang1 = yellow_angle_max;
        Two_point_msg.yellow_ang2 = yellow_angle_min;
        }
-    if(Yellow_Item.dis_min && Blue_Item.dis_min){
+    if(Yellow_Item.dis_max && Blue_Item.dis_max){
        Two_point_pub.publish(Two_point_msg);
     }
 

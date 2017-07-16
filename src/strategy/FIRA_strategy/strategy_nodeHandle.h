@@ -368,8 +368,8 @@ private:
 /*****/    //for goalkeeper on 5th robot with ros  //front = 45
         void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
             if(global_env->teamcolor == "Blue"){
-                double ang1 = msg->blue_ang1;
-                double ang2 = msg->blue_ang2;
+                int ang1 = msg->blue_ang1;
+                int ang2 = msg->blue_ang2;
                 ang1 = two_point_angle_fix(ang1);
                 ang2 = two_point_angle_fix(ang2);
 //                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
@@ -384,12 +384,12 @@ private:
                 }
                 ang1 = angle_fix(ang1);
                 ang2 = angle_fix(ang2);
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis/100;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
             }else if(global_env->teamcolor == "Yellow"){
-                double ang1 = msg->yellow_ang1;
-                double ang2 = msg->yellow_ang2;
+                int ang1 = msg->yellow_ang1;
+                int ang2 = msg->yellow_ang2;
                 ang1 = two_point_angle_fix(ang1);
                 ang2 = two_point_angle_fix(ang2);
 //                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
@@ -404,14 +404,14 @@ private:
                 }
                 ang1 = angle_fix(ang1);
                 ang2 = angle_fix(ang2);
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis/100;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
             }
         }
 
-        double two_point_angle_fix(double angle){
-            double front = 50;
+        int two_point_angle_fix(int angle){
+            int front = 50;
             if(angle <= 225){
                 angle = angle - front;
             }else{
@@ -419,7 +419,7 @@ private:
             }
             return angle;
         }
-        double angle_fix(double angle){
+        int angle_fix(int angle){
             if(angle > 180){
                 angle = angle -360;
             }else if(angle < -180){

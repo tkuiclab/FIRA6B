@@ -300,19 +300,23 @@ void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
 
 //        printf("%f\n",(ball_distance+opgoal_dis));
 
-
-        if( ball_distance + opgoal_dis < 1.5 || ball_distance < 0.7){
+        if( ball_distance + opgoal_dis < 1.4 || ball_distance < 0.7){
           state_GoalKeeper = state_GoalKeeper_catching;
         }
 }
 
 void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
 
+    double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
     double ball_dis = env.home[r_number].ball.distance;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-    if(ball_dis + opgoal_dis > 1.6 && opgoal_dis > 1.2){ //out of zoom reset
+    if(opgoal_edge_dis < 2.3){
+        state_GoalKeeper = state_GoalKeeper_blocking;
+    }else if(ball_dis + opgoal_dis > 1.5 && opgoal_dis > 1.2){ //out of zoom reset
         state_GoalKeeper = state_GoalKeeper_blocking;
     }else if(ball_dis > 0.8 && opgoal_dis > 1.2){
+        state_GoalKeeper = state_GoalKeeper_blocking;
+    }else if(opgoal_dis > 1.5){
         state_GoalKeeper = state_GoalKeeper_blocking;
     }
 }
