@@ -258,31 +258,4 @@ void Strategy_nodeHandle::pubGrpSpeed(){
        
     }
 }
-//###################################################//
-//                                                   //
-//                 load parameter                    //
-//                                                   //
-//###################################################//
-void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
-     if(n->getParam("/FIRA/blackItem/angle",Blackangle)){
-//     std::cout << "param Blackangle=" << Blackangle <<std::endl;
-    }
-     if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){
-//     std::cout << "param RobotNumber=" << global_env->RobotNumber<<std::endl;
-    }
-     if(n->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity)){
-    //     for(int i=0;i<8;i++)
-    //         std::cout<< "param SPlanning_Velocity["<< i << "]=" << SPlanning_Velocity[i] << std::endl;
-    // std::cout << "====================================" << std::endl;
-     }
-    if(n->getParam("/FIRA/Distance_Settings", Distance_Settings)){
-//        for(int i=0;i<3;i++)
-//            std::cout<< "param Distance_Settings["<< i << "]=" << Distance_Settings[i] << std::endl;
-//     std::cout << "====================================" << std::endl;
-    }
-    if(n->getParam("/FIRA/IsSimulator",IsSimulator)){
-        // global_env->issimulator = IsSimulator;
-        // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
-    }
-}
 

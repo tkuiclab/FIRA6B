@@ -87,7 +87,6 @@ public:
     int* getactionAry();
 
 //    void teamStrategy();
-    void loadParam(ros::NodeHandle *n);
 };
 
 
