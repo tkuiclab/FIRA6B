@@ -116,9 +116,6 @@ int main(int argc, char **argv)
     FIRA_pathplan_class mpathplan;
 
     //loadParam
-    mpathplan.loadParam(mNodeHandle.getNodeHandle());
-    mbehavior.loadParam(mNodeHandle.getNodeHandle());
-    mNodeHandle.loadParam(mNodeHandle.getNodeHandle());    
     int Team_color;
     std::cout << "=======Strategy====170119===" << std::endl;
 
@@ -133,9 +130,6 @@ int main(int argc, char **argv)
     while(ros::ok())
     {
         if(global_env->SaveParam){
-            mpathplan.loadParam(mNodeHandle.getNodeHandle());
-            mbehavior.loadParam(mNodeHandle.getNodeHandle());
-            mNodeHandle.loadParam(mNodeHandle.getNodeHandle());           
             global_env->SaveParam = 0;
         }
         global_env->teamcolor = mNodeHandle.getTeamColor();

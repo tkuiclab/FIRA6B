@@ -123,8 +123,6 @@ public:
 
     // Robot shoot signal publisher
     int shoot = 0;
-
-    void loadParam(ros::NodeHandle *n);
 };
 
 

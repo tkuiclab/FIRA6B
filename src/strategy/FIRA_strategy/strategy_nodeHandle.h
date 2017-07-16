@@ -125,7 +125,6 @@ public:
     //BlackObject
     int Blackangle;
     int *blackobject;
-    void loadParam(ros::NodeHandle *n);
     int* getBlackObject(){return blackobject;}
 protected:
     void ros_comms_init();
@@ -136,7 +135,6 @@ private:
     bool opponent;
 
     Environment *global_env;
-
 
     ros::NodeHandle *n;
     long gamestate;
@@ -155,7 +153,6 @@ private:
     ros::Subscriber robotOpt_1_pos_sub  ;
     ros::Subscriber robotOpt_2_pos_sub  ;
     ros::Subscriber robotOpt_3_pos_sub  ;
-
     ros::Subscriber GameState;
     ros::Subscriber TeamColor;
     ros::Subscriber Vision;
@@ -545,8 +542,108 @@ private:
 
 
     }
-     void getSaveParam(const std_msgs::Int32::ConstPtr &msg){
-         global_env->SaveParam = msg->data;
+
+    //###################################################//
+    //                                                   //
+    //                  load parameter                   //
+    //                                                   //
+    //###################################################//
+    void getSaveParam(const std_msgs::Int32::ConstPtr &msg){
+        if(n->getParam("/FIRA/blackItem/angle", global_env->param.Blackangle)){
+    //     std::cout << "param Blackangle=" << Blackangle <<std::endl;
+        }
+        if(n->getParam("/FIRA/RobotNumber", global_env->param.RobotNumber)){
+    //     std::cout << "param RobotNumber=" << global_env->RobotNumber<<std::endl;
+        }
+        if(n->getParam("/FIRA/SPlanning_Velocity", global_env->param.SPlanning_Velocity)){
+        //     for(int i=0;i<8;i++)
+        //         std::cout<< "param SPlanning_Velocity["<< i << "]=" << SPlanning_Velocity[i] << std::endl;
+        // std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA/Distance_Settings", global_env->param.Distance_Settings)){
+    //        for(int i=0;i<3;i++)
+    //            std::cout<< "param Distance_Settings["<< i << "]=" << Distance_Settings[i] << std::endl;
+    //     std::cout << "====================================" << std::endl;
+         }
+        if(n->getParam("/FIRA/IsSimulator",global_env->param.IsSimulator)){
+            // global_env->issimulator = IsSimulator;
+            // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
+        }
+
+        if(n->getParam("/FIRA_Behavior/Attack_Strategy", global_env->param.Bahavior_Attack_Strategy)){
+    //        for(int i=0;i<3;i++)
+    //            std::cout<< "param Attack_Strategy["<< i << "]=" << Attack_Strategy[i] << std::endl;
+    //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA_Behavior/Chase_Strategy", global_env->param.Bahavior_Chase_Strategy)){
+    //        for(int i=0;i<5;i++)
+    //            std::cout<< "param Chase_Strategy["<< i << "]=" << Chase_Strategy[i] << std::endl;
+    //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA_Behavior/Corner_Kick", global_env->param.Bahavior_Corner_Kick)){
+    //        for(int i=0;i<2;i++)
+    //            std::cout<< "param Corner_Kick["<< i << "]=" << Corner_Kick[i] << std::endl;
+    //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA_Behavior/Side_Speed_UP", global_env->param.Bahavior_Side_Speed_UP)){
+    //        for(int i=0;i<2;i++)
+    //            std::cout<< "param Side_Speed_UP["<< i << "]=" << Side_Speed_UP[i] << std::endl;
+    //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA_Behavior/TypeS_Attack", global_env->param.Bahavior_TypeS_Attack)){
+    //        for(int i=0;i<3;i++)
+    //            std::cout<< "param TypeS_Attack["<< i << "]=" << TypeS_Attack[i] << std::endl;
+    //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA_Behavior/TypeU_Chase", global_env->param.Bahavior_TypeU_Chase)){
+    //        for(int i=0;i<2;i++)
+    //            std::cout<< "param TypeU_Chase["<< i << "]=" << TypeU_Chase[i] << std::endl;
+    //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA_Behavior/Zone_Attack", global_env->param.Bahavior_Zone_Attack)){
+    //        for(int i=0;i<1;i++)
+    //            std::cout<< "param Zone_Attack["<< i << "]=" << Zone_Attack[i] << std::endl;
+    //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/StrategySelection", global_env->param.Bahavior_StrategySelection)){
+
+        }
+
+        if(n->getParam("/FIRA/Attack_Strategy", global_env->param.Pathplan_Attack_Strategy)){
+ //        for(int i=0;i<1;i++)
+ //            std::cout<< "param Attack_Strategy["<< i << "]=" << Attack_Strategy[i] << std::endl;
+ //    std::cout << "====================================" << std::endl;
+        }
+         if(n->getParam("/FIRA/Chase_Strategy", global_env->param.Pathplan_Chase_Strategy)){
+ //        for(int i=0;i<1;i++)
+ //            std::cout<< "param Chase_Strategy["<< i << "]=" << Chase_Strategy[i] << std::endl;
+ //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA/Zone_Attack", global_env->param.Pathplan_Zone_Attack)){
+ //        for(int i=0;i<2;i++)
+ //            std::cout<< "param Zone_Attack["<< i << "]=" << Zone_Attack[i] << std::endl;
+ //    std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA/TypeS_Attack", global_env->param.Pathplan_Zone_Attack)){
+ //       for(int i=0;i<2;i++)
+ //           std::cout<< "param TypeS_Attack["<< i << "]=" << TypeS_Attack[i] << std::endl;
+ //   std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA/TypeU_Attack", global_env->param.Pathplan_TypeU_Attack)){
+ //       for(int i=0;i<8;i++)
+ //           std::cout<< "param TypeU_Attack["<< i << "]=" << TypeU_Attack[i] << std::endl;
+ //   std::cout << "====================================" << std::endl;
+        }
+        if(n->getParam("/FIRA/Dorsad_Attack", global_env->param.Pathplan_Dorsad_Attack)){
+        }
+        if(n->getParam("/FIRA/Corner_Kick", global_env->param.Pathplan_Corner_Kick)){
+        }
+        if(n->getParam("/FIRA/SideSpeedUp", global_env->param.Pathplan_SideSpeedUp)){
+ //       for(int i=0;i<5;i++)
+ //           std::cout<< "param SideSpeedUp["<< i << "]=" << SideSpeedUp[i] << std::endl;
+ //   std::cout << "====================================" << std::endl;
+        }
+
      }
 };
 

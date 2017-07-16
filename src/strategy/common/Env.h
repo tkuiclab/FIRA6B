@@ -1,7 +1,7 @@
 
 #ifndef _ENV_H_
 #define _ENV_H_
-
+#include <vector>
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
 
@@ -92,6 +92,34 @@ typedef struct{
 typedef struct{
     Vector3D pos;
 }Goal;
+typedef struct
+{
+    //nodeHandle
+    int Blackangle;
+    int RobotNumber;
+    int IsSimulator;
+    std::vector<double> SPlanning_Velocity;
+    std::vector<double> Distance_Settings;
+    //behavior
+    std::vector<double> Bahavior_Attack_Strategy;
+    std::vector<double> Bahavior_Chase_Strategy;
+    std::vector<double> Bahavior_Corner_Kick;
+    std::vector<double> Bahavior_Side_Speed_UP;
+    std::vector<double> Bahavior_TypeS_Attack;
+    std::vector<double> Bahavior_TypeU_Chase;
+    std::vector<double> Bahavior_Zone_Attack;
+    std::vector<double> Bahavior_Dorsad_Attack;
+    std::vector<int> Bahavior_StrategySelection;
+    //pathplan
+    std::vector<double> Pathplan_Attack_Strategy;
+    std::vector<double> Pathplan_Chase_Strategy;
+    std::vector<double> Pathplan_Zone_Attack;
+    std::vector<double> Pathplan_TypeS_Attack;
+    std::vector<double> Pathplan_TypeU_Attack;
+    std::vector<double> Pathplan_Dorsad_Attack;
+    std::vector<double> Pathplan_Corner_Kick;
+    std::vector<double> Pathplan_SideSpeedUp;
+} Parameter;
 
 typedef struct
 {
@@ -110,7 +138,11 @@ typedef struct
     //void *userData;
     Goal yellow, blue;
     int SaveParam;
+    Parameter param;
 } Environment;
+
+
+
 //static Environment global_env;
 
 
