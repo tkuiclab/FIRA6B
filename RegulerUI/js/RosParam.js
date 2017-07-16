@@ -112,7 +112,7 @@ function GetGeneralValue() {
     });
     localStorage.setItem("GeneralSPlanStr3", JSON.stringify(SVBox3));
     localStorage.setItem("GeneralDistanceSetStr3", JSON.stringify(DSBox3));
-    console.log(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3);
+    //console.log(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3);
     SetParamGeneral(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3);
 }
 

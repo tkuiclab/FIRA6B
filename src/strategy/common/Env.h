@@ -132,6 +132,7 @@ typedef struct
     //long whosBall;
     //void *userData;
     Goal yellow, blue;
+    int SaveParam;
 } Environment;
 //static Environment global_env;
 
