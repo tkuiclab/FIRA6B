@@ -1,0 +1,23 @@
+FIRA: {Parameterbutton: 3}
+camera:
+  image:
+    compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
+    compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
+    theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
+rosbridge_websocket: {address: '', authenticate: false, delay_between_messages: 0,
+  fragment_timeout: 600, max_message_size: None, port: 9090, retry_startup_delay: 5}
+rosdistro: 'indigo
+
+  '
+roslaunch:
+  uris: {host_iclab2_to_be_filled_by_o_e_m__35456: 'http://iclab2-To-be-filled-by-O-E-M:35456/',
+    host_iclab2_to_be_filled_by_o_e_m__44341: 'http://iclab2-To-be-filled-by-O-E-M:44341/'}
+rosversion: '1.11.20
+
+  '
+run_id: 658038d8-62bd-11e7-b967-94de8021b855
+usb_cam:
+  image_raw:
+    compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
+    compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
+    theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
