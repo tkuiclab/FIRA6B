@@ -294,29 +294,27 @@ void FIRA_behavior_class::StateGoalKeeperWaiting(int r_number){
 
 
 void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
-
+    printf("block\n");
         double ball_distance = env.home[r_number].ball.distance;
         double opgoal_dis = env.home[r_number].op_goal.distance;
+        double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
 
 //        printf("%f\n",(ball_distance+opgoal_dis));
 
-        if( ball_distance + opgoal_dis < 1.4 || ball_distance < 0.7){
-          state_GoalKeeper = state_GoalKeeper_catching;
+        if( ball_distance + opgoal_dis < 1.4 || ball_distance < 2){
+            if(opgoal_edge_dis > 2.27){
+                state_GoalKeeper = state_GoalKeeper_catching;
+            }
         }
 }
 
 void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
-
+    printf("push\n");
     double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
     double ball_dis = env.home[r_number].ball.distance;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-    if(opgoal_edge_dis < 2.3){
-        state_GoalKeeper = state_GoalKeeper_blocking;
-    }else if(ball_dis + opgoal_dis > 1.5 && opgoal_dis > 1.2){ //out of zoom reset
-        state_GoalKeeper = state_GoalKeeper_blocking;
-    }else if(ball_dis > 0.8 && opgoal_dis > 1.2){
-        state_GoalKeeper = state_GoalKeeper_blocking;
-    }else if(opgoal_dis > 1.5){
+//    printf("opgoal_edge_dis = %f\n",opgoal_edge_dis);
+    if(opgoal_edge_dis < 2.26 || ball_dis > 2){
         state_GoalKeeper = state_GoalKeeper_blocking;
     }
 }
@@ -391,13 +389,13 @@ void FIRA_behavior_class::behavior_Goalkeeper(int robotIndex){
 
         case state_GoalKeeper_blocking:
             StateGoalKeeperBlocking(robotIndex);
-            ROS_INFO("GoalKeeper blocking\n");
+//            ROS_INFO("GoalKeeper blocking\n");
             actionAry[robotIndex] = action_Goalkeeper_blocking;
         break;
 
         case state_GoalKeeper_catching:
             StateGoalKeeperCatching(robotIndex);
-            ROS_INFO("GoalKeeper catching\n");
+//            ROS_INFO("GoalKeeper catching\n");
             actionAry[robotIndex] = action_Goalkeeper_catching;
         break;
     }

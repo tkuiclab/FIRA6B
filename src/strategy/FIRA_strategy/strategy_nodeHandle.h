@@ -384,7 +384,8 @@ private:
                 }
                 ang1 = angle_fix(ang1);
                 ang2 = angle_fix(ang2);
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis/100;
+                double opgoal_edge_dis = msg->blue_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = opgoal_edge_dis/100;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
             }else if(global_env->teamcolor == "Yellow"){
@@ -404,7 +405,8 @@ private:
                 }
                 ang1 = angle_fix(ang1);
                 ang2 = angle_fix(ang2);
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = msg->blue_dis/100;
+                double opgoal_edge_dis = msg->yellow_dis;
+                global_env->home[global_env->RobotNumber].opgoal_edge.distance = opgoal_edge_dis/100;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
                 global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
             }

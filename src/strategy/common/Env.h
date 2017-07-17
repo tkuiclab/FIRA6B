@@ -51,12 +51,7 @@ const long PLAYERS_PER_SIDE = 3;
 
 
 
-#define action_1               11
-#define action_2               12
-#define action_3               13
-#define action_4               14
-#define action_5               15
-#define action_6               16
+
 #define action_Dorsad_Attack   17
 #define action_Shoot_Attack    18
 #define action_Straight_Chase  19
@@ -92,7 +87,7 @@ typedef struct{
 }Vector3D;
 
 typedef struct{
-    double angle_1,angle_2;
+    int angle_1,angle_2;
     double distance;
 }Two_point;
 

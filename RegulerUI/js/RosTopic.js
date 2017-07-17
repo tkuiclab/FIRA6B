@@ -18,7 +18,6 @@ var Remote3 = new ROSLIB.Topic({
 
 function RemoteSwitch(state) {
     var check;
-
     if (state) {
         console.log(123);
         RemoteState = true;
@@ -402,7 +401,6 @@ function PublishTopicSaveParam() {
     var SaveParam = new ROSLIB.Message({
         data: 1
     });
-
     if (CheckIP[0] == 1)
         SaveParam1.publish(SaveParam);
     if (CheckIP[1] == 1)
