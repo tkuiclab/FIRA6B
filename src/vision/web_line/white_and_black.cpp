@@ -48,6 +48,7 @@ InterfaceProc::InterfaceProc()
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/WhiteRealDis",1);
     black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/BlackRealDis",1);
+
     frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );
 } 
 InterfaceProc::~InterfaceProc()
