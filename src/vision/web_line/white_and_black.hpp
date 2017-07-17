@@ -42,12 +42,13 @@ private:
   ros::Publisher black_pub;
   ros::Subscriber s1;
   cv::Mat *frame;
+  cv::Mat *frame2;
 
 
   std_msgs::Int32MultiArray WhiteRealDis;
   std_msgs::Int32MultiArray BlackRealDis;
 
- // deque<double> WhiteDis;
+// deque<double> WhiteDis;
   //deque<double> BlackDis;
 
   double WhiteDis;
@@ -56,9 +57,11 @@ private:
   vector<double> Angle_cos;
   vector<int>whiteItem_pixel;
   vector<int>blackItem_pixel;
+  void White_Line(const cv::Mat iframe);
+  void Black_Line(const cv::Mat iframe);
 
-  cv::Mat White_Line(const cv::Mat iframe);
-  cv::Mat Black_Line(const cv::Mat iframe);
+  //cv::Mat White_Line(const cv::Mat iframe);
+  //cv::Mat Black_Line(const cv::Mat iframe);
 public:
   InterfaceProc();
   ~InterfaceProc();
