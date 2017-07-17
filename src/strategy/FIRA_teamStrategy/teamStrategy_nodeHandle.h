@@ -27,18 +27,22 @@
 #include "geometry_msgs/Twist.h"
 #include "nav_msgs/Odometry.h"
 #include "gazebo_msgs/ModelStates.h"
+#include "vision/Object.h"
 /*****************************************************************************
  ** Define
  *****************************************************************************/
 #define Ball_Topic_Name "/FIRA/Strategy/WorldMap/soccer"
 #define GameState_Topic "/FIRA/GameState"
+#define IsSimulator_Topic "/FIRA/IsSimulator"
 
 //RobotNumber
 #define RobotNumber_Topic "/FIRA/RobotNumber"
 #define TeamColor_Topic "/FIRA/TeamColor"
+
 //robot prefix
 #define Robot_Topic_Prefix "/FIRA/R"
 #define RobotOpt_Topic_Prefix "/FIRA_Opt/R"
+#define Vision_Topic "/vision/object"
 
 //robot suffix
 #define Robot_Position_Topic_Suffix "/Strategy/WorldMap/RobotPos"
@@ -79,6 +83,7 @@ public:
     void pubOrder(int *msg){
         sendOrder = *msg;
     }
+    //BlackObject
     void this_robot_info_publish(int rolearray){
 
         double angle_dr = global_env->home[rolearray].goal.angle;
@@ -140,37 +145,32 @@ public:
     int *blackobject;
     void loadParam(ros::NodeHandle *n);
     int* getBlackObject(){return blackobject;}
+    
     ros::NodeHandle* getNodeHandle(){return n;}
     
 protected:
     void ros_comms_init();
     
 private:
-    
-    Environment *global_env;
+    std::string model_array[11];
     bool opponent;
     bool run_one = false;
     
+    Environment *global_env;
     void Transfer(int);
     
-    std::string model_array[11];
+
     ros::NodeHandle *n;
-
-    int sendOrder;
-
-    ros::Subscriber GameState;
     long gamestate;
-
-    //RobotNumber
-    ros::Subscriber RobotNumber;
-    ros::Subscriber TeamColor;
-    long robotnumber;
+    int  issimulator;
+    int  sendOrder;
 
     //gazebo_ModelStates subscriber
     ros::Subscriber Gazebo_Model_Name_sub;
+
     //ball subscriber
     ros::Subscriber ball_sub;
-    
+
     //robot subscriber
     ros::Subscriber robot_1_pos_sub  ;
     ros::Subscriber robot_2_pos_sub  ;
@@ -179,9 +179,17 @@ private:
     ros::Subscriber robotOpt_2_pos_sub  ;
     ros::Subscriber robotOpt_3_pos_sub  ;
 
+    ros::Subscriber GameState;
+    ros::Subscriber TeamColor;
     ros::Subscriber Vision;
+    ros::Subscriber IsSimulator;
     ros::Subscriber Vision_Two_point;
     ros::Subscriber BlackObject;
+
+    //RobotNumber
+    ros::Subscriber RobotNumber;
+
+    long robotnumber;
     
     //robot publisher
     //no robot_1_role_pub, because robot_1 is always goal keeper
@@ -194,6 +202,7 @@ private:
     std::vector<double> Distance_Settings;
     std::vector<double> Chase_Strategy;
     /// load param end
+
     void  another_robot_info(const std_msgs::Float32MultiArray::ConstPtr &msg){
 
         global_env->AnotherRobotNumber=msg->data[0];//another robot number
@@ -209,7 +218,6 @@ private:
 //        printf("msg->data[3]=%f\n",msg->data[3]);
 //        printf("msg->data[3]=%f\n",msg->data[4]);
     }
-
     void find_gazebo_model_name_fun(const gazebo_msgs::ModelStates::ConstPtr &msg){//----------------------------------printf here is ok, but printf next row will crash if i open over one robot map
         
         if(run_one) return;
@@ -330,22 +338,23 @@ private:
         double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
         global_env->opponent[2].rotation = yaw;
     }
+    
     void subVision(const vision::Object::ConstPtr &msg){
         double ball_distance,yellow_distance,blue_distance;
-
+//        printf("robot_number=%d\n",global_env->RobotNumber);
         yellow_distance = msg->yellow_dis;
         blue_distance = msg->blue_dis;
         if(global_env->teamcolor == "Blue"){
             global_env->home[global_env->RobotNumber].op_goal.distance= blue_distance/100;
-            //global_env->home[global_env->RobotNumber].op_goal.angle = msg->blue_ang;
+            global_env->home[global_env->RobotNumber].op_goal.angle = msg->blue_ang;
             global_env->home[global_env->RobotNumber].goal.distance = yellow_distance/100;
-            //global_env->home[global_env->RobotNumber].goal.angle = msg->yellow_ang;
+            global_env->home[global_env->RobotNumber].goal.angle = msg->yellow_ang;
 
         }else if(global_env->teamcolor == "Yellow"){
             global_env->home[global_env->RobotNumber].op_goal.distance= yellow_distance/100;
-            //global_env->home[global_env->RobotNumber].op_goal.angle = msg->yellow_ang;
+            global_env->home[global_env->RobotNumber].op_goal.angle = msg->yellow_ang;
             global_env->home[global_env->RobotNumber].goal.distance= blue_distance/100;
-            //global_env->home[global_env->RobotNumber].goal.angle = msg->blue_ang;
+            global_env->home[global_env->RobotNumber].goal.angle = msg->blue_ang;
         }
 
        ball_distance = msg->ball_dis;
@@ -441,8 +450,8 @@ private:
             global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
             global_env->home[global_env->RobotNumber].op_goal_edge.angle_1 = ang3;
             global_env->home[global_env->RobotNumber].op_goal_edge.angle_2 = ang4;
-            global_env->home[global_env->RobotNumber].goal.angle = goal_angle;
-            global_env->home[global_env->RobotNumber].op_goal.angle = op_goal_angle;
+           // global_env->home[global_env->RobotNumber].goal.angle = goal_angle;
+            //global_env->home[global_env->RobotNumber].op_goal.angle = op_goal_angle;
 //            printf("NEW angle_dr = %f\n",goal_angle);
 //            printf("NEW op_angle_dr = %f\n",op_goal_angle);
 
@@ -534,8 +543,8 @@ private:
             global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
             global_env->home[global_env->RobotNumber].op_goal_edge.angle_1 = ang3;
             global_env->home[global_env->RobotNumber].op_goal_edge.angle_2 = ang4;
-            global_env->home[global_env->RobotNumber].goal.angle = goal_angle;
-            global_env->home[global_env->RobotNumber].op_goal.angle = op_goal_angle;
+           // global_env->home[global_env->RobotNumber].goal.angle = goal_angle;
+           // global_env->home[global_env->RobotNumber].op_goal.angle = op_goal_angle;
 //            printf("NEW angle_dr = %f\n",goal_angle);
 //            printf("NEW op_angle_dr = %f\n",op_goal_angle);
 
@@ -565,6 +574,27 @@ private:
      if(global_env->blackangle[0] > 180){
         global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
      }
+    }
+    void subIsSimulator(const std_msgs::Int32::ConstPtr &msg){
+        issimulator=msg->data;
+        if(issimulator==1){
+            //Use_topic_gazebo_msgs_Model_States to get model position
+            ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::ball_sub_fun,this);
+
+            //robot subscriber
+            robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robot_1_pos_fun,this);
+            robot_2_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robot_2_pos_fun,this);
+            robot_3_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robot_3_pos_fun,this);
+
+//            robotOpt_1_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robotOpt_1_pos_fun,this);
+//            robotOpt_2_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robotOpt_2_pos_fun,this);
+//            robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&TeamStrategy_nodeHandle::robotOpt_3_pos_fun,this);
+        }
+        else{
+            //contact image
+            Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&TeamStrategy_nodeHandle::subVision,this);
+        }
+
     }
 };
 

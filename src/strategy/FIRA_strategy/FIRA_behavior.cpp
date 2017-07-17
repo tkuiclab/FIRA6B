@@ -30,10 +30,10 @@ void FIRA_behavior_class::StateInitAttack(int r_number){
         double angle_dr = env.home[r_number].goal.angle;
         double alpha = angle_dr-angle_br;
         /// ========== Init End ==========
-        if(distance_br>Chase_Strategy[4])
-            state_attack = state_Chase;
-        else
+        if(distance_br<=Chase_Strategy[4] && angle_br<=Chase_Strategy[3])
             state_attack = state_Attack;
+        else
+            state_attack = state_Chase;
 }
 void FIRA_behavior_class::StateChase(int r_number){
     /// ========== Init Begin ==========
@@ -136,9 +136,9 @@ void FIRA_behavior_class::StateAttack(int r_number){
             counter_test = 0;
         }
     }else counter_test = 0;
-//    if(distance_dr < distance_attack /*&& fabs(alpha)<=10*/ && distance_dr >= -100) {
-//        state_attack=state_ZoneAttack;
-//    }
+   if(distance_dr < distance_attack /*&& fabs(alpha)<=10*/ && distance_dr >= -100) {
+       state_attack=state_ZoneAttack;
+   }
 }
 void FIRA_behavior_class::StateType_UChase(int r_number){
     /// ========== Init Begin ==========
@@ -179,8 +179,8 @@ void FIRA_behavior_class::StateSideSpeedUp(int r_number){
     double angle_dr = env.home[r_number].goal.angle;
     double alpha = angle_dr-angle_br;
     /// ========== Init End ==========
-    double angle_side=Side_Speed_UP[0];//10
-    double const distance_side=Side_Speed_UP[1];//0.45
+    double angle_side=Side_Speed_Up[0];//10
+    double const distance_side=Side_Speed_Up[1];//0.45
     ////========== normalization angle to -180~180 ==========
       if(alpha>180)
           alpha-=360;
@@ -267,12 +267,12 @@ void FIRA_behavior_class::readroleAry(int robotIndex,int role){
                 break;
             case Role_AvoidBarrier:
                 behavior_AvoidBarrier(robotIndex);
-//            case Role_PenaltyKick:
-//                strategy_PenaltyKick(robotIndex);
-//                break;
-//            case Role_ThrowIn:
-//                strategy_ThrowIn(robotIndex);
-//                break;
+            case Role_PenaltyKick:
+                behavior_PenaltyKick(robotIndex);
+                break;
+            case Role_ThrowIn:
+                behavior_ThrowIn(robotIndex);
+                break;
             case Role_CornerKick:
                 if(EscapeCornerKick[robotIndex]){
                     behavior_Attack(robotIndex);
@@ -293,7 +293,7 @@ void FIRA_behavior_class::readroleAry(int robotIndex,int role){
             case Role_NewSupport:
                    behavior_NewSupport(robotIndex);
                    break;
-        }
+            }
 }
 //###################################################//
 //                                                   //
@@ -318,12 +318,12 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         if(run_onetime == 0)
         run_onetime = 1;
 
-        int chaseCase = StrategySelection[0];
-        int SchaseCase = StrategySelection[1];
-        int attackCase = StrategySelection[2];
-        int SattackCase = StrategySelection[3];
-        int DattackCase = StrategySelection[4];
-        int ShootCase = StrategySelection[5];
+        int chaseCase = Strategy_Selection[0];
+        int SchaseCase = Strategy_Selection[1];
+        int attackCase = Strategy_Selection[2];
+        int SattackCase = Strategy_Selection[3];
+        int DattackCase = Strategy_Selection[4];
+        int ShootCase = Strategy_Selection[5];
 
         double rushDistance = TypeS_Attack[2];
 
@@ -371,6 +371,7 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 break;
             case state_ZoneAttack:
                 actionAry[robotIndex] = action_Zone_Attack;
+//                state_attack[robotIndex] = state_Init;
                 StateZoneAttack(robotIndex);
                 ROS_INFO("Zone_Attack\n");
                 break;
@@ -389,6 +390,12 @@ void FIRA_behavior_class::behavior_Halt(int robotIndex){
 }
 void FIRA_behavior_class::behavior_AvoidBarrier(int robotIndex){
     actionAry[robotIndex] = action_AvoidBarrier;
+}
+void FIRA_behavior_class::behavior_PenaltyKick(int robotIndex){
+    actionAry[robotIndex] = action_PenaltyKick;
+}
+void FIRA_behavior_class::behavior_ThrowIn(int robotIndex){
+    actionAry[robotIndex] = action_ThrowIn;
 }
 void FIRA_behavior_class::behavior_CornerKick(int robotIndex){
         state_cornerkick = state_CornerKick;
@@ -574,6 +581,7 @@ void FIRA_behavior_class::behavior_Test3(int robotIndex){
 }
 void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
 
+
     int r_number=robotIndex;
     double distance_br = env.home[r_number].ball.distance;
     double distance_dr = env.home[r_number].goal.distance;
@@ -653,12 +661,6 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
             printf("action_Halt\n");
             actionAry[robotIndex] = action_Halt;
         }
-        printf("env.R1OrderR2=%d\n",env.AnotherRobotNumber);
-        printf("env.R1OrderR2=%f\n",env.AnotherBallDistance);
-        printf("env.R1OrderR2=%d\n",env.AnotherGetBall);
-        printf("env.R1OrderR2=%f\n",env.AnotherGoalDistance);
-        printf("env.R1OrderR2=%d\n",env.R1OrderR2);
-
 
 }
 //###################################################//
@@ -682,7 +684,7 @@ void FIRA_behavior_class::loadParam(ros::NodeHandle *n){
 //            std::cout<< "param Corner_Kick["<< i << "]=" << Corner_Kick[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
     }
-    if(n->getParam("/FIRA_Behavior/Side_Speed_UP", Side_Speed_UP)){
+    if(n->getParam("/FIRA_Behavior/Side_Speed_UP", Side_Speed_Up)){
 //        for(int i=0;i<2;i++)
 //            std::cout<< "param Side_Speed_UP["<< i << "]=" << Side_Speed_UP[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
@@ -702,7 +704,7 @@ void FIRA_behavior_class::loadParam(ros::NodeHandle *n){
 //            std::cout<< "param Zone_Attack["<< i << "]=" << Zone_Attack[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
     }
-    if(n->getParam("/StrategySelection", StrategySelection)){
+    if(n->getParam("/StrategySelection", Strategy_Selection)){
 
     }
 }

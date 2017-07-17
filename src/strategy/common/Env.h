@@ -139,12 +139,12 @@ typedef struct
     //long whosBall;
     //void *userData;
     Goal yellow, blue;
+    int SaveParam;
     int AnotherGetBall;
     double AnotherBallDistance;
     int AnotherRobotNumber;
     double AnotherGoalDistance;
     int R1OrderR2;
-
 } Environment;
 //static Environment global_env;
 
@@ -161,7 +161,6 @@ typedef struct
 #define half_robot 0.12
 
 #define SIGN(A) ( (A)>=0?1:-1)
-
 #define speed_constant 2
 #define speed_limit 0.01
 #define yaw_speed_limit 1

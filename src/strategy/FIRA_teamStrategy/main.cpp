@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     mNodeHandle.setOpponent(isOpponent);
     mNodeHandle.on_init();
         
-    ros::Rate loop_rate(30);
+    ros::Rate loop_rate(20);
         
     //teamStrategy init
     FIRA_teamStrategy_class mteam;
@@ -97,13 +97,12 @@ int main(int argc, char **argv)
         mteam.setEnv(*global_env);
         mteam.teamStrategy();
         roleAry = mteam.getRoleAry();
-        sendOrder =mteam.getOrder();
         mNodeHandle.pubRole(roleAry);
         mNodeHandle.pubOrder(sendOrder);
         mNodeHandle.this_robot_info_publish(global_env->RobotNumber);
-        
+
         ros::spinOnce();
-        loop_rate.sleep();
+//        loop_rate.sleep();
     }
     
     ros::shutdown();

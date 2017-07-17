@@ -5,7 +5,9 @@
 Strategy_nodeHandle::
 Strategy_nodeHandle(int argc, char** argv):
     BaseNode(argc,argv,Node_Name)
-{
+{   
+    global_env = new Environment;
+    global_env->SaveParam = 0;
     roleAry[0] = Role_Goalkeeper;
 }
 
@@ -61,6 +63,8 @@ void Strategy_nodeHandle::ros_comms_init(){
     BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
     Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1000,&Strategy_nodeHandle::subVision_Two_point,this);
 
+
+    SAVEPARAM = n->subscribe<std_msgs::Int32>(SAVEPARAM_TOPIC,1000,&Strategy_nodeHandle::getSaveParam,this);
     IsSimulator = false;
 }
 
@@ -124,9 +128,9 @@ void Strategy_nodeHandle::Transfer(int r_number){
     }else if(op_goal_angle < -180){
         op_goal_angle = op_goal_angle + 360;
     }
-    //global_env->home[r_number].goal.angle = goal_angle; // angle between robot to our attacking goal and robot's head direction
+    global_env->home[r_number].goal.angle = goal_angle; // angle between robot to our attacking goal and robot's head direction
     global_env->home[r_number].ball.angle = ball_angle; // angle between robot to the ball and robot's head direction
-    //global_env->home[r_number].op_goal.angle = op_goal_angle;// angle between robot to opponent's attacking goal and robot's head direction
+    global_env->home[r_number].op_goal.angle = op_goal_angle;// angle between robot to opponent's attacking goal and robot's head direction
 
 }
 void Strategy_nodeHandle::rotateXY(double rotate,double inX,double inY,double &newX,double &newY){
@@ -183,7 +187,6 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
         if(VTdis_min>VTdis_max){
             VTdis_min=0;
         }
-        //printf("VTdis_min=%f\n",VTdis_min);
     }
     double VTdis;
     double Tangle_max = SPlanning_Velocity[4];// 20
@@ -227,7 +230,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
 //                                                   //
 //###################################################//
 void Strategy_nodeHandle::pubGrpSpeed(){
-    
+
     
     if(IsSimulator==true){
         ////--------------------speed test----------------
@@ -296,12 +299,7 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
     }
     if(n->getParam("/FIRA/IsSimulator",IsSimulator)){
         // global_env->issimulator = IsSimulator;
-        // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
-    }
-    if(n->getParam("/FIRA_Behavior/Chase_Strategy", Chase_Strategy)){
-    //        for(int i=0;i<5;i++)
-    //            std::cout<< "param Chase_Strategy["<< i << "]=" << Chase_Strategy[i] << std::endl;
-    //    std::cout << "====================================" << std::endl;
+//         std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
 }
 

@@ -14,10 +14,10 @@ private:
     int mTeam;
     int roleAry[PLAYERS_PER_SIDE];
     int send_order;
-    //end  ---simulator---
-    double vecAngle(Vector2d a,Vector2d b);
     ros::Subscriber TeamColor;
     std::vector<double> Chase_Strategy;
+    //end  ---simulator---
+    double vecAngle(Vector2d a,Vector2d b);
 public:
     //start---simulator---
     void setOpponent(bool iBool){opponent = iBool;}
