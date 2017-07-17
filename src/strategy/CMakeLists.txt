@@ -48,6 +48,7 @@ foreach(subdir
     common
     FIRA_strategy
     FIRA_teamStrategy
+    Localization_Challange
     )
   add_subdirectory(${subdir})
 endforeach()

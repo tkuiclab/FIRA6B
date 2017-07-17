@@ -80,18 +80,7 @@ void Client::odom_tf_pub(){
     odom.header.stamp = current_time;
     odom.header.frame_id = "odom";
     odom.child_frame_id = "base_link";
-    //  //set the position
-    // odom.pose.pose.position.x = map_x;
-    // odom.pose.pose.position.y = map_y;
-    // odom.pose.pose.position.z = 0;
-    // //set the velocity
-    // odom.twist.twist.linear.x = 0;
-    // odom.twist.twist.linear.y = 0;
-    // odom.twist.twist.angular.z = imu3d;
-    // odom.twist.twist.angular.z = 0;
-    // std::cout << "o_x=" << FB_x << "\to_y=" << FB_y << std::endl;
     std::cout << "x=" << map_x << "\ty=" << map_y << "\tyaw=" << imu3d << std::endl;
-    // Odom_pub.publish(odom);
 }
 void Client::initialpose_pub(){
     ros::Time current_time = ros::Time::now();  

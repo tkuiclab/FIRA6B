@@ -20,7 +20,6 @@ int main(int argc, char **argv){
         // imgNode.map_pub();
         mNodeHandle.whiteline_pub();
         mNodeHandle.odom_tf_pub();
-        // printf("here\n");
         // mNodeHandle.initialpose_pub();
         loop_rate.sleep();
     }
