@@ -16,11 +16,11 @@ using namespace std;
 namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
-//std::string visionpath = ros::package::getPath("vision");
-std::string visionpath = ros::package::getPath("fira_launch");
+std::string visionpath = ros::package::getPath("vision");
+//std::string visionpath = ros::package::getPath("fira_launch");
 
-std::string parameterpath = "/default_config/vision_better.yaml";
-//std::string parameterpath = "/config/Parameter.yaml";
+//std::string parameterpath = "/default_config/vision_better.yaml";
+std::string parameterpath = "/config/Parameter.yaml";
 std::string param = visionpath + parameterpath; 
 const char *parampath = param.c_str();
 
@@ -270,8 +270,8 @@ InterfaceProc::InterfaceProc()
   ros::NodeHandle n("~");	
   Parameter_getting(1);	
   init_data();
-  image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
-  //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
+  //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+  image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
   image_pub_threshold_ = it_.advertise("/camera/image", 1);//http://localhost:8080/stream?topic=/camera/image webfor /camera/image
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
@@ -341,103 +341,6 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     Angle_sin.push_back(sin(ang_PI));
     Angle_cos.push_back(cos(ang_PI));
   }
-/*
-  //cv::imshow(OPENCV_WINDOW, *frame);
-  // Image Output
-  //cv::imshow(OPENCV_WINDOW, *ColorModels);
-  //sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "mono16", *thresholdImg16).toImageMsg();
-  //image_pub_threshold_.publish(thresholdMsg);
-  cv::waitKey(3);
-  //cv::flip(cv_ptr->image, Main_frame, 1);
-  //Main_frame=cv_ptr->image.clone();
-  Obstaclemap = Mat(Size(Main_frame.cols,Main_frame.rows),CV_8UC3,Scalar(0,0,0));
-
-  object_Item_reset(Red_Item);
-  object_Item_reset(Blue_Item);
-  object_Item_reset(Yellow_Item);
-
-  objectdet_change(Findmap,REDITEM,Red_Item);
-  objectdet_change(Findmap,BLUEITEM,Blue_Item);
-  objectdet_change(Findmap,YELLOWITEM,Yellow_Item);
-
-  Obstacle_Item = new object_Item [5];
-
-  object_Item_reset(Obstacle_Item[0]);
-  object_Item_reset(Obstacle_Item[1]);
-  object_Item_reset(Obstacle_Item[2]);
-  object_Item_reset(Obstacle_Item[3]);
-  object_Item_reset(Obstacle_Item[4]);
-  creat_Obstclemap(Obstaclemap,OBSTACLEITEM);
-  creat_FIRA_map(Obstaclemap,FIRA_map);	
-  objectdet_Obstacle(Findmap,OBSTACLEITEM,Obstacle_Item);
-
-  vision::Object object_msg;
-
-  if(Red_Item.distance!=0){
-    object_msg.ball_x = Red_Item.x-CenterXMsg;
-    object_msg.ball_y = 0-(Red_Item.y-CenterYMsg);
-    object_msg.ball_LR = Red_Item.LR;
-    object_msg.ball_ang = Red_Item.angle;
-    object_msg.ball_dis = Omni_distance(Red_Item.distance);
-  }else{
-    object_msg.ball_ang = 999;
-    object_msg.ball_dis = 999;
-  }
-
-  if(Blue_Item.distance!=0){
-    object_msg.blue_x = Blue_Item.x-CenterXMsg;
-    object_msg.blue_y = 0-(Blue_Item.y-CenterYMsg);
-    object_msg.blue_LR = Blue_Item.LR;
-    object_msg.blue_ang = Blue_Item.angle;
-    object_msg.blue_dis = Omni_distance(Blue_Item.distance);
-  }else{
-    object_msg.blue_ang = 999;
-    object_msg.blue_dis = 999;
-  }
-
-  if(Yellow_Item.distance!=0){
-    object_msg.yellow_x = Yellow_Item.x-CenterXMsg;
-    object_msg.yellow_y = 0-(Yellow_Item.y-CenterYMsg);
-    object_msg.yellow_LR = Yellow_Item.LR;
-    object_msg.yellow_ang = Yellow_Item.angle;
-    object_msg.yellow_dis = Omni_distance(Yellow_Item.distance);
-  }else{
-    object_msg.yellow_ang = 999;
-    object_msg.yellow_dis = 999;
-  }
-/////////////////////FPS///////////////////////
-  frame_counter++;
-  static long int StartTime = time(NULL);//ros::Time::now().toNSec();
-  static long int EndTime;
-  static long double FrameRate = 0.0;
-
-//time(NULL);
-  if(frame_counter == 17){
-    EndTime = time(NULL);//ros::Time::now().toNSec();
-    dt = (EndTime - StartTime)*10000/frame_counter;
-    StartTime = EndTime;
-    EndTime = 0;
-    if( dt!=0 )
-    {
-      //FrameRate = ( 1000000000.0 / dt ) * ALPHA + FrameRate * ( 1.0 - ALPHA );
-      FrameRate = ( 10000.0 / dt ) + FrameRate * ( 1.0 - ALPHA );
-      //cout << "FPS: " << FrameRate << endl;
-    }
-    frame_counter = 0;
-    //dt = 0;
-  }
-  object_msg.fps = FrameRate;
-///////////////////////////////////////////////
-  Findmap.release();
-  FIRA_map.release();
-  Obstaclemap.release();
-  Erodemap.release();
-  Dilatemap.release();
-   //object_pub.publish(object_msg);
-  topic_counter++;
-  if(topic_counter==10){
-  object_pub.publish(object_msg);
-  topic_counter=0;}*/
 
 //////////////////////處理影像開始//////////////////////////////////////
   switch(buttonmsg){
@@ -475,10 +378,6 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 
       break;
   }
-  /*if(buttonmsg!=5||buttonmsg!=6){
-  White_Line(*frame_white);
-  Black_Line(*frame_black);
-  }*/
   setMouseCallback(OPENCV_WINDOW, onMouse,NULL);
 
   if(onclick==1){
@@ -673,88 +572,6 @@ cv::Mat InterfaceProc::ColorModel(const cv::Mat iframe)
     }
   }
 
-/*
-  //侵蝕
-  Mat Erosionomg(Size(oframe.cols,oframe.rows),CV_8UC3);
-  for(int i=0;i<oframe.rows*oframe.cols*3;i++)Erosionomg.data[i] = oframe.data[i];
-    for(int i=1;i<Erosionomg.rows-1;i++){
-      for(int j=1;j<Erosionomg.cols-1;j++){
-        if (Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j-1)*3)+0] == 0
-          &&Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j+0)*3)+0] == 0
-          &&Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j+1)*3)+0] == 0
-          &&Erosionomg.data[((i+0)*Erosionomg.cols*3)+((j-1)*3)+0] == 0
-          &&Erosionomg.data[((i+0)*Erosionomg.cols*3)+((j+1)*3)+0] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j-1)*3)+0] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j+0)*3)+0] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j+1)*3)+0] == 0
-
-          &&Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j-1)*3)+1] == 0
-          &&Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j+0)*3)+1] == 0
-          &&Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j+1)*3)+1] == 0
-          &&Erosionomg.data[((i+0)*Erosionomg.cols*3)+((j-1)*3)+1] == 0
-          &&Erosionomg.data[((i+0)*Erosionomg.cols*3)+((j+1)*3)+1] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j-1)*3)+1] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j+0)*3)+1] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j+1)*3)+1] == 0
-
-          &&Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j-1)*3)+2] == 0
-          &&Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j+0)*3)+2] == 0
-          &&Erosionomg.data[((i-1)*Erosionomg.cols*3)+((j+1)*3)+2] == 0
-          &&Erosionomg.data[((i+0)*Erosionomg.cols*3)+((j-1)*3)+2] == 0
-          &&Erosionomg.data[((i+0)*Erosionomg.cols*3)+((j+1)*3)+2] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j-1)*3)+2] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j+0)*3)+2] == 0
-          &&Erosionomg.data[((i+1)*Erosionomg.cols*3)+((j+1)*3)+2] == 0)
-        {
-          oframe.data[(i*oframe.cols*3)+(j*3)+0] = 0;
-          oframe.data[(i*oframe.cols*3)+(j*3)+1] = 0;
-          oframe.data[(i*oframe.cols*3)+(j*3)+2] = 0;		
-        }else{
-      }
-    }
-  }
-
-
-  //膨脹
-  Mat Erosionomg2(Size(oframe.cols,oframe.rows),CV_8UC3);
-  for(int i=0;i<oframe.rows*oframe.cols*3;i++)Erosionomg2.data[i] = oframe.data[i];
-    for(int i=1;i<Erosionomg2.rows-1;i++){
-      for(int j=1;j<Erosionomg2.cols-1;j++){
-        if (Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j-1)*3)+0] == 0
-          ||Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j+0)*3)+0] == 0
-          ||Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j+1)*3)+0] == 0
-          ||Erosionomg2.data[((i+0)*Erosionomg2.cols*3)+((j-1)*3)+0] == 0
-          ||Erosionomg2.data[((i+0)*Erosionomg2.cols*3)+((j+1)*3)+0] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j-1)*3)+0] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j+0)*3)+0] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j+1)*3)+0] == 0
-
-          ||Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j-1)*3)+1] == 0
-          ||Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j+0)*3)+1] == 0
-          ||Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j+1)*3)+1] == 0
-          ||Erosionomg2.data[((i+0)*Erosionomg2.cols*3)+((j-1)*3)+1] == 0
-          ||Erosionomg2.data[((i+0)*Erosionomg2.cols*3)+((j+1)*3)+1] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j-1)*3)+1] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j+0)*3)+1] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j+1)*3)+1] == 0
-
-          ||Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j-1)*3)+2] == 0
-          ||Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j+0)*3)+2] == 0
-          ||Erosionomg2.data[((i-1)*Erosionomg2.cols*3)+((j+1)*3)+2] == 0
-          ||Erosionomg2.data[((i+0)*Erosionomg2.cols*3)+((j-1)*3)+2] == 0
-          ||Erosionomg2.data[((i+0)*Erosionomg2.cols*3)+((j+1)*3)+2] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j-1)*3)+2] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j+0)*3)+2] == 0
-          ||Erosionomg2.data[((i+1)*Erosionomg2.cols*3)+((j+1)*3)+2] == 0)
-        {
-          oframe.data[(i*oframe.cols*3)+(j*3)+0] = 181;
-          oframe.data[(i*oframe.cols*3)+(j*3)+1] = 186;
-          oframe.data[(i*oframe.cols*3)+(j*3)+2] = 10;
-        }else{
-      }
-    }
-  }
-*/
   return oframe;
 }
 
@@ -903,16 +720,15 @@ cv::Mat InterfaceProc::White_Line(const cv::Mat iframe)
       }
     }
   }
-
-
-  for(double angle = 0; angle < 360; angle = angle + WhiteAngleMsg){
+  for(double angle = FrontMsg; angle < FrontMsg+360; angle = angle + WhiteAngleMsg){
+    if(angle>360)angle-=360;
     for(int r = InnerMsg; r <= OuterMsg; r++){
       int x = r*cos(angle*PI/180), y = r*sin(angle*PI/180);
       if( oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+0] == 255
         &&oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+1] == 255
         &&oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+2] == 255){
         break;
-      }else{
+        }else{
         oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+0] = 0;
         oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+1] = 0;
         oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+2] = 255;
@@ -952,7 +768,8 @@ cv::Mat InterfaceProc::Black_Line(const cv::Mat iframe)
       }
     }
   }
-  for(double angle = 0; angle < 360; angle = angle + BlackAngleMsg){
+  for(double angle = FrontMsg; angle < FrontMsg+360; angle = angle + BlackAngleMsg){
+    if(angle>360)angle-=360;
     for(int r = InnerMsg; r <= OuterMsg; r++){
       int x = r*cos(angle*PI/180), y = r*sin(angle*PI/180);
       if( oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x)*3+0] == 0

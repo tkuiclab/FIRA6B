@@ -1,8 +1,8 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Camera_high: 65, Center_X: 251, Center_Y: 268, Front: 273, Inner: 39, Outer: 255,
-    X: 308, Y: 266}
+  Center: {Camera_high: 650, Center_X: 293, Center_Y: 268, Front: 273, Inner: 39,
+    Outer: 281, X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -24,8 +24,8 @@ FIRA:
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellow: [0, 109, 31, 100, 45, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-    black: {angle: 96, gray: 72}
-    white: {angle: 50, gray: 183}
+    black: {angle: 120, gray: 72}
+    white: {angle: 120, gray: 183}
   Parameterbutton: 5
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
@@ -1573,9 +1573,11 @@ rosdistro: 'indigo
   '
 roslaunch:
   uris: {host_angus_aspire_5742g__48051: 'http://angus-Aspire-5742G:48051/', host_angus_aspire_5742g__55935: 'http://angus-Aspire-5742G:55935/',
+    host_iclab2_to_be_filled_by_o_e_m__32850: 'http://iclab2-To-be-filled-by-O-E-M:32850/',
     host_iclab2_to_be_filled_by_o_e_m__33648: 'http://iclab2-To-be-filled-by-O-E-M:33648/',
     host_iclab2_to_be_filled_by_o_e_m__35456: 'http://iclab2-To-be-filled-by-O-E-M:35456/',
     host_iclab2_to_be_filled_by_o_e_m__36463: 'http://iclab2-To-be-filled-by-O-E-M:36463/',
+    host_iclab2_to_be_filled_by_o_e_m__36606: 'http://iclab2-To-be-filled-by-O-E-M:36606/',
     host_iclab2_to_be_filled_by_o_e_m__37110: 'http://iclab2-To-be-filled-by-O-E-M:37110/',
     host_iclab2_to_be_filled_by_o_e_m__38996: 'http://iclab2-To-be-filled-by-O-E-M:38996/',
     host_iclab2_to_be_filled_by_o_e_m__39169: 'http://iclab2-To-be-filled-by-O-E-M:39169/',

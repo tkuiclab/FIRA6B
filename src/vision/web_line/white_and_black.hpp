@@ -56,6 +56,9 @@ private:
   vector<double> Angle_cos;
   vector<int>whiteItem_pixel;
   vector<int>blackItem_pixel;
+
+  cv::Mat White_Line(const cv::Mat iframe);
+  cv::Mat Black_Line(const cv::Mat iframe);
 public:
   InterfaceProc();
   ~InterfaceProc();
