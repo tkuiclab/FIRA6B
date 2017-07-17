@@ -795,7 +795,6 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   double yellow_angle_max;
   double yellow_angle_min;
   int x[4],y[4];
-
   if(color = BLUEITEM){
       
       	blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
@@ -821,7 +820,6 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
 	if(Blue_Item.dis_min && Yellow_Item.dis_min){
        	   Two_point_pub.publish(Two_point_msg);
 	}
-
 
 
 
