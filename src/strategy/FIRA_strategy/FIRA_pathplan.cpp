@@ -223,7 +223,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
         }
     }
 
-    if(opgoal_edge_dis < 2.3 ){
+    if(opgoal_edge_dis < 2.29){
         x = 2*(x + speed *sin(opgoal_middle_angle*deg2rad));
         y = 2*(y - speed *cos(opgoal_middle_angle*deg2rad));
     }
@@ -270,7 +270,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
         rotAngle = opgoal_edge_angle1/2;
     }
 
-    if(opgoal_edge_dis < 2.3 ){
+    if(opgoal_edge_dis < 2.25 ){
         x = x + max_speed *sin(opgoal_middle_angle*deg2rad);
         y = y - max_speed *cos(opgoal_middle_angle*deg2rad);
     }
