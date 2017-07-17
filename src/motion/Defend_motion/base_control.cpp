@@ -195,7 +195,7 @@ void Base_Control::mcssl_send2motor()
 	cssl_putchar(serial, *(this->base_TX->w2));
 	cssl_putchar(serial, *(this->base_TX->w3));
 	cssl_putchar(serial, *(this->base_TX->w4));
-	cssl_putchar(serial, *(this->base_TX->checksum));
+	//cssl_putchar(serial, *(this->base_TX->checksum));
 	/*cssl_putchar(serial, 0xff);
 	cssl_putchar(serial, 0xfa);
 	cssl_putchar(serial, 0);
@@ -224,25 +224,30 @@ void Base_Control::shoot_regularization()
 
 void Base_Control::speed_regularization(double w1, double w2, double w3, double w4)
 {
-	unsigned char w1_dir = (w1>0)? 0x80 : 0;
-	unsigned char w2_dir = (w2>0)? 0x80 : 0;
-	unsigned char w3_dir = (w3>0)? 0x80 : 0;
-	unsigned char w4_dir = (w4>0)? 0x80 : 0;
+	unsigned char w1_dir = (w1<0)? 0x80 : 0;
+	unsigned char w2_dir = (w2<0)? 0x80 : 0;
+	unsigned char w3_dir = (w3<0)? 0x80 : 0;
+	unsigned char w4_dir = (w4<0)? 0x80 : 0;
 
 	double w1_speed_percent = (fabs(w1)<0.1)? 0 : fabs(w1);
 	double w2_speed_percent = (fabs(w2)<0.1)? 0 : fabs(w2);
 	double w3_speed_percent = (fabs(w3)<0.1)? 0 : fabs(w3);
 	double w4_speed_percent = (fabs(w4)<0.1)? 0 : fabs(w4);
 
-	if((w1_speed_percent>0.1) && (w1_speed_percent<2))w1_speed_percent=2;
-	if((w2_speed_percent>0.1) && (w2_speed_percent<2))w2_speed_percent=2;
-	if((w3_speed_percent>0.1) && (w3_speed_percent<2))w3_speed_percent=2;
-	if((w4_speed_percent>0.1) && (w4_speed_percent<2))w4_speed_percent=2;
+	if((w1_speed_percent>0.1) && (w1_speed_percent<5))w1_speed_percent=5;
+	if((w2_speed_percent>0.1) && (w2_speed_percent<5))w2_speed_percent=5;
+	if((w3_speed_percent>0.1) && (w3_speed_percent<5))w3_speed_percent=5;
+	if((w4_speed_percent>0.1) && (w4_speed_percent<5))w4_speed_percent=5;
 
-	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.8*w1_speed_percent/100) + w1_dir) : 0;
-	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.8*w2_speed_percent/100) + w2_dir) : 0;
-	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.8*w3_speed_percent/100) + w3_dir) : 0;
-	*(this->base_TX->w4) = (w4_speed_percent>0)? (unsigned char)((127*0.8*w4_speed_percent/100) + w4_dir) : 0;
+	if((w1_speed_percent>=100))w1_speed_percent=100;
+	if((w2_speed_percent>=100))w2_speed_percent=100;
+	if((w3_speed_percent>=100))w3_speed_percent=100;
+	if((w4_speed_percent>=100))w4_speed_percent=100;
+
+	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*w1_speed_percent/100) + w1_dir) : 0x80;
+	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*w2_speed_percent/100) + w2_dir) : 0x80;
+	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*w3_speed_percent/100) + w3_dir) : 0x80;
+	*(this->base_TX->w4) = (w4_speed_percent>0)? (unsigned char)((127*w4_speed_percent/100) + w4_dir) : 0x80;
 #ifdef DEBUG
 	std::cout << "speed_regularization(DEBUG)\n";
 	std::cout << std::hex;
@@ -271,16 +276,16 @@ void Base_Control::inverseKinematics()
 	w4_speed = *(this->base_robotCMD->x_speed)*cos(m4_Angle)+*(this->base_robotCMD->y_speed)*sin(m4_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
 
 	for(int i=0;i<10;i++){
-		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed>100)||fabs(w4_speed)){
+		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed>100)||fabs(w4_speed)>100){
 			w1_speed = w1_speed*0.9;
 			w2_speed = w2_speed*0.9;
 			w3_speed = w3_speed*0.9;
 			w4_speed = w4_speed*0.9;
 		}else{
-			w1_speed = w1_speed;
-			w2_speed = w2_speed;
-			w3_speed = w3_speed;
-			w4_speed = w4_speed;
+			w1_speed = w1_speed*7/5;
+			w2_speed = w2_speed*7/5;
+			w3_speed = w3_speed*7/5;
+			w4_speed = w4_speed*7/5;
 			break;
 		}
 	}

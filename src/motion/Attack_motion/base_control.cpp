@@ -333,6 +333,9 @@ void Base_Control::speed_regularization(double w1, double w2, double w3)
 	double w1_speed_percent = (fabs(w1)<0.1)? 0 : fabs(w1);
 	double w2_speed_percent = (fabs(w2)<0.1)? 0 : fabs(w2);
 	double w3_speed_percent = (fabs(w3)<0.1)? 0 : fabs(w3);
+	if(w1_speed_percent >= 100)w1_speed_percent = 100;
+	if(w2_speed_percent >= 100)w2_speed_percent = 100;
+	if(w3_speed_percent >= 100)w3_speed_percent = 100;
 //	enable
 	this->en1 = (w1_speed_percent > 0)? 1 : 0;
 	this->en2 = (w2_speed_percent > 0)? 1 : 0;
@@ -412,28 +415,17 @@ void Base_Control::forwardKinematics()
 	double yaw=0;
 	int round=0;
 	*(this->base_robotFB->x_speed) = (*(base_RX->w1)*(-0.3333) + *(base_RX->w2)*(-0.3333) + *(base_RX->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
-	*(this->base_robotFB->y_speed) = (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
-//	*(this->base_robotFB->y_speed) = 10;	
-	yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*2*M_PI*wheel_radius/2000/26;
-/*	x = (*(base_RX->w1)*(-0.3333) + *(base_RX->w2)*(-0.3333) + *(base_RX->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
-	y = (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
-	yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*2*M_PI*wheel_radius/2000/26;
-	if(fabs(x-*(this->base_robotFB->x_speed))<0.1){
-		*(this->base_robotFB->x_speed) = x;
-	}
-	if(fabs(y-*(this->base_robotFB->y_speed))<0.1){
-		*(this->base_robotFB->y_speed) = y;
-	}*/
+    *(this->base_robotFB->y_speed)-= (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
 	yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*2*M_PI*wheel_radius/2000/26;
 	round = yaw/(2*M_PI);
-	double yaw_regular;
-	yaw_regular = (yaw - round*2*M_PI)*180/M_PI;
-	if(yaw_regular>180){
-		*(this->base_robotFB->yaw_speed) = yaw_regular-180;
-	}else if(yaw_regular<(-180)){
-		*(this->base_robotFB->yaw_speed) = yaw_regular+180;
+	double yaw_degree;
+	yaw_degree = (yaw - round*2*M_PI)*180/M_PI;
+	if(yaw_degree>180){
+		*(this->base_robotFB->yaw_speed) = yaw_degree-360;
+	}else if(yaw_degree<(-180)){
+		*(this->base_robotFB->yaw_speed) = yaw_degree+360;
 	}else{
-		*(this->base_robotFB->yaw_speed) = yaw_regular;
+		*(this->base_robotFB->yaw_speed) = yaw_degree;
 	}
 	
 }
@@ -447,7 +439,7 @@ void Base_Control::inverseKinematics()
 	w3_speed = *(this->base_robotCMD->x_speed)*cos(m3_Angle)+*(this->base_robotCMD->y_speed)*sin(m3_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
 
 	for(int i=0;i<10;i++){
-		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed>100)){
+		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed)>100){
 			w1_speed = w1_speed*0.9;
 			w2_speed = w2_speed*0.9;
 			w3_speed = w3_speed*0.9;
@@ -477,7 +469,6 @@ void Base_Control::send(robot_command* CMD)
 	this->base_robotCMD = CMD;
 	shoot_regularization();
 	inverseKinematics();
-	//speed_regularization();
 	mcssl_send2motor();
 }
 
