@@ -45,9 +45,9 @@ InterfaceProc::InterfaceProc()
 {
     ros::NodeHandle n("~");
 
-    image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
-    //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
-  s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
+    //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
+    image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
+    s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/WhiteRealDis",1);
     black_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/BlackRealDis",1);
     frame=new cv::Mat(cv::Size(FRAME_COLS, FRAME_ROWS),CV_8UC3 );
@@ -89,8 +89,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
       return;
     }
 
-    Mat frame;
-    cv::flip(cv_ptr->image, frame, 1);
+    //Mat frame;
 
     White_Line(*frame);
     Black_Line(*frame);
@@ -239,6 +238,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
       //////////////////////////////////////////////////////////
 cv::Mat InterfaceProc::White_Line(const cv::Mat iframe)
 {
+  cv::flip(iframe, iframe, 1);
   cv::Mat whiteframe(cv::Size(iframe.cols,iframe.rows), CV_8UC3);
   whiteframe=iframe;
   int white_dis;
@@ -296,10 +296,12 @@ cv::Mat InterfaceProc::White_Line(const cv::Mat iframe)
         WhiteRealDis.data.push_back(white_dis);
       }
       white_pub.publish(WhiteRealDis);
+      return iframe;
 }
 
 cv::Mat InterfaceProc::Black_Line(const cv::Mat iframe)
 {
+	  cv::flip(iframe, iframe, 1);
   cv::Mat blackframe(cv::Size(iframe.cols,iframe.rows), CV_8UC3);
   blackframe = iframe;
   int black_dis;
@@ -368,6 +370,7 @@ cv::Mat InterfaceProc::Black_Line(const cv::Mat iframe)
       }
     }
         black_pub.publish(BlackRealDis);
+ 		return iframe;
 
 }
 double InterfaceProc::Omni_distance(double pixel_dis)

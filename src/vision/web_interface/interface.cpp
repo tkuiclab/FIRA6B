@@ -16,11 +16,11 @@ using namespace std;
 namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
-std::string visionpath = ros::package::getPath("vision");
-//std::string visionpath = ros::package::getPath("fira_launch");
+//std::string visionpath = ros::package::getPath("vision");
+std::string visionpath = ros::package::getPath("fira_launch");
 
-//std::string parameterpath = "/default_config/vision_better.yaml";
-std::string parameterpath = "/config/Parameter.yaml";
+std::string parameterpath = "/default_config/vision_better.yaml";
+//std::string parameterpath = "/config/Parameter.yaml";
 std::string param = visionpath + parameterpath; 
 const char *parampath = param.c_str();
 
@@ -29,7 +29,8 @@ int mousex=-1 , mousey=-1 , onclick=0;
 void InterfaceProc::ParameterButtonCall (const vision::parameterbutton msg)
 {
   buttonmsg=msg.button;
-  std::cout<<buttonmsg<<std::endl;
+  
+
 }
 void InterfaceProc::colorcall(const vision::color msg)
 {
@@ -260,6 +261,7 @@ void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
 
   SaveButton = msg.bin;
+  Parameter_getting(1);
   //HSVmap();
 }
 
@@ -272,7 +274,8 @@ InterfaceProc::InterfaceProc()
   init_data();
   //image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
-  image_pub_threshold_ = it_.advertise("/camera/image", 1);//http://localhost:8080/stream?topic=/camera/image webfor /camera/image
+  image_pub_threshold_ = it_.advertise("/camera/image", 1);
+//http://localhost:8080/stream?topic=/camera/image webfor /camera/image
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   CenterDis_pub = nh.advertise<vision::dis>("/interface/CenterDis",1);
   //white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
@@ -334,7 +337,6 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   *outputframe = *frame;
 //////////////////////////////////////////////////////////////
   vision_path = ros::package::getPath("vision");
-  //color_map = ColorFile();
   double ang_PI;
   for(int ang=0 ; ang<360; ang++){
     ang_PI = ang*PI/180;
@@ -359,7 +361,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
       //cv::imshow(OPENCV_WINDOW, *ScanModels);
       outputframe=ScanModels;
       break;
-    case 4:
+    case 4 :
       *ColorModels =ColorModel(*frame);
       //cv::imshow(OPENCV_WINDOW, *ColorModels);
       outputframe=ColorModels;
@@ -389,6 +391,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   if(buttonmsg!=7){
   sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", *outputframe).toImageMsg();
   image_pub_threshold_.publish(thresholdMsg);
+  cout<<"test"<<endl;
   }
   cv::waitKey(3);
 }
@@ -396,6 +399,8 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 ////////////////////////////////ColorModel/////////////////////////////
 cv::Mat InterfaceProc::ColorModel(const cv::Mat iframe)
 {
+          cout<<buttonmsg<<endl; 
+
   static cv::Mat oframe(cv::Size(iframe.cols,iframe.rows), CV_8UC3);
   for (int i = 0; i < iframe.rows; i++) {
     for (int j = 0; j < iframe.cols; j++) {
