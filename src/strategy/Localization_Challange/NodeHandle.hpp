@@ -33,6 +33,7 @@ public:
     NodeHandle(int argc, char** argv);
     virtual ~NodeHandle(){}
     void setEnv(Environment*);
+    void setLocationPoint(LocationStruct*); 
     void pubSpeed(Environment*);
     void getParameter();
 protected:

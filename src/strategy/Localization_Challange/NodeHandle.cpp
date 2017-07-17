@@ -29,6 +29,9 @@ void NodeHandle::ros_comms_init(){
 void NodeHandle::setEnv(Environment *Env){
     _Env = Env;
 }
+void NodeHandle::setLocationPoint(LocationStruct *LocationPoint){
+    _Location = LocationPoint;
+}
 void NodeHandle::subVision(const vision::Object::ConstPtr &msg){
     double ball_distance;
     _Env->Robot.ball.distance = msg->ball_ang/100;
@@ -53,11 +56,11 @@ void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &m
                 _Location->MiddlePoint[i].x = 0.5*cos(_Location->MiddlePoint[i].angle*DEG2RAD);
         _Location->MiddlePoint[i].y = 0.5*sin(_Location->MiddlePoint[i].angle*DEG2RAD);
     }
-    for(int i=0;i<5;i++){
-        // std::cout << "======================================" <<std::endl;
-        std::cout << "Middle" << i << std::endl << "=========================" << std::endl <<_Location->MiddlePoint[i].x << "\t" << _Location->MiddlePoint[i].y << "\t" << _Location->MiddlePoint[i].angle << std::endl;   
-        // std::cout << "LocationPoint" << i << std::endl << "=========================" << std::endl <<_Location->LocationPoint[i].x << "\t" << _Location->LocationPoint[i].y << "\t" << _Location->LocationPoint[i].angle << std::endl;
-}
+//     for(int i=0;i<5;i++){
+//         // std::cout << "======================================" <<std::endl;
+//         std::cout << "Middle" << i << std::endl << "=========================" << std::endl <<_Location->MiddlePoint[i].x << "\t" << _Location->MiddlePoint[i].y << "\t" << _Location->MiddlePoint[i].angle << std::endl;   
+//         // std::cout << "LocationPoint" << i << std::endl << "=========================" << std::endl <<_Location->LocationPoint[i].x << "\t" << _Location->LocationPoint[i].y << "\t" << _Location->LocationPoint[i].angle << std::endl;
+// }
 }
 void NodeHandle::pubSpeed(Environment *Env){
     Transfer(Env);

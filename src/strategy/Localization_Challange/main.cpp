@@ -16,11 +16,14 @@
 int main(int argc, char **argv){
     Environment Env = InitData(Env);  // Initial new environment data
     Environment OutSpeed;
+    LocationStruct Location;
     NodeHandle nodehandle(argc,argv);    // Declare nodehandle data
     nodehandle.on_init();                // Node Initializing
     nodehandle.setEnv(&Env);             // Set nodehandle environment datad
+    nodehandle.setLocationPoint(&Location);
     Strategy strategy;                   // Declare strategy class data
     strategy.setEnv(&Env);               // Set strategy environment datad
+    strategy.setLocationPoint(&Location);
     ros::Rate loop_rate(50);
     while(ros::ok()){
         if(Env.SaveParam){               // Get parameter is restricted to parameter saving by web userinterface

@@ -33,6 +33,7 @@ public:
     virtual ~Strategy(){}
     void setEnv(Environment*);
     void GameState(int);
+    void setLocationPoint(LocationStruct*); 
     Environment getEnv(){return *_Env;}
 private:
     ///         private member          /// 
@@ -40,6 +41,7 @@ private:
     void StrategyHalt();
     void StrategyLocalization();
     int _LocationState;
+    LocationStruct *_Location;
     Environment *_Env;
 };
 #endif
