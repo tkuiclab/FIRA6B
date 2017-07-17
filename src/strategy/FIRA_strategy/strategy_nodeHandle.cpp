@@ -59,6 +59,7 @@ void Strategy_nodeHandle::ros_comms_init(){
     //contact image
     Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
     BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
+    Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1000,&Strategy_nodeHandle::subVision_Two_point,this);
 
     IsSimulator = false;
 }
@@ -123,9 +124,9 @@ void Strategy_nodeHandle::Transfer(int r_number){
     }else if(op_goal_angle < -180){
         op_goal_angle = op_goal_angle + 360;
     }
-    global_env->home[r_number].goal.angle = goal_angle; // angle between robot to our attacking goal and robot's head direction
+    //global_env->home[r_number].goal.angle = goal_angle; // angle between robot to our attacking goal and robot's head direction
     global_env->home[r_number].ball.angle = ball_angle; // angle between robot to the ball and robot's head direction
-    global_env->home[r_number].op_goal.angle = op_goal_angle;// angle between robot to opponent's attacking goal and robot's head direction
+    //global_env->home[r_number].op_goal.angle = op_goal_angle;// angle between robot to opponent's attacking goal and robot's head direction
 
 }
 void Strategy_nodeHandle::rotateXY(double rotate,double inX,double inY,double &newX,double &newY){

@@ -71,6 +71,12 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_LeftRightMove            32
 #define action_inv_LeftRightMove        33
 #define action_Support_LostInternet     34
+#define action_MovetoGoal               35
+#define action_MovetoOpGoal             36
+#define action_MovetoGoalEdge1          37
+#define action_MovetoGoalEdge2          38
+#define action_MovetoOpGoalEdge1        39
+#define action_MovetoOpGoalEdge2        40
 
 #define state_Init              0
 #define state_Chase             1
@@ -95,12 +101,17 @@ typedef struct{
 }Vector3D;
 
 typedef struct{
+    double angle_1, angle_2;
+}Two_point;
+
+typedef struct{
     Vector3D pos;
     Vector3D ball;
     Vector3D goal;
     Vector3D op_goal;
     double rotation;
     double v_x,v_y,v_yaw;
+    Two_point goal_edge, op_goal_edge;
     //double velocityLeft, velocityRight;
 }Robot;
 
@@ -151,5 +162,8 @@ typedef struct
 
 #define SIGN(A) ( (A)>=0?1:-1)
 
+#define speed_constant 2
+#define speed_limit 0.01
+#define yaw_speed_limit 1
 
 #endif

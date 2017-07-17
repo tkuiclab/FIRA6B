@@ -1,7 +1,8 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Front: 273, Inner: 39, Outer: 255, X: 308, Y: 266}
+  Center: {Camera_high: 650, Center_X: 315, Center_Y: 266, Front: 271, Inner: 38,
+    Outer: 256, X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -10,15 +11,28 @@ FIRA:
     Space: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]
   Distance_Settings: [0, 0, 0]
   Dorsad_Attack: [6, 90, 180, 2, 1, 2]
+  FPS: 18
   HSV:
+    Ball: [0, 37, 27, 100, 0, 100]
+    Blue: [216, 249, 77, 100, 22, 100]
     Bluerange: [245, 204, 255, 179, 255, 72]
+    Green: [0, 195, 59, 100, 18, 100]
     Greenrange: [188, 114, 255, 130, 255, 0]
     Redrange: [36, 0, 255, 118, 255, 0]
+    White: [0, 359, 0, 100, 0, 100]
     Whiterange: [227, 146, 166, 13, 255, 134]
+    Yellow: [43, 124, 27, 70, 41, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-  IsSimulator: 1
+    black: {angle: 4, gray: 50}
+    white: {angle: 60, gray: 89}
+  IsSimulator: 0
+  Parameterbutton: 2
+  Penalty_Kick: [30, 2]
   RobotNumber: 2
-  SPlanning_Velocity: [2.3, 0.3, 70, 40, 20, 2, 144, 5, 999]
+  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 1, Angle_range_2_3: 1, Dont_Search_Angle_1: 331,
+    Dont_Search_Angle_2: 89, Dont_Search_Angle_3: 208, Magn_Far_End: 240, Magn_Far_Start: 141,
+    Magn_Middle_Start: 98, Magn_Near_Gap: 4, Magn_Near_Start: 50}
+  SPlanning_Velocity: [2.3, 0.3, 15, 0, 10, 0, 144, 5, 0]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,
@@ -1433,20 +1447,28 @@ FIRA:
   whiteline: {angle: 4, gray: 100}
 FIRA_Behavior:
   Attack_Strategy: [5, 1, 0.43]
-  Chase_Strategy: [5, 0.15, 0.2, 6, 0.39]
+  Chase_Strategy: [5, 0.15, 0.2, 4, 0.4]
   Corner_Kick: [120, 0.45]
   Side_Speed_UP: [10, 0.45]
   TypeS_Attack: [20, 1, 1.5]
   TypeU_Chase: [30, 0.3]
   Zone_Attack: [0.6]
-StrategySelection: [0, 1, 0, 0, 1, 0]
+StrategySelection: [0, 1, 1, 0, 0, 0]
 camera:
+  image:
+    compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
+    compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
+    theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
+  image_monitor:
+    compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
+    compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
+    theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
   image_raw:
     compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
     compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
     theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
 prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
-  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.016666,
+  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.018,
   exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
   gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
   trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
@@ -1457,14 +1479,87 @@ rosdistro: 'indigo
 
   '
 roslaunch:
-  uris: {host_iclab1_desktop__35643: 'http://iclab1-desktop:35643/', host_iclab1_desktop__53957: 'http://iclab1-desktop:53957/',
-    host_iclab1_desktop__55070: 'http://iclab1-desktop:55070/', host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
+  uris: {host_127_0_0_1__40751: 'http://127.0.0.1:40751/', host_127_0_0_1__47254: 'http://127.0.0.1:47254/',
+    host_127_0_0_1__54942: 'http://127.0.0.1:54942/', host_iclab1_desktop__35643: 'http://iclab1-desktop:35643/',
+    host_iclab1_desktop__53957: 'http://iclab1-desktop:53957/', host_iclab1_desktop__55070: 'http://iclab1-desktop:55070/',
+    host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
     host_iclab2_to_be_filled_by_o_e_m__38690: 'http://iclab2-To-be-filled-by-O-E-M:38690/',
     host_iclab2_to_be_filled_by_o_e_m__39936: 'http://iclab2-To-be-filled-by-O-E-M:39936/',
     host_iclab2_to_be_filled_by_o_e_m__41139: 'http://iclab2-To-be-filled-by-O-E-M:41139/',
     host_iclab2_to_be_filled_by_o_e_m__44234: 'http://iclab2-To-be-filled-by-O-E-M:44234/',
     host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
     host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
+    host_iclab__33059: 'http://iclab:33059/', host_iclab__33179: 'http://iclab:33179/',
+    host_iclab__33207: 'http://iclab:33207/', host_iclab__33261: 'http://iclab:33261/',
+    host_iclab__33392: 'http://iclab:33392/', host_iclab__33394: 'http://iclab:33394/',
+    host_iclab__33493: 'http://iclab:33493/', host_iclab__33737: 'http://iclab:33737/',
+    host_iclab__33793: 'http://iclab:33793/', host_iclab__33802: 'http://iclab:33802/',
+    host_iclab__33889: 'http://iclab:33889/', host_iclab__34078: 'http://iclab:34078/',
+    host_iclab__34302: 'http://iclab:34302/', host_iclab__34359: 'http://iclab:34359/',
+    host_iclab__34388: 'http://iclab:34388/', host_iclab__34491: 'http://iclab:34491/',
+    host_iclab__34535: 'http://iclab:34535/', host_iclab__34551: 'http://iclab:34551/',
+    host_iclab__34597: 'http://iclab:34597/', host_iclab__34712: 'http://iclab:34712/',
+    host_iclab__34814: 'http://iclab:34814/', host_iclab__34856: 'http://iclab:34856/',
+    host_iclab__34974: 'http://iclab:34974/', host_iclab__35207: 'http://iclab:35207/',
+    host_iclab__35381: 'http://iclab:35381/', host_iclab__35614: 'http://iclab:35614/',
+    host_iclab__35742: 'http://iclab:35742/', host_iclab__35745: 'http://iclab:35745/',
+    host_iclab__35872: 'http://iclab:35872/', host_iclab__35881: 'http://iclab:35881/',
+    host_iclab__35904: 'http://iclab:35904/', host_iclab__35916: 'http://iclab:35916/',
+    host_iclab__36049: 'http://iclab:36049/', host_iclab__36168: 'http://iclab:36168/',
+    host_iclab__36202: 'http://iclab:36202/', host_iclab__36334: 'http://iclab:36334/',
+    host_iclab__36355: 'http://iclab:36355/', host_iclab__36379: 'http://iclab:36379/',
+    host_iclab__36409: 'http://iclab:36409/', host_iclab__36566: 'http://iclab:36566/',
+    host_iclab__36763: 'http://iclab:36763/', host_iclab__36840: 'http://iclab:36840/',
+    host_iclab__36858: 'http://iclab:36858/', host_iclab__36905: 'http://iclab:36905/',
+    host_iclab__37058: 'http://iclab:37058/', host_iclab__37213: 'http://iclab:37213/',
+    host_iclab__37275: 'http://iclab:37275/', host_iclab__37468: 'http://iclab:37468/',
+    host_iclab__37546: 'http://iclab:37546/', host_iclab__37634: 'http://iclab:37634/',
+    host_iclab__37661: 'http://iclab:37661/', host_iclab__37680: 'http://iclab:37680/',
+    host_iclab__37747: 'http://iclab:37747/', host_iclab__37836: 'http://iclab:37836/',
+    host_iclab__37848: 'http://iclab:37848/', host_iclab__38052: 'http://iclab:38052/',
+    host_iclab__38166: 'http://iclab:38166/', host_iclab__38229: 'http://iclab:38229/',
+    host_iclab__38306: 'http://iclab:38306/', host_iclab__38396: 'http://iclab:38396/',
+    host_iclab__38457: 'http://iclab:38457/', host_iclab__38501: 'http://iclab:38501/',
+    host_iclab__38516: 'http://iclab:38516/', host_iclab__38833: 'http://iclab:38833/',
+    host_iclab__38918: 'http://iclab:38918/', host_iclab__38971: 'http://iclab:38971/',
+    host_iclab__39348: 'http://iclab:39348/', host_iclab__39472: 'http://iclab:39472/',
+    host_iclab__39481: 'http://iclab:39481/', host_iclab__39718: 'http://iclab:39718/',
+    host_iclab__40023: 'http://iclab:40023/', host_iclab__40024: 'http://iclab:40024/',
+    host_iclab__40142: 'http://iclab:40142/', host_iclab__40218: 'http://iclab:40218/',
+    host_iclab__40356: 'http://iclab:40356/', host_iclab__40444: 'http://iclab:40444/',
+    host_iclab__40512: 'http://iclab:40512/', host_iclab__40542: 'http://iclab:40542/',
+    host_iclab__40595: 'http://iclab:40595/', host_iclab__40946: 'http://iclab:40946/',
+    host_iclab__40951: 'http://iclab:40951/', host_iclab__41231: 'http://iclab:41231/',
+    host_iclab__41286: 'http://iclab:41286/', host_iclab__41345: 'http://iclab:41345/',
+    host_iclab__41651: 'http://iclab:41651/', host_iclab__41657: 'http://iclab:41657/',
+    host_iclab__41778: 'http://iclab:41778/', host_iclab__42031: 'http://iclab:42031/',
+    host_iclab__42160: 'http://iclab:42160/', host_iclab__42195: 'http://iclab:42195/',
+    host_iclab__42311: 'http://iclab:42311/', host_iclab__42441: 'http://iclab:42441/',
+    host_iclab__42694: 'http://iclab:42694/', host_iclab__42717: 'http://iclab:42717/',
+    host_iclab__42781: 'http://iclab:42781/', host_iclab__42799: 'http://iclab:42799/',
+    host_iclab__42817: 'http://iclab:42817/', host_iclab__42875: 'http://iclab:42875/',
+    host_iclab__43121: 'http://iclab:43121/', host_iclab__43368: 'http://iclab:43368/',
+    host_iclab__43371: 'http://iclab:43371/', host_iclab__43629: 'http://iclab:43629/',
+    host_iclab__43675: 'http://iclab:43675/', host_iclab__43765: 'http://iclab:43765/',
+    host_iclab__43874: 'http://iclab:43874/', host_iclab__43958: 'http://iclab:43958/',
+    host_iclab__43979: 'http://iclab:43979/', host_iclab__44007: 'http://iclab:44007/',
+    host_iclab__44060: 'http://iclab:44060/', host_iclab__44222: 'http://iclab:44222/',
+    host_iclab__44310: 'http://iclab:44310/', host_iclab__44403: 'http://iclab:44403/',
+    host_iclab__44578: 'http://iclab:44578/', host_iclab__44630: 'http://iclab:44630/',
+    host_iclab__44715: 'http://iclab:44715/', host_iclab__44734: 'http://iclab:44734/',
+    host_iclab__44867: 'http://iclab:44867/', host_iclab__44975: 'http://iclab:44975/',
+    host_iclab__45100: 'http://iclab:45100/', host_iclab__45236: 'http://iclab:45236/',
+    host_iclab__45331: 'http://iclab:45331/', host_iclab__45346: 'http://iclab:45346/',
+    host_iclab__45350: 'http://iclab:45350/', host_iclab__45411: 'http://iclab:45411/',
+    host_iclab__45428: 'http://iclab:45428/', host_iclab__45458: 'http://iclab:45458/',
+    host_iclab__45474: 'http://iclab:45474/', host_iclab__45477: 'http://iclab:45477/',
+    host_iclab__45689: 'http://iclab:45689/', host_iclab__45729: 'http://iclab:45729/',
+    host_iclab__45802: 'http://iclab:45802/', host_iclab__45921: 'http://iclab:45921/',
+    host_iclab__45937: 'http://iclab:45937/', host_iclab__45938: 'http://iclab:45938/',
+    host_iclab__46041: 'http://iclab:46041/', host_iclab__46067: 'http://iclab:46067/',
+    host_iclab__46151: 'http://iclab:46151/', host_iclab__46261: 'http://iclab:46261/',
+    host_iclab__46546: 'http://iclab:46546/', host_iclab__46630: 'http://iclab:46630/',
+    host_iclab__46732: 'http://iclab:46732/', host_iclab__46747: 'http://iclab:46747/',
     host_iclab_desktop__32798: 'http://iclab-desktop:32798/', host_iclab_desktop__32839: 'http://iclab-desktop:32839/',
     host_iclab_desktop__32879: 'http://iclab-desktop:32879/', host_iclab_desktop__32931: 'http://iclab-desktop:32931/',
     host_iclab_desktop__33020: 'http://iclab-desktop:33020/', host_iclab_desktop__33100: 'http://iclab-desktop:33100/',
@@ -1544,7 +1639,11 @@ roslaunch:
     host_iclab_desktop__59592: 'http://iclab-desktop:59592/', host_iclab_desktop__59703: 'http://iclab-desktop:59703/',
     host_iclab_desktop__60240: 'http://iclab-desktop:60240/', host_iclab_desktop__60400: 'http://iclab-desktop:60400/',
     host_iclab_desktop__60948: 'http://iclab-desktop:60948/'}
-rosversion: '1.11.16
+rosversion: '1.11.21
 
   '
+rqt_gui_cpp_node_26020:
+  compressed: {mode: unchanged}
+rqt_gui_cpp_node_5784:
+  compressed: {mode: unchanged}
 run_id: 66a84b02-b9f7-11e6-a217-b8aeed74ba50

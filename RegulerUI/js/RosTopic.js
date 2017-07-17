@@ -331,7 +331,7 @@ TSInfoListen1.subscribe(function(msg) {
     var Box = [];
     var item;
     var info;
-    for (item = 0; item < 3; item++) {
+    for (item = 0; item < 5; item++) {
         Box.push(parseFloat(msg.data[item]));
     }
     info = new ROSLIB.Message({
@@ -347,7 +347,7 @@ TSInfoListen2.subscribe(function(msg) {
     var Box = [];
     var item;
     var info;
-    for (item = 0; item < 3; item++) {
+    for (item = 0; item < 5; item++) {
         Box.push(parseFloat(msg.data[item]));
     }
     info = new ROSLIB.Message({
@@ -365,7 +365,7 @@ TSInfoListen3.subscribe(function(msg) {
     var Box = [];
     var item;
     var info;
-    for (item = 0; item < 3; item++) {
+    for (item = 0; item < 5; item++) {
         Box.push(parseFloat(msg.data[item]));
     }
     info = new ROSLIB.Message({

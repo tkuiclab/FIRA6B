@@ -107,10 +107,10 @@ void Motion_nodeHandle::pub_robotFB(robot_command* node_robotFB)
 
 void Motion_nodeHandle::clear()
 {
-	if(this->remote == false){
-		*(this->node_robotCMD->x_speed) = 0;
-		*(this->node_robotCMD->y_speed) = 0;
-		*(this->node_robotCMD->yaw_speed) = 0;
-	}
+	//if(this->remote == false){
+	//	*(this->node_robotCMD->x_speed) = 0;
+	//	*(this->node_robotCMD->y_speed) = 0;
+	//	*(this->node_robotCMD->yaw_speed) = 0;
+	//}
 	*(this->node_robotCMD->shoot_power) = 0;
 }

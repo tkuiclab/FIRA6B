@@ -177,8 +177,26 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
                 break;
             case  action_Support_LostInternet:
                 strategy_Support_LostInternet(robotIndex);
-                 break;
+                break;
+            case  action_MovetoGoal:
+                strategy_MovetoGoal(robotIndex);
+                break;
+            case  action_MovetoOpGoal:
+                strategy_MovetoOpGoal(robotIndex);
+                break;
 
+            case  action_MovetoGoalEdge1:
+                strategy_MovetoGoalEdge1(robotIndex);
+                break;
+            case  action_MovetoGoalEdge2:
+                strategy_MovetoGoalEdge2(robotIndex);
+                break;
+            case  action_MovetoOpGoalEdge1:
+                strategy_MovetoOpGoalEdge1(robotIndex);
+                break;
+            case  action_MovetoOpGoalEdge2:
+                strategy_MovetoOpGoalEdge2(robotIndex);
+                break;
         }
 }
 //###################################################//
@@ -217,6 +235,7 @@ void FIRA_pathplan_class::strategy_Chase(int r_number){
     env.home[r_number].v_x =vectornt(0);
     env.home[r_number].v_y =vectornt(1);
     env.home[r_number].v_yaw = goal_angle;
+    printf("goal dis=%f\n",env.home[r_number].goal.distance);
 }
 
 void FIRA_pathplan_class::strategy_Straight_Chase(int robotIndex){
@@ -1007,7 +1026,7 @@ void FIRA_pathplan_class::strategy_Halt(int Robot_index){
     env.home[Robot_index].v_x = 0;
     env.home[Robot_index].v_y = 0;
     env.home[Robot_index].v_yaw = 0;
-    loopEnd = true;
+    //loopEnd = true;
 }
 
 void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
@@ -1511,231 +1530,588 @@ void FIRA_pathplan_class::strategy_Support_Positioning(int r_number){
 }
 
 void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
+
+
+//    double distance_br = env.home[r_number].ball.distance;
+//    double distance_dr = env.home[r_number].goal.distance;
+//    double op_distance_dr = env.home[r_number].op_goal.distance;
+//    double angle_br = env.home[r_number].ball.angle;
+//    double angle_dr = env.home[r_number].goal.angle;
+//    double op_angle_dr = env.home[r_number].op_goal.angle;
+//    double test_angle = angle_dr - op_angle_dr;
+//    static int left_count=0;
+//    static int right_count=0;
+//    if(test_angle<0){
+//        test_angle = test_angle +360;
+//    }
+//    if(test_angle>=180){//right
+//        right_count++;
+//    }else{//left
+//        left_count++;
+//    }
+//    if(left_count>=10){
+//        printf("left side\n");
+//        printf("test_angle = %f\n",test_angle);
+//        right_count=0;
+//        left_count=0;
+//    }else if(right_count>=10){
+//        printf("right side\n");
+//        printf("test_angle = %f\n",test_angle);
+//        right_count=0;
+//        left_count=0;
+//    }
+//    printf("angle_dr = %f\n",angle_dr);
+//    printf("op_angle_dr = %f\n",op_angle_dr);
+//    printf("goal_edge.angle_1=%f\n",env.home[r_number].goal_edge.angle_1);
+//    printf("goal_edge.angle_2=%f\n",env.home[r_number].goal_edge.angle_2);
+//    printf("op_goal_edge.angle_1=%f\n",env.home[r_number].op_goal_edge.angle_1);
+//    printf("op_goal_edge.angle_2=%f\n",env.home[r_number].op_goal_edge.angle_2);
+//    env.home[r_number].v_yaw=20;
     double distance_br = env.home[r_number].ball.distance;
     double distance_dr = env.home[r_number].goal.distance;
     double op_distance_dr = env.home[r_number].op_goal.distance;
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    v_rotation=env.home[r_number].goal_edge.angle_1+90;
+    if(v_rotation>180){
+        v_rotation=-360+v_rotation;
+    }
+    if(v_rotation<-180){
+        v_rotation=360+v_rotation;
+    }
+    double v_rotation2=env.home[r_number].op_goal_edge.angle_2+90;
+    if(v_rotation2>180){
+        v_rotation2=-360+v_rotation2;
+    }
+    if(v_rotation2<-180){
+        v_rotation2=360+v_rotation2;
+    }
+    x_speed = cos(v_rotation*deg2rad)*1+cos(v_rotation2*deg2rad)*op_distance_dr;
+    y_speed = sin(v_rotation*deg2rad)*1+sin(v_rotation2*deg2rad)*op_distance_dr;
+
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+
 
 
 }
 void FIRA_pathplan_class::strategy_Support_Test2(int r_number){
 
+
     double distance_br = env.home[r_number].ball.distance;
     double distance_dr = env.home[r_number].goal.distance;
     double op_distance_dr = env.home[r_number].op_goal.distance;
-    double origin_angle_br = env.home[r_number].ball.angle;
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
 
-    double inv_op_angle_dr=op_angle_dr+180;//let tail be head
+    double to_middle_line_dis = sin(op_angle_dr*deg2rad)*op_distance_dr; //distance to (goal && op_goal) line
+    static int x_moving=0; // move left or move right plan, 0:default, 1:move to left, 2:move to right
+    static int cross_field_count =0;
+    double define_middle_line_dis =0.8; // define how far do you want to leave from middle_line
+    double y_distance_dr=fabs(cos(angle_dr*deg2rad))*distance_dr; //robot head direction y vector distance_dr
+    double y_distance_opdr=fabs(cos(op_angle_dr*deg2rad))*op_distance_dr; //robot head direction y vector distance_opdr
+    double x_distance_opdr=fabs(sin(op_angle_dr*deg2rad))*op_distance_dr; //robot head direction x vector distance_opdr
+    double y_distance_br=fabs(cos(angle_br*deg2rad))*distance_br; //robot head direction y vector distance_br
+    double x_distance_br=fabs(sin(angle_br*deg2rad))*distance_br; //robot head direction x vector distance_br
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
     if(inv_op_angle_dr>180){
         inv_op_angle_dr=inv_op_angle_dr-360;
     }
-//    printf("inv_op_angle_dr=%f\n",inv_op_angle_dr);
-//    printf("angle_dr=%f\n",angle_dr);
 
-
-    angle_br=angle_br+90;
-    if(angle_br>180){
-        angle_br=angle_br-360;
-    }else if(angle_br<-180){
-        angle_br=angle_br+360;
-    }
-    if(inv_op_angle_dr>100&&angle_dr<-100){//+and -
-        if(fabs(inv_op_angle_dr)>fabs(angle_dr)){//turn to smaller way
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
             inv_op_angle_dr=0;
         }else{
-            angle_dr=0;
+            transform_angle_dr=0;
         }
-    }else if(inv_op_angle_dr<-100&&angle_dr>100){
-        if(fabs(inv_op_angle_dr)>fabs(angle_dr)){//turn to smaller way
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
             inv_op_angle_dr=0;
         }else{
-            angle_dr=0;
+            transform_angle_dr=0;
         }
     }
-    static int counter=0;
-    static int switchcase=0;
-    if(fabs(inv_op_angle_dr+angle_dr)<20){
-       if((angle_dr>0&&op_angle_dr>0)&&origin_angle_br){// right hand side
-           env.home[r_number].v_x =1;//move left
-           counter=1;
-       }else if(angle_dr<0&&op_angle_dr<0){// left hand side
-           env.home[r_number].v_x =-1;//move right
-       }
 
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x = move to define_middle_line_dis base on where you are
+    //    3.v_y = y_distance_br*1.5-y_distance_opdr
+    //    ## all detect number need to below 3.5 meters, or will not correct
+    //                                                       //
+    //#######################################################//
 
-    }else{
-        env.home[r_number].v_x =0;
-    }
-    env.home[r_number].v_y =0;
-    env.home[r_number].v_yaw=inv_op_angle_dr+angle_dr;
-    if(fabs(inv_op_angle_dr+angle_dr)<40){
-        env.home[r_number].v_yaw=0.8*(inv_op_angle_dr+angle_dr);
-        if(fabs(inv_op_angle_dr+angle_dr)<20){
-            env.home[r_number].v_yaw=0.5*(inv_op_angle_dr+angle_dr);
-            if(fabs(inv_op_angle_dr+angle_dr)<10){
-                env.home[r_number].v_yaw=0.1*(inv_op_angle_dr+angle_dr);
-                if(fabs(inv_op_angle_dr+angle_dr)<5){
-                    env.home[r_number].v_yaw=0.01*(inv_op_angle_dr+angle_dr);
-                    if(fabs(inv_op_angle_dr+angle_dr)<1){
-                        env.home[r_number].v_yaw=0;
-                    }
-                }
-            }
-        }
-    }
-//    printf("inv_op_angle_dr+angle_dr=%f\n",inv_op_angle_dr+angle_dr);
+    //---------------------------------------yaw_speed--------------------------
+    //yaw_speed = inv_op_angle_dr+transform_angle_dr; // (head to angle_dr) + (tail to op_angle_dr) = face forward
 
-
-
-
-
-
-}
-void FIRA_pathplan_class::strategy_Support_Test3(int r_number){
-
-    double distance_br = env.home[r_number].ball.distance;
-    double distance_dr = env.home[r_number].goal.distance;
-    double op_distance_dr = env.home[r_number].op_goal.distance;
-    double angle_br = env.home[r_number].ball.angle;
-    double angle_dr = env.home[r_number].goal.angle;
-    double op_angle_dr = env.home[r_number].op_goal.angle;
-    double to_middle_line_dis = sin(op_angle_dr*deg2rad)*op_distance_dr;
-    static int x_moving=0;
-    double x_speed=0;
-    double define_middle_line_dis =0.5;
-    double y_distance_dr=fabs(cos(angle_dr*deg2rad))*distance_dr;
-    double y_distance_opdr=fabs(cos(op_angle_dr*deg2rad))*op_distance_dr;
-    double x_distance_opdr=fabs(sin(op_angle_dr*deg2rad))*op_distance_dr;
-    double y_distance_br=fabs(cos(angle_br*deg2rad))*distance_br;
-    double x_distance_br=fabs(sin(angle_br*deg2rad))*distance_br;
-
-    //--------------------------------------------------------------------face foward
-            double transform_angle_dr = env.home[r_number].goal.angle;
-            double inv_op_angle_dr=op_angle_dr+180;// let tail be head
-            if(inv_op_angle_dr>180){
-                inv_op_angle_dr=inv_op_angle_dr-360;
-            }
-
-            if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
-                if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-                    inv_op_angle_dr=0;
-                }else{
-                    transform_angle_dr=0;
-                }
-            }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
-                if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-                    inv_op_angle_dr=0;
-                }else{
-                    transform_angle_dr=0;
-                }
-            }
-
-
-            env.home[r_number].v_yaw=inv_op_angle_dr+transform_angle_dr;
-            if(fabs(inv_op_angle_dr+transform_angle_dr)<1){
-               env.home[r_number].v_yaw=0;
-            }
-
-
-    if((op_angle_dr<0&&angle_dr<0)&&(angle_br>=0)){//robot && ball left side
-//        printf("left side\n");
+    //---------------------------------------x_speed---------------------------
+    if((op_angle_dr<0&&angle_dr<0)&&(angle_br>=0)){//robot && ball left side, so ready to "move to right" side define_dis
         x_moving =2;
-    }else if((op_angle_dr>=0&&angle_dr>=0)&&(angle_br<0)){//robot && ball right side
-//        printf("right side\n");
+    }else if((op_angle_dr>=0&&angle_dr>=0)&&(angle_br<0)){//robot && ball right side, so ready to "move to left" side define_dis
         x_moving =1;
     }
 
-    if(fabs(inv_op_angle_dr+angle_dr)<20){//if face forward
+    if(fabs(inv_op_angle_dr+angle_dr)<20){// if face forward correct within error interval, give x vector speed
         switch(x_moving){
             case 1://move to left
                 printf("move to left\n");
                 x_speed = -to_middle_line_dis-define_middle_line_dis;
-                env.home[r_number].v_x =x_speed*2;
-                if(fabs(x_speed)<0.1){
-                    env.home[r_number].v_x = 0;
+                if(to_middle_line_dis<-define_middle_line_dis){
+                    printf("x_speed = 0\n");
+                    x_speed = 0;
                     if(x_distance_br<x_distance_opdr){//ball across field
-                        x_moving=2;
+                        cross_field_count++;
+                        if(cross_field_count>3){
+                            x_moving=2;
+                            cross_field_count=0;
+                        }else{
+                            cross_field_count=0;
+                        }
                     }
+                }else{
+                    printf("x have speed\n");
                 }
             break;
             case 2://move to right
                 printf("move to right\n");
                 x_speed = -to_middle_line_dis+define_middle_line_dis;
-                env.home[r_number].v_x =x_speed*2;
-                if(fabs(x_speed)<0.1){
-                    env.home[r_number].v_x = 0;
+                if(to_middle_line_dis>define_middle_line_dis){
+                    printf("x_speed = 0\n");
+                    x_speed = 0;
                     if(x_distance_br<x_distance_opdr){//ball across field
-                        x_moving=1;
+                        cross_field_count++;
+                        if(cross_field_count>3){
+                            x_moving=1;
+                            cross_field_count=0;
+                        }else{
+                            cross_field_count=0;
+                        }
                     }
+                }else{
+                    printf("x have speed\n");
                 }
             break;
             default:
                 if(op_angle_dr<0 && angle_dr<0){// left side, move to left side position
                     printf("move to left\n");
                     x_speed = -to_middle_line_dis-define_middle_line_dis;
-                    env.home[r_number].v_x =x_speed*2;
-                    if(fabs(x_speed)<0.1){
-                        env.home[r_number].v_x = 0;
+                    if(to_middle_line_dis<-define_middle_line_dis){
+                        printf("x_speed = 0\n");
+                        x_speed = 0;
                         if(x_distance_br<x_distance_opdr){//ball across field
-                            x_moving=2;
+                            cross_field_count++;
+                            if(cross_field_count>3){
+                                x_moving=2;
+                                cross_field_count=0;
+                            }else{
+                                cross_field_count=0;
+                            }
                         }
                     }
                 }else if(op_angle_dr>=0 && angle_dr>=0){// right side, move to right side position
                     printf("move to right\n");
                     x_speed = -to_middle_line_dis+define_middle_line_dis;
-                    env.home[r_number].v_x =x_speed*2;
-                    if(fabs(x_speed)<0.1){//almost to right position
-                        env.home[r_number].v_x = 0;
+                    if(to_middle_line_dis>define_middle_line_dis){//almost to right position
+                        printf("x_speed = 0\n");
+                        x_speed = 0;
                         if(x_distance_br<x_distance_opdr){//ball across field
-                            x_moving=1;
+                            cross_field_count++;
+                            if(cross_field_count>3){
+                                x_moving=1;
+                                cross_field_count=0;
+                            }else{
+                                cross_field_count=0;
+                            }
                         }
                     }
                 }
             break;
 
         }
-        if(y_distance_opdr<3&& op_distance_dr<3.4){// if not across defend gate
-            if(cos(angle_br*deg2rad)>=0){//ball in front of robot
-              env.home[r_number].v_y=y_distance_br*1.5-y_distance_opdr;
-              if(y_distance_br>1.5 && y_distance_opdr>=2.5){//farest distance
-                  printf("farest distance\n");
-                  env.home[r_number].v_y=0;
-              }else if(fabs(y_distance_br*2-y_distance_opdr)<0.2){
-                  printf("moving speed too small\n");
-                  env.home[r_number].v_y=0;
-              }else{
-                  printf("ball in front of robot :%f\n",0);
-              }
+        //------------------------y_speed-------------------------
+
+        if(op_distance_dr<3){// if not across defend gate
+            if(angle_br<70&&angle_br>-70){//if ball in front of robot
+              y_speed = y_distance_br*2-y_distance_opdr; // give y speed
             }else{//ball at robot back
-               printf("back\n");
-              env.home[r_number].v_y=-y_distance_opdr;
+               if(x_moving==1){
+                   printf("move to left edge\n");
+                   strategy_MovetoOpGoalEdge2(r_number);
+               }else if(x_moving==2){
+                   printf("move to right edge\n");
+                   strategy_MovetoOpGoalEdge1(r_number);
+               }
             }
 
         }else{// across defend gate, move back
             printf("too far from defend gate\n");
-            if(op_distance_dr>=3.4){
-              env.home[r_number].v_y=-op_distance_dr+3;
-            }else if(y_distance_opdr>=3){
-              env.home[r_number].v_y=-y_distance_opdr+3;
+            y_speed = 0;
+            printf("x_speed = 0\n");
+            if(angle_br<-70||angle_br>70){//if ball back of robot
+              y_speed = y_distance_br*2-y_distance_opdr; // give y speed
             }
         }
 
 
     }else{
-        env.home[r_number].v_x =0;
-        env.home[r_number].v_y =0;
+        x_speed =0;
+        y_speed =0;
+        yaw_speed = inv_op_angle_dr+transform_angle_dr;
     }
-    printf("FFFFf=%f\n",fabs(y_distance_br*2-y_distance_opdr));
+
+    env.home[r_number].v_yaw = yaw_speed*2;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+//    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
+//    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
+//    printf("yaw_speed=%f\n",yaw_speed);
+
+//    printf("FFFFf=%f\n",fabs(y_distance_br*2-y_distance_opdr));
     printf("y_distance_br=%f\n",y_distance_br);
     printf("y_distance_opdr=%f\n",y_distance_opdr);
     printf("y_distance_dr=%f\n",y_distance_dr);
     printf("x_distance_opdr=%f\n",x_distance_opdr);
     printf("x_distance_br=%f\n",x_distance_br);
+    printf("to_middle_line_dis=%f\n",to_middle_line_dis);
+
+    printf("op_angle_dr=%f\n",op_angle_dr);
+
+
+
+}
+void FIRA_pathplan_class::strategy_Support_Test3(int r_number){
+
+//    double distance_br = env.home[r_number].ball.distance;
+//    double distance_dr = env.home[r_number].goal.distance;
+//    double op_distance_dr = env.home[r_number].op_goal.distance;
+//    double angle_br = env.home[r_number].ball.angle;
+//    double angle_dr = env.home[r_number].goal_edge.angle_1/2+env.home[r_number].goal_edge.angle_2/2;
+//    double op_angle_dr = env.home[r_number].op_goal_edge.angle_1/2+env.home[r_number].op_goal_edge.angle_2/2;
+//    double to_middle_line_dis = sin(op_angle_dr*deg2rad)*op_distance_dr;
+//    static int x_moving=0;
+//    double x_speed=0;
+//    double define_middle_line_dis =0.5;
+//    double y_distance_dr=fabs(cos(angle_dr*deg2rad))*distance_dr;
+//    double y_distance_opdr=fabs(cos(op_angle_dr*deg2rad))*op_distance_dr;
+//    double x_distance_opdr=fabs(sin(op_angle_dr*deg2rad))*op_distance_dr;
+//    double y_distance_br=fabs(cos(angle_br*deg2rad))*distance_br;
+//    double x_distance_br=fabs(sin(angle_br*deg2rad))*distance_br;
+
+//    //--------------------------------------------------------------------face foward
+//            double transform_angle_dr = env.home[r_number].goal.angle;
+//            double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+//            if(inv_op_angle_dr>180){
+//                inv_op_angle_dr=inv_op_angle_dr-360;
+//            }
+
+//            if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+//                if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+//                    inv_op_angle_dr=0;
+//                }else{
+//                    transform_angle_dr=0;
+//                }
+//            }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+//                if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+//                    inv_op_angle_dr=0;
+//                }else{
+//                    transform_angle_dr=0;
+//                }
+//            }
+
+
+//            env.home[r_number].v_yaw=inv_op_angle_dr+transform_angle_dr;
+//            if(fabs(inv_op_angle_dr+transform_angle_dr)<1){
+//               env.home[r_number].v_yaw=0;
+//            }
+
+
+//    if((op_angle_dr<0&&angle_dr<0)&&(angle_br>=0)){//robot && ball left side
+////        printf("left side\n");
+//        x_moving =2;
+//    }else if((op_angle_dr>=0&&angle_dr>=0)&&(angle_br<0)){//robot && ball right side
+////        printf("right side\n");
+//        x_moving =1;
+//    }
+
+//    if(fabs(inv_op_angle_dr+angle_dr)<20){//if face forward
+//        switch(x_moving){
+//            case 1://move to left
+//                printf("move to left\n");
+//                x_speed = -to_middle_line_dis-define_middle_line_dis;
+//                env.home[r_number].v_x =x_speed*2;
+//                if(fabs(x_speed)<0.1){
+//                    env.home[r_number].v_x = 0;
+//                    if(x_distance_br<x_distance_opdr){//ball across field
+//                        x_moving=2;
+//                    }
+//                }
+//            break;
+//            case 2://move to right
+//                printf("move to right\n");
+//                x_speed = -to_middle_line_dis+define_middle_line_dis;
+//                env.home[r_number].v_x =x_speed*2;
+//                if(fabs(x_speed)<0.1){
+//                    env.home[r_number].v_x = 0;
+//                    if(x_distance_br<x_distance_opdr){//ball across field
+//                        x_moving=1;
+//                    }
+//                }
+//            break;
+//            default:
+//                if(op_angle_dr<0 && angle_dr<0){// left side, move to left side position
+//                    printf("move to left\n");
+//                    x_speed = -to_middle_line_dis-define_middle_line_dis;
+//                    env.home[r_number].v_x =x_speed*2;
+//                    if(fabs(x_speed)<0.1){
+//                        env.home[r_number].v_x = 0;
+//                        if(x_distance_br<x_distance_opdr){//ball across field
+//                            x_moving=2;
+//                        }
+//                    }
+//                }else if(op_angle_dr>=0 && angle_dr>=0){// right side, move to right side position
+//                    printf("move to right\n");
+//                    x_speed = -to_middle_line_dis+define_middle_line_dis;
+//                    env.home[r_number].v_x =x_speed*2;
+//                    if(fabs(x_speed)<0.1){//almost to right position
+//                        env.home[r_number].v_x = 0;
+//                        if(x_distance_br<x_distance_opdr){//ball across field
+//                            x_moving=1;
+//                        }
+//                    }
+//                }
+//            break;
+
+//        }
+//        if(y_distance_opdr<3&& op_distance_dr<3.4){// if not across defend gate
+//            if(cos(angle_br*deg2rad)>=0){//ball in front of robot
+//              env.home[r_number].v_y=y_distance_br*1.5-y_distance_opdr;
+//              if(y_distance_br>1.5 && y_distance_opdr>=2.5){//farest distance
+//                  printf("farest distance\n");
+//                  env.home[r_number].v_y=0;
+//              }else if(fabs(y_distance_br*2-y_distance_opdr)<0.2){
+//                  printf("moving speed too small\n");
+//                  env.home[r_number].v_y=0;
+//              }else{
+//                  printf("ball in front of robot :%f\n",0);
+//              }
+//            }else{//ball at robot back
+//               printf("back\n");
+//              env.home[r_number].v_y=-y_distance_opdr;
+//            }
+
+//        }else{// across defend gate, move back
+//            printf("too far from defend gate\n");
+//            if(op_distance_dr>=3.4){
+//              env.home[r_number].v_y=-op_distance_dr+3;
+//            }else if(y_distance_opdr>=3){
+//              env.home[r_number].v_y=-y_distance_opdr+3;
+//            }
+//        }
+
+
+//    }else{
+//        env.home[r_number].v_x =0;
+//        env.home[r_number].v_y =0;
+//    }
+//    printf("FFFFf=%f\n",fabs(y_distance_br*2-y_distance_opdr));
+//    printf("y_distance_br=%f\n",y_distance_br);
+//    printf("y_distance_opdr=%f\n",y_distance_opdr);
+//    printf("y_distance_dr=%f\n",y_distance_dr);
+//    printf("x_distance_opdr=%f\n",x_distance_opdr);
+//    printf("x_distance_br=%f\n",x_distance_br);
+    double distance_br = env.home[r_number].ball.distance;
+    double distance_dr = env.home[r_number].goal.distance;
+    double op_distance_dr = env.home[r_number].op_goal.distance;
+    double angle_br = env.home[r_number].ball.angle;
+    double angle_dr = env.home[r_number].goal.angle;
+    double op_angle_dr = env.home[r_number].op_goal.angle;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    v_rotation=env.home[r_number].goal_edge.angle_2+90;
+    if(v_rotation>180){
+        v_rotation=-360+v_rotation;
+    }
+    if(v_rotation<-180){
+        v_rotation=360+v_rotation;
+    }
+    double v_rotation2=env.home[r_number].op_goal_edge.angle_1+90;
+    if(v_rotation2>180){
+        v_rotation2=-360+v_rotation2;
+    }
+    if(v_rotation2<-180){
+        v_rotation2=360+v_rotation2;
+    }
+    x_speed = cos(v_rotation*deg2rad)*1+cos(v_rotation2*deg2rad)*op_distance_dr;
+    y_speed = sin(v_rotation*deg2rad)*1+sin(v_rotation2*deg2rad)*op_distance_dr;
+
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
 
 
 }
@@ -1747,7 +2123,56 @@ void FIRA_pathplan_class::strategy_MovetoYellowGate(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-    double v_rotation=0;
+    double v_rotation=0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //----------------------------yaw_speed----------------------
+
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
     if(mTeam == Team_Blue){// goal is yellow
         v_rotation=angle_dr+90;
         if(v_rotation>180){
@@ -1756,8 +2181,8 @@ void FIRA_pathplan_class::strategy_MovetoYellowGate(int r_number){
         if(v_rotation<-180){
             v_rotation=360+v_rotation;
         }
-        env.home[r_number].v_x =cos(v_rotation*deg2rad)*distance_dr;
-        env.home[r_number].v_y =sin(v_rotation*deg2rad)*distance_dr;
+        x_speed = cos(v_rotation*deg2rad)*distance_dr;
+        y_speed = sin(v_rotation*deg2rad)*distance_dr;
 
     }else if(mTeam == Team_Yellow){ //opgoal is yellow
 
@@ -1768,35 +2193,33 @@ void FIRA_pathplan_class::strategy_MovetoYellowGate(int r_number){
         if(v_rotation<-180){
             v_rotation=360+v_rotation;
         }
-        env.home[r_number].v_x =cos(v_rotation*deg2rad)*op_distance_dr;
-        env.home[r_number].v_y =sin(v_rotation*deg2rad)*op_distance_dr;
+        x_speed = cos(v_rotation*deg2rad)*op_distance_dr;
+        y_speed = sin(v_rotation*deg2rad)*op_distance_dr;
     }
 
-    double transform_angle_dr = env.home[r_number].goal.angle;
-    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
-    if(inv_op_angle_dr>180){
-        inv_op_angle_dr=inv_op_angle_dr-360;
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
     }
 
-    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
-        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-            inv_op_angle_dr=0;
-        }else{
-            transform_angle_dr=0;
-        }
-    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
-        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-            inv_op_angle_dr=0;
-        }else{
-            transform_angle_dr=0;
-        }
-    }
-
-
-    env.home[r_number].v_yaw=inv_op_angle_dr+transform_angle_dr;
-    if(fabs(inv_op_angle_dr+transform_angle_dr)<1){
-       env.home[r_number].v_yaw=0;
-    }
+//    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
+//    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
+//    printf("yaw_speed=%f\n",yaw_speed);
 
 }
 void FIRA_pathplan_class::strategy_MovetoBlueGate(int r_number){
@@ -1807,30 +2230,19 @@ void FIRA_pathplan_class::strategy_MovetoBlueGate(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-    double v_rotation=0;
-    if(mTeam == Team_Blue){// goal is yellow,op is blue
-        v_rotation=op_angle_dr+90;
-        if(v_rotation>180){
-            v_rotation=-360+v_rotation;
-        }
-        if(v_rotation<-180){
-            v_rotation=360+v_rotation;
-        }
-        env.home[r_number].v_x =cos(v_rotation*deg2rad)*op_distance_dr;
-        env.home[r_number].v_y =sin(v_rotation*deg2rad)*op_distance_dr;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
 
-    }else if(mTeam == Team_Yellow){ //opgoal is yellow, goal is blue
-
-        v_rotation=angle_dr+90;
-        if(v_rotation>180){
-            v_rotation=-360+v_rotation;
-        }
-        if(v_rotation<-180){
-            v_rotation=360+v_rotation;
-        }
-        env.home[r_number].v_x =cos(v_rotation*deg2rad)*distance_dr;
-        env.home[r_number].v_y =sin(v_rotation*deg2rad)*distance_dr;
-    }
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
 
     double transform_angle_dr = env.home[r_number].goal.angle;
     double inv_op_angle_dr=op_angle_dr+180;// let tail be head
@@ -1852,11 +2264,68 @@ void FIRA_pathplan_class::strategy_MovetoBlueGate(int r_number){
         }
     }
 
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
 
-    env.home[r_number].v_yaw=inv_op_angle_dr+transform_angle_dr;
-    if(fabs(inv_op_angle_dr+transform_angle_dr)<1){
-       env.home[r_number].v_yaw=0;
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    if(mTeam == Team_Blue){// goal is yellow,op is blue
+        v_rotation=op_angle_dr+90;
+        if(v_rotation>180){
+            v_rotation=-360+v_rotation;
+        }
+        if(v_rotation<-180){
+            v_rotation=360+v_rotation;
+        }
+        x_speed = cos(v_rotation*deg2rad)*op_distance_dr;
+        y_speed = sin(v_rotation*deg2rad)*op_distance_dr;
+
+    }else if(mTeam == Team_Yellow){ //opgoal is yellow, goal is blue
+
+        v_rotation=angle_dr+90;
+        if(v_rotation>180){
+            v_rotation=-360+v_rotation;
+        }
+        if(v_rotation<-180){
+            v_rotation=360+v_rotation;
+        }
+        x_speed = cos(v_rotation*deg2rad)*distance_dr;
+        y_speed = sin(v_rotation*deg2rad)*distance_dr;
     }
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+//    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
+//    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
+//    printf("yaw_speed=%f\n",yaw_speed);
 
 }
 
@@ -1868,7 +2337,18 @@ void FIRA_pathplan_class::strategy_LeaveBall(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-     //--------------------------------------------------------------------face foward
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.transform_angle_br = to give robot head direction x & y speed to angle_br
+    //                                                       //
+    //#######################################################//
 
     double transform_angle_dr = env.home[r_number].goal.angle;
     double inv_op_angle_dr=op_angle_dr+180;// let tail be head
@@ -1889,13 +2369,6 @@ void FIRA_pathplan_class::strategy_LeaveBall(int r_number){
             transform_angle_dr=0;
         }
     }
-
-
-    env.home[r_number].v_yaw=inv_op_angle_dr+transform_angle_dr;
-    if(fabs(inv_op_angle_dr+transform_angle_dr)<1){
-       env.home[r_number].v_yaw=0;
-    }
-
 
     double transform_angle_br=angle_br+90;
     if(transform_angle_br>180){
@@ -1911,39 +2384,66 @@ void FIRA_pathplan_class::strategy_LeaveBall(int r_number){
         transform_angle_opdr=transform_angle_opdr+360;
     }
 
-    if(fabs(inv_op_angle_dr+transform_angle_dr)<20){//robot face foward
-        if((angle_br<-120||angle_br>120)&& distance_br<1){//ball right behind robot
-//            if(op_angle_dr<0&&angle_dr<0){//robot left side
-//        //        printf("left side\n");
-//                x_moving =2;
-//            }else if(op_angle_dr>=0&&angle_dr>=0){//robot right side
-//        //        printf("right side\n");
-//                x_moving =1;
-//            }
-            if(angle_br<-120){//go to left
-                env.home[r_number].v_x =-1;
-                env.home[r_number].v_y =-sin(transform_angle_br*deg2rad)+sin(transform_angle_opdr*deg2rad);
-            }else if(angle_br>120){//go to right
-                env.home[r_number].v_x =1;
-                env.home[r_number].v_y =-sin(transform_angle_br*deg2rad)+sin(transform_angle_opdr*deg2rad);
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    yaw_speed = inv_op_angle_dr+transform_angle_dr;
+    printf("yaw_speed=%f\n",yaw_speed);
+
+    if(fabs(inv_op_angle_dr+transform_angle_dr)<5){//robot face foward
+        if((angle_br<-120||angle_br>120)&& distance_br<1){//if ball right behind robot
+            if(angle_br<-120){//ball at right side, go to left
+                x_speed = -1;
+                y_speed = -sin(transform_angle_br*deg2rad)+sin(transform_angle_opdr*deg2rad);// leave ball + to opdr
+            }else if(angle_br>120){//ball at left side, go to right
+                x_speed = 1;
+                y_speed = -sin(transform_angle_br*deg2rad)+sin(transform_angle_opdr*deg2rad);// leave ball + to opdr
             }
         }else{// ball is beside or infront robot
-            env.home[r_number].v_x =-cos(transform_angle_br*deg2rad)+cos(transform_angle_opdr*deg2rad);
-            env.home[r_number].v_y =-sin(transform_angle_br*deg2rad)+sin(transform_angle_opdr*deg2rad);
+            x_speed = -cos(transform_angle_br*deg2rad)+cos(transform_angle_opdr*deg2rad);// leave ball + to opdr
+            y_speed = -sin(transform_angle_br*deg2rad)+sin(transform_angle_opdr*deg2rad);// leave ball + to opdr
         }
     }else{//robot not face foward
         if(distance_br<1){
-            env.home[r_number].v_x =-cos(transform_angle_br*deg2rad)*2;
-            env.home[r_number].v_y =-sin(transform_angle_br*deg2rad)*2;
+            x_speed = -cos(transform_angle_br*deg2rad)*2;// distance too small, leave ball
+            y_speed = -sin(transform_angle_br*deg2rad)*2;// distance too small, leave ball
         }else{
-            env.home[r_number].v_x =0;
-            env.home[r_number].v_y =0;
+            x_speed = 0;// distance ok, stop and turn forward first
+            y_speed = 0;// distance ok, stop and turn forward first
         }
     }
-    //--------------------------------------------------------------------face foward
 
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
 
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
 
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+//    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
+//    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
+//    printf("yaw_speed=%f\n",yaw_speed);
+//    printf("inv_op_angle_dr=%f\n",inv_op_angle_dr);
+//    printf("transform_angle_dr=%f\n",transform_angle_dr);
 
 }
 void FIRA_pathplan_class::strategy_LeaveLimitArea(int r_number){
@@ -1954,18 +2454,19 @@ void FIRA_pathplan_class::strategy_LeaveLimitArea(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
 
-    double transform_op_angle_dr=op_angle_dr+90;
-    if(transform_op_angle_dr>180){
-        transform_op_angle_dr=transform_op_angle_dr-360;
-    }else if(transform_op_angle_dr<-180){
-        transform_op_angle_dr=transform_op_angle_dr+360;
-    }
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.transform_op_angle_dr = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
 
-        env.home[r_number].v_x =-cos(transform_op_angle_dr*deg2rad)*(1.35-op_distance_dr);
-        env.home[r_number].v_y =-sin(transform_op_angle_dr*deg2rad)*(1.35-op_distance_dr);
-
-//--------------------------------------------------------------------face foward
     double transform_angle_dr = env.home[r_number].goal.angle;
     double inv_op_angle_dr=op_angle_dr+180;// let tail be head
     if(inv_op_angle_dr>180){
@@ -1986,12 +2487,58 @@ void FIRA_pathplan_class::strategy_LeaveLimitArea(int r_number){
         }
     }
 
-
-    env.home[r_number].v_yaw=inv_op_angle_dr+transform_angle_dr;
-    if(fabs(inv_op_angle_dr+transform_angle_dr)<1){
-       env.home[r_number].v_yaw=0;
+    double transform_op_angle_dr=op_angle_dr+90;
+    if(transform_op_angle_dr>180){
+        transform_op_angle_dr=transform_op_angle_dr-360;
+    }else if(transform_op_angle_dr<-180){
+        transform_op_angle_dr=transform_op_angle_dr+360;
     }
 
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    yaw_speed = inv_op_angle_dr+transform_angle_dr;
+    if(op_distance_dr<1.9){// too inside limit area
+        x_speed = -cos(transform_op_angle_dr*deg2rad)*(2-op_distance_dr);// if op_distance_dr less than 1.35, move out
+        y_speed = -sin(transform_op_angle_dr*deg2rad)*(2-op_distance_dr);
+    }else if(op_distance_dr>=1.9 && op_distance_dr <2){ // at edge of limit area
+        x_speed = 0;
+        y_speed = 0;
+        if(angle_br<70&&angle_br>-70){
+            x_speed = 0;
+            y_speed = 3.5-op_distance_dr;
+        }
+    }
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+//    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
+//    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
+//    printf("yaw_speed=%f\n",yaw_speed);
 
 }
 
@@ -2003,60 +2550,87 @@ void FIRA_pathplan_class::strategy_LeftRightMove(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
+    double transform_angle_dr = angle_dr;
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
 
-    double inv_op_angle_dr=op_angle_dr+180;//let tail be head
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.transform_angle_br = to give robot head direction x & y speed
+    //                                                       //
+    //#######################################################//
+
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
     if(inv_op_angle_dr>180){
         inv_op_angle_dr=inv_op_angle_dr-360;
     }
-//    printf("inv_op_angle_dr=%f\n",inv_op_angle_dr);
-//    printf("angle_dr=%f\n",angle_dr);
 
-
-    angle_br=angle_br+90;
-    if(angle_br>180){
-        angle_br=angle_br-360;
-    }else if(angle_br<-180){
-        angle_br=angle_br+360;
-    }
-    if(inv_op_angle_dr>100&&angle_dr<-100){//+and -
-        if(fabs(inv_op_angle_dr)>fabs(angle_dr)){//turn to smaller way
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
             inv_op_angle_dr=0;
         }else{
-            angle_dr=0;
+            transform_angle_dr=0;
         }
-    }else if(inv_op_angle_dr<-100&&angle_dr>100){
-        if(fabs(inv_op_angle_dr)>fabs(angle_dr)){//turn to smaller way
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
             inv_op_angle_dr=0;
         }else{
-            angle_dr=0;
+            transform_angle_dr=0;
         }
     }
 
-    if(fabs(inv_op_angle_dr+angle_dr)<20){
-        env.home[r_number].v_x =-cos(angle_br*deg2rad)*distance_br;
+    double transform_angle_br=angle_br;
+    transform_angle_br=transform_angle_br+90;
+    if(transform_angle_br>180){
+        transform_angle_br=transform_angle_br-360;
+    }else if(transform_angle_br<-180){
+        transform_angle_br=transform_angle_br+360;
+    }
+
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x = robot to ball x vector speed
+    //    3.v_y =0
+    //                                                       //
+    //#######################################################//
+
+    yaw_speed = inv_op_angle_dr+transform_angle_dr; // (head to angle_dr) + (tail to op_angle_dr) = face forward
+
+    if(fabs(inv_op_angle_dr+transform_angle_dr)<20){// if face forward correct within error interval, give x vector speed
+       x_speed = cos(transform_angle_br*deg2rad)*distance_br;
     }else{
-        env.home[r_number].v_x =0;
+       x_speed = 0;// if not face correct, give v_x=0, until you turn to right angle
     }
-    env.home[r_number].v_y =0;
-    env.home[r_number].v_yaw=inv_op_angle_dr+angle_dr;
-    if(fabs(inv_op_angle_dr+angle_dr)<40){
-        env.home[r_number].v_yaw=0.8*(inv_op_angle_dr+angle_dr);
-        if(fabs(inv_op_angle_dr+angle_dr)<20){
-            env.home[r_number].v_yaw=0.5*(inv_op_angle_dr+angle_dr);
-            if(fabs(inv_op_angle_dr+angle_dr)<10){
-                env.home[r_number].v_yaw=0.1*(inv_op_angle_dr+angle_dr);
-                if(fabs(inv_op_angle_dr+angle_dr)<5){
-                    env.home[r_number].v_yaw=0.01*(inv_op_angle_dr+angle_dr);
-                    if(fabs(inv_op_angle_dr+angle_dr)<1){
-                        env.home[r_number].v_yaw=0;
-                    }
-                }
-            }
-        }
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
     }
-//    printf("inv_op_angle_dr+angle_dr=%f\n",inv_op_angle_dr+angle_dr);
-
-
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+    printf("x_speed=%f\n",x_speed);
+    printf("y_speed=%f\n",y_speed);
+    printf("yaw_speed=%f\n",yaw_speed);
 
 }
 
@@ -2068,135 +2642,178 @@ void FIRA_pathplan_class::strategy_invLeftRightMove(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-    double to_middle_line_dis = sin(op_angle_dr*deg2rad)*op_distance_dr;
-    static int x_moving=0;
-    double x_speed=0;
-    double define_middle_line_dis =0.5;
-    double y_distance_dr=fabs(cos(angle_dr*deg2rad))*distance_dr;
-    double y_distance_opdr=fabs(cos(op_angle_dr*deg2rad))*op_distance_dr;
-    double y_distance_br=fabs(cos(angle_br*deg2rad))*distance_br;
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
 
-    //--------------------------------------------------------------------face foward
-            double transform_angle_dr = env.home[r_number].goal.angle;
-            double inv_op_angle_dr=op_angle_dr+180;// let tail be head
-            if(inv_op_angle_dr>180){
-                inv_op_angle_dr=inv_op_angle_dr-360;
-            }
+    double to_middle_line_dis = sin(op_angle_dr*deg2rad)*op_distance_dr; //distance to (goal && op_goal) line
+    static int x_moving=0; // move left or move right plan, 0:default, 1:move to left, 2:move to right
+    double define_middle_line_dis =0.6; // define how far do you want to leave from middle_line
+    double y_distance_dr=fabs(cos(angle_dr*deg2rad))*distance_dr; //robot head direction y vector distance_dr
+    double y_distance_opdr=fabs(cos(op_angle_dr*deg2rad))*op_distance_dr; //robot head direction y vector distance_opdr
+    double x_distance_opdr=fabs(sin(op_angle_dr*deg2rad))*op_distance_dr; //robot head direction x vector distance_opdr
+    double y_distance_br=fabs(cos(angle_br*deg2rad))*distance_br; //robot head direction y vector distance_br
+    double x_distance_br=fabs(sin(angle_br*deg2rad))*distance_br; //robot head direction x vector distance_br
 
-            if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
-                if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-                    inv_op_angle_dr=0;
-                }else{
-                    transform_angle_dr=0;
-                }
-            }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
-                if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-                    inv_op_angle_dr=0;
-                }else{
-                    transform_angle_dr=0;
-                }
-            }
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //                                                       //
+    //#######################################################//
 
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
 
-            env.home[r_number].v_yaw=inv_op_angle_dr+transform_angle_dr;
-            if(fabs(inv_op_angle_dr+transform_angle_dr)<1){
-               env.home[r_number].v_yaw=0;
-            }
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
 
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x = move to define_middle_line_dis base on where you are
+    //    3.v_y = y_distance_br*1.5-y_distance_opdr
+    //    ## all detect number need to below 3.5 meters, or will not correct
+    //                                                       //
+    //#######################################################//
 
-    if((op_angle_dr<0&&angle_dr<0)&&(angle_br>=0)){//robot && ball left side
-//        printf("left side\n");
+    //---------------------------------------yaw_speed--------------------------
+    //yaw_speed = inv_op_angle_dr+transform_angle_dr; // (head to angle_dr) + (tail to op_angle_dr) = face forward
+
+    //---------------------------------------x_speed---------------------------
+    if((op_angle_dr<0&&angle_dr<0)&&(angle_br>=0)){//robot && ball left side, so ready to "move to right" side define_dis
         x_moving =2;
-    }else if((op_angle_dr>=0&&angle_dr>=0)&&(angle_br<0)){//robot && ball right side
-//        printf("right side\n");
+    }else if((op_angle_dr>=0&&angle_dr>=0)&&(angle_br<0)){//robot && ball right side, so ready to "move to left" side define_dis
         x_moving =1;
     }
 
-    if(fabs(inv_op_angle_dr+angle_dr)<20){//if face forward
+    if(fabs(inv_op_angle_dr+angle_dr)<20){// if face forward correct within error interval, give x vector speed
         switch(x_moving){
             case 1://move to left
                 printf("move to left\n");
                 x_speed = -to_middle_line_dis-define_middle_line_dis;
-                env.home[r_number].v_x =x_speed*2;
                 if(fabs(x_speed)<0.1){
-                    env.home[r_number].v_x = 0;
+                    x_speed = 0;
+                    if(x_distance_br<x_distance_opdr){//ball across field
+                        x_moving=2;
+                    }
                 }
             break;
             case 2://move to right
                 printf("move to right\n");
                 x_speed = -to_middle_line_dis+define_middle_line_dis;
-                env.home[r_number].v_x =x_speed*2;
                 if(fabs(x_speed)<0.1){
-                    env.home[r_number].v_x = 0;
+                    x_speed = 0;
+                    if(x_distance_br<x_distance_opdr){//ball across field
+                        x_moving=1;
+                    }
                 }
             break;
             default:
                 if(op_angle_dr<0 && angle_dr<0){// left side, move to left side position
                     printf("move to left\n");
                     x_speed = -to_middle_line_dis-define_middle_line_dis;
-                    env.home[r_number].v_x =x_speed*2;
                     if(fabs(x_speed)<0.1){
-                        env.home[r_number].v_x = 0;
+                        x_speed = 0;
+                        if(x_distance_br<x_distance_opdr){//ball across field
+                            x_moving=2;
+                        }
                     }
                 }else if(op_angle_dr>=0 && angle_dr>=0){// right side, move to right side position
                     printf("move to right\n");
                     x_speed = -to_middle_line_dis+define_middle_line_dis;
-                    env.home[r_number].v_x =x_speed*2;
-                    if(fabs(x_speed)<0.1){
-                        env.home[r_number].v_x = 0;
+                    if(fabs(x_speed)<0.1){//almost to right position
+                        x_speed = 0;
+                        if(x_distance_br<x_distance_opdr){//ball across field
+                            x_moving=1;
+                        }
                     }
                 }
             break;
 
         }
-        if(y_distance_opdr<3){// if not across defend gate
-            if(cos(angle_br*deg2rad)>=0){//ball in front of robot
-              env.home[r_number].v_y=y_distance_br*2-y_distance_opdr;
-              if(y_distance_br>1.5 && y_distance_opdr>=3){
-                  env.home[r_number].v_y=0;
+        //------------------------y_speed-------------------------
+
+        if(y_distance_opdr<3&& op_distance_dr<3.4){// if not across defend gate
+            if(cos(angle_br*deg2rad)>=0){//if ball in front of robot
+              y_speed = y_distance_br*2-y_distance_opdr; // give y speed
+              if(y_distance_br>1.5 && y_distance_opdr>=2.5){//can reach farest distance
+                  printf("farest distance\n");
+                  y_speed = 0;
+              }else if(fabs(y_distance_br*2-y_distance_opdr)<0.2){
+                  printf("moving speed too small\n");
+                  y_speed = 0;
+              }else{
+                  printf("ball in front of robot\n");
               }
-              printf("ball in front of robot :%f\n",0);
             }else{//ball at robot back
                printf("back\n");
-              env.home[r_number].v_y=-y_distance_opdr;
+              y_speed =-y_distance_opdr;
             }
 
-        }else{
-            printf("too far from defend gate :%f\n",0);
-            env.home[r_number].v_y=-y_distance_opdr;
+        }else{// across defend gate, move back
+            printf("too far from defend gate\n");
+            if(op_distance_dr>=3.4){
+              y_speed = -op_distance_dr+3;
+            }else if(y_distance_opdr>=3){
+              y_speed = -y_distance_opdr+3;
+            }
         }
 
 
     }else{
-        env.home[r_number].v_x =0;
-        env.home[r_number].v_y =0;
+        x_speed =0;
+        y_speed =0;
+        yaw_speed = inv_op_angle_dr+transform_angle_dr;
     }
-    printf("FFFFf=%f\n",inv_op_angle_dr+transform_angle_dr);
-    printf("y_distance_br=%f\n",y_distance_br);
-    printf("y_distance_opdr=%f\n",y_distance_opdr);
-    printf("y_distance_dr=%f\n",y_distance_dr);
-    printf("cos(angle_br*deg2rad)=%f\n",cos(angle_br*deg2rad));
 
-//    printf("XXXX=%f\n",fabs(cos(angle_dr*deg2rad))*distance_dr-fabs(cos(op_angle_dr*deg2rad))*op_distance_dr-1);
-//    env.home[r_number].v_yaw=inv_op_angle_dr+angle_dr;
-//    if(fabs(inv_op_angle_dr+angle_dr)<40){
-//        env.home[r_number].v_yaw=0.8*(inv_op_angle_dr+angle_dr);
-//        if(fabs(inv_op_angle_dr+angle_dr)<20){
-//            env.home[r_number].v_yaw=0.5*(inv_op_angle_dr+angle_dr);
-//            if(fabs(inv_op_angle_dr+angle_dr)<10){
-//                env.home[r_number].v_yaw=0.1*(inv_op_angle_dr+angle_dr);
-//                if(fabs(inv_op_angle_dr+angle_dr)<5){
-//                    env.home[r_number].v_yaw=0.01*(inv_op_angle_dr+angle_dr);
-//                    if(fabs(inv_op_angle_dr+angle_dr)<1){
-//                        env.home[r_number].v_yaw=0;
-//                    }
-//                }
-//            }
-//        }
-//    }
+    env.home[r_number].v_yaw = yaw_speed*2;
+    env.home[r_number].v_x = -x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
 
-//    printf("x_speed=%f\n",x_speed);
-//    printf("to_middle_line_dis=%f\n",to_middle_line_dis);
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant*10)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant*10)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+//    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
+//    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
+//    printf("yaw_speed=%f\n",yaw_speed);
+
+//    printf("FFFFf=%f\n",fabs(y_distance_br*2-y_distance_opdr));
+//    printf("y_distance_br=%f\n",y_distance_br);
+//    printf("y_distance_opdr=%f\n",y_distance_opdr);
+//    printf("y_distance_dr=%f\n",y_distance_dr);
+//    printf("x_distance_opdr=%f\n",x_distance_opdr);
+//    printf("x_distance_br=%f\n",x_distance_br);
+
 
 }
 void FIRA_pathplan_class::strategy_Support_LostInternet(int r_number){
@@ -2207,15 +2824,24 @@ void FIRA_pathplan_class::strategy_Support_LostInternet(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
     double to_middle_line_dis = sin(op_angle_dr*deg2rad)*op_distance_dr;
     static int x_moving=0;
-    double x_speed=0;
     double define_middle_line_dis =0.5;
     double y_distance_dr=fabs(cos(angle_dr*deg2rad))*distance_dr;
     double y_distance_opdr=fabs(cos(op_angle_dr*deg2rad))*op_distance_dr;
     double y_distance_br=fabs(cos(angle_br*deg2rad))*distance_br;
 
-    //--------------------------------------------------------------------face foward
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //                                                       //
+    //#######################################################//
+
             double transform_angle_dr = env.home[r_number].goal.angle;
             double inv_op_angle_dr=op_angle_dr+180;// let tail be head
             if(inv_op_angle_dr>180){
@@ -2236,13 +2862,6 @@ void FIRA_pathplan_class::strategy_Support_LostInternet(int r_number){
                 }
             }
 
-
-            env.home[r_number].v_yaw=inv_op_angle_dr+transform_angle_dr;
-            if(fabs(inv_op_angle_dr+transform_angle_dr)<1){
-               env.home[r_number].v_yaw=0;
-            }
-
-
     if((op_angle_dr<0&&angle_dr<0)&&(angle_br>=0)){//robot && ball left side
 //        printf("left side\n");
         x_moving =2;
@@ -2250,6 +2869,19 @@ void FIRA_pathplan_class::strategy_Support_LostInternet(int r_number){
 //        printf("right side\n");
         x_moving =1;
     }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //    ##
+    //                                                       //
+    //#######################################################//
+
+    //----------------------yaw_speed----------------------------------------------
+    yaw_speed = inv_op_angle_dr+transform_angle_dr;
 
     static int switch_attacker=0;
     if(fabs(inv_op_angle_dr+angle_dr)<20){//if face forward
@@ -2259,53 +2891,37 @@ void FIRA_pathplan_class::strategy_Support_LostInternet(int r_number){
                case 1://move to left
                    printf("move to left\n");
                    x_speed = -to_middle_line_dis-define_middle_line_dis;
-                   env.home[r_number].v_x =x_speed*2;
-                   if(fabs(x_speed)<0.1){
-                       env.home[r_number].v_x = 0;
-                   }
                break;
                case 2://move to right
                    printf("move to right\n");
                    x_speed = -to_middle_line_dis+define_middle_line_dis;
-                   env.home[r_number].v_x =x_speed*2;
-                   if(fabs(x_speed)<0.1){
-                       env.home[r_number].v_x = 0;
-                   }
                break;
                default:
                    if(op_angle_dr<0 && angle_dr<0){// left side, move to left side position
                        printf("move to left\n");
                        x_speed = -to_middle_line_dis-define_middle_line_dis;
-                       env.home[r_number].v_x =x_speed*2;
-                       if(fabs(x_speed)<0.1){
-                           env.home[r_number].v_x = 0;
-                       }
                    }else if(op_angle_dr>=0 && angle_dr>=0){// right side, move to right side position
                        printf("move to right\n");
                        x_speed = -to_middle_line_dis+define_middle_line_dis;
-                       env.home[r_number].v_x =x_speed*2;
-                       if(fabs(x_speed)<0.1){
-                           env.home[r_number].v_x = 0;
-                       }
                    }
                break;
 
            }
            if(y_distance_opdr<3.3){// if not across defend gate
                if(cos(angle_br*deg2rad)>=0){//ball in front of robot
-                 env.home[r_number].v_y=y_distance_br*2-y_distance_opdr;
+                 y_speed = y_distance_br*2-y_distance_opdr;
                  if(y_distance_br>1.5 && y_distance_opdr>=3.2){
-                     env.home[r_number].v_y=0;
+                     y_speed = 0;
                  }
-                 printf("ball in front of robot :%f\n",0);
+                 printf("ball in front of robot\n");
                }else{//ball at robot back
                   printf("back\n");
-                 env.home[r_number].v_y=-y_distance_opdr;
+                 y_speed = -y_distance_opdr;
                }
 
            }else{
-               printf("too far from defend gate :%f\n",0);
-               env.home[r_number].v_y=-y_distance_opdr;
+               printf("too far from defend gate\n");
+               y_speed = -y_distance_opdr;
            }
 
            if((cos(angle_br*deg2rad)>=0)&&(y_distance_opdr+y_distance_br<3.3)){
@@ -2340,18 +2956,589 @@ void FIRA_pathplan_class::strategy_Support_LostInternet(int r_number){
        }
 
     }else{
-        env.home[r_number].v_x =0;
-        env.home[r_number].v_y =0;
+        x_speed = 0;
+        y_speed = 0;
         shoot = 0;
     }
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+//    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
+//    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
+//    printf("yaw_speed=%f\n",yaw_speed);
+
 //    printf("FFFFf=%f\n",inv_op_angle_dr+transform_angle_dr);
 //    printf("y_distance_br=%f\n",y_distance_br);
 //    printf("y_distance_opdr=%f\n",y_distance_opdr);
 //    printf("y_distance_dr=%f\n",y_distance_dr);
 //    printf("cos(angle_br*deg2rad)=%f\n",cos(angle_br*deg2rad));
-    printf("ball dis =%f\n",distance_br);
-    printf("angle br=%f\n",angle_br);
+//    printf("ball dis =%f\n",distance_br);
+//    printf("angle br=%f\n",angle_br);
 
+
+}
+
+void FIRA_pathplan_class::strategy_MovetoGoal(int r_number){
+
+    double distance_br = env.home[r_number].ball.distance;
+    double distance_dr = env.home[r_number].goal.distance;
+    double op_distance_dr = env.home[r_number].op_goal.distance;
+    double angle_br = env.home[r_number].ball.angle;
+    double angle_dr = env.home[r_number].goal.angle;
+    double op_angle_dr = env.home[r_number].op_goal.angle;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    v_rotation=angle_dr+90;
+    if(v_rotation>180){
+        v_rotation=-360+v_rotation;
+    }
+    if(v_rotation<-180){
+        v_rotation=360+v_rotation;
+    }
+    x_speed = cos(v_rotation*deg2rad)*distance_dr;
+    y_speed = sin(v_rotation*deg2rad)*distance_dr;
+
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+}
+void FIRA_pathplan_class::strategy_MovetoOpGoal(int r_number){
+
+    double distance_br = env.home[r_number].ball.distance;
+    double distance_dr = env.home[r_number].goal.distance;
+    double op_distance_dr = env.home[r_number].op_goal.distance;
+    double angle_br = env.home[r_number].ball.angle;
+    double angle_dr = env.home[r_number].goal.angle;
+    double op_angle_dr = env.home[r_number].op_goal.angle;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    v_rotation=op_angle_dr+90;
+    if(v_rotation>180){
+        v_rotation=-360+v_rotation;
+    }
+    if(v_rotation<-180){
+        v_rotation=360+v_rotation;
+    }
+    x_speed = cos(v_rotation*deg2rad)*distance_dr;
+    y_speed = sin(v_rotation*deg2rad)*distance_dr;
+
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+}
+
+void FIRA_pathplan_class::strategy_MovetoGoalEdge1(int r_number){
+    // move to goal left;
+    double distance_br = env.home[r_number].ball.distance;
+    double distance_dr = env.home[r_number].goal.distance;
+    double op_distance_dr = env.home[r_number].op_goal.distance;
+    double angle_br = env.home[r_number].ball.angle;
+    double angle_dr = env.home[r_number].goal.angle;
+    double op_angle_dr = env.home[r_number].op_goal.angle;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    v_rotation=env.home[r_number].goal_edge.angle_1+90;
+    if(v_rotation>180){
+        v_rotation=-360+v_rotation;
+    }
+    if(v_rotation<-180){
+        v_rotation=360+v_rotation;
+    }
+    x_speed = cos(v_rotation*deg2rad)*distance_dr;
+    y_speed = sin(v_rotation*deg2rad)*distance_dr;
+
+    double x_control=0;
+    if(fabs(inv_op_angle_dr+transform_angle_dr)<20){
+        x_control=10;
+    }else{
+        x_control=0;
+    }
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant-x_control;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+}
+void FIRA_pathplan_class::strategy_MovetoGoalEdge2(int r_number){
+    // move to goal right
+    double distance_br = env.home[r_number].ball.distance;
+    double distance_dr = env.home[r_number].goal.distance;
+    double op_distance_dr = env.home[r_number].op_goal.distance;
+    double angle_br = env.home[r_number].ball.angle;
+    double angle_dr = env.home[r_number].goal.angle;
+    double op_angle_dr = env.home[r_number].op_goal.angle;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    v_rotation=env.home[r_number].goal_edge.angle_2+90;
+    if(v_rotation>180){
+        v_rotation=-360+v_rotation;
+    }
+    if(v_rotation<-180){
+        v_rotation=360+v_rotation;
+    }
+    x_speed = cos(v_rotation*deg2rad)*distance_dr;
+    y_speed = sin(v_rotation*deg2rad)*distance_dr;
+
+    double x_control=0;
+    if(fabs(inv_op_angle_dr+transform_angle_dr)<20){
+        x_control=10;
+    }else{
+        x_control=0;
+    }
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant+x_control;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+}
+
+void FIRA_pathplan_class::strategy_MovetoOpGoalEdge1(int r_number){
+
+    double distance_br = env.home[r_number].ball.distance;
+    double distance_dr = env.home[r_number].goal.distance;
+    double op_distance_dr = env.home[r_number].op_goal.distance;
+    double angle_br = env.home[r_number].ball.angle;
+    double angle_dr = env.home[r_number].goal.angle;
+    double op_angle_dr = env.home[r_number].op_goal.angle;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    v_rotation=env.home[r_number].op_goal_edge.angle_1+90;
+    if(v_rotation>180){
+        v_rotation=-360+v_rotation;
+    }
+    if(v_rotation<-180){
+        v_rotation=360+v_rotation;
+    }
+    x_speed = cos(v_rotation*deg2rad)*distance_dr;
+    y_speed = sin(v_rotation*deg2rad)*distance_dr;
+
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
+
+}
+
+void FIRA_pathplan_class::strategy_MovetoOpGoalEdge2(int r_number){
+
+    double distance_br = env.home[r_number].ball.distance;
+    double distance_dr = env.home[r_number].goal.distance;
+    double op_distance_dr = env.home[r_number].op_goal.distance;
+    double angle_br = env.home[r_number].ball.angle;
+    double angle_dr = env.home[r_number].goal.angle;
+    double op_angle_dr = env.home[r_number].op_goal.angle;
+    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
+    double x_speed = 0;
+    double y_speed = 0;
+    double yaw_speed = 0;
+
+    //#######################################################//
+    //                                                       //
+    //    angle transform
+    //    1.inv_op_angle_dr = tail face op_angle_dr
+    //    2.transform_angle_dr = angle_dr
+    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
+    //                                                       //
+    //#######################################################//
+
+    double transform_angle_dr = env.home[r_number].goal.angle;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x =
+    //    3.v_y =
+    //                                                       //
+    //#######################################################//
+
+    //-----------------------yaw_speed-------------------
+    yaw_speed =inv_op_angle_dr+transform_angle_dr;
+
+    //-----------------------x_speed---------------------
+    //-----------------------y_speed---------------------
+
+    v_rotation=env.home[r_number].op_goal_edge.angle_2+90;
+    if(v_rotation>180){
+        v_rotation=-360+v_rotation;
+    }
+    if(v_rotation<-180){
+        v_rotation=360+v_rotation;
+    }
+    x_speed = cos(v_rotation*deg2rad)*distance_dr;
+    y_speed = sin(v_rotation*deg2rad)*distance_dr;
+
+
+    env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_x = x_speed*speed_constant;
+    env.home[r_number].v_y = y_speed*speed_constant;
+
+    //#######################################################//
+    //                                                       //
+    //    lowest speed limit (if to low, set it to zero)
+    //                                                       //
+    //#######################################################//
+
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
+    if(fabs(x_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_x = 0;
+    }
+    if(fabs(y_speed*speed_constant)<speed_limit){
+       env.home[r_number].v_y = 0;
+    }
 
 }
 //==========for ROS special===============//

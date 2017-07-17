@@ -329,6 +329,8 @@ function GetPathplanValue() {
     var CKBox3 = [];
     var PKBox3 = [];
 
+
+
     $("[name=AttackStrategyElement1]").each(function() {
         ASBox1.push(parseFloat($(this).val()));
     });
@@ -353,9 +355,16 @@ function GetPathplanValue() {
     $("[name=CornerKickElement1]").each(function() {
         CKBox1.push(parseFloat($(this).val()));
     });
-    $("[name=PenaltyKickElement1]").each(function() {
+    /*$("[name=PenaltyKickElement1]").each(function() {
         PKBox1.push(parseFloat($(this).val()));
-    });
+    });*/
+    obj = document.getElementsByName('PenaltyKickElement1');
+    PKBox1.push(parseFloat(obj[0].value));
+    for (var i = 1; i < obj.length; i++) {
+        if (obj[i].checked == true)
+            PKBox1.push(parseFloat(i - 1));
+    }
+
     localStorage.setItem("PathplanAtkStrategyStr1", JSON.stringify(ASBox1));
     localStorage.setItem("PathplanChaseStrategyStr1", JSON.stringify(CSBox1));
     localStorage.setItem("PathplanZoneAtkStr1", JSON.stringify(ZABox1));
@@ -391,9 +400,15 @@ function GetPathplanValue() {
     $("[name=CornerKickElement2]").each(function() {
         CKBox2.push(parseFloat($(this).val()));
     });
-    $("[name=PenaltyKickElement2]").each(function() {
-        PKBox2.push(parseFloat($(this).val()));
-    });
+    // $("[name=PenaltyKickElement2]").each(function() {
+    //     PKBox2.push(parseFloat($(this).val()));
+    // });
+    obj = document.getElementsByName('PenaltyKickElement2');
+    PKBox2.push(parseFloat(obj[0].value));
+    for (var i = 1; i < obj.length; i++) {
+        if (obj[i].checked == true)
+            PKBox2.push(parseFloat(i - 1));
+    }
     localStorage.setItem("PathplanAtkStrategyStr2", JSON.stringify(ASBox2));
     localStorage.setItem("PathplanChaseStrategyStr2", JSON.stringify(CSBox2));
     localStorage.setItem("PathplanZoneAtkStr2", JSON.stringify(ZABox2));
@@ -429,9 +444,15 @@ function GetPathplanValue() {
     $("[name=CornerKickElement3]").each(function() {
         CKBox3.push(parseFloat($(this).val()));
     });
-    $("[name=PenaltyKickElement3]").each(function() {
-        PKBox3.push(parseFloat($(this).val()));
-    });
+    // $("[name=PenaltyKickElement3]").each(function() {
+    //     PKBox3.push(parseFloat($(this).val()));
+    // });
+    obj = document.getElementsByName('PenaltyKickElement3');
+    PKBox3.push(parseFloat(obj[0].value));
+    for (var i = 1; i < obj.length; i++) {
+        if (obj[i].checked == true)
+            PKBox3.push(parseFloat(i - 1));
+    }
     localStorage.setItem("PathplanAtkStrategyStr3", JSON.stringify(ASBox3));
     localStorage.setItem("PathplanChaseStrategyStr3", JSON.stringify(CSBox3));
     localStorage.setItem("PathplanZoneAtkStr3", JSON.stringify(ZABox3));
@@ -451,7 +472,6 @@ function GetPathplanValue() {
 function SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DABox1, CKBox1, PKBox1,
     ASBox2, CSBox2, ZABox2, TSABox2, TUABox2, SSUBox2, DABox2, CKBox2, PKBox2,
     ASBox3, CSBox3, ZABox3, TSABox3, TUABox3, SSUBox3, DABox3, CKBox3, PKBox3) {
-
 
     AttackStrategyBox1.set(ASBox1);
     ChaseStrategyBox1.set(CSBox1);
@@ -560,9 +580,8 @@ PenaltyKickBox1.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("PenaltyKickElement1");
-        for (var i = 0; i < obj.length; i++) {
-            obj[i].value = value[i];
-        }
+        obj[0].value = value[0];
+        obj[value[1] + 1].checked = true;
     }
 });
 AttackStrategyBox2.get(function(value) {
@@ -641,9 +660,8 @@ PenaltyKickBox2.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("PenaltyKickElement2");
-        for (var i = 0; i < obj.length; i++) {
-            obj[i].value = value[i];
-        }
+        obj[0].value = value[0];
+        obj[value[1] + 1].checked = true;
     }
 });
 
@@ -723,9 +741,8 @@ PenaltyKickBox3.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("PenaltyKickElement3");
-        for (var i = 0; i < obj.length; i++) {
-            obj[i].value = value[i];
-        }
+        obj[0].value = value[0];
+        obj[value[1] + 1].checked = true;
     }
 });
 //============================================================================

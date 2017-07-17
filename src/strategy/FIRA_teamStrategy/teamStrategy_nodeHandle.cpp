@@ -37,13 +37,15 @@ void TeamStrategy_nodeHandle::ros_comms_init(){
     robot_2_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"2"+robot_role_suffix,1000);
     robot_3_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"3"+robot_role_suffix,1000);    
 
-    std::string another_robot_info_topic_name;
-    if(global_env->RobotNumber==1){
-        another_robot_info_topic_name="r2_info";
-    }else if(global_env->RobotNumber==2){
-        another_robot_info_topic_name="r1_info";
-    }
-    another_robot_info_sub = n->subscribe<std_msgs::Float32MultiArray>(another_robot_info_topic_name,1000,&TeamStrategy_nodeHandle::another_robot_info,this);//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//    std::string another_robot_info_topic_name;
+//    if(global_env->RobotNumber==1){
+//        another_robot_info_topic_name="r2_info";
+//    }else if(global_env->RobotNumber==2){
+//        another_robot_info_topic_name="r1_info";
+//    }
+    Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&TeamStrategy_nodeHandle::subVision,this);
+    Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1000,&TeamStrategy_nodeHandle::subVision_Two_point,this);
+    //another_robot_info_sub = n->subscribe<std_msgs::Float32MultiArray>(another_robot_info_topic_name,1000,&TeamStrategy_nodeHandle::another_robot_info,this);//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 }
 void TeamStrategy_nodeHandle::Transfer(int r_number){
@@ -86,9 +88,9 @@ void TeamStrategy_nodeHandle::Transfer(int r_number){
     global_env->home[r_number].goal.distance = hypot(vectordr_x,vectordr_y);
     global_env->home[r_number].op_goal.distance = hypot(vectordr_x_op, vectordr_y_op);
     
-    global_env->home[r_number].goal.angle = phi_dr - global_env->home[r_number].rotation; // angle between robot to our attacking goal and robot's head direction
+    //global_env->home[r_number].goal.angle = phi_dr - global_env->home[r_number].rotation; // angle between robot to our attacking goal and robot's head direction
     global_env->home[r_number].ball.angle = phi_br - global_env->home[r_number].rotation; // angle between robot to the ball and robot's head direction
-    global_env->home[r_number].op_goal.angle = phi_dr_op - global_env->home[r_number].rotation;// angle between robot to opponent's attacking goal and robot's head direction
+    //global_env->home[r_number].op_goal.angle = phi_dr_op - global_env->home[r_number].rotation;// angle between robot to opponent's attacking goal and robot's head direction
 }
 
 void TeamStrategy_nodeHandle::loadParam(ros::NodeHandle *n){

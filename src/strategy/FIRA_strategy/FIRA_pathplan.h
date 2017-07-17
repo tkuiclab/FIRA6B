@@ -82,6 +82,12 @@ public:
     void strategy_LeftRightMove(int);
     void strategy_invLeftRightMove(int);
     void strategy_Support_LostInternet(int);
+    void strategy_MovetoGoal(int);
+    void strategy_MovetoOpGoal(int);
+    void strategy_MovetoGoalEdge1(int);
+    void strategy_MovetoGoalEdge2(int);
+    void strategy_MovetoOpGoalEdge1(int);
+    void strategy_MovetoOpGoalEdge2(int);
 //--------------------------------------------------
 
 //--------------role case-------------------
