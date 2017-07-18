@@ -31,6 +31,8 @@
 #define DEG2RAD pi/180
 #define FAULTEXECUTING 0
 #define SUCCESSEXECUTING 1 
+#define TRUE 1
+#define FALSE 0
 
 typedef struct{
     double x,y;

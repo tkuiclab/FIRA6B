@@ -21,9 +21,9 @@
 ** Define
 *****************************************************************************/
 #define STATE_HALT                       0
-#define STATE_LOCALIZATION              20
+#define STATE_LOCALIZATION               9
 #define STRATEGY_HALT                    0
-#define STRATEGY_LOCALIZATION           1
+#define STRATEGY_LOCALIZATION            1
 
 class Strategy{
 public:
@@ -41,7 +41,14 @@ private:
     void StrategyHalt();
     void StrategyLocalization();
     int _LocationState;
+    int _CurrentTarget;
     LocationStruct *_Location;
     Environment *_Env;
+    enum state_location{
+    forward,
+    back,
+    finish,
+    halt,
+    error};
 };
 #endif

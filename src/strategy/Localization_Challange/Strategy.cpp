@@ -11,6 +11,7 @@
 #include "Strategy.hpp"
 Strategy::Strategy(){
     _LocationState = 0;
+    _CurrentTarget = 0;
     _Location = new LocationStruct;
     _Env = new Environment;
 }
@@ -42,23 +43,40 @@ void Strategy::StrategyLocalization(){
     RobotData Robot;
     Robot.pos.x = _Env->Robot.pos.x;
     Robot.pos.y = _Env->Robot.pos.y;
-    for(int i=0;i<5;i++){
-        printf("%d_x.%lf\n_",i,_Location->LocationPoint[i].x);
-        printf("%d_y.%lf\n_",i,_Location->LocationPoint[i].y);
-        printf("Middle %d_x.%lf\n_",i,_Location->MiddlePoint[i].x);
-        printf("Middle %d_y.%lf\n_",i,_Location->LocationPoint[i].y);       
-    }
+    double v_x,v_y;
     switch(_LocationState){
-        case 0:                 // Move to target poitn
-            // _Env->Robot.v_x = ;
-            // _Env->Robot.v_y = ;
+        case forward:                 // Move to target poitn
+            v_x = _Location->LocationPoint[_CurrentTarget].x - Robot.pos.x;
+            v_y = _Location->LocationPoint[_CurrentTarget].y - Robot.pos.y;
+            if(fabs(v_x)<=0.1 && fabs(v_y)<=0.1)
+                _LocationState = back;
+            // printf("x=%lf\ty=%lf\n",_Location->LocationPoint[_CurrentTarget].x,_Location->LocationPoint[_CurrentTarget].y);
+            // printf("VX=%f\tVY=%f\n",v_x,v_y);
+            // printf("state:forward\tSchedule=%d\n==========================\n",_CurrentTarget);
             break;
-        case 1:                 // Back to middle circle
-            // _Env->Robot.v_x = MidPoint[point].x;
-            // _Env->Robot.v_y = MidPoint[point].y;
+        case back:                 // Back to middle circle
+            v_x = _Location->MiddlePoint[_CurrentTarget].x - Robot.pos.x;
+            v_y = _Location->MiddlePoint[_CurrentTarget].y - Robot.pos.y;
+            if(fabs(v_x)<=0.1 && fabs(v_y)<=0.1){
+                if(_CurrentTarget==4)
+                    _LocationState = finish;
+                else
+                    _LocationState = forward;
+            _CurrentTarget++;}
+            // printf("x=%lf\ty=%lf\n",_Location->MiddlePoint[_CurrentTarget].x,_Location->MiddlePoint[_CurrentTarget].y);
+            // printf("VX=%f\tVY=%f\n",v_x,v_y);
+            // printf("state:back\tSchedule=%d\n==========================\n",_CurrentTarget);
+            break;
+        case finish:
+            break;
+        case halt:
+            break;
+        case error:
             break;
         default:                // ERROR SIGNAL
             printf("ERROR STATE\n");
             exit(FAULTEXECUTING);
     }
+    _Env->Robot.v_x = v_x;
+    _Env->Robot.v_y = v_y;
 }
