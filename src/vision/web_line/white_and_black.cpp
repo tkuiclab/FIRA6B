@@ -44,7 +44,7 @@ InterfaceProc::InterfaceProc()
   : it_(nh)
 {
   ros::NodeHandle n("~");
-
+   Parameter_getting(1);
   //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
   image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   s1 = nh.subscribe("interface/bin_save", 1000, &InterfaceProc::SaveButton_setting, this);
@@ -68,7 +68,6 @@ InterfaceProc::~InterfaceProc()
 }
 void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 {
-  //Parameter_getting(1);
   int StartTime = ros::Time::now().toNSec();
   cv_bridge::CvImagePtr cv_ptr;
   try
@@ -83,13 +82,16 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 
   //Mat frame;
   cv::flip(cv_ptr->image, cv_ptr->image, 1);
-  *frame = cv_ptr->image;
-  *frame2 = cv_ptr->image;
+  cv_ptr->image.copyTo(*frame);
+  cv_ptr->image.copyTo(*frame2);
+//cv::CopyTo(cv_ptr->image,frame);
+  //*frame = cv_ptr->image;
+  //*frame2 = cv_ptr->image;
 
 
   White_Line(*frame);
   Black_Line(*frame2);
-
+  
 }
 
 //////////////////////////////////////////////////////////
@@ -153,13 +155,14 @@ void InterfaceProc::White_Line(const cv::Mat iframe)
       }
     }
   }
-
+  
   for (int j = 0; j < whiteItem_pixel.size(); j++) {
     white_dis = Omni_distance(whiteItem_pixel[j]);
     WhiteRealDis.data.push_back(white_dis);
+
   }
   white_pub.publish(WhiteRealDis);
-//return  iframe;
+//return  1;
 
 }
 
@@ -168,6 +171,7 @@ void InterfaceProc::Black_Line(const cv::Mat iframe)
   cv::Mat blackframe(cv::Size(iframe.cols, iframe.rows), CV_8UC3);
   blackframe = iframe;
   int black_dis;
+
   for (int i = 0; i < blackframe.rows; i++) {
     for (int j = 0; j < blackframe.cols; j++) {
       unsigned char gray = ( blackframe.data[(i * blackframe.cols * 3) + (j * 3) + 0]
@@ -184,7 +188,6 @@ void InterfaceProc::Black_Line(const cv::Mat iframe)
       }
     }
   }
-
   blackItem_pixel.clear();
   BlackRealDis.data.clear();
   // Parameter_getting(1);
@@ -224,6 +227,8 @@ void InterfaceProc::Black_Line(const cv::Mat iframe)
     black_dis = Omni_distance(blackItem_pixel[j]);
     BlackRealDis.data.push_back(black_dis);
   }
+	//cout<<blackItem_pixel.size()<<endl;
+
   black_pub.publish(BlackRealDis);
   //return iframe ;
 

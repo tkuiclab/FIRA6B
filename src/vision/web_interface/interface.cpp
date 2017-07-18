@@ -248,6 +248,7 @@ void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
 
   SaveButton = msg.bin;
+  Parameter_getting(1);
   //HSVmap();
 }
 
@@ -726,10 +727,16 @@ cv::Mat InterfaceProc::White_Line(const cv::Mat iframe)
       }
     }
   }
-  for (double angle = 0; angle < 360; angle = angle + WhiteAngleMsg) {
-    if (angle > 360)angle -= 360;
+  for (double angle = FrontMsg; angle < 360+FrontMsg; angle = angle + WhiteAngleMsg) {
+    double angle_be = angle;
+
+    if (angle_be > 360)angle_be -= 360;
+    double x_ = cos((angle_be * PI) / 180); //Angle_cos[angle_be];
+    double y_ = sin((angle_be * PI) / 180); //Angle_sin[angle_be];
+
     for (int r = InnerMsg; r <= OuterMsg; r++) {
-      int x = r * cos(angle * PI / 180), y = r * sin(angle * PI / 180);
+
+      int x=r*x_ , y = r*y_;
       if ( oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x) * 3 + 0] == 255
            && oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x) * 3 + 1] == 255
            && oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x) * 3 + 2] == 255) {
@@ -757,7 +764,7 @@ cv::Mat InterfaceProc::Black_Line(const cv::Mat iframe)
 {
   static cv::Mat oframe(cv::Size(iframe.cols, iframe.rows), CV_8UC3);
   oframe = iframe;
-  cout<<FrontMsg<<endl;
+
   for (int i = 0; i < oframe.rows; i++) {
     for (int j = 0; j < oframe.cols; j++) {
       unsigned char gray = ( oframe.data[(i * oframe.cols * 3) + (j * 3) + 0]
@@ -774,10 +781,14 @@ cv::Mat InterfaceProc::Black_Line(const cv::Mat iframe)
       }
     }
   }
-  for (double angle = 0; angle < 360; angle = angle + BlackAngleMsg) {
-    if (angle > 360)angle -= 360;
+  for (double angle = FrontMsg; angle < FrontMsg+360; angle = angle + BlackAngleMsg) {
+    double angle_be = angle;
+    if (angle_be > 360)angle_be -= 360;
+
+double x_ = cos((angle_be * PI) / 180); //Angle_cos[angle_be];
+    double y_ = sin((angle_be * PI) / 180); //Angle_sin[angle_be];
     for (int r = InnerMsg; r <= OuterMsg; r++) {
-      int x = r * cos(angle * PI / 180), y = r * sin(angle * PI / 180);
+      int x=r*x_ , y = r*y_;
       if ( oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x) * 3 + 0] == 0
            && oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x) * 3 + 1] == 0
            && oframe.data[((CenterYMsg - y)*oframe.cols + CenterXMsg + x) * 3 + 2] == 0) {
