@@ -1,34 +1,23 @@
-FIRA:
-  Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Front: 270, Inner: 46, Outer: 255, X: 307, Y: 266}
-  HSV:
-    Bluerange: [253, 214, 241, 166, 255, 101]
-    Greenrange: [202, 153, 255, 130, 255, 0]
-    Redrange: [64, 0, 255, 119, 255, 0]
-    Whiterange: [217, 151, 165, 0, 255, 56]
-    Yellowrange: [140, 66, 255, 45, 255, 94]
-  Scan:
-    Parameter: [4, 3, 47, 85, 148, 200, 85, 91, 207, 213, 327, 333]
-  blackItem: {angle: 3, gray: 50}
-  whiteline: {angle: 4, gray: 100}
+FIRA: {Parameterbutton: 3}
 camera:
-  image_raw:
+  image:
     compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
     compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
     theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
-prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
-  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.016666,
-  exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
-  gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
-  trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
-  whitebalance_red: 100, width: 640, x_offset: 0, y_offset: 0}
+rosbridge_websocket: {address: '', authenticate: false, delay_between_messages: 0,
+  fragment_timeout: 600, max_message_size: None, port: 9090, retry_startup_delay: 5}
 rosdistro: 'indigo
 
   '
 roslaunch:
-  uris: {host_dei_iclab__41310: 'http://dei-iclab:41310/', host_dei_iclab__48727: 'http://dei-iclab:48727/',
-    host_dei_iclab__50475: 'http://dei-iclab:50475/'}
-rosversion: '1.11.16
+  uris: {host_iclab2_to_be_filled_by_o_e_m__35456: 'http://iclab2-To-be-filled-by-O-E-M:35456/',
+    host_iclab2_to_be_filled_by_o_e_m__44341: 'http://iclab2-To-be-filled-by-O-E-M:44341/'}
+rosversion: '1.11.20
 
   '
-run_id: 8b56e598-bb60-11e6-ab26-ecf4bb545821
+run_id: 658038d8-62bd-11e7-b967-94de8021b855
+usb_cam:
+  image_raw:
+    compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
+    compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
+    theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
