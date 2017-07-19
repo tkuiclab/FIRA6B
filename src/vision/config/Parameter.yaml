@@ -1,8 +1,8 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Camera_high: 650, Center_X: 293, Center_Y: 268, Front: 270, Inner: 39,
-    Outer: 281, X: 308, Y: 266}
+  Center: {Camera_high: 65, Center_X: 251, Center_Y: 268, Front: 273, Inner: 39, Outer: 255,
+    X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -24,9 +24,9 @@ FIRA:
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellow: [0, 109, 31, 100, 45, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-    black: {angle: 120, gray: 72}
-    white: {angle: 60, gray: 183}
-  Parameterbutton: 6
+    black: {angle: 96, gray: 72}
+    white: {angle: 50, gray: 183}
+  Parameterbutton: 5
   R1:
     Strategy: {tf_prefix: FIRA/R1, youbot_description: "<?xml version=\"1.0\" ?>\n\
         <!-- ===================================================================================\
@@ -1573,15 +1573,12 @@ rosdistro: 'indigo
   '
 roslaunch:
   uris: {host_angus_aspire_5742g__48051: 'http://angus-Aspire-5742G:48051/', host_angus_aspire_5742g__55935: 'http://angus-Aspire-5742G:55935/',
-    host_iclab2_to_be_filled_by_o_e_m__32850: 'http://iclab2-To-be-filled-by-O-E-M:32850/',
     host_iclab2_to_be_filled_by_o_e_m__33648: 'http://iclab2-To-be-filled-by-O-E-M:33648/',
     host_iclab2_to_be_filled_by_o_e_m__35456: 'http://iclab2-To-be-filled-by-O-E-M:35456/',
     host_iclab2_to_be_filled_by_o_e_m__36463: 'http://iclab2-To-be-filled-by-O-E-M:36463/',
-    host_iclab2_to_be_filled_by_o_e_m__36606: 'http://iclab2-To-be-filled-by-O-E-M:36606/',
     host_iclab2_to_be_filled_by_o_e_m__37110: 'http://iclab2-To-be-filled-by-O-E-M:37110/',
     host_iclab2_to_be_filled_by_o_e_m__38996: 'http://iclab2-To-be-filled-by-O-E-M:38996/',
     host_iclab2_to_be_filled_by_o_e_m__39169: 'http://iclab2-To-be-filled-by-O-E-M:39169/',
-    host_iclab2_to_be_filled_by_o_e_m__39746: 'http://iclab2-To-be-filled-by-O-E-M:39746/',
     host_iclab2_to_be_filled_by_o_e_m__39948: 'http://iclab2-To-be-filled-by-O-E-M:39948/',
     host_iclab2_to_be_filled_by_o_e_m__40772: 'http://iclab2-To-be-filled-by-O-E-M:40772/',
     host_iclab2_to_be_filled_by_o_e_m__42278: 'http://iclab2-To-be-filled-by-O-E-M:42278/',
@@ -1589,8 +1586,6 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__45546: 'http://iclab2-To-be-filled-by-O-E-M:45546/',
     host_iclab2_to_be_filled_by_o_e_m__45579: 'http://iclab2-To-be-filled-by-O-E-M:45579/',
     host_iclab2_to_be_filled_by_o_e_m__45628: 'http://iclab2-To-be-filled-by-O-E-M:45628/',
-    host_iclab2_to_be_filled_by_o_e_m__46028: 'http://iclab2-To-be-filled-by-O-E-M:46028/',
-    host_iclab2_to_be_filled_by_o_e_m__46050: 'http://iclab2-To-be-filled-by-O-E-M:46050/',
     host_iclab2_to_be_filled_by_o_e_m__46434: 'http://iclab2-To-be-filled-by-O-E-M:46434/',
     host_iclab__32960: 'http://iclab:32960/', host_iclab__33876: 'http://iclab:33876/',
     host_iclab__35121: 'http://iclab:35121/', host_iclab__36315: 'http://iclab:36315/',
@@ -1705,9 +1700,6 @@ roslaunch:
 rosversion: '1.11.20
 
   '
-rqt_gui_cpp_node_19957:
-  compressed: {mode: unchanged}
-  theora: {post_processing_level: 0}
 run_id: 66a84b02-b9f7-11e6-a217-b8aeed74ba50
 stream_bytes_per_second: 45000000
 tf_prefix: FIRA/R3

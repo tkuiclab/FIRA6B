@@ -17,11 +17,11 @@ namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
 //std::string visionpath = ros::package::getPath("vision");
-std::string visionpath = ros::package::getPath("fira_launch");
+std::string launchpath = ros::package::getPath("fira_launch");
 
 std::string parameterpath = "/default_config/vision_better.yaml";
 //std::string parameterpath = "/config/Parameter.yaml";
-std::string param = visionpath + parameterpath; 
+std::string param = launchpath + parameterpath; 
 const char *parampath = param.c_str();
 
 
@@ -65,14 +65,12 @@ void InterfaceProc::Parameter_getting(const int x)
     search_middle   = Magn_Far_StartMsg;
     search_end      = Magn_Far_EndMsg;
 
-    int Angle_Adjustment(int angle);
-
-    dont_angle[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
-    dont_angle[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
-    dont_angle[2] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
-    dont_angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
-    dont_angle[4] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
-    dont_angle[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
+    dont_angle[0] = Dont_Search_Angle_1Msg;
+    dont_angle[1] = Dont_Search_Angle_2Msg;
+    dont_angle[2] = Dont_Search_Angle_3Msg;
+    dont_angle[3] = Angle_range_1Msg;
+    dont_angle[4] = Angle_range_2_3Msg;
+    dont_angle[5] = Angle_range_2_3Msg;
   ///////////////////////////////////////FPS設定////////////////////////////////////////////////
     nh.getParam("/FIRA/FPS",fpsMsg);
     get_campara();
@@ -96,20 +94,23 @@ void InterfaceProc::Parameter_getting(const int x)
 }
 void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
-  
+
   SaveButton = msg.bin;
   Parameter_getting(1);
+
+  //cout<<HSV_red[0]<<endl;
   HSVmap();
   
 }
 void InterfaceProc::View(const vision::view msg)
 {
-
-  viewcheck=msg.checkpoint;
+  cout<<"2"<<endl;
+  /*viewcheck=msg.checkpoint;
   if(viewcheck==64){
    sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
    image_pub_threshold_.publish(thresholdMsg);
    }
+  viewcheck==0;*/
 }
 
 
@@ -133,7 +134,7 @@ InterfaceProc::InterfaceProc()
   image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
 
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
-  s1 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
+  s2 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
 
@@ -273,13 +274,12 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   topic_counter=0;
 }*/
   //imshow(OPENCV_WINDOW, Main_frame);
+ sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+ if(buttonmsg==7){
 
-
-  //sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
-  //image_pub_threshold_.publish(thresholdMsg);
-
+  image_pub_threshold_.publish(thresholdMsg);
+}
    //cv::waitKey(3);
-
 
 
 
@@ -797,29 +797,32 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
   int x[4],y[4];
 
   if(color = BLUEITEM){
-      blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
-      blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
+      
+      	blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
+      	blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
 
-       Two_point_msg.blue_dis = Blue_Item.dis_min;
-       Two_point_msg.blue_ang1 = blue_angle_max;
-       Two_point_msg.blue_ang2 = blue_angle_min;
-       }
+      	Two_point_msg.blue_dis = Blue_Item.dis_min;
+      	Two_point_msg.blue_ang1 = blue_angle_max;
+      	Two_point_msg.blue_ang2 = blue_angle_min;
+      
+  }
 
    if(color = YELLOWITEM){
-       yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
-       yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
+	
+       	   yellow_angle_max = Angle_Adjustment(Yellow_Item.ang_max);
+           yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
 
+           Two_point_msg.yellow_dis = Yellow_Item.dis_min;
+           Two_point_msg.yellow_ang1 = yellow_angle_max;
+           Two_point_msg.yellow_ang2 = yellow_angle_min;
       
+	
+   }
+	if(Blue_Item.dis_min && Yellow_Item.dis_min){
+       	   Two_point_pub.publish(Two_point_msg);
+	}
 
 
-       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
-       Two_point_msg.yellow_ang1 = yellow_angle_max;
-       Two_point_msg.yellow_ang2 = yellow_angle_min;
-       }
-
-       if(Blue_Item.dis_min &&Yellow_Item.dis_min){
-       Two_point_pub.publish(Two_point_msg);
-       }
 
 
   }
@@ -922,10 +925,10 @@ void InterfaceProc::Draw_cross(cv::Mat &frame_,char color){
 void InterfaceProc::HSVmap()
 {
      unsigned char *HSVmap = new unsigned char[256*256*256];
-     nh.getParam("/FIRA/HSV/Ball",HSV_red);
+     /*nh.getParam("/FIRA/HSV/Ball",HSV_red);
       nh.getParam("/FIRA/HSV/Blue",HSV_blue);
       nh.getParam("/FIRA/HSV/Yellow",HSV_yellow);
-      nh.getParam("/FIRA/HSV/Green",HSV_green);
+      nh.getParam("/FIRA/HSV/Green",HSV_green);*/
     for(int b=0;b<256;b++){
         for(int g=0;g<256;g++){
             for(int r=0;r<256;r++){
@@ -990,6 +993,7 @@ void InterfaceProc::HSVmap()
                       &&(V_sum >= HSV_yellow[4]) && (V_sum <= HSV_yellow[5]) )
                         HSVmap[r+(g<<8)+(b<<16)] = HSVmap[r+(g<<8)+(b<<16)] | YELLOWITEM;
                 }
+ 
                 if(HSV_white[0] < HSV_white[1]){
                     if( (H_sum >= HSV_white[0]) && (H_sum <= HSV_white[1])
                       &&(S_sum >= HSV_white[2]) && (S_sum <= HSV_white[3])
@@ -1004,8 +1008,8 @@ void InterfaceProc::HSVmap()
             }
         }
     }
-
     string Filename = vision_path+FILE_PATH;
+
     const char *Filename_Path = Filename.c_str();
   cout<<HSV_blue[0]<<endl;    
     if(SaveButton!=0){
