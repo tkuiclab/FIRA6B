@@ -363,9 +363,9 @@ void Base_Control::speed_regularization(double w1, double w2, double w3)
 */
 //	speed -> speed_byte
 	
-	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.9*w1_speed_percent/100) + 12.7 + w1_dir) : 0x80;
-	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.9*w2_speed_percent/100) + 12.7 + w2_dir) : 0x80;
-	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.9*w3_speed_percent/100) + 12.7 + w3_dir) : 0x80;
+	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.85*w1_speed_percent/100) + 12.7 + w1_dir) : 0x80;
+	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.85*w2_speed_percent/100) + 12.7 + w2_dir) : 0x80;
+	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.85*w3_speed_percent/100) + 12.7 + w3_dir) : 0x80;
 	*(this->base_TX->enable_and_stop) = (this->en1<<7)+(this->en2<<6)+(this->en3<<5)+(this->stop1<<4)+(this->stop2<<3)+(this->stop3<<2)+1; 
 #ifdef DEBUG
 	std::cout << "speed_regularization(DEBUG)\n";
@@ -415,7 +415,7 @@ void Base_Control::forwardKinematics()
 	double yaw=0;
 	int round=0;
 	*(this->base_robotFB->x_speed) = (*(base_RX->w1)*(-0.3333) + *(base_RX->w2)*(-0.3333) + *(base_RX->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
-    *(this->base_robotFB->y_speed)-= (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
+    	*(this->base_robotFB->y_speed) = (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
 	yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*2*M_PI*wheel_radius/2000/26;
 	round = yaw/(2*M_PI);
 	double yaw_degree;
