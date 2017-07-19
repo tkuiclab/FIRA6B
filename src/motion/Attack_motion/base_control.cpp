@@ -415,7 +415,7 @@ void Base_Control::forwardKinematics()
 	double yaw=0;
 	int round=0;
 	*(this->base_robotFB->x_speed) = (*(base_RX->w1)*(-0.3333) + *(base_RX->w2)*(-0.3333) + *(base_RX->w3)*(0.6667))*2*M_PI*wheel_radius/(26)/2000;
-    	*(this->base_robotFB->y_speed) = (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
+	*(this->base_robotFB->y_speed) = (*(base_RX->w1)*(0.5774) + *(base_RX->w2)*(-0.5774) + *(base_RX->w3)*(0))*2*M_PI*wheel_radius/26/2000;
 	yaw = (*(base_RX->w1)*(yaw_inv) + *(base_RX->w2)*(yaw_inv) + *(base_RX->w3)*(yaw_inv))*2*M_PI*wheel_radius/2000/26;
 	round = yaw/(2*M_PI);
 	double yaw_degree;
