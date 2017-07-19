@@ -106,10 +106,7 @@ void InterfaceProc::View(const vision::view msg)
 {
 
   viewcheck=msg.checkpoint;
-  if(viewcheck==64){
-   sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
-   image_pub_threshold_.publish(thresholdMsg);
-   }
+  
 }
 
 
@@ -133,7 +130,7 @@ InterfaceProc::InterfaceProc()
   image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
 
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
-  s1 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
+  s2 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
 
@@ -280,7 +277,10 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 
    //cv::waitKey(3);
 
-
+if(viewcheck==64){
+   sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+   image_pub_threshold_.publish(thresholdMsg);
+   }
 
 
 }
