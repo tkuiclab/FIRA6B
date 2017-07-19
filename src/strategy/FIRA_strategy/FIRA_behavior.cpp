@@ -267,9 +267,9 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
-
+    printf("init\n");
     // 暫時無條件進入
-    state_GoalKeeper = state_GoalKeeper_catching;
+    state_GoalKeeper = state_GoalKeeper_blocking;
 
 //        double ball_distance = env.home[r_number].ball.distance;
 //        double opgoal_distance = env.home[r_number].op_goal.distance;
@@ -294,29 +294,24 @@ void FIRA_behavior_class::StateGoalKeeperWaiting(int r_number){
 
 
 void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
-    printf("block\n");
-        double ball_distance = env.home[r_number].ball.distance;
+    printf("block");
+        double ball_dis = env.home[r_number].ball.distance;
         double opgoal_dis = env.home[r_number].op_goal.distance;
-        double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
 
-//        printf("%f\n",(ball_distance+opgoal_dis));
-
-        if( ball_distance + opgoal_dis < 1.4 || ball_distance < 2){
-            if(opgoal_edge_dis > 2.27){
-                state_GoalKeeper = state_GoalKeeper_catching;
-            }
+        if( ball_dis < 1.5 && opgoal_dis < 0.95){
+            state_GoalKeeper = state_GoalKeeper_catching;
+        }else if(ball_dis < 1 && opgoal_dis < 1.1){
+            state_GoalKeeper = state_GoalKeeper_catching;
         }
 }
 
 void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
-    printf("push\n");
-    double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
+    printf("push");
     double ball_dis = env.home[r_number].ball.distance;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-//    printf("opgoal_edge_dis = %f\n",opgoal_edge_dis);
-//    if(opgoal_edge_dis < 2.26 || ball_dis > 2){
-//        state_GoalKeeper = state_GoalKeeper_blocking;
-//    }
+    if( opgoal_dis > 1.7 || ball_dis > 2){
+        state_GoalKeeper = state_GoalKeeper_blocking;
+    }
 }
 
 
@@ -372,7 +367,6 @@ int* FIRA_behavior_class::getactionAry(){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::behavior_Goalkeeper(int robotIndex){
-
     switch(state_GoalKeeper){
         case state_GoalKeeper_init:
             state_GoalKeeper = state_GoalKeeper_init;

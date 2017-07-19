@@ -366,69 +366,72 @@ private:
 
 
 /*****/    //for goalkeeper on 5th robot with ros  //front = 45
-        void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
-            if(global_env->teamcolor == "Blue"){
-                int ang1 = msg->blue_ang1;
-                int ang2 = msg->blue_ang2;
-                ang1 = two_point_angle_fix(ang1);
-                ang2 = two_point_angle_fix(ang2);
+    void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
+//        printf("sub Two_point\n");
+        if(global_env->teamcolor == "Blue"){
+            int ang1 = msg->blue_ang1;
+            int ang2 = msg->blue_ang2;
+            ang1 = two_point_angle_fix(ang1);
+            ang2 = two_point_angle_fix(ang2);
 //                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
-                //angle cannot scan fix
-                double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
-                if(opgoal_dis < 0.51){
-                    if(ang1 < 57){
-                        ang1 = ang2 + 170;
-                    }else if(ang2 > -56){
-                        ang2 = ang1 - 170;
-                    }
+            //angle cannot scan fix
+            double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
+            if(opgoal_dis < 0.51){
+                if(ang1 < 57){
+                    ang1 = ang2 + 170;
+                }else if(ang2 > -56){
+                    ang2 = ang1 - 170;
                 }
-                ang1 = angle_fix(ang1);
-                ang2 = angle_fix(ang2);
-                double opgoal_edge_dis = msg->blue_dis;
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = opgoal_edge_dis/100;
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
-            }else if(global_env->teamcolor == "Yellow"){
-                int ang1 = msg->yellow_ang1;
-                int ang2 = msg->yellow_ang2;
-                ang1 = two_point_angle_fix(ang1);
-                ang2 = two_point_angle_fix(ang2);
-//                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
-                //angle cannot scan fix
-                double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
-                if(opgoal_dis < 0.51){
-                    if(ang1 < 57){
-                        ang1 = ang2 + 170;
-                    }else if(ang2 > -56){
-                        ang2 = ang1 - 170;
-                    }
-                }
-                ang1 = angle_fix(ang1);
-                ang2 = angle_fix(ang2);
-                double opgoal_edge_dis = msg->yellow_dis;
-                global_env->home[global_env->RobotNumber].opgoal_edge.distance = opgoal_edge_dis/100;
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
-                global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
             }
+            ang1 = angle_fix(ang1);
+            ang2 = angle_fix(ang2);
+//            double opgoal_edge_dis = msg->blue_dis;
+//            global_env->home[global_env->RobotNumber].opgoal_edge.distance = opgoal_edge_dis/100;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
+        }else if(global_env->teamcolor == "Yellow"){
+//            printf("sub Two_point yellow\n");
+            int ang1 = msg->yellow_ang1;
+            int ang2 = msg->yellow_ang2;
+            ang1 = two_point_angle_fix(ang1);
+            ang2 = two_point_angle_fix(ang2);
+//                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
+            //angle cannot scan fix
+            double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
+            if(opgoal_dis < 0.51){
+                if(ang1 < 57){
+                    ang1 = ang2 + 170;
+                }else if(ang2 > -56){
+                    ang2 = ang1 - 170;
+                }
+            }
+            ang1 = angle_fix(ang1);
+            ang2 = angle_fix(ang2);
+//            double opgoal_edge_dis = msg->yellow_dis;
+//            global_env->home[global_env->RobotNumber].opgoal_edge.distance = opgoal_edge_dis/100;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
+//            printf("opgoal_edge_dis = %f\n",global_env->home[global_env->RobotNumber].opgoal_edge.distance);
         }
+    }
 
-        int two_point_angle_fix(int angle){
-            int front = 50;
-            if(angle <= 225){
-                angle = angle - front;
-            }else{
-                angle = angle -(360+front);
-            }
-            return angle;
+    int two_point_angle_fix(int angle){
+        int front = 50;
+        if(angle <= 225){
+            angle = angle - front;
+        }else{
+            angle = angle -(360+front);
         }
-        int angle_fix(int angle){
-            if(angle > 180){
-                angle = angle -360;
-            }else if(angle < -180){
-                angle = angle =360;
-            }
-            return angle;
+        return angle;
+    }
+    int angle_fix(int angle){
+        if(angle > 180){
+            angle = angle -360;
+        }else if(angle < -180){
+            angle = angle =360;
         }
+        return angle;
+    }
 /*****/
 
 

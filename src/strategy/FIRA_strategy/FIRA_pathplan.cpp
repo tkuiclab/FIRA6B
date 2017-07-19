@@ -161,8 +161,8 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
 
 void FIRA_pathplan_class::strategy_Goalkeeper_init(int r_number){
 
-    env.home[r_number].v_x = 0;
-    env.home[r_number].v_y = 0;
+    env.home[r_number].v_x =0;
+    env.home[r_number].v_y =0;
     env.home[r_number].v_yaw =0;
 }
 
@@ -179,7 +179,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     double ball_dis = env.home[r_number].ball.distance;
     double ball_angle = env.home[r_number].ball.angle;
 
-    double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
+//    double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
     int opgoal_edge_angle1 = env.home[r_number].opgoal_edge.angle_1;
     int opgoal_edge_angle2 = env.home[r_number].opgoal_edge.angle_2;
 
@@ -193,51 +193,62 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
 //    printf("ball_angle = %f\t",ball_angle);
 //    printf("opgoal_edge_dis = %f\n",opgoal_edge_dis);
 
-    double opgoal_middle_angle = (opgoal_edge_angle1 + opgoal_edge_angle2)/2;//not calculate as the other angle
+//    double opgoal_middle_angle = (opgoal_edge_angle1 + opgoal_edge_angle2)/2;//not calculate as the other angle
 //    printf("opgoal_middle_angle = %f\n",opgoal_middle_angle);
     double x;
     double y;
     int rotAngle = 18;
     double speed = 0.9;
+    double max_speed = 3;
 
-
-    if( opgoal_dis <0.5){
-        rotAngle = 40;
-    }
-
-
-    if(ball_angle > opgoal_middle_angle){  //go left
+    if(ball_angle > opgoal_angle){  //go left
         x = -speed * sin(opgoal_edge_angle2*deg2rad);
         y = speed * cos(opgoal_edge_angle2*deg2rad);
         rotAngle = -rotAngle;
-        if(ball_angle < opgoal_middle_angle+10){
+//        printf("left\n");
+        if(ball_angle < opgoal_angle+10){
             x =0;
             y =0;
         }
-    }else /*if(ball_angle < opgoal_middle_angle)*/{    //go right
+    }else{    //go right
         x = - speed * sin(opgoal_edge_angle1*deg2rad);
         y = speed * cos(opgoal_edge_angle1*deg2rad);
-        if(ball_angle > opgoal_middle_angle-10){
+//        printf("right\n");
+        if(ball_angle > opgoal_angle-10){
             x =0;
             y =0;
         }
     }
 
-    if(opgoal_edge_dis < 2.29){
-        x = 2*(x + speed *sin(opgoal_middle_angle*deg2rad));
-        y = 2*(y - speed *cos(opgoal_middle_angle*deg2rad));
+    if(opgoal_dis > 1.2){ //out of zoom pull back
+        if(opgoal_dis <150){
+            x = 2*(x - speed *sin(opgoal_angle*deg2rad));
+            y = 2*(y + speed *cos(opgoal_angle*deg2rad));
+//            printf("pullback\n");
+        }else{
+            x = -max_speed *sin(opgoal_angle*deg2rad);
+            y = max_speed *cos(opgoal_angle*deg2rad);
+//            printf("full speed pullback\n");
+        }
     }
     Vector2d vectorbr(x, y);
     Rotation2Dd rot( rotAngle * deg2rad);
     Vector2d vectornt = rot * vectorbr;
 
     int yaw = ball_angle*2;
-    if( fabs(opgoal_middle_angle) > 30 ){
-        yaw = -opgoal_middle_angle;
+    if( fabs(opgoal_angle) > 30 ){
+        if(opgoal_angle > 0){
+            yaw = (opgoal_angle - 180)/2;
+        }else{
+            yaw = (180 - opgoal_angle)/2;
+        }
+//        printf("angle_fix middle\n");
     }else if(opgoal_edge_angle2 < 50 && yaw > 0){
-        yaw = -15;
+        yaw = -opgoal_edge_angle2;
+//        printf("angle_fix left\n");
     }else if(opgoal_edge_angle1 > -50 && yaw < 0){
-        yaw = 15;
+        yaw = -opgoal_edge_angle1;
+//        printf("angle_fix right");
     }
 
 //    printf("x = %f\ty = %f\n",vectornt(0),vectornt(1));
@@ -252,10 +263,10 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
     double ball_dis = env.home[r_number].ball.distance;
     double ball_angle = env.home[r_number].ball.angle;
 
-    double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
+    double opgoal_dis = env.home[r_number].op_goal.distance;
     int opgoal_edge_angle1 = env.home[r_number].opgoal_edge.angle_1;
     int opgoal_edge_angle2 = env.home[r_number].opgoal_edge.angle_2;
-    double opgoal_middle_angle = (opgoal_edge_angle1 + opgoal_edge_angle2)/2;//not calculate as the other angle
+//    double opgoal_middle_angle = (opgoal_edge_angle1 + opgoal_edge_angle2)/2;//not calculate as the other angle
 
     int max_speed = 3;
     double x = -max_speed * sin(ball_angle * deg2rad);
@@ -266,14 +277,16 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
 
     if(ball_angle > (opgoal_edge_angle2*0.3)){
         rotAngle = opgoal_edge_angle2/2;
+//        printf("push turn left\n");
     }else if(ball_angle < (opgoal_edge_angle1*0.3)){
         rotAngle = opgoal_edge_angle1/2;
+//        printf("push turn right\n");
     }
 
-    if(opgoal_edge_dis < 2.25 ){
-        x = x + max_speed *sin(opgoal_middle_angle*deg2rad);
-        y = y - max_speed *cos(opgoal_middle_angle*deg2rad);
-    }
+//    if(opgoal_edge_dis < 2.25 ){
+//        x = x + max_speed *sin(opgoal_middle_angle*deg2rad);
+//        y = y - max_speed *cos(opgoal_middle_angle*deg2rad);
+//    }
     Rotation2Dd rot( rotAngle * deg2rad);
     Vector2d vectornt = rot * vectorbr;
 

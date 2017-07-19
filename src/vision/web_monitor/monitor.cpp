@@ -104,9 +104,8 @@ void InterfaceProc::SaveButton_setting(const vision::bin msg)
 }
 void InterfaceProc::View(const vision::view msg)
 {
-  cout<<"2"<<endl;
-  /*viewcheck=msg.checkpoint;
-  if(viewcheck==64){
+  viewcheck=msg.checkpoint;
+  /*if(viewcheck==64){
    sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
    image_pub_threshold_.publish(thresholdMsg);
    }
@@ -275,7 +274,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
 }*/
   //imshow(OPENCV_WINDOW, Main_frame);
  sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
- if(buttonmsg==7){
+ if(viewcheck==64){
 
   image_pub_threshold_.publish(thresholdMsg);
 }
@@ -674,8 +673,8 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color){
     angle_= Angle_Adjustment((obj_.ang_max + obj_.ang_min)/2);
     angle_range = 0.7*Angle_Adjustment((obj_.ang_max - obj_.ang_min)/2);
 
-    for(int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++){
-      for(int angle = 0 ; angle <= angle_range ; angle++){
+    for(int angle = 0 ; angle <= angle_range ; angle++){
+     for(int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++){
         find_angle = Angle_Adjustment(angle_ + angle);
 
         x_= distance*Angle_cos[find_angle];
