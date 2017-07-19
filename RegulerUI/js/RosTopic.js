@@ -401,6 +401,7 @@ function PublishTopicSaveParam() {
     var SaveParam = new ROSLIB.Message({
         data: 1
     });
+
     if (CheckIP[0] == 1)
         SaveParam1.publish(SaveParam);
     if (CheckIP[1] == 1)

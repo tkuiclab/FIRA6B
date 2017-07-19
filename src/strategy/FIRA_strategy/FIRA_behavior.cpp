@@ -267,7 +267,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
-    printf("init\n");
+//    printf("init\n");
     // 暫時無條件進入
     state_GoalKeeper = state_GoalKeeper_blocking;
 
@@ -294,7 +294,7 @@ void FIRA_behavior_class::StateGoalKeeperWaiting(int r_number){
 
 
 void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
-    printf("block");
+//    printf("block\n");
         double ball_dis = env.home[r_number].ball.distance;
         double opgoal_dis = env.home[r_number].op_goal.distance;
 
@@ -306,10 +306,10 @@ void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
 }
 
 void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
-    printf("push");
+    printf("push\n");
     double ball_dis = env.home[r_number].ball.distance;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-    if( opgoal_dis > 1.7 || ball_dis > 2){
+    if( opgoal_dis > 1.5 || ball_dis > 2){
         state_GoalKeeper = state_GoalKeeper_blocking;
     }
 }

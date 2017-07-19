@@ -46,7 +46,7 @@ private:
 	const double m4_Angle = (-1)*3*M_PI/4;
 
 	//const double robot_radius = 0.2;
-	const double robot_radius = 0.1;
+    const double robot_radius = 1;
 	const double wheel_radius = 0.00508;
 
 	cssl_t *serial;

@@ -39,15 +39,12 @@ function SetParamRobotNum() {
     }
     if (CheckIP[0] == 1) {
         RobotNumber1.set(RobNum[0]);
-        PublishTopicSaveParam();
     }
     if (CheckIP[1] == 1) {
         RobotNumber2.set(RobNum[1]);
-        PublishTopicSaveParam();
     }
     if (CheckIP[2] == 1) {
         RobotNumber3.set(RobNum[2]);
-        PublishTopicSaveParam();
     }
 }
 //============================================================================
@@ -81,7 +78,7 @@ var DistanceSettingsBox3 = new ROSLIB.Param({
 });
 
 function GetGeneralValue() {
-    
+    up();
     var SVBox1 = [];
     var DSBox1 = [];
     var SVBox2 = [];
@@ -128,9 +125,6 @@ function SetParamGeneral(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3) {
 
     SPlanningVelocityBox3.set(SVBox3);
     DistanceSettingsBox3.set(DSBox3);
-
-    up();
-    PublishTopicSaveParam();
 }
 
 SPlanningVelocityBox1.get(function(value) {
@@ -304,7 +298,7 @@ var PenaltyKickBox3 = new ROSLIB.Param({
 });
 
 function GetPathplanValue() {
-    
+    up();
     var ASBox1 = [];
     var CSBox1 = [];
     var ZABox1 = [];
@@ -508,9 +502,6 @@ function SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DAB
     DorsadAttackBox3.set(DABox3);
     CornerKickBox3.set(CKBox3);
     PenaltyKickBox3.set(PKBox3);
-
-    up();
-    PublishTopicSaveParam();
 }
 
 AttackStrategyBox1.get(function(value) {
@@ -859,7 +850,7 @@ var StrategySelectBox3 = new ROSLIB.Param({
 
 
 function GetBehaviorValue() {
-    
+    up();
     var SCBox1 = [];
     var SABox1 = [];
     var STUCBox1 = [];
@@ -1064,8 +1055,6 @@ function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1,
     StateCornerKickBox3.set(SCKBox3);
     StrategySelectBox3.set(SSBox3);
 
-    up();
-    PublishTopicSaveParam();
 }
 
 function SetBehaviorKeyborard(box1) {
@@ -1329,5 +1318,4 @@ function SetParamIsSimulator(checked) {
         if (CheckIP[2] == 1)
             IsSimulator3.set(temp);
     }
-    PublishTopicSaveParam();
 }

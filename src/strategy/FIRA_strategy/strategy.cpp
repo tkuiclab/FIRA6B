@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     mNodeHandle.setOpponent(isOpponent);
     mNodeHandle.on_init();
 
-    ros::Rate loop_rate(100);
+    ros::Rate loop_rate(50);
 
     FIRA_behavior_class mbehavior;
 
@@ -189,10 +189,11 @@ int main(int argc, char **argv)
 
         
 
-
         if(actionAry[global_env->RobotNumber] == 0){
+//            printf("-__________________________-\n");
         }else{
             mNodeHandle.pubGrpSpeed();
+//            printf("Buggggggggggggggggggggg\n");
         }
 
         ros::spinOnce();
