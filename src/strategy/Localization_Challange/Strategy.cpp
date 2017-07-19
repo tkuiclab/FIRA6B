@@ -50,9 +50,9 @@ void Strategy::StrategyLocalization(){
             v_y = _Location->LocationPoint[_CurrentTarget].y - Robot.pos.y;
             if(fabs(v_x)<=0.1 && fabs(v_y)<=0.1)
                 _LocationState = back;
-            // printf("x=%lf\ty=%lf\n",_Location->LocationPoint[_CurrentTarget].x,_Location->LocationPoint[_CurrentTarget].y);
-            // printf("VX=%f\tVY=%f\n",v_x,v_y);
-            // printf("state:forward\tSchedule=%d\n==========================\n",_CurrentTarget);
+            printf("x=%lf\ty=%lf\n",_Location->LocationPoint[_CurrentTarget].x,_Location->LocationPoint[_CurrentTarget].y);
+            printf("VX=%f\tVY=%f\n",v_x,v_y);
+            printf("state:forward\tSchedule=%d\n==========================\n",_CurrentTarget);
             break;
         case back:                 // Back to middle circle
             v_x = _Location->MiddlePoint[_CurrentTarget].x - Robot.pos.x;
@@ -63,9 +63,9 @@ void Strategy::StrategyLocalization(){
                 else
                     _LocationState = forward;
             _CurrentTarget++;}
-            // printf("x=%lf\ty=%lf\n",_Location->MiddlePoint[_CurrentTarget].x,_Location->MiddlePoint[_CurrentTarget].y);
-            // printf("VX=%f\tVY=%f\n",v_x,v_y);
-            // printf("state:back\tSchedule=%d\n==========================\n",_CurrentTarget);
+            printf("x=%lf\ty=%lf\n",_Location->MiddlePoint[_CurrentTarget].x,_Location->MiddlePoint[_CurrentTarget].y);
+            printf("VX=%f\tVY=%f\n",v_x,v_y);
+            printf("state:back\tSchedule=%d\n==========================\n",_CurrentTarget);
             break;
         case finish:
             break;

@@ -64,7 +64,7 @@ void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &m
 }
 void NodeHandle::pubSpeed(Environment *Env){
     Transfer(Env);
-    VelocityPlanning(Env);
+//    VelocityPlanning(Env);
     geometry_msgs::Twist SpeedMsg;
     SpeedMsg.linear.x = Env->Robot.v_x;
     SpeedMsg.linear.y = Env->Robot.v_y;

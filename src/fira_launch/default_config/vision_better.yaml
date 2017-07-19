@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Front: 273, Inner: 39, Outer: 255, X: 308, Y: 266}
+  Center: {Front: 273, Inner: 47, Outer: 255, X: 323, Y: 264}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -18,7 +18,7 @@ FIRA:
     Yellowrange: [103, 59, 255, 70, 255, 137]
   IsSimulator: 1
   RobotNumber: 2
-  SPlanning_Velocity: [2.3, 0.3, 70, 40, 20, 2, 144, 5, 999]
+  SPlanning_Velocity: [2.3, 0.3, 50, 40, 20, 2, 144, 5]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,
@@ -1430,7 +1430,7 @@ FIRA:
   TypeU_Attack: [0.8, 1, -90, 90, 0.6, 0.3, 10, 20]
   Zone_Attack: [0.85, 1.25]
   blackItem: {angle: 3, gray: 40}
-  whiteline: {angle: 4, gray: 100}
+  whiteline: {angle: 1, gray: 100}
 FIRA_Behavior:
   Attack_Strategy: [5, 1, 0.43]
   Chase_Strategy: [5, 0.15, 0.2, 6, 0.39]
@@ -1440,6 +1440,18 @@ FIRA_Behavior:
   TypeU_Chase: [30, 0.3]
   Zone_Attack: [0.6]
 StrategySelection: [0, 1, 0, 0, 1, 0]
+amcl: {base_frame_id: /base_link, beam_skip_distance: 2.0, beam_skip_threshold: 1.0,
+  do_beamskip: false, first_map_only: true, global_frame_id: /map, gui_publish_rate: 90.0,
+  initial_cov_aa: 0.1407672208083596, initial_cov_xx: 0.09482596772133521, initial_cov_yy: 0.12689421431528403,
+  initial_pose_a: 0.17065998523657697, initial_pose_x: -0.1677299207964792, initial_pose_y: 0.07511989211756806,
+  kld_err: 0.01, kld_z: 0.99, laser_lambda_short: 0.1, laser_likelihood_max_dist: 1.0,
+  laser_max_beams: 30, laser_max_range: -1.0, laser_min_range: -1.0, laser_model_type: likelihood_field,
+  laser_sigma_hit: 0.2, laser_z_hit: 0.9, laser_z_max: 0.05, laser_z_rand: 0.5, laser_z_short: 0.1,
+  max_particles: 5000, min_particles: 100, odom_alpha1: 3.0, odom_alpha2: 3.0, odom_alpha3: 3.0,
+  odom_alpha4: 3.0, odom_alpha5: 3.0, odom_frame_id: /odom, odom_model_type: omni,
+  recovery_alpha_fast: 0.0, recovery_alpha_slow: 0.0, resample_interval: 1, restore_defaults: false,
+  save_pose_rate: 10.0, tf_broadcast: true, transform_tolerance: 0.1, update_min_a: 0.523598775598,
+  update_min_d: 0.05, use_map_topic: true}
 camera:
   image_raw:
     compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
@@ -1465,6 +1477,16 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__44234: 'http://iclab2-To-be-filled-by-O-E-M:44234/',
     host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
     host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
+    host_iclab__33694: 'http://iclab:33694/', host_iclab__35809: 'http://iclab:35809/',
+    host_iclab__36928: 'http://iclab:36928/', host_iclab__37649: 'http://iclab:37649/',
+    host_iclab__39638: 'http://iclab:39638/', host_iclab__39751: 'http://iclab:39751/',
+    host_iclab__39867: 'http://iclab:39867/', host_iclab__39894: 'http://iclab:39894/',
+    host_iclab__40692: 'http://iclab:40692/', host_iclab__40769: 'http://iclab:40769/',
+    host_iclab__42378: 'http://iclab:42378/', host_iclab__43504: 'http://iclab:43504/',
+    host_iclab__44423: 'http://iclab:44423/', host_iclab__44745: 'http://iclab:44745/',
+    host_iclab__44750: 'http://iclab:44750/', host_iclab__45372: 'http://iclab:45372/',
+    host_iclab__45890: 'http://iclab:45890/', host_iclab__45942: 'http://iclab:45942/',
+    host_iclab__46064: 'http://iclab:46064/', host_iclab__46339: 'http://iclab:46339/',
     host_iclab_desktop__32798: 'http://iclab-desktop:32798/', host_iclab_desktop__32839: 'http://iclab-desktop:32839/',
     host_iclab_desktop__32879: 'http://iclab-desktop:32879/', host_iclab_desktop__32931: 'http://iclab-desktop:32931/',
     host_iclab_desktop__33020: 'http://iclab-desktop:33020/', host_iclab_desktop__33100: 'http://iclab-desktop:33100/',
@@ -1544,7 +1566,7 @@ roslaunch:
     host_iclab_desktop__59592: 'http://iclab-desktop:59592/', host_iclab_desktop__59703: 'http://iclab-desktop:59703/',
     host_iclab_desktop__60240: 'http://iclab-desktop:60240/', host_iclab_desktop__60400: 'http://iclab-desktop:60400/',
     host_iclab_desktop__60948: 'http://iclab-desktop:60948/'}
-rosversion: '1.11.16
+rosversion: '1.11.21
 
   '
 run_id: 66a84b02-b9f7-11e6-a217-b8aeed74ba50
