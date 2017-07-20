@@ -222,18 +222,18 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     }
 
     if(opgoal_dis > 1.2){ //out of zoom pull back
-        if(opgoal_dis <1.5){
-            x = 2*(x - speed *sin(opgoal_angle*deg2rad));
-            y = 2*(y + speed *cos(opgoal_angle*deg2rad));
-            direction = "pullback";
-        }else{
+//        if(opgoal_dis <1.5){  //not good
+//            x = 2*(x - speed *sin(opgoal_angle*deg2rad));
+//            y = 2*(y + speed *cos(opgoal_angle*deg2rad));
+//            direction = "pullback";
+//        }else{
             x = -max_speed *sin(opgoal_angle*deg2rad);
             y = max_speed *cos(opgoal_angle*deg2rad);
             direction = "full speed pullback(out of zoom)";
-        }
+//        }
     }
 
-    if(ball_dis > 4){
+    if(ball_dis > 4 && opgoal_dis > 0.6){
         x = -max_speed *sin(opgoal_angle*deg2rad);
         y = max_speed *cos(opgoal_angle*deg2rad);
         direction = "full speed pullback(can't see ball)";
@@ -245,10 +245,13 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     int yaw = ball_angle*2;
     if( fabs(opgoal_angle_reverse) > 40 ){
         yaw = opgoal_angle_reverse;
+        direction = direction + "angle_fix_middle";
     }else if(opgoal_edge_angle2 < 30 && yaw > 0){
         yaw = -opgoal_edge_angle2;
+        direction = direction + "angle_fix_left";
     }else if(opgoal_edge_angle1 > -30 && yaw < 0){
         yaw = -opgoal_edge_angle1;
+        direction = direction + "angle_fix_right";
     }
 
     std::cout << "direction = " << direction << std::endl;
@@ -260,6 +263,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
 
 void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
 
+    std::string direction;
     double ball_dis = env.home[r_number].ball.distance;
     double ball_angle = env.home[r_number].ball.angle;
 
@@ -276,19 +280,21 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
 
     if(ball_angle > (opgoal_edge_angle2*0.5)){
         rotAngle = opgoal_edge_angle2/2;
-//        printf("push turn left\n");
+        direction = "push left";
     }else if(ball_angle < (opgoal_edge_angle1*0.5)){
         rotAngle = opgoal_edge_angle1/2;
-//        printf("push turn right\n");
+        direction = "push right";
+    }else{
+        direction = "push stright";
     }
 
     yaw = ball_angle *2;
     if(opgoal_edge_angle2 < 30 && yaw > 0){
-            yaw = -opgoal_edge_angle2;
-    //        printf("angle_fix left\n");
+        yaw = -opgoal_edge_angle2;
+        direction = direction + "angle_fix_left";
     }else if(opgoal_edge_angle1 > -30 && yaw < 0){
-            yaw = -opgoal_edge_angle1;
-    //        printf("angle_fix right");
+        yaw = -opgoal_edge_angle1;
+        direction = direction + "angle_fix_right";
     }
 
     Rotation2Dd rot( rotAngle * deg2rad);
@@ -297,7 +303,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
     env.home[r_number].v_x = vectornt(0);
     env.home[r_number].v_y = vectornt(1);
     env.home[r_number].v_yaw = yaw;
-
+    std::cout << "direction = " << direction << std::endl;
 }
 
 
