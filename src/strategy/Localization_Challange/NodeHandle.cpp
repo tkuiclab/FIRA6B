@@ -56,15 +56,10 @@ void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &m
                 _Location->MiddlePoint[i].x = 0.5*cos(_Location->MiddlePoint[i].angle*DEG2RAD);
         _Location->MiddlePoint[i].y = 0.5*sin(_Location->MiddlePoint[i].angle*DEG2RAD);
     }
-//     for(int i=0;i<5;i++){
-//         // std::cout << "======================================" <<std::endl;
-//         std::cout << "Middle" << i << std::endl << "=========================" << std::endl <<_Location->MiddlePoint[i].x << "\t" << _Location->MiddlePoint[i].y << "\t" << _Location->MiddlePoint[i].angle << std::endl;   
-//         // std::cout << "LocationPoint" << i << std::endl << "=========================" << std::endl <<_Location->LocationPoint[i].x << "\t" << _Location->LocationPoint[i].y << "\t" << _Location->LocationPoint[i].angle << std::endl;
-// }
 }
 void NodeHandle::pubSpeed(Environment *Env){
     Transfer(Env);
-//    VelocityPlanning(Env);
+    VelocityPlanning(Env);
     geometry_msgs::Twist SpeedMsg;
     SpeedMsg.linear.x = Env->Robot.v_x;
     SpeedMsg.linear.y = Env->Robot.v_y;
@@ -129,44 +124,15 @@ void NodeHandle::VelocityPlanning(Environment *Env){
     double current_time = CurrentTime.sec+CurrentTime.nsec/1000000000.0;
     double diff_time = current_time - last_time;
     double alpha = atan2(-Env->Robot.v_x,Env->Robot.v_y)*RAD2DEG;
-    double V = 100;
-    double VS = 10;
-    int TA = 10;
-    int TS = 1;
-    double C1 = V/(2*TS*TS+TS*(TA-2*TS));
-    double C2 = (V-2*VS)/(TA-2*TS);
+    double del_velocity = Current_velocity - Last_velocity;
     static int state = FALSE;
-    static int flag = TRUE;
-    printf("C1=%f\n",C1);
-    printf("C2=%f\n",C2);
-    if(fabs(Current_velocity-Last_velocity)){
-        if(flag){
-            LastTime = CurrentTime;
-            flag=FALSE;
-        }else
-            state = TRUE;        
-    }else{
-        state = FALSE;
-        flag = TRUE;
-    }
-    if(state){
-        ROS_INFO("diff_time=%lf\n",diff_time);
-        if(diff_time<=TS)
-            Current_velocity = C1*diff_time*diff_time;
-        else if(diff_time>TS && diff_time<=TA-TS)
-            Current_velocity = C2*diff_time;
-        else if(diff_time>(TA-TS) && diff_time<TA)
-            Current_velocity = V-C1*(TA-diff_time)*(TA-diff_time);
-        else
-            Current_velocity = V;
-    }
+    if(Last_velocity<=SPlanning_Velocity[3] && Current_velocity>SPlanning_Velocity[3]){
+        //開始從0加速到某個值
     Env->Robot.v_x = Current_velocity*cos(alpha*DEG2RAD);
     Env->Robot.v_y = Current_velocity*sin(alpha*DEG2RAD);
     ROS_INFO("v_x = %f\tv_y = %f\n",Env->Robot.v_x,Env->Robot.v_y);
 }
 void NodeHandle::getParameter(){
-    printf("Success geting parameter\n");
-     if(node->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity)){
-         ;
-     }
+    printf("success getting parameter!!");
+    node->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity);
 }

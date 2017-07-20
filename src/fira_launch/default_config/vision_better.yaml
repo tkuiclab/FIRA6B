@@ -18,7 +18,7 @@ FIRA:
     Yellowrange: [103, 59, 255, 70, 255, 137]
   IsSimulator: 1
   RobotNumber: 2
-  SPlanning_Velocity: [2.3, 0.3, 50, 40, 20, 2, 144, 5]
+  SPlanning_Velocity: [2.3, 0.3, 100, 0, 20, 2, 144, 5]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,
@@ -1565,7 +1565,8 @@ roslaunch:
     host_iclab_desktop__59197: 'http://iclab-desktop:59197/', host_iclab_desktop__59431: 'http://iclab-desktop:59431/',
     host_iclab_desktop__59592: 'http://iclab-desktop:59592/', host_iclab_desktop__59703: 'http://iclab-desktop:59703/',
     host_iclab_desktop__60240: 'http://iclab-desktop:60240/', host_iclab_desktop__60400: 'http://iclab-desktop:60400/',
-    host_iclab_desktop__60948: 'http://iclab-desktop:60948/'}
+    host_iclab_desktop__60948: 'http://iclab-desktop:60948/', host_iclab_to_be_filled_by_o_e_m__45453: 'http://iclab-To-be-filled-by-O-E-M:45453/',
+    host_iclab_to_be_filled_by_o_e_m__60609: 'http://iclab-To-be-filled-by-O-E-M:60609/'}
 rosversion: '1.11.21
 
   '
