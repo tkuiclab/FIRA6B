@@ -4,6 +4,7 @@
         "array": "cpp",
         "*.ipp": "cpp",
         "cmath": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "*.inc": "cpp"
     }
 }

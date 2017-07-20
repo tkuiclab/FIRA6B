@@ -21,6 +21,7 @@
 #include "vision/Object.h"
 #include "geometry_msgs/Twist.h"
 #include "geometry_msgs/PoseWithCovarianceStamped.h"
+#include "imu_3d/inertia.h"
 /*****************************************************************************
 ** Define
 *****************************************************************************/
@@ -48,6 +49,7 @@ private:
     ros::Subscriber VISION;
     ros::Subscriber LOCATIONPOINT;
     ros::Subscriber ROBOTPOSE;
+    ros::Subscriber IMU;
     ros::Publisher SPEED;
     
     Environment *_Env;
@@ -59,6 +61,7 @@ private:
     void subVision(const vision::Object::ConstPtr &);
     void subRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
     void subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &);
+    void subIMU(const imu_3d::inertia::ConstPtr &);
     void Transfer(Environment*);
     void VelocityPlanning(Environment*);
 };

@@ -23,8 +23,11 @@ void NodeHandle::ros_comms_init(){
     SAVEPARAM = node->subscribe<std_msgs::Int32>(SAVE_PARAM_TOPIC,1000,&NodeHandle::subSaveParam,this);
     VISION = node->subscribe<vision::Object>(VISION_TOPIC,1000,&NodeHandle::subVision,this);
     SPEED = node->advertise<geometry_msgs::Twist>(SPEED_TOPIC,1000);
-    ROBOTPOSE = node->subscribe<geometry_msgs::PoseWithCovarianceStamped>(ROBOTPOSE_TOPIC,1000,&NodeHandle::subRobotPose,this);
-    LOCATIONPOINT = node->subscribe<std_msgs::Float32MultiArray>(LOCATIONPOINT_TOPIC,1000,&NodeHandle::subLocationPoint,this);
+    ROBOTPOSE = node->subscribe<geometry_msgs::PoseWithCovarianceStamped>\
+    (ROBOTPOSE_TOPIC,1000,&NodeHandle::subRobotPose,this);
+    LOCATIONPOINT = node->subscribe<std_msgs::Float32MultiArray>\
+    (LOCATIONPOINT_TOPIC,1000,&NodeHandle::subLocationPoint,this);
+    IMU = node->subscribe<imu_3d::inertia>("/imu_3d",1000,&NodeHandle::subIMU,this);
 }
 void NodeHandle::setEnv(Environment *Env){
     _Env = Env;
@@ -46,20 +49,27 @@ void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &m
     for(int i=0;i<5;i++){
         _Location->LocationPoint[i].y = -msg->data[i*2]/100;
         _Location->LocationPoint[i].x = msg->data[i*2+1]/100;
-        _Location->LocationPoint[i].angle = atan2(_Location->LocationPoint[i].y,_Location->LocationPoint[i].x)*RAD2DEG;
+        _Location->LocationPoint[i].angle = atan2(_Location->LocationPoint[i].y\
+        ,_Location->LocationPoint[i].x)*RAD2DEG;
     }
     for(int i=0;i<5;i++){
         if(i<4)
-            _Location->MiddlePoint[i].angle = atan2(_Location->LocationPoint[i].y + _Location->LocationPoint[i+1].y,_Location->LocationPoint[i].x + _Location->LocationPoint[i+1].x)*RAD2DEG;
+            _Location->MiddlePoint[i].angle = atan2(_Location->LocationPoint[i].y\
+             + _Location->LocationPoint[i+1].y,_Location->LocationPoint[i].x + \
+             _Location->LocationPoint[i+1].x)*RAD2DEG;
         else
             _Location->MiddlePoint[i].angle = _Location->LocationPoint[i].angle;
                 _Location->MiddlePoint[i].x = 0.5*cos(_Location->MiddlePoint[i].angle*DEG2RAD);
         _Location->MiddlePoint[i].y = 0.5*sin(_Location->MiddlePoint[i].angle*DEG2RAD);
     }
 }
+void NodeHandle::subIMU(const imu_3d::inertia::ConstPtr &msg){
+    _Env->Robot.pos.angle = (((msg->yaw-M_PI)*RAD2DEG)>0)?\
+    -((msg->yaw-M_PI)*RAD2DEG-180):-((msg->yaw-M_PI)*RAD2DEG+180);
+}
 void NodeHandle::pubSpeed(Environment *Env){
     Transfer(Env);
-    VelocityPlanning(Env);
+    // VelocityPlanning(Env);
     geometry_msgs::Twist SpeedMsg;
     SpeedMsg.linear.x = Env->Robot.v_x;
     SpeedMsg.linear.y = Env->Robot.v_y;
@@ -94,7 +104,8 @@ void NodeHandle::Transfer(Environment *Env){
     else if(Distance<DistanceMin)
         VelocityLength=VelocityMin;
     else
-        VelocityLength = (VelocityMax-VelocityMin)*(cos(pi*((VelocityLength-DistanceMin)/(DistanceMax-DistanceMin)-1))+1)/2+VelocityMin;
+        VelocityLength = (VelocityMax-VelocityMin)*(cos(pi*((Distance-DistanceMin)\
+        /(DistanceMax-DistanceMin)-1))+1)/2+VelocityMin;
     if(fabs(angle)<0.1)
         AngularVelocity=0;
     else if(fabs(angle)>AngleMax)
@@ -102,7 +113,8 @@ void NodeHandle::Transfer(Environment *Env){
     else if(fabs(angle)<AngleMin)
         AngularVelocity=AngularVelocityMin;
     else
-        AngularVelocity=(AngularVelocityMax-AngularVelocityMin)*(cos(pi*((fabs(angle)-AngleMin)/(AngleMax-AngleMin)-1))+1)/2+AngularVelocityMin;
+        AngularVelocity=(AngularVelocityMax-AngularVelocityMin)*(cos(pi*((fabs(angle)-AngleMin)\
+        /(AngleMax-AngleMin)-1))+1)/2+AngularVelocityMin;
     if(angle<0)
         AngularVelocity = -AngularVelocity;
         if(IsVectorZero){
@@ -115,24 +127,9 @@ void NodeHandle::Transfer(Environment *Env){
             Env->Robot.v_yaw = AngularVelocity;
 }
 void NodeHandle::VelocityPlanning(Environment *Env){
-    static ros::Time LastTime = ros::Time::now();
-    ros::Time CurrentTime = ros::Time::now();
-    static Environment LastEnv = *Env;
-    int Last_velocity = hypot(LastEnv.Robot.v_x,LastEnv.Robot.v_y);
-    int Current_velocity = hypot(Env->Robot.v_x,Env->Robot.v_y);
-    double last_time = LastTime.sec+LastTime.nsec/1000000000.0;
-    double current_time = CurrentTime.sec+CurrentTime.nsec/1000000000.0;
-    double diff_time = current_time - last_time;
-    double alpha = atan2(-Env->Robot.v_x,Env->Robot.v_y)*RAD2DEG;
-    double del_velocity = Current_velocity - Last_velocity;
-    static int state = FALSE;
-    if(Last_velocity<=SPlanning_Velocity[3] && Current_velocity>SPlanning_Velocity[3]){
-        //開始從0加速到某個值
-    Env->Robot.v_x = Current_velocity*cos(alpha*DEG2RAD);
-    Env->Robot.v_y = Current_velocity*sin(alpha*DEG2RAD);
-    ROS_INFO("v_x = %f\tv_y = %f\n",Env->Robot.v_x,Env->Robot.v_y);
+    //
 }
 void NodeHandle::getParameter(){
-    printf("success getting parameter!!");
+    printf("success getting parameter!!\n");
     node->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity);
 }

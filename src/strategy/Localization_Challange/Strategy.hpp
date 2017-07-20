@@ -20,10 +20,6 @@
 /*****************************************************************************
 ** Define
 *****************************************************************************/
-#define STATE_HALT                       0
-#define STATE_LOCALIZATION               9
-#define STRATEGY_HALT                    0
-#define STRATEGY_LOCALIZATION            1
 
 class Strategy{
 public:
@@ -31,13 +27,12 @@ public:
     ///         constructor             ///
     Strategy();
     virtual ~Strategy(){}
-    void setEnv(Environment*);
+    void setEnv(Environment* Env){_Env = Env;}
     void GameState(int);
-    void setLocationPoint(LocationStruct*); 
+    void setLocationPoint(LocationStruct* LocationPoint){_Location = LocationPoint;}
     Environment getEnv(){return *_Env;}
 private:
     ///         private member          /// 
-
     void StrategyHalt();
     void StrategyLocalization();
     int _LocationState;
@@ -48,7 +43,6 @@ private:
     forward,
     back,
     finish,
-    halt,
     error};
 };
 #endif

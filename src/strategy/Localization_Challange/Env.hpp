@@ -16,9 +16,11 @@
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
 #include <math.h>
+#include "imu_3d/inertia.h"
 /*****************************************************************************
 ** Define
 *****************************************************************************/
+// Topic name
 #define NODE_NAME "LocalizationChallange"
 #define GAME_STATE_TOPIC "/FIRA/GameState"
 #define SAVE_PARAM_TOPIC "/FIRA/SaveParam"
@@ -26,6 +28,10 @@
 #define SPEED_TOPIC "/motion/cmd_vel"
 #define ROBOTPOSE_TOPIC "/amcl_pose"
 #define LOCATIONPOINT_TOPIC "/FIRA/Location"
+// Strategy.cpp
+#define STATE_HALT                       0
+#define STATE_LOCALIZATION               9
+// General parameter
 #define pi M_PI
 #define RAD2DEG 180/pi
 #define DEG2RAD pi/180
