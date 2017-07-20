@@ -1,0 +1,413 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #000 url(../img/mask.jpg) center center fixed no-repeat;
+    -moz-background-size: cover;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+
+/*====================WIFI============================*/
+
+#InterfaceSetting {
+    position: relative;
+    left: 110%;
+    bottom: 100%
+}
+
+#InterfaceWifi table {
+    height: 100%;
+    width: 100%;
+}
+
+#InterfaceWifi td {
+    right: 5%;
+    width: 50%;
+}
+
+#Setting_Wifi {
+    position: relative;
+    right: 5%;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    bottom: 8px;
+}
+
+#light {
+    height: 50px;
+    width: 50px;
+}
+
+#wifilight {
+    position: relative;
+    left: 4px;
+}
+
+.Wifimodal_content {
+    position: relative;
+    background-color: #FFEE99;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+
+/*===================SETTING==========================*/
+
+#leftsidesetting {
+    position: relative;
+    top: 100px;
+    right: 36%;
+}
+
+#setting_button {
+    position: relative;
+    /*left: 50px;*/
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    bottom: 7px;
+}
+
+#innerModalLabel {
+    font-size: 30px;
+    font-family: 'Pacifico', cursive;
+
+}
+
+#GeneralDisplay {
+    margin: auto;
+    text-align: center;
+
+}
+
+#SetGeneralExecute {
+    text-align: center;
+    position: relative;
+    top:50%;
+}
+
+#SPlanningVelocityModule {
+    position: relative;
+    left:13.5%;
+    height: 240px;
+    width:320px;
+    text-align: center;
+    border-style: solid;
+    /*    overflow: scroll;
+*/
+}
+#SPlanningVelocityValue {
+ text-align: left;
+ position: relative;
+ left: 30%;
+}
+#SPlanningVelocityTitle{
+ text-align: left;
+ position: relative;
+ left: 38%;
+}
+#SPlanningVelocity{
+    position: relative;
+    left: 120%;
+    width: 50px;
+}
+#send {
+    position: relative;
+    left: 25%;
+}
+
+#OptimizationModule {
+    position: relative;
+    top: 0%;
+    left: -0%;
+    width: 250px;
+    font-family: Signika;
+    font-size: 150%;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 0px double #FFF;
+    border-radius: 10px;
+    text-align: left;
+}
+#OptimizationTable{
+    position: relative;
+    left:10%;
+}
+#OptimizationTitle{
+    position:relative;
+    width:100%;
+    left:15%;
+}
+#OptimizationLabel{
+    width:50%;
+}
+#OptimizationCheck{
+    width:80px;
+}
+#settingLabel {
+    font-family: 'Pacifico', cursive;
+    font-size: 40px;
+}
+
+.settingmodal_content {
+    position: relative;
+    height: 450px;
+    width: 500px;
+    background-color: #FFEE99;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+/*===============Canvas======================*/
+
+#Rect1 {
+    position: relative;
+    left: 10%;
+    top: 13%;
+}
+
+#Rect2 {
+    position: relative;
+    left: 30%;
+    top: 13%;
+}
+
+#Rect3 {
+    position: relative;
+    left: 45%;
+    top: 13%;
+}
+
+#Rect4 {
+    position: relative;
+    left: 65%;
+    top: 13%;
+}
+
+#Rect5 {
+    position: relative;
+    left: -8%;
+    top: 27%
+}
+
+#Rect6 {
+    position: relative;
+    left: -14.5%;
+    top: 31%;
+}
+
+#Rect7 {
+    position: relative;
+    left: 15%;
+    top: 28%
+}
+
+#Rect8 {
+    position: relative;
+    left: 13%;
+    top: 31%;
+}
+
+#Rect9 {
+    position: relative;
+    left: 38.3%;
+    top: 27%;
+}
+
+#Rect10 {
+    position: relative;
+    left: -44%;
+    top: 46%;
+}
+
+#Rect11 {
+    position: relative;
+    left: -38%;
+    top: 46%;
+}
+
+#Rect12 {
+    position: relative;
+    left: -2%;
+    top: 46%;
+}
+
+#Rect13 {
+    position: relative;
+    left: 4%;
+    top: 46%;
+}
+
+#Rect14 {
+    position: relative;
+    left: 17.5%;
+    top: 56%;
+}
+
+#Rect15 {
+    position: relative;
+    left: -52.5%;
+    top: 61%;
+}
+
+#Rect16 {
+    position: relative;
+    left: 41%;
+    top: 55%;
+}
+
+#Rect17 {
+    position: relative;
+    left: -26%;
+    top: 61%;
+}
+
+#Rect18 {
+    position: relative;
+    left: 64%;
+    top: 56%;
+}
+
+#Rect19 {
+    position: relative;
+    left: -9%;
+    top: 70%;
+}
+
+#Rect20 {
+    position: relative;
+    left: 11%;
+    top: 70%;
+}
+
+#Rect21 {
+    position: relative;
+    left: 26%;
+    top:70%;
+}
+
+#Rect22 {
+    position: relative;
+    left: 46%;
+    top: 70%;
+}
+
+
+/*=======================================================*/
+
+#background {
+    width: 1235px;
+    height: 1000px;
+}
+
+#court {
+    position: absolute;
+    width: 1000px;
+    top: 15%;
+    left: 2%;
+}
+
+#canvasMap {
+    position: absolute;
+    width: 1000px;
+    top: 15%;
+    left: 2%;
+    height: 723px;
+}
+
+#RobotModule {
+    position: absolute;
+    top: 12%;
+    left: 80%;
+    width: 250px;
+    font-family: Signika;
+    font-size: 150%;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 0px double #FFF;
+    border-radius: 10px;
+    text-align: left;
+}
+
+#titleModalLabel {
+    position: relative;
+    font-size: 60px;
+    left: 10%;
+    top: -15%;
+    font-family: 'Pacifico', cursive;
+}
+
+.modal-title {
+    text-align: center;
+}
+
+.motherground {
+    background-color: #FFEE99;
+    height: 900px;
+}
+
+#SimulatorButton {
+    position: relative;
+    top: 10%;
+    left: 3.5%;
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 17px;
+    color: #663D00;
+}
+#IsSimulator.ui-state-hover {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 17px;
+    background-color: #FFF;
+}
+
+#IsSimulator.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 17px;
+    color: #1A1A65;
+}
+.button {
+    position: relative;
+    width: 80px;
+    height: 30px;
+    text-align: center;
+    margin-left: 0px;
+    color: blue;
+    border-radius: 10px;
+    background-color: #FFF
+}
+
+.region {
+    position: relative;
+    left: 80px;
+    font-size: 18px;
+}
+
+.radio {
+    position: relative;
+    left: 50px;
+}
+
+.title {
+    position: relative;
+    width: 1000px;
+    height: 100px;
+}
