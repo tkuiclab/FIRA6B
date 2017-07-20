@@ -154,10 +154,11 @@ void FIRA_teamStrategy_class::role_FreeBall(){
     printf("global_env->RobotNumber=%d\n",env.RobotNumber);
     double angle_chase = Chase_Strategy[3];//16.5
     double distance_chase = Chase_Strategy[4];//0.4
+    printf("1\n");
     double distance_br=env.home[env.RobotNumber].ball.distance;//this robot
     double distance_dr=env.home[env.RobotNumber].goal.distance;
     double angle_br=env.home[env.RobotNumber].ball.angle;//this robot
-
+    printf("1\n");
     static int attacker_select=0;
     static int this_attacker_select_counter=0;
     static int another_attacker_select_counter=0;
@@ -331,6 +332,10 @@ void FIRA_teamStrategy_class::loadParam(ros::NodeHandle *n){
     if(n->getParam("/FIRA/teamColor",teamColor)){
         std::cout << "teamColor=" << teamColor <<std::endl;
     }
-
+    if(n->getParam("/FIRA_Behavior/Chase_Strategy", Chase_Strategy)){
+//        for(int i=0;i<5;i++)
+//            std::cout<< "param Chase_Strategy["<< i << "]=" << Chase_Strategy[i] << std::endl;
+//    std::cout << "====================================" << std::endl;
+    }
 }
 

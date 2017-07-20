@@ -662,6 +662,7 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
             actionAry[robotIndex] = action_Halt;
         }
 
+
 }
 //###################################################//
 //                                                   //
