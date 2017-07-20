@@ -21,7 +21,7 @@ std::string visionpath = ros::package::getPath("fira_launch");
 
 std::string parameterpath = "/default_config/vision_better.yaml";
 //std::string parameterpath = "/config/Parameter.yaml";
-std::string param = visionpath + parameterpath; 
+std::string param = visionpath + parameterpath;
 const char *parampath = param.c_str();
 
 
@@ -46,7 +46,6 @@ void InterfaceProc::Parameter_getting(const int x)
   nh.getParam("/FIRA/HSV/black/angle", BlackAngleMsg);
 
   /////////////////////////////////掃瞄點前置參數///////////////////////////////////
-
   nh.getParam("/FIRA/SCAN/Angle_Near_Gap", Angle_Near_GapMsg);
   nh.getParam("/FIRA/SCAN/Magn_Near_Gap", Magn_Near_GapMsg);
   nh.getParam("/FIRA/SCAN/Magn_Near_Start", Magn_Near_StartMsg);
@@ -71,7 +70,7 @@ void InterfaceProc::Parameter_getting(const int x)
   dont_angle[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
   dont_angle[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
   dont_angle[2] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
-  dont_angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg)
+  dont_angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
   dont_angle[4] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
   dont_angle[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
   ///////////////////////////////////////FPS設定////////////////////////////////////////////////
@@ -97,7 +96,7 @@ void InterfaceProc::Parameter_getting(const int x)
 }
 void InterfaceProc::SaveButton_setting(const vision::bin msg)
 {
-  
+
   SaveButton = msg.bin;
   Parameter_getting(1);
   HSVmap();
@@ -106,8 +105,8 @@ void InterfaceProc::SaveButton_setting(const vision::bin msg)
 void InterfaceProc::View(const vision::view msg)
 {
 
-  viewcheck=msg.checkpoint;
-  
+  viewcheck = msg.checkpoint;
+
 }
 
 
@@ -276,12 +275,11 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   //sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
   //image_pub_threshold_.publish(thresholdMsg);
 
-   //cv::waitKey(3);
-
-if(viewcheck==64){
-   sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
-   image_pub_threshold_.publish(thresholdMsg);
-   }
+  //cv::waitKey(3);
+    sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+  if (viewcheck == 64) {
+    image_pub_threshold_.publish(thresholdMsg);
+  }
 
 
 }
@@ -810,15 +808,6 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
     yellow_angle_min = Angle_Adjustment(Yellow_Item.ang_min);
 
 
-
-       Two_point_msg.yellow_dis = Yellow_Item.dis_min;
-       Two_point_msg.yellow_ang1 = yellow_angle_max;
-       Two_point_msg.yellow_ang2 = yellow_angle_min;
-       }
-
-       if(Blue_Item.dis_min &&Yellow_Item.dis_min){
-       Two_point_pub.publish(Two_point_msg);
-       }
 
 
     Two_point_msg.yellow_dis = Yellow_Item.dis_min;
