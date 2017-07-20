@@ -12,6 +12,11 @@ const long PLAYERS_PER_SIDE = 3;
 #define Halt	0
 #define Start	1
 #define Error	2
+
+#define Level_1 1
+#define Level_2 2
+#define Level_3 3
+#define Level_4 4
 //
 #define GameState_Halt          0
 #define GameState_Play          1
@@ -86,6 +91,7 @@ typedef struct{
     Vector3D op_goal;
     double rotation;
     double v_x,v_y,v_yaw;
+	int	shoot;
     //double velocityLeft, velocityRight;
 }Robot;
 

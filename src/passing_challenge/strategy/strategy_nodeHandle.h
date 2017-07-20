@@ -4,7 +4,7 @@
  *		Include				*
  ****************************/
 #include <iostream>
-#include "ros/ros.h"
+#include <cmath>
 /****************************
  *		Include ROS			*
  ****************************/
@@ -16,7 +16,7 @@
 #include "vision/Object.h"
 #include "imu_3d/inertia.h"
 /****************************
- *		Include ROS			*
+ *		Include Library		*
  ****************************/
 #include "Env.h"
 /****************************
@@ -28,6 +28,7 @@
 #define localization_topic_name "/amcl_pose"
 #define level_topic_name "/level"
 #define loadParam_topic_name "/loadParam"
+#define status_topic_name "/status"
 
 #define DEBUG
 class Strategy_nodeHandle{
@@ -36,7 +37,7 @@ public:
 	~Strategy_nodeHandle();
 protected:
 	void init(int, char**);
-	Environment env;
+	Environment environment;
 	int level;
 	int status;
 private:
@@ -61,5 +62,6 @@ private:
 	void statusCallback(const std_msgs::Int32::ConstPtr &);
 	void loadParam();
 public:
+	Environment* getEnv(){return &environment;}
 };
 #endif
