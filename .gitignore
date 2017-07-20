@@ -63,7 +63,7 @@ simulation
 *.swo
 *.autosave
 .vs
-*.vscode
+.vscode/
 .catkin_workspace
 *.VC.db
 *.user
