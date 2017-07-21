@@ -34,7 +34,6 @@
 #include "nav_msgs/Odometry.h"
 #include "gazebo_msgs/ModelStates.h"
 #include "std_msgs/Int32MultiArray.h"
-
 /*****************************************************************************
 ** Define
 *****************************************************************************/

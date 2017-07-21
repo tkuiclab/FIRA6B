@@ -17,6 +17,7 @@
 #include <ros/ros.h>
 #include "std_msgs/Int32.h"
 #include "Env.hpp"
+#include <iomanip>
 /*****************************************************************************
 ** Define
 *****************************************************************************/
@@ -39,10 +40,12 @@ private:
     int _CurrentTarget;
     LocationStruct *_Location;
     Environment *_Env;
+    void showInfo();
     enum state_location{
     forward,
     back,
     finish,
+    chase,
     error};
 };
 #endif
