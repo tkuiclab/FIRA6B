@@ -145,6 +145,8 @@ typedef struct
     int AnotherRobotNumber;
     double AnotherGoalDistance;
     int R1OrderR2;
+    double Support_Obstacle_angle;
+    double Support_Obstacle_distance;
 } Environment;
 //static Environment global_env;
 

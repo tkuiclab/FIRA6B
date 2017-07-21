@@ -421,12 +421,13 @@ private:
         int All_Line_distance[360];
         int angle[360];
         int place;
+        int i=0;
 
-        for(int i=0; i<360/Blackangle-23; i++){
+        for(i=0; i<360/Blackangle; i++){
             All_Line_distance[i] = msg -> data[i];
         }
         global_env->mindis[0] = All_Line_distance[0];
-        for(int i=1; i<360/Blackangle-23; i++){
+        for(i=1; i<360/Blackangle-23; i++){
             if(All_Line_distance[i] < global_env->mindis[0]){
 				if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
 					global_env->mindis[0] = All_Line_distance[i];
@@ -435,176 +436,135 @@ private:
 			}
         }
 
-     global_env->blackangle[0] = place*3;
-     if(global_env->blackangle[0] > 180){
-        global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
-     }
-
-//ROS_INFO("blackangle[0]=%d,mindis[0]=%d\n",global_env->blackangle[0],global_env->mindis[0]);
-        /*}else counter++;*/
-   //        std_msgs::Int32MultiArray blackdis;
-   //        int blackpop=0;
-   //        for(int i=0; i<360/Blackangle; i++){
-   //            blackdis.data.push_back(msg->data[i]);
-   //        }
-   //        for(int i = 0; i < 360/Blackangle; i++){
-   //            blackpop = blackdis.data.back();
-   //            blackdis.data.pop_back();
-   //            printf("%d=%d\n",i,blackpop);
-   //        }
-   //===================================================================
-//           int All_Line_distance[360];
-//           int All_Line_angle[360];
-//           int place;
-//           int middle;
-//           int middle_place;
-//           int count=1;
-//           int lastCount = 0;
-//           for(int i=0; i<360/Blackangle; i++){
-//               All_Line_distance[i] = msg -> data[i];
-////               ROS_INFO("%d=%d\n",i, All_Line_distance[i] );
-//           }
-//           global_env->mindis = All_Line_distance[0];
-
-//          for(int i=1 ; i<360/Blackangle ; i++){
-//               if(All_Line_distance[i] < global_env->mindis){
-//                    lastCount = 0;
-//                    count = 1;
-//                    global_env->mindis = All_Line_distance[i];
-////                    ROS_INFO("count=%d\n",count);
-//               }else if(All_Line_distance[i] == All_Line_distance[i-1]){
-//                    count++;
-//                    if(count > lastCount){
-//                        lastCount = count;
-//                        place = i;
-//                    }
-////                    ROS_INFO("count=%d\n",count);
-//               }else{
-//                   if(count > lastCount){
-//                       lastCount = count;
-//                       place = i;
-//                   }
-//               }
-//               count = 1;
-//          }
-
-//          middle = lastCount/2;
-//          middle_place = place - middle;
-
-//          for(int i=0 ; i<360/Blackangle ; i++){
-//             All_Line_angle[i] = i*Blackangle;
-//          }
-//          if(All_Line_angle[middle_place] <= 180){
-//               global_env->blackangle = All_Line_angle[middle_place];
-//          }else if(All_Line_angle[middle_place] > 180){
-//               global_env->blackangle = - (360 - All_Line_angle[middle_place]);
-//          }
-
-////       ROS_INFO("min=%d\t",global_env->mindis);
-////       ROS_INFO("%d\t",place);
-////       ROS_INFO("middle_place=%d\t",middle_place);
-////       ROS_INFO("lastCount=%d\n",lastCount);
-////       ROS_INFO("%d",global_env->blackangle);
-//===============================================================================================================
-/*        int j=0,k=0;
-        bool boolha=0;
-        int meanvalue=0;
-        int All_Line_distance[360];
-        int All_Line_angle[360];
-        int temp = 0;
-        for(int i=0;i<20;i++){
-            Save[i].counter=1;
+         global_env->blackangle[0] = place*3;
+         if(global_env->blackangle[0] > 180){
+            global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
+         }
+        //---------------------------vincent--------------------
+        double distance_br = global_env->home[global_env->RobotNumber].ball.distance;
+        double distance_dr = global_env->home[global_env->RobotNumber].goal.distance;
+        double op_distance_dr = global_env->home[global_env->RobotNumber].op_goal.distance;
+        double angle_br = global_env->home[global_env->RobotNumber].ball.angle;
+        double angle_dr = global_env->home[global_env->RobotNumber].goal.angle;
+        double op_angle_dr = global_env->home[global_env->RobotNumber].op_goal.angle;
+        double transform_angle_br=angle_br;
+        //let ball angle = black line angle
+        int ignore_limit_angle=30;
+        int ignore_upper=0;
+        int ignore_lower=0;
+        int ignore_360upper=0;
+        int ignore_360lower=0;
+        int ignore_720upper=0;
+        int ignore_720lower=0;
+        int limit_obstacle_dis=100;
+        int limit_obstacle_dis_counter=0;
+        int first_obstacle_clear=0;
+        int define_obstacle_angle=15;
+        double obstacle_middle_angle=0;
+        int ignore_counter=0;
+        double final_angle=0;
+        double final_distance=0;
+        int end_search = 0;
+        int i_limit=0;
+        int obstacle_distance=0;
+        int last_obstacle_distance=0;
+        if(transform_angle_br<0){//let ball_angle be 0~360 degree
+            transform_angle_br = transform_angle_br + 360;
         }
-        for(int i=0; i<360/Blackangle; i++){
-           All_Line_distance[i] = msg -> data[i];
-//           ROS_INFO("%d=%d\n",i, All_Line_distance[i] );
-             }
-        for(int i=0;i<(360/Blackangle)-1;i++){
-            if(All_Line_distance[i]<200){
-                if(Save[j].counter==1){
-                    Save[j].distance=All_Line_distance[i];
-                    Save[j].location=i;
-                }
-                //fabs(All_Line_distance[i]-All_Line_distance[i+1])
-                meanvalue += All_Line_distance[i]-All_Line_distance[i+1];
-                if(abs(meanvalue)<=3){
-                    Save[j].counter++;
-                    boolha=1;
-                }else if(boolha == 1){
-                    j++;
-                    meanvalue=0;
-                    boolha=0;
-                }else if(fabs(All_Line_distance[i]-All_Line_distance[i+1]) > 3){
-                    meanvalue=0;
+        if(transform_angle_br < ignore_limit_angle){// prepare to scan two round
+            transform_angle_br = transform_angle_br + 360;
+        }
+        if(transform_angle_br<360){
+            ignore_360upper=transform_angle_br+360+ignore_limit_angle;
+            ignore_360lower=transform_angle_br+360-ignore_limit_angle;
+            ignore_upper=transform_angle_br+30;
+            ignore_lower=transform_angle_br-30;
+        }else{
+            ignore_360upper=transform_angle_br+30;
+            ignore_360lower=transform_angle_br-30;
+            ignore_upper=transform_angle_br-360;
+            ignore_lower=0;
+        }
+        if(ignore_360upper>720){
+            ignore_720upper = ignore_360upper-720;
+            ignore_720lower = 0;
+        }
+
+        for(i=0; i<720/Blackangle; i++){
+            if(end_search==1){// end_search jump out for loop
+                break;
+            }
+
+            if(i*Blackangle>360||(i==360/Blackangle)){// if searching round two
+                i_limit=360/Blackangle;
+            }else{
+                i_limit=0;
+            }
+            if((All_Line_distance[0]<limit_obstacle_dis)&&(i==0)){//something at 0 degree
+                first_obstacle_clear=1;// first obstacle will clear
+            }else if(i*Blackangle>=180&&first_obstacle_clear==1){// if across 180 degree still haven't find first obstacle
+                first_obstacle_clear=0;
+            }
+            if(All_Line_distance[i-i_limit]<limit_obstacle_dis){//something within distance
+                limit_obstacle_dis_counter++;
+                obstacle_distance = obstacle_distance + All_Line_distance[i-i_limit];
+                obstacle_middle_angle = i*Blackangle-limit_obstacle_dis_counter*Blackangle/2;
+                last_obstacle_distance = All_Line_distance[i-i_limit];
+                printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
+                ignore_counter=0;// something there, so get ignore chance
+            }else{// not within distance
+                ignore_counter++;//give chance to ignore
+                if(ignore_counter>=2){//really nothing there
+                    if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){// if last obstacle large enough
+                        if(first_obstacle_clear==1){//first time dont restore
+                            first_obstacle_clear--;
+                            printf("first_obstacle_clear\n");
+                        }else{
+                            final_angle = obstacle_middle_angle; // restore
+                            final_distance = obstacle_distance/limit_obstacle_dis_counter;
+                            end_search = 1;// get final angle, so end search
+                            printf("end search\n");
+                        }
+                    }
+                    if(limit_obstacle_dis_counter>=2){// if something there but not large enough, still clear first time counter;
+                        first_obstacle_clear--;
+                    }
+                    printf("ignore_counter>2,clear all\n");
+                    limit_obstacle_dis_counter = 0;// reset obstacle
+                    obstacle_distance = 0;
+                    last_obstacle_distance = 0;
+                }else{//keep counting
+                    limit_obstacle_dis_counter++;
+                    obstacle_distance = obstacle_distance + last_obstacle_distance;
+                    obstacle_middle_angle = i*Blackangle-limit_obstacle_dis_counter*Blackangle/2;
+                    printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
+
                 }
             }
+            if(((i*Blackangle>=ignore_lower)&&(i*Blackangle<=ignore_upper)||(i*Blackangle>=ignore_360lower)&&(i*Blackangle<=ignore_360upper))||(i*Blackangle>=ignore_720lower)&&(i*Blackangle<=ignore_720upper)){
+                // if angle within these area, will clear
+                limit_obstacle_dis_counter=0;
+                ignore_counter=0;
+                printf("angle within these area, will clear\n");
+            }
         }
-
-
-              for(int i=0;i<j;i++){
-                  if(Save[i].counter >= 3){
-                      New_Save[k].location = Save[i].location;
-                      New_Save[k].distance = Save[i].distance;
-                      New_Save[k].counter = Save[i].counter;
-                      k++;
-                  }
-              }
-              for(int i=0; i<k ; i++){
-                  for(int j=i; j<k; j++){
-                      if(New_Save[j].distance < New_Save[i].distance){
-                          temp = New_Save[j].distance;
-                          New_Save[j].distance = New_Save[i].distance;
-                          New_Save[i].distance = temp;
-
-                          temp = New_Save[j].location;
-                          New_Save[j].location = New_Save[i].location;
-                          New_Save[i].location = temp;
-
-                          temp = New_Save[j].counter;
-                          New_Save[j].counter = New_Save[i].counter;
-                          New_Save[i].counter = temp;
-                      }
-                   }
-              }
-              for(int i=0; i<k-1; i++){
-                if(New_Save[i].distance == New_Save[i+1].distance){
-                  if(New_Save[i].counter < New_Save[i+1].counter){
-                     temp = New_Save[i].location;
-                     New_Save[i].location= New_Save[i+1].location;
-                     New_Save[i+1].location = temp;
-
-                     temp = New_Save[i].counter;
-                     New_Save[i].counter= New_Save[i+1].counter;
-                     New_Save[i+1].counter = temp;
-                  }
-                }
-              }
-              for(int i=0; i<k; i++){
-                   global_env->mindis[i] = New_Save[i].distance;
-                   New_Save[i].middle = New_Save[i].counter/2;
-                   New_Save[i].middle_place = New_Save[i].location + New_Save[i].middle ;
-              }
-              for(int i=0 ; i<360/Blackangle ; i++){
-                  All_Line_angle[i] = i*Blackangle;
-              }
-              for(int i=0; i<k; i++){
-                  if(All_Line_angle[New_Save[i].middle_place] <= 180){
-                       global_env->blackangle[i] = All_Line_angle[New_Save[i].middle_place];
-                  }else if(All_Line_angle[New_Save[i].middle_place] > 180){
-                       global_env->blackangle[i] = - (360 - All_Line_angle[New_Save[i].middle_place]);
-                  }
-              }*/
-//======================================================================================================================//
-
-//              for(int i=0;i<j;i++){
-//                  ROS_INFO("min[%d]=%d\t loaction[%d]=%d\t counter[%d]=%d\n",i,Save[i].distance,i,Save[i].location,i,Save[i].counter);
-//              }
-//              for(int i=0;i<k;i++){
-//                  ROS_INFO("New.distance[%d]=%d\t New.location[%d]=%d\t New_Save[%d].counter=%d\n",i,New_Save[i].distance,i,New_Save[i].location,i,New_Save[i].counter);
-//                   ROS_INFO("global_env->mindis[%d]=%d\t global_env->blackangle[%d]=%d\n \n",i,global_env->mindis[i],i,global_env->blackangle[i]);
-//              }
-
-
+        if(final_angle>540&&final_angle<=720){
+            final_angle=final_angle-720;
+        }else if(final_angle>180&&final_angle<=540){
+            final_angle=final_angle-360;
+        }
+        global_env->Support_Obstacle_angle=final_angle;
+        global_env->Support_Obstacle_distance= final_distance/100;
+        printf("final angle = %f \n",final_angle);
+        printf("final_distance = %f \n",final_distance/100);
+        printf("ball_distance = %f\n",distance_br);
+        printf("transform_angle_br=%f\n",transform_angle_br);
+        printf("ignore_upper=%d\n",ignore_upper);
+        printf("ignore_lower=%d\n",ignore_lower);
+        printf("ignore_360upper=%d\n",ignore_360upper);
+        printf("ignore_360lower=%d\n",ignore_360lower);
+        printf("ignore_720upper=%d\n",ignore_720upper);
+        printf("ignore_720lower=%d\n",ignore_720lower);
 
 
     }

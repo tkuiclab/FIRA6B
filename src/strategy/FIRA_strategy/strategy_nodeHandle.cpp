@@ -273,7 +273,7 @@ void Strategy_nodeHandle::pubGrpSpeed(){
 //                                                   //
 //###################################################//
 void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
-     if(n->getParam("/FIRA/blackItem/angle",Blackangle)){
+     if(n->getParam("/FIRA/HSV/black/angle",Blackangle)){
 //     std::cout << "param Blackangle=" << Blackangle <<std::endl;
     }
      if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){

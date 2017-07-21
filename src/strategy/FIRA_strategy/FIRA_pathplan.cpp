@@ -1675,135 +1675,44 @@ void FIRA_pathplan_class::strategy_Support_Positioning(int r_number){
 }
 
 void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
-
-
-//    double distance_br = env.home[r_number].ball.distance;
-//    double distance_dr = env.home[r_number].goal.distance;
-//    double op_distance_dr = env.home[r_number].op_goal.distance;
-//    double angle_br = env.home[r_number].ball.angle;
-//    double angle_dr = env.home[r_number].goal.angle;
-//    double op_angle_dr = env.home[r_number].op_goal.angle;
-//    double test_angle = angle_dr - op_angle_dr;
-//    static int left_count=0;
-//    static int right_count=0;
-//    if(test_angle<0){
-//        test_angle = test_angle +360;
-//    }
-//    if(test_angle>=180){//right
-//        right_count++;
-//    }else{//left
-//        left_count++;
-//    }
-//    if(left_count>=10){
-//        printf("left side\n");
-//        printf("test_angle = %f\n",test_angle);
-//        right_count=0;
-//        left_count=0;
-//    }else if(right_count>=10){
-//        printf("right side\n");
-//        printf("test_angle = %f\n",test_angle);
-//        right_count=0;
-//        left_count=0;
-//    }
-//    printf("angle_dr = %f\n",angle_dr);
-//    printf("op_angle_dr = %f\n",op_angle_dr);
-//    printf("goal_edge.angle_1=%f\n",env.home[r_number].goal_edge.angle_1);
-//    printf("goal_edge.angle_2=%f\n",env.home[r_number].goal_edge.angle_2);
-//    printf("op_goal_edge.angle_1=%f\n",env.home[r_number].op_goal_edge.angle_1);
-//    printf("op_goal_edge.angle_2=%f\n",env.home[r_number].op_goal_edge.angle_2);
-//    env.home[r_number].v_yaw=20;
     double distance_br = env.home[r_number].ball.distance;
     double distance_dr = env.home[r_number].goal.distance;
     double op_distance_dr = env.home[r_number].op_goal.distance;
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-    double v_rotation= 0;// to give robot head direction x & y speed to op_angle_dr
-    double x_speed = 0;
-    double y_speed = 0;
-    double yaw_speed = 0;
-
-    //#######################################################//
-    //                                                       //
-    //    angle transform
-    //    1.inv_op_angle_dr = tail face op_angle_dr
-    //    2.transform_angle_dr = angle_dr
-    //    3.v_rotation = to give robot head direction x & y speed to op_angle_dr
-    //                                                       //
-    //#######################################################//
-
-    double transform_angle_dr = env.home[r_number].goal.angle;
-    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
-    if(inv_op_angle_dr>180){
-        inv_op_angle_dr=inv_op_angle_dr-360;
+    if(fabs(angle_br)<Chase_Strategy[3] && distance_br<Chase_Strategy[4]){
+        shoot = 1;
+    }else{
+        shoot = 0;
+    }
+    double obstacle_angle =env.Support_Obstacle_angle+90;
+    double transform_angle_br = angle_br+90;
+    double obstacle_distance =env.Support_Obstacle_distance;
+    if(obstacle_angle>180){
+        obstacle_angle=obstacle_angle-360;
+    }else if(obstacle_angle<-180){
+        obstacle_angle=obstacle_angle+360;
     }
 
-    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
-        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-            inv_op_angle_dr=0;
-        }else{
-            transform_angle_dr=0;
-        }
-    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
-        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-            inv_op_angle_dr=0;
-        }else{
-            transform_angle_dr=0;
-        }
+    if(transform_angle_br>180){
+        transform_angle_br=transform_angle_br-360;
+    }else if(transform_angle_br<-180){
+        transform_angle_br=transform_angle_br+360;
     }
-
-    //#######################################################//
-    //                                                       //
-    //    giving speed
-    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
-    //    2.v_x =
-    //    3.v_y =
-    //                                                       //
-    //#######################################################//
-
-    //-----------------------yaw_speed-------------------
-    yaw_speed =inv_op_angle_dr+transform_angle_dr;
-
-    //-----------------------x_speed---------------------
-    //-----------------------y_speed---------------------
-
-    v_rotation=env.home[r_number].goal_edge.angle_1+90;
-    if(v_rotation>180){
-        v_rotation=-360+v_rotation;
+//    printf("final_angle=%f\n",env.Support_Obstacle_angle);
+//    printf("final_distance=%f\n",env.Support_Obstacle_distance);
+    if(obstacle_distance-0.3>0){
+        obstacle_distance=obstacle_distance-0.3;
     }
-    if(v_rotation<-180){
-        v_rotation=360+v_rotation;
+    if(distance_br-0.3>0){
+        distance_br=distance_br-0.3;
     }
-    double v_rotation2=env.home[r_number].op_goal_edge.angle_2+90;
-    if(v_rotation2>180){
-        v_rotation2=-360+v_rotation2;
-    }
-    if(v_rotation2<-180){
-        v_rotation2=360+v_rotation2;
-    }
-    x_speed = cos(v_rotation*deg2rad)*1+cos(v_rotation2*deg2rad)*op_distance_dr;
-    y_speed = sin(v_rotation*deg2rad)*1+sin(v_rotation2*deg2rad)*op_distance_dr;
+    env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
+    env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
+    env.home[r_number].v_yaw=angle_br;
 
 
-    env.home[r_number].v_yaw = yaw_speed;
-    env.home[r_number].v_x = x_speed*speed_constant;
-    env.home[r_number].v_y = y_speed*speed_constant;
-
-    //#######################################################//
-    //                                                       //
-    //    lowest speed limit (if to low, set it to zero)
-    //                                                       //
-    //#######################################################//
-
-    if(fabs(yaw_speed)<yaw_speed_limit){
-       env.home[r_number].v_yaw= 0;
-    }
-    if(fabs(x_speed*speed_constant)<speed_limit){
-       env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
-       env.home[r_number].v_y = 0;
-    }
 
 
 

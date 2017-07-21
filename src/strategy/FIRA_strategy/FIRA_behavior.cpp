@@ -420,28 +420,10 @@ void FIRA_behavior_class::behavior_Test1(int robotIndex){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-    double v_rotation=0;
-//    printf("angle_dr=%f\n",angle_dr);
-//    printf("op_angle_dr=%f=%f=%f\n",op_angle_dr,env.home[r_number].op_goal_edge.angle_1,env.home[r_number].op_goal_edge.angle_2);
-//    //printf("distance_br=%f\n",distance_br);
-    if(((distance_br>=9.99)||(distance_dr>=9.99))||(op_distance_dr>=9.99)){
-        printf("action_Halt br:%f, dr:%f op_dr:%f\n",distance_br,distance_dr,op_distance_dr);
-        actionAry[robotIndex] = action_Halt;
-    }else if(op_distance_dr<1.3){// in limit area
-        actionAry[robotIndex] = action_LeaveLimitArea;
-        printf("action_LeaveLimitArea\n");
-    }else if(distance_br<1||(angle_br>120||angle_br<-120)){// too close ball leave ball
-        actionAry[robotIndex] = action_LeaveBall;
-        printf("action_LeaveBall\n");
-    }else if(op_distance_dr>3.4){// too far from defend gate
-        actionAry[robotIndex] = action_MovetoOpGoal;
-        printf("action_MovetoYellowGate\n");
-    }else if(distance_br>=1){//all good above, left right defend ball state
-        actionAry[robotIndex] = action_Support_Test2;
-        printf("left right defend ball state\n");
-    }else{// impossible to be here
-        actionAry[robotIndex] = action_Halt;
-    }
+//    printf("final_angle=%f\n",env.Support_Obstacle_angle);
+//    printf("final_distance=%f\n",env.Support_Obstacle_distance);
+    actionAry[robotIndex] = action_Support_Test1;
+
 
 
 }
