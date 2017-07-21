@@ -13,13 +13,13 @@ void Client::ros_comms_init(){
     Odom_pub = nh->advertise<nav_msgs::Odometry>("/odom", 50);
 }
 void Client::loadParam(ros::NodeHandle* nh){
-    nh->getParam("/FIRA/whiteline/angle",WhiteAngle);
+    nh->getParam("/FIRA/HSV/white/angle",WhiteAngle);
 }
 void Client::whiteline_pub(){
     if(WhiteAngle==0)
         WhiteAngle = 1;
     int num_readings = 360/WhiteAngle;
-    int laser_frequency = 90; // vision fps 
+    int laser_frequency = 50; // vision fps 
     sensor_msgs::LaserScan scan;
     ros::Time scan_time = ros::Time::now();
     scan.header.frame_id = "laser_frame";
