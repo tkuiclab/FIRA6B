@@ -1142,17 +1142,27 @@ void FIRA_pathplan_class::strategy_AvoidBarrier(int Robot_index){
 void FIRA_pathplan_class::strategy_test(int r_number){
     double goal_angle = env.home[r_number].goal.angle;
     double goal_dis = env.home[r_number].goal.distance;
-    printf("goal_angle:%f\t",goal_angle);
     std::vector<double>angle_avg;
+
+    int effective_dis=75;
+    double f_total[2];
+
+    double total_apf_f=0;
+
+    double f_g[2];
+    double f_image_r[2];
     double apf_f[2];
-    double total_f=0;
+
     double f_r_angle=0;
     double f_g_angle=0;
-    double f_g[2];
-    int j=0;
+    double Velocity_angle=0;
+
+
+    int number_obstacle=0;
 
     float k_r[2];
     float k_g[2];
+    float k_image[2];
     apf_f[0]=0;
     apf_f[1]=0;
     f_g[0]=0;
@@ -1163,23 +1173,23 @@ void FIRA_pathplan_class::strategy_test(int r_number){
     k_g[0]=1;
     k_g[1]=1;
 
-    printf("===========apf_cal=======\t%d\n",env.global_angle_end.size());
+    printf("===========apf_cal=======\t%d\n\n",env.global_angle_end.size());
     if(env.global_angle_start.size()!=0){
         printf("%d\t%d\t%d\n",env.global_angle_end[0],env.global_angle_start[0],env.global_apf_dis[0]);
         if(env.global_angle_end[0]==1&&env.global_angle_start[0]==1&&env.global_apf_dis[0]==1){
-            j=0;
+            number_obstacle=0;
             for(int i=1;i<=env.global_angle_end.size()-1;i++){
                 angle_avg.push_back((env.global_angle_end[i]+env.global_angle_start[i])/2);
-                if(angle_avg[j]<=180){
-                    angle_avg[j]=angle_avg[j]+180;
+                if(angle_avg[number_obstacle]<=180){
+                    angle_avg[number_obstacle]=angle_avg[number_obstacle]+180;
                 }else{
-                    angle_avg[j]=angle_avg[j]-180;
+                    angle_avg[number_obstacle]=angle_avg[number_obstacle]-180;
                 }
-                apf_f[0]=apf_f[0]+(50-env.global_apf_dis[i])*-sin(angle_avg[j]*deg2rad);//x
-                apf_f[1]=apf_f[1]+(50-env.global_apf_dis[i])*cos(angle_avg[j]*deg2rad);//y
-                printf("angle_start:%d\tangle_end:%d\tangle_avg:%f\tdis:%d\n",env.global_angle_start[i],env.global_angle_end[i],angle_avg[j],env.global_apf_dis[i]);
+                apf_f[0]=apf_f[0]+(effective_dis-env.global_apf_dis[i])*-sin(angle_avg[number_obstacle]*deg2rad);//x
+                apf_f[1]=apf_f[1]+(effective_dis-env.global_apf_dis[i])*cos(angle_avg[number_obstacle]*deg2rad);//y
+                printf("angle_start:%d\tangle_end:%d\tangle_avg:%f\tdis:%d\n",env.global_angle_start[i],env.global_angle_end[i],angle_avg[number_obstacle],env.global_apf_dis[i]);
                 printf("x:%f\ty:%f\n",apf_f[0],apf_f[1]);
-                j++;
+                number_obstacle++;
             }
 
         }
@@ -1200,10 +1210,10 @@ void FIRA_pathplan_class::strategy_test(int r_number){
     printf("%d\n\n",env.global_angle_end.size());
 
 
-    total_f=sqrt(apf_f[0]*apf_f[0]+apf_f[1]*apf_f[1]);
+    total_apf_f=sqrt(apf_f[0]*apf_f[0]+apf_f[1]*apf_f[1]);
     if(apf_f[0]!=0&&apf_f[1]!=0){
-        apf_f[0]=apf_f[0]/total_f;
-        apf_f[1]=apf_f[1]/total_f;
+        apf_f[0]=apf_f[0]/total_apf_f;
+        apf_f[1]=apf_f[1]/total_apf_f;
     }
 
 
@@ -1218,49 +1228,68 @@ void FIRA_pathplan_class::strategy_test(int r_number){
 
     printf("f_g_x:%f\tf_g_y:%f\n\n",f_g[0],f_g[1]);
     printf("f_r_x:%f\tf_r_y:%f\t\n\n",apf_f[0],apf_f[1]);
-    if(j!=0){
-        f_r_angle=atan(apf_f[1]/apf_f[0])*rad2deg;
-        if(goal_angle<0){
-           f_g_angle=goal_angle+360;
-        }else{
-           f_g_angle=goal_angle;
-        }
 
-        if(fabs(f_r_angle-f_g_angle)<185&&fabs(f_r_angle-f_g_angle)>175){
-            if(f_g_angle>=270){
-                k_r[0]=1;
-                k_r[1]=-1;
-            }
-            else if(f_g_angle<=90&&f_g_angle!=0){
-                k_r[0]=-1;
-                k_r[1]=1;
-            }else if(f_g_angle==0){
-                if(j%2==0){
-                    k_r[0]=1;
-                    k_r[1]=-1;
-                }else{
-                    k_r[0]=-1;
-                    k_r[1]=1;
-                }
-                j=0;
-            }
-        }
-    }else{
-        f_r_angle=0;
+    f_total[0]=(k_r[0]*apf_f[0]+k_g[0]*f_g[0]);
+    f_total[1]=(k_r[1]*apf_f[1]+k_g[1]*f_g[1]);
+    printf("ft_x:%f\tft_y:%f\n\n",f_total[0],f_total[1]);
+    /////////////////cal_f_image////////////////
+    Velocity_angle=atan2(f_total[0],f_total[1])*rad2deg;
+    f_r_angle=atan2(apf_f[0],apf_f[1])*rad2deg;
+
+    if(f_r_angle<0){
+       f_r_angle=f_r_angle+360;
     }
-    printf("f_r_angle:%f\tf_g_angle:%f\n",f_r_angle,f_g_angle);
-    apf_f[0]=k_r[0]*apf_f[0]+k_g[0]*f_g[0];
-    apf_f[1]=k_r[1]*apf_f[1]+k_g[1]*f_g[1];
-    printf("ft_x:%f\tft_y:%f\n\n",apf_f[0],apf_f[1]);
+    if(Velocity_angle<0){
+       Velocity_angle=Velocity_angle+360;
+    }
+    if(goal_angle<0){
+       f_g_angle=goal_angle+360;
+    }
+    printf("f_r_angle:%f\tf_g_angle:%f\tVelocity_angle:%f\n",f_r_angle,f_g_angle,Velocity_angle);
+    f_image_r[0]=apf_f[0]/2;
+    f_image_r[1]=apf_f[1]/2;
+    if(f_r_angle<180){f_r_angle=f_r_angle+180;}
+    else{f_r_angle=f_r_angle-180;}
+    if(f_r_angle<180){
+        k_image[0]=2/(1+exp(fabs(f_r_angle-Velocity_angle)*deg2rad)/0.25);
+        k_image[1]=-2/(1+exp(fabs(f_r_angle-Velocity_angle)*deg2rad)/0.25);
+    }else if(f_r_angle>180){
+        k_image[0]=-2/(1+exp(fabs(f_r_angle-Velocity_angle)*deg2rad)/0.25);
+        k_image[1]=2/(1+exp(fabs(f_r_angle-Velocity_angle)*deg2rad/0.25));
+    }else if(f_r_angle==180){
+        k_image[0]=-2/(1+exp(fabs(f_r_angle-Velocity_angle)*deg2rad)/0.25);
+        k_image[1]=2/(1+exp(fabs(f_r_angle-Velocity_angle)*deg2rad)/0.25);
+    }
 
-    env.home[r_number].v_x = apf_f[0]*30;
-    env.home[r_number].v_y = apf_f[1]*30;
+    printf("k_image_x:%f\tKimage_y:%f\n",k_image[0],k_image[1]);
+    printf("x_image:%f\ty_image:%f\n",k_image[0]*f_image_r[0],k_image[1]*f_image_r[1]);
+    /////////////////
+    f_total[0]=k_r[0]*apf_f[0]+k_g[0]*f_g[0]+k_image[0]*f_image_r[0];
+    f_total[1]=k_r[1]*apf_f[1]+k_g[1]*f_g[1]+k_image[1]*f_image_r[1];
+    printf("ft_x:%f\tft_y:%f\n\n",f_total[0],f_total[1]);
+    ////////////real_state/////
+    env.home[r_number].v_x = f_total[0];
+    env.home[r_number].v_y = f_total[1];
     env.home[r_number].v_yaw = goal_angle;
+    printf("v_x=%lf\n",env.home[r_number].v_x);
     printf("=============end_f=======\n");
 
+    ////////////test_state//////////
+//    if(goal_dis<=0.75){
+//        env.home[r_number].v_x = 0;
+//        env.home[r_number].v_y = 0;
+//        env.home[r_number].v_yaw = 0;
+//        printf("=====get_goal=====\n");
+//    }else{
+//        env.home[r_number].v_x = f_total[0];
+//        env.home[r_number].v_y = f_total[1];
+//        env.home[r_number].v_yaw = goal_angle;
+//        printf("=============end_f=======\n");
+//    }
+    ////////////////////test_mode_end////////////
     angle_avg.clear();
     std::vector<double>().swap(angle_avg);
-
+    number_obstacle=0;
 }
 
 double FIRA_pathplan_class::vecAngle(Vector2d a,Vector2d b){

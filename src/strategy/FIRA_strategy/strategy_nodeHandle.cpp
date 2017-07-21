@@ -5,7 +5,9 @@
 Strategy_nodeHandle::
 Strategy_nodeHandle(int argc, char** argv):
     BaseNode(argc,argv,Node_Name)
-{
+{   
+    global_env = new Environment;
+    global_env->SaveParam = 0;
     roleAry[0] = Role_Goalkeeper;
 }
 
@@ -58,8 +60,9 @@ void Strategy_nodeHandle::ros_comms_init(){
     robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_3_pos_fun,this);
     //contact image
     Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
+    Two_point_door = n->subscribe<vision::Two_point>(Two_point_Topic,1000,&Strategy_nodeHandle::subTwoPoint,this);
     BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
-
+    SAVEPARAM = n->subscribe<std_msgs::Int32>(SAVEPARAM_TOPIC,1000,&Strategy_nodeHandle::getSaveParam,this);
     IsSimulator = false;
 }
 
@@ -262,7 +265,7 @@ void Strategy_nodeHandle::pubGrpSpeed(){
 //                                                   //
 //###################################################//
 void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
-     if(n->getParam("/FIRA/blackItem/angle",Blackangle)){
+     if(n->getParam("/FIRA/HSV/black/angle",Blackangle)){//FIRA/blackItem/angle
 //     std::cout << "param Blackangle=" << Blackangle <<std::endl;
     }
      if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){

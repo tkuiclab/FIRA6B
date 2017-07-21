@@ -195,7 +195,7 @@ void Base_Control::mcssl_send2motor()
 	cssl_putchar(serial, *(this->base_TX->w2));
 	cssl_putchar(serial, *(this->base_TX->w3));
 	cssl_putchar(serial, *(this->base_TX->w4));
-	cssl_putchar(serial, *(this->base_TX->checksum));
+	//cssl_putchar(serial, *(this->base_TX->checksum));
 	/*cssl_putchar(serial, 0xff);
 	cssl_putchar(serial, 0xfa);
 	cssl_putchar(serial, 0);
@@ -244,10 +244,10 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 	if((w3_speed_percent>=100))w3_speed_percent=100;
 	if((w4_speed_percent>=100))w4_speed_percent=100;
 
-	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*w1_speed_percent/100) + w1_dir) : 0;
-	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*w2_speed_percent/100) + w2_dir) : 0;
-	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*w3_speed_percent/100) + w3_dir) : 0;
-	*(this->base_TX->w4) = (w4_speed_percent>0)? (unsigned char)((127*w4_speed_percent/100) + w4_dir) : 0;
+	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*w1_speed_percent/100) + w1_dir) : 0x80;
+	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*w2_speed_percent/100) + w2_dir) : 0x80;
+	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*w3_speed_percent/100) + w3_dir) : 0x80;
+	*(this->base_TX->w4) = (w4_speed_percent>0)? (unsigned char)((127*w4_speed_percent/100) + w4_dir) : 0x80;
 #ifdef DEBUG
 	std::cout << "speed_regularization(DEBUG)\n";
 	std::cout << std::hex;

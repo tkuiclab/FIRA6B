@@ -233,11 +233,11 @@ joystick_canvas.addEventListener("mouseup", function(e) {
 
 joystick_canvas.addEventListener("mouseleave", function(e) {
     var pos = getMousePos(joystick_canvas, e);
+    Pos_Vector(pos);
     if (mouse_click == 1) {
-        pos.x = joystickcenter.x;
-        pos.y = joystickcenter.y;
-        Pos_Vector(pos);
         mouse_click = 0;
+        joystick_V.x = 0;
+        joystick_V.y = 0;
         joy_ctx.clearRect(0, 0, joystick_canvas.width, joystick_canvas.height);
         drawjoystick(joystickcenter.x, joystickcenter.y);
     }

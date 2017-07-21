@@ -34,7 +34,7 @@
 #include "nav_msgs/Odometry.h"
 #include "gazebo_msgs/ModelStates.h"
 #include "std_msgs/Int32MultiArray.h"
-
+#include "vision/Two_point.h"
 /*****************************************************************************
 ** Define
 *****************************************************************************/
@@ -46,8 +46,11 @@
 #define GameState_Topic "/FIRA/GameState"
 #define TeamColor_Topic "/FIRA/TeamColor"
 #define Vision_Topic "/vision/object"
+#define SAVEPARAM_TOPIC "/FIRA/SaveParam"
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
+//TwoPointDoor
+#define  Two_point_Topic "interface/Two_point"
 //one_Robot speed
 #define Robot_Topic_Speed "/motion/cmd_vel"
 //robot suffix
@@ -163,6 +166,7 @@ private:
     ros::Subscriber GameState;
     ros::Subscriber TeamColor;
     ros::Subscriber Vision;
+    ros::Subscriber Two_point_door;
 
     //BlackObject
     ros::Subscriber BlackObject;
@@ -171,6 +175,7 @@ private:
     //no robot_1_role_sub, because robot_1 is always goal keeper
     ros::Subscriber robot_2_role_sub;
     ros::Subscriber robot_3_role_sub;
+    ros::Subscriber SAVEPARAM;
 
     //robot speed publisher
     ros::Publisher robot_1_speed_pub;
@@ -358,11 +363,22 @@ private:
        global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
 
     }
+    void subTwoPoint(const vision::Two_point::ConstPtr &msg)
+    {
+//        int blue_side_goal_data[3];//blue_dis,blue_ang1,blue_ang2;
+//        int yellow_side_goal_data[3];//yellow_dis,yellow_ang1,yellow_ang2;
+        global_env->blue_side_goal_data[0]=msg->blue_dis;
+        global_env->yellow_side_goal_data[0]=msg->yellow_dis;
+        global_env->blue_side_goal_data[1]=msg->blue_ang1;
+        global_env->blue_side_goal_data[2]=msg->blue_ang2;
+        global_env->yellow_side_goal_data[1]=msg->yellow_ang1;
+        global_env->yellow_side_goal_data[2]=msg->yellow_ang2;
+
+    }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
 
         int All_Line_distance[360];
         int angle[360];
-        //angle_cal
         int angle_apf=0;
         int reg_angle=0;
         int first_angle_count=0;
@@ -371,27 +387,29 @@ private:
 
         for(int i=0; i<360/Blackangle; i++){
             All_Line_distance[i] = msg -> data[i];
-            if(i==0){
-                angle_apf=0;
+            if(angle_apf<360){
+                angle_apf=Blackangle+angle_apf;
+                reg_angle=angle_apf;
             }else{
                 angle_apf=Blackangle+angle_apf;
+                reg_angle=angle_apf-360;
             }
+
             reg_angle=angle_apf;
-            if(reg_angle>(scan_parameter[6]+90)&&reg_angle<(scan_parameter[7]+90)){
-                reg_angle=(scan_parameter[9]+90)+first_angle_count*Blackangle;
-                first_angle_count++;
-            }
-            else if(reg_angle>(scan_parameter[8]+90)&&reg_angle<(scan_parameter[9]+90)){
-                reg_angle=(scan_parameter[9]+90)+second_angle_count*Blackangle;
-                second_angle_count++;
-            }
-            else if(reg_angle>(scan_parameter[10]-270)&&reg_angle<(scan_parameter[11]-270)){
-                reg_angle=(scan_parameter[11]-270)+thrid_angle_count*Blackangle;
-                thrid_angle_count++;
-            }
-            angle[i]=reg_angle;
-            angle_apf=reg_angle;
-            //printf("dis[%d]:%d\t%d\n",i,All_Line_dis[i],angle[i]);
+//            if(reg_angle>(scan_parameter[6]+90)&&reg_angle<(scan_parameter[7]+90)){
+//                reg_angle=(scan_parameter[9]+90)+first_angle_count*Blackangle;
+//                first_angle_count++;
+//            }
+//            else if(reg_angle>(scan_parameter[8]+90)&&reg_angle<(scan_parameter[9]+90)){
+//                reg_angle=(scan_parameter[9]+90)+second_angle_count*Blackangle;
+//                second_angle_count++;
+//            }
+//            else if(reg_angle>(scan_parameter[10]-270)&&reg_angle<(scan_parameter[11]-270)){
+//                reg_angle=(scan_parameter[11]-270)+thrid_angle_count*Blackangle;
+//                thrid_angle_count++;
+//            }
+              angle[i]=reg_angle;
+              //printf("dis[%d]:%d\t%d\n",i,All_Line_distance[i],angle[i]);
         }
 
         first_angle_count=0;
@@ -402,8 +420,8 @@ private:
         int count=0;
         int dis_avg=0;
         int apf_data[3];
-        int dis=50;
-        int k=0;
+        int dis=75;
+        int number_obstacle=0;
 
         for(int i=0; i<360/Blackangle; i++){
             if(abs(All_Line_distance[i]-All_Line_distance[i+1])<=10){
@@ -421,14 +439,14 @@ private:
                     count++;
                     apf_data[1]=angle[i];
                     apf_data[2]=(dis_avg+All_Line_distance[i])/count;
-                    if(apf_data[2]<=50){
+                    if(apf_data[2]<=dis){
                         angle_start.push_back(apf_data[0]);
                         angle_end.push_back(apf_data[1]);
                         apf_dis.push_back(apf_data[2]);
 
                         //printf("angle_start:%d\tangle:%d\tdis:%d\n",apf_data[0],apf_data[1],apf_data[2]);
                         //printf("angle_start:%d\tangle:%d\tdis:%d\n",angle_start[k],angle_end[k],apf_dis[k]);
-                        k++;
+                        number_obstacle++;
                     }
                     dis_avg=0;
                     count=0;
@@ -442,19 +460,8 @@ private:
             //k=0;
         }
         //printf("=========start\t%d=====\t\n",angle_end.size());
-        //if(angle_end.size()!=0){
-            //for(int i=0;i<=angle_end.size()-1;i++){
-              // printf("angle_start:%d\tangle:%d\tdis:%d\n",angle_start[i],angle_end[i],apf_dis[i]);
-            //}
-            //printf("====global=====\n\n");
-//            for(int i=0;i<=angle_end.size();i++){
-//                if((angle_end[i]-angle_start[i+1])<=(3*Blackangle)&&abs(apf_dis[i]-apf_dis[i+1])<=15){
-//                    angle_end[i]=angle_end[i+1];
-//                    angle_end.erase(angle_end.begin()+sizeof(int)*i+1);
-//                    apf_dis.erase(apf_dis.begin()+sizeof(int)*i+1);
-//                    angle_start.erase(angle_start.begin()+sizeof(int)*i+1);
-//                }
-//            }
+
+
             global_env->global_angle_end.clear();
             global_env->global_angle_start.clear();
             global_env->global_apf_dis.clear();
@@ -462,7 +469,7 @@ private:
             std::vector<int>().swap(global_env->global_angle_start);
             std::vector<int>().swap(global_env->global_apf_dis);
 
-            if(k==0){
+            if(number_obstacle==0){
                 global_env->global_angle_end.push_back(0);
                 global_env->global_angle_start.push_back(0);
                 global_env->global_apf_dis.push_back(0);
@@ -471,19 +478,33 @@ private:
                 global_env->global_angle_start.push_back(1);
                 global_env->global_apf_dis.push_back(1);
             }
-            int j=0;
-            for(int i=1;i<=k;i++){
+//            for(int j=0;j<number_obstacle;j++){
+//                printf("angle_start:%d\tangle_end:%d\tdis:%d\n",angle_start[j],angle_end[j],apf_dis[j]);
+//            }
+            //printf("====================\n");
+            for(int j=0;j<number_obstacle;j++){
+                //printf("angle_start:%d\tangle_end:%d\tdis:%d\n",angle_start[j],angle_end[j],apf_dis[j]);
 
-                //printf("angle_start:%d\tangle_end:%d\tdis:%d\n",angle_start[i],angle_end[i],apf_dis[i]);
-                global_env->global_angle_end.push_back(angle_end[j]);
-                global_env->global_angle_start.push_back(angle_start[j]);
-                global_env->global_apf_dis.push_back(apf_dis[j]);
-                j++;
-                //printf("angle_start:%d\tangle_end:%d\t dis:%d\n",global_env->global_angle_start[i],global_env->global_angle_end[i],global_env->global_apf_dis[i]);
+//                if(abs(angle_end[j]-angle_start[j+1])&&abs(apf_dis[j]-apf_dis[j+1])<=20){
+//                    int line1=(angle_end[j]-angle_start[j])/Blackangle;
+//                    int line2=(angle_end[j+1]-angle_start[j+1])/Blackangle;;
+//                    apf_dis[j]=apf_dis[j]*line1+apf_dis[j+2]*line2/(line1+line2);
+//                    angle_end[j]=angle_end[j+1];
+
+//                    global_env->global_angle_end.push_back(angle_end[j]);
+//                    global_env->global_angle_start.push_back(angle_start[j]);
+//                    global_env->global_apf_dis.push_back(apf_dis[j]);
+//                    j++;
+//                }else{
+                    global_env->global_angle_end.push_back(angle_end[j]);
+                    global_env->global_angle_start.push_back(angle_start[j]);
+                    global_env->global_apf_dis.push_back(apf_dis[j]);
+//                }
+
+
+               // printf("angle_start:%d\tangle_end:%d\t dis:%d\n",global_env->global_angle_start[j+1],global_env->global_angle_end[j+1],global_env->global_apf_dis[j+1]);
             }
-            j=0;
-        //}
-       // printf("============end_node\n\n");
+
         angle_end.clear();
         angle_start.clear();
         apf_dis.clear();
@@ -491,7 +512,7 @@ private:
         std::vector<int>().swap(angle_end);
         std::vector<int>().swap(angle_start);
         std::vector<int>().swap(apf_dis);
-        k=0;
+        number_obstacle=0;
 //     global_env->blackangle[0] = place*3;
 //     if(global_env->blackangle[0] > 180){
 //        global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
@@ -664,6 +685,9 @@ private:
 
 
     }
+     void getSaveParam(const std_msgs::Int32::ConstPtr &msg){
+         global_env->SaveParam = msg->data;
+     }
 };
 
 #endif /* NODE_HPP_ */

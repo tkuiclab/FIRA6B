@@ -112,10 +112,13 @@ typedef struct
     std::vector<int> global_angle_end;
     std::vector<int> global_angle_start;
     std::vector<int> global_apf_dis;
+
+    int blue_side_goal_data[3];//blue_dis,blue_ang1,blue_ang2;
+    int yellow_side_goal_data[3];//yellow_dis,yellow_ang1,yellow_ang2;
     //long whosBall;
     //void *userData;
     Goal yellow, blue;
-
+    int SaveParam;
 } Environment;
 //static Environment global_env;
 

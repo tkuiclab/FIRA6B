@@ -65,12 +65,14 @@ void InterfaceProc::Parameter_getting(const int x)
     search_middle   = Magn_Far_StartMsg;
     search_end      = Magn_Far_EndMsg;
 
-    dont_angle[0] = Dont_Search_Angle_1Msg;
-    dont_angle[1] = Dont_Search_Angle_2Msg;
-    dont_angle[2] = Dont_Search_Angle_3Msg;
-    dont_angle[3] = Angle_range_1Msg;
-    dont_angle[4] = Angle_range_2_3Msg;
-    dont_angle[5] = Angle_range_2_3Msg;
+    int Angle_Adjustment(int angle);
+
+    dont_angle[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
+    dont_angle[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
+    dont_angle[2] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
+    dont_angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
+    dont_angle[4] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
+    dont_angle[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
   ///////////////////////////////////////FPS設定////////////////////////////////////////////////
     nh.getParam("/FIRA/FPS",fpsMsg);
     get_campara();
@@ -104,10 +106,7 @@ void InterfaceProc::View(const vision::view msg)
 {
 
   viewcheck=msg.checkpoint;
-  if(viewcheck==64){
-	image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);
-  }
-  viewcheck=0;
+  
 }
 
 
@@ -128,10 +127,10 @@ InterfaceProc::InterfaceProc()
  
   image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
-  //image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
+  image_pub_threshold_ = it_.advertise("/camera/image_monitor", 1);//http://localhost:8080/stream?topic=/camera/image_monitor webfor /camera/image
 
   s1 = nh.subscribe("interface/bin_save",1000, &InterfaceProc::SaveButton_setting,this);
-  s1 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
+  s2 = nh.subscribe("vision/view",1000, &InterfaceProc::View,this);
   object_pub = nh.advertise<vision::Object>("/vision/object",1);
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point",1);
 
@@ -273,12 +272,15 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   //imshow(OPENCV_WINDOW, Main_frame);
 
 
- sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
-  image_pub_threshold_.publish(thresholdMsg);
+  //sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+  //image_pub_threshold_.publish(thresholdMsg);
 
    //cv::waitKey(3);
 
-
+if(viewcheck==64){
+   sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+   image_pub_threshold_.publish(thresholdMsg);
+   }
 
 
 }
@@ -815,8 +817,9 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_,int color){
        Two_point_msg.yellow_ang2 = yellow_angle_min;
        }
 
+       if(Blue_Item.dis_min &&Yellow_Item.dis_min){
        Two_point_pub.publish(Two_point_msg);
-
+       }
 
 
   }

@@ -21,7 +21,7 @@ extern "C"{
 /*******************************
   * Define 
   ******************************/
-#define DEBUG
+//#define DEBUG
 //#define DEBUG_CSSL
 //#define DEBUG_CSSLCALLBACK
 
