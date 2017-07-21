@@ -29,11 +29,9 @@ void FIRA_teamStrategy_class::teamStrategy(){
      switch(env.gameState){
         case GameState_Play:
             role_Play();
-//            printf("start=======================\n");
             break;
         case GameState_Halt:
             role_Halt();
-//            printf("stop=========================\n");
             break;
         case GameState_FreeKick:
             role_FreeKick();

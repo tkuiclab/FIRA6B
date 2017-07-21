@@ -45,9 +45,16 @@ public:
     void strategy_dst_head2ball(double destination_x,double destination_y);
 
 //    void strategy_dontboom();
+
+
+    void strategy_goalkeeper(int);
     void strategy_head2ball(int);
 
 //--------------strategy case-------------------
+//--------------------------------------------------
+    void strategy_Goalkeeper_init(int);
+    void strategy_Goalkeeper_blocking(int);
+    void strategy_Goalkeeper_catching(int);
     void strategy_Attack(int);
     void strategy_typeS_Attack(int);
     void strategy_Zone_Attack(int);
@@ -66,10 +73,7 @@ public:
     void strategy_KO5_Attack(int);
     void strategy_SideSpeedUp(int);
 //--------------------------------------------------
-    void strategy_Goalkeeper_init(int);
-    void strategy_Goalkeeper_waiting(int);
-    void strategy_Goalkeeper_blocking(int);
-    void strategy_Goalkeeper_catching(int);
+
 //--------------role case-------------------
     void role_Play();
     void role_Halt();

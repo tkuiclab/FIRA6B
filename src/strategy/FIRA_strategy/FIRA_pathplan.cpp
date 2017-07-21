@@ -95,9 +95,6 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
             case action_Goalkeeper_init:
                 strategy_Goalkeeper_init(robotIndex);
                 break;
-            case action_Goalkeeper_waiting:
-                strategy_Goalkeeper_waiting(robotIndex);
-                break;
             case action_Goalkeeper_blocking:
                 strategy_Goalkeeper_blocking(robotIndex);
                 break;
@@ -157,22 +154,12 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
 //                New path planning                  //
 //                                                   //
 //###################################################//
-
-
 void FIRA_pathplan_class::strategy_Goalkeeper_init(int r_number){
-
+    //do nothing
     env.home[r_number].v_x =0;
     env.home[r_number].v_y =0;
     env.home[r_number].v_yaw =0;
 }
-
-void FIRA_pathplan_class::strategy_Goalkeeper_waiting(int r_number){
-    //暫時先設定發呆
-    env.home[r_number].v_x = 0;
-    env.home[r_number].v_y = 0;
-    env.home[r_number].v_yaw =0;
-}
-
 
 void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
 
@@ -221,7 +208,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
         }
     }
 
-    if(opgoal_dis > 1.2){ //out of zoom pull back
+    if(opgoal_dis > 1){ //out of zoom pull back
 //        if(opgoal_dis <1.5){  //not good
 //            x = 2*(x - speed *sin(opgoal_angle*deg2rad));
 //            y = 2*(y + speed *cos(opgoal_angle*deg2rad));
@@ -245,13 +232,13 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     int yaw = ball_angle*2;
     if( fabs(opgoal_angle_reverse) > 40 ){
         yaw = opgoal_angle_reverse;
-        direction = direction + "angle_fix_middle";
+        direction = direction + "+ angle_fix_middle";
     }else if(opgoal_edge_angle2 < 30 && yaw > 0){
         yaw = -opgoal_edge_angle2;
-        direction = direction + "angle_fix_left";
+        direction = direction + "+ angle_fix_left";
     }else if(opgoal_edge_angle1 > -30 && yaw < 0){
         yaw = -opgoal_edge_angle1;
-        direction = direction + "angle_fix_right";
+        direction = direction + "+ angle_fix_right";
     }
 
     std::cout << "direction = " << direction << std::endl;
@@ -291,10 +278,10 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
     yaw = ball_angle *2;
     if(opgoal_edge_angle2 < 30 && yaw > 0){
         yaw = -opgoal_edge_angle2;
-        direction = direction + "angle_fix_left";
+        direction = direction + "+ angle_fix_left";
     }else if(opgoal_edge_angle1 > -30 && yaw < 0){
         yaw = -opgoal_edge_angle1;
-        direction = direction + "angle_fix_right";
+        direction = direction + "+ angle_fix_right";
     }
 
     Rotation2Dd rot( rotAngle * deg2rad);
@@ -305,10 +292,6 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
     env.home[r_number].v_yaw = yaw;
     std::cout << "direction = " << direction << std::endl;
 }
-
-
-
-
 
 void FIRA_pathplan_class::strategy_Chase(int r_number){
     double ball_dis = env.home[r_number].ball.distance;

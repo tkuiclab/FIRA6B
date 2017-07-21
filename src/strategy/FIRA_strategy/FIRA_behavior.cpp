@@ -35,9 +35,7 @@ void FIRA_behavior_class::StateInitAttack(int r_number){
         else
             state_attack = state_Attack;
 }
-
 void FIRA_behavior_class::StateChase(int r_number){
-
         double distance_br = env.home[r_number].ball.distance;
         double distance_dr = env.home[r_number].goal.distance;
         double angle_br = env.home[r_number].ball.angle;
@@ -103,7 +101,6 @@ void FIRA_behavior_class::StateChase(int r_number){
                 }
             }
 }
-
 void FIRA_behavior_class::StateAttack(int r_number){
     /// ========== Init Begin ==========
     double distance_br = env.home[r_number].ball.distance;
@@ -167,7 +164,6 @@ void FIRA_behavior_class::StateType_UChase(int r_number){
 void FIRA_behavior_class::StateType_SAttack(int r_number){
 //
 }
-
 void FIRA_behavior_class::StateSideSpeedUp(int r_number){
     /// ========== Init Begin ==========
     double distance_br = env.home[r_number].ball.distance;
@@ -213,7 +209,7 @@ void FIRA_behavior_class::StateSideSpeedUp(int r_number){
             start.sec = current.sec;
             start.nsec = current.nsec;
             state_attack = state_Chase;
-        }
+        }  
 }
 
 void FIRA_behavior_class::StateZoneAttack(int r_number){
@@ -283,25 +279,15 @@ void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
 
 }
 
-void FIRA_behavior_class::StateGoalKeeperWaiting(int r_number){
-
-//        double ball_distance = env.home[r_number].ball.distance;
-//        if( ball_distance < 3 ){
-//            state_GoalKeeper = state_GoalKeeper_blocking;
-//        }
-
-}
-
-
 void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
-//    printf("block\n");
-        double ball_dis = env.home[r_number].ball.distance;
-        double opgoal_dis = env.home[r_number].op_goal.distance;
-        if( ball_dis < 1.5 && opgoal_dis < 0.95){
-            state_GoalKeeper = state_GoalKeeper_catching;
-        }else if(ball_dis < 1 && opgoal_dis < 1.1){
-            state_GoalKeeper = state_GoalKeeper_catching;
-        }
+    printf("block\n");
+    double ball_dis = env.home[r_number].ball.distance;
+    double opgoal_dis = env.home[r_number].op_goal.distance;
+    if( ball_dis < 1.5 && opgoal_dis < 0.95){
+        state_GoalKeeper = state_GoalKeeper_catching;
+    }else if(ball_dis < 1 && opgoal_dis < 1.1){
+        state_GoalKeeper = state_GoalKeeper_catching;
+    }
 }
 
 void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
@@ -312,8 +298,6 @@ void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
         state_GoalKeeper = state_GoalKeeper_blocking;
     }
 }
-
-
 
 //###################################################//
 //                                                   //
@@ -374,12 +358,6 @@ void FIRA_behavior_class::behavior_Goalkeeper(int robotIndex){
             actionAry[robotIndex] = action_Goalkeeper_init;
             break;
 
-        case state_GoalKeeper_waiting:
-            StateGoalKeeperWaiting(robotIndex);
-            //ROS_INFO("GoalKeeper waiting\n");
-            actionAry[robotIndex] = action_Goalkeeper_waiting;
-            break;
-
         case state_GoalKeeper_blocking:
             StateGoalKeeperBlocking(robotIndex);
 //            ROS_INFO("GoalKeeper blocking\n");
@@ -392,7 +370,6 @@ void FIRA_behavior_class::behavior_Goalkeeper(int robotIndex){
             actionAry[robotIndex] = action_Goalkeeper_catching;
         break;
     }
-
 }
 
 void FIRA_behavior_class::behavior_Attack(int robotIndex){

@@ -91,7 +91,6 @@ private:
   int dis_gap;
   int white_gray,white_angle;
 
-    std::vector<int>whiteline_pixel;
 public:
   InterfaceProc();
   ~InterfaceProc();

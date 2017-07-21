@@ -98,7 +98,7 @@ int main(int argc, char **argv)
         mNodeHandle.pubRole(roleAry);
         
         ros::spinOnce();
-//        loop_rate.sleep();
+        loop_rate.sleep();
     }
     
     ros::shutdown();

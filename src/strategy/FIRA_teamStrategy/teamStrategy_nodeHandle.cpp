@@ -34,7 +34,7 @@ void TeamStrategy_nodeHandle::ros_comms_init(){
     std::string robot_role_prefix = opponent ?  RobotOpt_Topic_Prefix : Robot_Topic_Prefix;
     std::string robot_role_suffix = Robot_Role_Topic_Suffix;
 
-    robot_1_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"1"+robot_role_suffix,1000);
+    robot_1_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"1"+robot_role_suffix,1000);        
     robot_2_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"2"+robot_role_suffix,1000);
     robot_3_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"3"+robot_role_suffix,1000);    
 }

@@ -1529,6 +1529,7 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__44234: 'http://iclab2-To-be-filled-by-O-E-M:44234/',
     host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
     host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
+    host_iclab__38990: 'http://iclab:38990/', host_iclab__46294: 'http://iclab:46294/',
     host_iclab_desktop__32798: 'http://iclab-desktop:32798/', host_iclab_desktop__32839: 'http://iclab-desktop:32839/',
     host_iclab_desktop__32879: 'http://iclab-desktop:32879/', host_iclab_desktop__32931: 'http://iclab-desktop:32931/',
     host_iclab_desktop__33020: 'http://iclab-desktop:33020/', host_iclab_desktop__33100: 'http://iclab-desktop:33100/',

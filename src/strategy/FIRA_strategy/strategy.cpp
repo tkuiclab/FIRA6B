@@ -149,6 +149,7 @@ int main(int argc, char **argv)
            mpathplan.shoot_init();
         }
         roleAry = mNodeHandle.getRoleAry();
+
         //============Strategy============//
         mbehavior.setEnv(*global_env);
         mbehavior.setTeam(Team_color);
@@ -189,11 +190,10 @@ int main(int argc, char **argv)
 
         
 
+
         if(actionAry[global_env->RobotNumber] == 0){
-//            printf("-__________________________-\n");
         }else{
             mNodeHandle.pubGrpSpeed();
-//            printf("Buggggggggggggggggggggg\n");
         }
 
         ros::spinOnce();

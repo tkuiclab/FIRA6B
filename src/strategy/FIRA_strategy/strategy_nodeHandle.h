@@ -65,7 +65,6 @@
 
 #define VectorMax 1.42
 #define VectorMin 0.05
-
 /*****************************************************************************
 ** Class
 *****************************************************************************/
@@ -166,8 +165,6 @@ private:
 
     //BlackObject
     ros::Subscriber BlackObject;
-
-
 
     //robot role publisher
     //no robot_1_role_sub, because robot_1 is always goal keeper
@@ -324,7 +321,7 @@ private:
         global_env->opponent[2].rotation = yaw;
     }
 
-    void robot_1_role_fun(const std_msgs::Int32::ConstPtr &msg){
+    void  robot_1_role_fun(const std_msgs::Int32::ConstPtr &msg){
         roleAry[0] = msg->data;
     }
 
@@ -344,6 +341,7 @@ private:
 
     void subVision(const vision::Object::ConstPtr &msg){
         double ball_distance,yellow_distance,blue_distance;
+	//std::cout << "ball_dis_msg = " << msg->ball_dis << std::endl;
         yellow_distance = msg->yellow_dis;
         blue_distance = msg->blue_dis;
         if(global_env->teamcolor == "Blue"){
@@ -364,16 +362,13 @@ private:
        global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
     }
 
-
 /*****/    //for goalkeeper on 5th robot with ros  //front = 45
     void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
-//        printf("sub Two_point\n");
         if(global_env->teamcolor == "Blue"){
             int ang1 = msg->blue_ang1;
             int ang2 = msg->blue_ang2;
             ang1 = two_point_angle_fix(ang1);
             ang2 = two_point_angle_fix(ang2);
-//                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
             //angle cannot scan fix
             double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
             if(opgoal_dis < 0.51){
@@ -385,17 +380,13 @@ private:
             }
             ang1 = angle_fix(ang1);
             ang2 = angle_fix(ang2);
-//            double opgoal_edge_dis = msg->blue_dis;
-//            global_env->home[global_env->RobotNumber].opgoal_edge.distance = opgoal_edge_dis/100;
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
         }else if(global_env->teamcolor == "Yellow"){
-//            printf("sub Two_point yellow\n");
             int ang1 = msg->yellow_ang1;
             int ang2 = msg->yellow_ang2;
             ang1 = two_point_angle_fix(ang1);
             ang2 = two_point_angle_fix(ang2);
-//                printf("ang1_R =%f\tang2_L = %f\t opdis = %f\n",ang1,ang2,opgoal_dis);
             //angle cannot scan fix
             double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
             if(opgoal_dis < 0.51){
@@ -407,11 +398,8 @@ private:
             }
             ang1 = angle_fix(ang1);
             ang2 = angle_fix(ang2);
-//            double opgoal_edge_dis = msg->yellow_dis;
-//            global_env->home[global_env->RobotNumber].opgoal_edge.distance = opgoal_edge_dis/100;
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
-//            printf("opgoal_edge_dis = %f\n",global_env->home[global_env->RobotNumber].opgoal_edge.distance);
         }
     }
 
@@ -433,7 +421,6 @@ private:
         return angle;
     }
 /*****/
-
 
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
         static int counter=0;
@@ -458,173 +445,6 @@ private:
      if(global_env->blackangle[0] > 180){
         global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
      }
-//ROS_INFO("blackangle[0]=%d,mindis[0]=%d\n",global_env->blackangle[0],global_env->mindis[0]);
-        /*}else counter++;*/
-   //        std_msgs::Int32MultiArray blackdis;
-   //        int blackpop=0;
-   //        for(int i=0; i<360/Blackangle; i++){
-   //            blackdis.data.push_back(msg->data[i]);
-   //        }
-   //        for(int i = 0; i < 360/Blackangle; i++){
-   //            blackpop = blackdis.data.back();
-   //            blackdis.data.pop_back();
-   //            printf("%d=%d\n",i,blackpop);
-   //        }
-   //===================================================================
-//           int All_Line_distance[360];
-//           int All_Line_angle[360];
-//           int place;
-//           int middle;
-//           int middle_place;
-//           int count=1;
-//           int lastCount = 0;
-//           for(int i=0; i<360/Blackangle; i++){
-//               All_Line_distance[i] = msg -> data[i];
-////               ROS_INFO("%d=%d\n",i, All_Line_distance[i] );
-//           }
-//           global_env->mindis = All_Line_distance[0];
-
-//          for(int i=1 ; i<360/Blackangle ; i++){
-//               if(All_Line_distance[i] < global_env->mindis){
-//                    lastCount = 0;
-//                    count = 1;
-//                    global_env->mindis = All_Line_distance[i];
-////                    ROS_INFO("count=%d\n",count);
-//               }else if(All_Line_distance[i] == All_Line_distance[i-1]){
-//                    count++;
-//                    if(count > lastCount){
-//                        lastCount = count;
-//                        place = i;
-//                    }
-////                    ROS_INFO("count=%d\n",count);
-//               }else{
-//                   if(count > lastCount){
-//                       lastCount = count;
-//                       place = i;
-//                   }
-//               }
-//               count = 1;
-//          }
-
-//          middle = lastCount/2;
-//          middle_place = place - middle;
-
-//          for(int i=0 ; i<360/Blackangle ; i++){
-//             All_Line_angle[i] = i*Blackangle;
-//          }
-//          if(All_Line_angle[middle_place] <= 180){
-//               global_env->blackangle = All_Line_angle[middle_place];
-//          }else if(All_Line_angle[middle_place] > 180){
-//               global_env->blackangle = - (360 - All_Line_angle[middle_place]);
-//          }
-
-////       ROS_INFO("min=%d\t",global_env->mindis);
-////       ROS_INFO("%d\t",place);
-////       ROS_INFO("middle_place=%d\t",middle_place);
-////       ROS_INFO("lastCount=%d\n",lastCount);
-////       ROS_INFO("%d",global_env->blackangle);
-//===============================================================================================================
-/*        int j=0,k=0;
-        bool boolha=0;
-        int meanvalue=0;
-        int All_Line_distance[360];
-        int All_Line_angle[360];
-        int temp = 0;
-        for(int i=0;i<20;i++){
-            Save[i].counter=1;
-        }
-        for(int i=0; i<360/Blackangle; i++){
-           All_Line_distance[i] = msg -> data[i];
-//           ROS_INFO("%d=%d\n",i, All_Line_distance[i] );
-             }
-        for(int i=0;i<(360/Blackangle)-1;i++){
-            if(All_Line_distance[i]<200){
-                if(Save[j].counter==1){
-                    Save[j].distance=All_Line_distance[i];
-                    Save[j].location=i;
-                }
-                //fabs(All_Line_distance[i]-All_Line_distance[i+1])
-                meanvalue += All_Line_distance[i]-All_Line_distance[i+1];
-                if(abs(meanvalue)<=3){
-                    Save[j].counter++;
-                    boolha=1;
-                }else if(boolha == 1){
-                    j++;
-                    meanvalue=0;
-                    boolha=0;
-                }else if(fabs(All_Line_distance[i]-All_Line_distance[i+1]) > 3){
-                    meanvalue=0;
-                }
-            }
-        }
-
-
-              for(int i=0;i<j;i++){
-                  if(Save[i].counter >= 3){
-                      New_Save[k].location = Save[i].location;
-                      New_Save[k].distance = Save[i].distance;
-                      New_Save[k].counter = Save[i].counter;
-                      k++;
-                  }
-              }
-              for(int i=0; i<k ; i++){
-                  for(int j=i; j<k; j++){
-                      if(New_Save[j].distance < New_Save[i].distance){
-                          temp = New_Save[j].distance;
-                          New_Save[j].distance = New_Save[i].distance;
-                          New_Save[i].distance = temp;
-
-                          temp = New_Save[j].location;
-                          New_Save[j].location = New_Save[i].location;
-                          New_Save[i].location = temp;
-
-                          temp = New_Save[j].counter;
-                          New_Save[j].counter = New_Save[i].counter;
-                          New_Save[i].counter = temp;
-                      }
-                   }
-              }
-              for(int i=0; i<k-1; i++){
-                if(New_Save[i].distance == New_Save[i+1].distance){
-                  if(New_Save[i].counter < New_Save[i+1].counter){
-                     temp = New_Save[i].location;
-                     New_Save[i].location= New_Save[i+1].location;
-                     New_Save[i+1].location = temp;
-
-                     temp = New_Save[i].counter;
-                     New_Save[i].counter= New_Save[i+1].counter;
-                     New_Save[i+1].counter = temp;
-                  }
-                }
-              }
-              for(int i=0; i<k; i++){
-                   global_env->mindis[i] = New_Save[i].distance;
-                   New_Save[i].middle = New_Save[i].counter/2;
-                   New_Save[i].middle_place = New_Save[i].location + New_Save[i].middle ;
-              }
-              for(int i=0 ; i<360/Blackangle ; i++){
-                  All_Line_angle[i] = i*Blackangle;
-              }
-              for(int i=0; i<k; i++){
-                  if(All_Line_angle[New_Save[i].middle_place] <= 180){
-                       global_env->blackangle[i] = All_Line_angle[New_Save[i].middle_place];
-                  }else if(All_Line_angle[New_Save[i].middle_place] > 180){
-                       global_env->blackangle[i] = - (360 - All_Line_angle[New_Save[i].middle_place]);
-                  }
-              }*/
-//======================================================================================================================//
-
-//              for(int i=0;i<j;i++){
-//                  ROS_INFO("min[%d]=%d\t loaction[%d]=%d\t counter[%d]=%d\n",i,Save[i].distance,i,Save[i].location,i,Save[i].counter);
-//              }
-//              for(int i=0;i<k;i++){
-//                  ROS_INFO("New.distance[%d]=%d\t New.location[%d]=%d\t New_Save[%d].counter=%d\n",i,New_Save[i].distance,i,New_Save[i].location,i,New_Save[i].counter);
-//                   ROS_INFO("global_env->mindis[%d]=%d\t global_env->blackangle[%d]=%d\n \n",i,global_env->mindis[i],i,global_env->blackangle[i]);
-//              }
-    
-
-
-
 
 
     }

@@ -43,18 +43,19 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_SideSpeedUp      8
 #define action_CornerKick       9
 #define action_Zone_Attack     10
-
-#define action_Goalkeeper_init 11
-#define action_Goalkeeper_waiting 12
-#define action_Goalkeeper_blocking 13
-#define action_Goalkeeper_catching 14
-
-
-
-
+#define action_1               11
+#define action_2               12
+#define action_3               13
+#define action_4               14
+#define action_5               15
+#define action_6               16
 #define action_Dorsad_Attack   17
 #define action_Shoot_Attack    18
 #define action_Straight_Chase  19
+
+#define action_Goalkeeper_init 20
+#define action_Goalkeeper_blocking 21
+#define action_Goalkeeper_catching 22
 
 #define state_Init              0
 #define state_Chase             1
@@ -65,13 +66,9 @@ const long PLAYERS_PER_SIDE = 3;
 #define state_ZoneAttack        6
 #define state_CornerKick        7
 
-#define state_GoalKeeper_init 0
-#define state_GoalKeeper_waiting 1
-#define state_GoalKeeper_blocking 2
-#define state_GoalKeeper_catching 3
-
-
-
+#define state_GoalKeeper_init 8
+#define state_GoalKeeper_blocking 9
+#define state_GoalKeeper_catching 10
 
 #define Team_Blue 1
 #define Team_Yellow 2
@@ -109,7 +106,6 @@ typedef struct{
 typedef struct{
     Vector3D pos;
 }Goal;
-
 
 typedef struct
 {

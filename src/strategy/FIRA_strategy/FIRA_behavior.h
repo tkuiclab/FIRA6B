@@ -53,7 +53,6 @@ private:
     bool decide_actionAttack;
 
     void StateGoalKeeperInit(int);
-    void StateGoalKeeperWaiting(int);
     void StateGoalKeeperBlocking(int);
     void StateGoalKeeperCatching(int);
 
