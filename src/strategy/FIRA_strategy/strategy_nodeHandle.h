@@ -368,16 +368,22 @@ private:
         Unscan[2].begin = Scan[2] - (Scan[4]-1);
         Unscan[2].end   = Scan[2] + (Scan[4]-1);
         for(int i=0;i<360/Blackangle;i++){
-            if((i*Blackangle >= Unscan[0].begin && i*Blackangle <= Unscan[0].end )||\
-            (i*Blackangle >= Unscan[1].begin && i*Blackangle >= Unscan[1].end) ||\
-            (i*Blackangle >= Unscan[2].begin && i*Blackangle >= Unscan[2].end))
-                All_Line_distance[i] = -1;
-            else
+//            if((i*Blackangle >= Unscan[0].begin && i*Blackangle <= Unscan[0].end )||\
+//            (i*Blackangle >= Unscan[1].begin && i*Blackangle >= Unscan[1].end) ||\
+//            (i*Blackangle >= Unscan[2].begin && i*Blackangle >= Unscan[2].end))
+//                All_Line_distance[i] = -1;
+//            else{
+//            printf("0.begin=%d\t0.end=%d\n",Unscan[0].begin,Unscan[0].end);
+//            printf("1.begin=%d\t1.end=%d\n",Unscan[1].begin,Unscan[1].end);
+//            printf("2.begin=%d\t2.end=%d\n",Unscan[2].begin,Unscan[2].end);
+//              printf("All_Line_distance[%d]=%d\n",All_Line_distance[i],i);
                 All_Line_distance[i] = msg -> data[i];
+//        }
         }
 
         global_env->mindis[0] = All_Line_distance[0];
         for(int i=1;i<360/Blackangle;i++){
+//            printf("%d\t%d\n",i,All_Line_distance[i]);
             if(All_Line_distance[i] < global_env->mindis[0]){
                 if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
                     global_env->mindis[0] = All_Line_distance[i];
@@ -389,6 +395,7 @@ private:
         if(global_env->blackangle[0] > 180){
             global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
         }
+//        printf("global_env->mindis[0]=%d\nangle=%d\n",global_env->mindis[0],place);
         // for(int i=0; i<360/Blackangle; i++){
         //     All_Line_distance[i] = msg -> data[i];
         // }
