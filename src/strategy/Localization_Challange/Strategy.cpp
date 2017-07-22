@@ -46,6 +46,10 @@ void Strategy::StrategyLocalization(){
     double slow_factor =1;
     static int IMU_state = 0;
     static int last_state = 0;
+    double compensation_distance = 0.1;
+    double compensation_angle = ((int)imu+90+180)%360;
+    double compensation_x = compensation_distance*cos(compensation_angle*DEG2RAD);
+    double compensation_y = compensation_distance*sin(compensation_angle*DEG2RAD);
     if(flag)
         Begin_time = Current_time;
     if(Current_time-Begin_time < accelerate)
@@ -65,8 +69,8 @@ void Strategy::StrategyLocalization(){
     switch(_LocationState){
         case forward:                                // Move to target poitn
             flag = FALSE;
-            v_x = _Location->LocationPoint[_CurrentTarget].x - Robot.pos.x;
-            v_y = _Location->LocationPoint[_CurrentTarget].y - Robot.pos.y;
+            v_x = (_Location->LocationPoint[_CurrentTarget].x+compensation_x) - Robot.pos.x;
+            v_y = (_Location->LocationPoint[_CurrentTarget].y+compensation_y) - Robot.pos.y;
             if(fabs(v_x)<=0.05 && fabs(v_y)<=0.05){
                 _LocationState = back;
                 flag = TRUE;
@@ -74,8 +78,8 @@ void Strategy::StrategyLocalization(){
             break;
         case back:                                   // Back to middle circle
             flag = FALSE;
-            v_x = _Location->MiddlePoint[_CurrentTarget].x - Robot.pos.x;
-            v_y = _Location->MiddlePoint[_CurrentTarget].y - Robot.pos.y;
+            v_x = (_Location->MiddlePoint[_CurrentTarget].x+compensation_x) - Robot.pos.x;
+            v_y = (_Location->MiddlePoint[_CurrentTarget].y+compensation_y) - Robot.pos.y;
             if(fabs(v_x)<=0.05 && fabs(v_y)<=0.05){
                 if(_CurrentTarget==4)
                     _LocationState = finish;
@@ -155,14 +159,32 @@ void Strategy::showInfo(){
     printf("***********************************************\n");
     printf("*                  START                      *\n");
     printf("***********************************************\n");
-    printf("Target : POINT%d\t",_CurrentTarget);
     switch(_LocationState){
-    case forward:printf("State : Forward\n");break;
-    case back:printf("State : Back\n");break;
+    case forward:
+        printf("Target : Point %d\t",_CurrentTarget);
+        printf("State : Forward\n");break;
+    case back:
+        printf("Target : Point %d\t",_CurrentTarget);
+        printf("State : Back\n");break;
     case finish:printf("State : Fisish\n");break;
-    case chase:printf("State : Chase\n");break;
+    case chase:
+        printf("Target : Ball\t");
+        printf("State : Chase\n");break;
     case error:printf("State : Error\n");break;
     }
+    if(_LocationState == forward)
+        std::cout << "Target position : (" << _Location->LocationPoint[_CurrentTarget].x\
+        << "," << _Location->LocationPoint[_CurrentTarget].y << ")\n";
+    else if(_LocationState == back)
+        std::cout << "Target position : (" << _Location->MiddlePoint[_CurrentTarget].x\
+        << "," << _Location->MiddlePoint[_CurrentTarget].y << ")\n";
+    else if (_LocationState == chase)
+        std::cout << "Target position : (" << _Env->Robot.pos.x + \
+        _Env->Robot.ball.distance*cos((_Env->Robot.pos.angle+_Env->Robot.ball.angle+90)*DEG2RAD)\
+        << "," << _Env->Robot.pos.y + \
+        _Env->Robot.ball.distance*sin((_Env->Robot.pos.angle+_Env->Robot.ball.angle+90)*DEG2RAD)\
+        << ")" << std::endl;
+    std::cout << "Robot position : (" << _Env->Robot.pos.x << "," << _Env->Robot.pos.y << ")\n";
     std::string haha = Sv_x+Sv_y+Sv_yaw;
     std::cout << "Direction : " << Sv_x+Sv_y+Sv_yaw << std::endl;
     std::cout << "Speed : (" << std::fixed << std::setprecision(2)\
