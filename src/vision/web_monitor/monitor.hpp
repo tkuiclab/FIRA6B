@@ -42,6 +42,12 @@ class object_Item{
   int angle;
   double distance;
   int size;
+  int left_dis;
+  int right_dis;
+  int left_x;
+  int left_y;
+  int right_x;
+  int right_y;
   string LR;
 };
 

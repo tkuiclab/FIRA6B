@@ -382,6 +382,9 @@ private:
             ang2 = angle_fix(ang2);
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
+            double opgoal_left = msg->blue_left,opgoal_right = msg->blue_right;
+            global_env->home[global_env->RobotNumber].opgoal_edge.left_dis = opgoal_left/100;
+            global_env->home[global_env->RobotNumber].opgoal_edge.right_dis = opgoal_right/100;
         }else if(global_env->teamcolor == "Yellow"){
             int ang1 = msg->yellow_ang1;
             int ang2 = msg->yellow_ang2;
@@ -400,11 +403,14 @@ private:
             ang2 = angle_fix(ang2);
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
+            double opgoal_left = msg->yellow_left,opgoal_right = msg->yellow_right;
+            global_env->home[global_env->RobotNumber].opgoal_edge.left_dis = opgoal_left/100;
+            global_env->home[global_env->RobotNumber].opgoal_edge.right_dis = opgoal_right/100;
         }
     }
 
     int two_point_angle_fix(int angle){
-        int front = 50;
+        int front = 46;
         if(angle <= 225){
             angle = angle - front;
         }else{
@@ -416,7 +422,7 @@ private:
         if(angle > 180){
             angle = angle -360;
         }else if(angle < -180){
-            angle = angle =360;
+            angle = angle +360;
         }
         return angle;
     }

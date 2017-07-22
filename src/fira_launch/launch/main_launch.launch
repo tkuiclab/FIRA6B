@@ -13,5 +13,5 @@
  <node name="strategy_param_server" pkg="param_convey" type="strategy_param_server"/>
  <node name="interface_node" pkg="vision" type="interface_node" respawn="true"/>
  <node name="white_and_black" pkg="vision" type="white_and_black" respawn="true"/>
- <node name="monitor" pkg="vision" type="monitor" respawn="true" respawn_delay="5" />
+ <!--node name="monitor" pkg="vision" type="monitor" respawn="true" respawn_delay="5" /-->
 </launch>

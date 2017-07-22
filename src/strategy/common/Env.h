@@ -85,7 +85,7 @@ typedef struct{
 
 typedef struct{
     int angle_1,angle_2;
-    double distance;
+    double distance,left_dis,right_dis;
 }Two_point;
 
 typedef struct{
