@@ -276,7 +276,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   //image_pub_threshold_.publish(thresholdMsg);
 
   //cv::waitKey(3);
-    sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
+  sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
   if (viewcheck == 64) {
     image_pub_threshold_.publish(thresholdMsg);
   }
@@ -662,6 +662,10 @@ void InterfaceProc::find_around(Mat &frame_, int distance , int angle, int &size
 void InterfaceProc::find_object_point(object_Item &obj_, int color) {
   int x, y;
   int x_, y_;
+  int left_x, left_y;
+  int right_x, right_y;
+  int left_distance = 0;
+  int right_distance = 0;
 
   int angle_, distance_;
   int angle_range;
@@ -675,7 +679,11 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     for (int angle = 0 ; angle <= angle_range ; angle++) {
       for (int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++) {
         find_angle = Angle_Adjustment(angle_ + angle);
-
+      if (find_angle >= dont_angle[0] && find_angle <= dont_angle[1] ||
+          find_angle >= dont_angle[2] && find_angle <= dont_angle[3] ||
+          find_angle >= dont_angle[4] && find_angle <= dont_angle[5]) {
+        continue;
+      }
         x_ = distance * Angle_cos[find_angle];
         y_ = distance * Angle_sin[find_angle];
 
@@ -777,6 +785,61 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     obj_.LR = "Right";
     obj_.angle = Angle_Adjustment(angle_ - center_front) - 360;
   }
+//找球門邊界點
+  vision::Two_point Two_point_msg;
+
+  if (color == BLUEITEM || color == YELLOWITEM) {
+
+    //obj_.ang_max=right;obj_.ang_min=left
+    //left
+    for (int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++) {
+      x_ = distance * Angle_cos[obj_.ang_min];
+      y_ = distance * Angle_sin[obj_.ang_min];
+
+      x = Frame_Area(center_x + x_, Main_frame.cols);
+      y = Frame_Area(center_y - y_, Main_frame.rows);
+
+      B = Main_frame.data[(y * Main_frame.cols + x) * 3 + 0];
+      G = Main_frame.data[(y * Main_frame.cols + x) * 3 + 1];
+      R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
+
+      if (color_map[R + (G << 8) + (B << 16)] & color) {
+        left_x = x;
+        left_y = y;
+        left_distance = Omni_distance(pow(x, 2) + pow(y, 2));
+        break;
+      }
+    }
+
+    //right
+    for (int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++) {
+
+      x_ = distance * Angle_cos[obj_.ang_max];
+      y_ = distance * Angle_sin[obj_.ang_max];
+
+      x = Frame_Area(center_x + x_, Main_frame.cols);
+      y = Frame_Area(center_y - y_, Main_frame.rows);
+
+      B = Main_frame.data[(y * Main_frame.cols + x) * 3 + 0];
+      G = Main_frame.data[(y * Main_frame.cols + x) * 3 + 1];
+      R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
+
+      if (color_map[R + (G << 8) + (B << 16)] & color) {
+        right_x = x;
+        right_y = y;
+        right_distance = Omni_distance(pow(x, 2) + pow(y, 2));
+        break;
+      }
+    }
+  }
+  if (color == BLUEITEM) {
+    Two_point_msg.blue_left = left_distance;
+    Two_point_msg.blue_right = right_distance;
+  }
+  if (color == YELLOWITEM) {
+    Two_point_msg.yellow_left = left_distance;
+    Two_point_msg.yellow_right = right_distance;
+  }
 }
 void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
   ellipse(frame_, Point(center_x, center_y), Size(obj_.dis_min, obj_.dis_min), 0, 360 - obj_.ang_max, 360 - obj_.ang_min, Scalar(255, 255, 0), 1);
@@ -797,6 +860,18 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
   if (color = BLUEITEM) {
     blue_angle_max = Angle_Adjustment(Blue_Item.ang_max);
     blue_angle_min = Angle_Adjustment(Blue_Item.ang_min);
+
+    x_1 = Blue_Item.dis_min * Angle_cos[blue_angle_max];
+    y_1 = Blue_Item.dis_min * Angle_sin[blue_angle_max];
+
+    x_2 = Blue_Item.dis_min * Angle_cos[blue_angle_min];
+    y_2 = Blue_Item.dis_min * Angle_sin[blue_angle_min];
+
+    x[0] = Frame_Area(center_x + x_1, frame_.cols);
+    y[0] = Frame_Area(center_y - y_1, frame_.rows);
+
+    x[1] = Frame_Area(center_x + x_2, frame_.cols);
+    y[1] = Frame_Area(center_y - y_2, frame_.rows);
 
     Two_point_msg.blue_dis = Blue_Item.dis_min;
     Two_point_msg.blue_ang1 = blue_angle_max;
@@ -911,7 +986,7 @@ void InterfaceProc::Draw_cross(cv::Mat &frame_, char color) {
     Y_Y_out << Yellow_Item.y;
     Y_X = Y_X_out.str();
     Y_Y = Y_Y_out.str();
-    cv::putText(frame_, "Y(" + Y_X + "," ")", Point(Yellow_Item.x, Yellow_Item.y), 0, 0.5, Scalar(0, 255, 255), 1);
+    cv::putText(frame_, "Y(" + Y_X + ","+Y_Y+ ")", Point(Yellow_Item.x, Yellow_Item.y), 0, 0.5, Scalar(0, 255, 255), 1);
     break;
   }
 }

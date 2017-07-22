@@ -16,7 +16,6 @@ function ParameterCameraValue() {
     var value = parseInt(document.getElementsByName('CameraElement')[0].value);
     console.log(value);
     ParameterCamera.set(value);
-    console.log(value);
 }
 //ParameterCenter_X
 var ParameterCenter_X = new ROSLIB.Param({
