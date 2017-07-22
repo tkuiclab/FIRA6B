@@ -183,6 +183,7 @@ private:
     /// load param begin
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
+    std::vector<int> Scan;
     int IsSimulator;
     /// load param end
 
@@ -355,28 +356,47 @@ private:
 
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
+        printf("%d\t%d\t%d\t%d\t%d\n",Scan[0],Scan[1],Scan[2],Scan[3],Scan[4]);
         static int counter=0;
         int All_Line_distance[360];
         int angle[360];
         int place;
-
-        for(int i=0; i<360/Blackangle-23; i++){
-            All_Line_distance[i] = msg -> data[i];
+        Range Unscan[3];
+        UnScan[0].begin = Scan[0] - (Scan[3]-1);
+        UnScan[0].end   = Scan[0] + (Scan[3]-1);
+        UnScan[1].begin = Scan[1] - (Scan[4]-1);
+        UnScan[1].end   = Scan[1] + (Scan[4]-1);
+        UnScan[2].begin = Scan[2] - (Scan[4]-1);
+        UnScan[2].end   = Scan[2] + (Scan[4]-1);
+        for(int i=0;i<360/Blackangle;i++){
+            if((i*Blackangle >= UnScan[0].begin && i*Blackangle <= UnScan[0].end )||\
+            (i*Blackangle >= UnScan[1].begin && i*Blackangle >= UnScan[1].end) ||\
+            (i*Blackangle >= UnScan[2].begin && i*Blackangle >= UnScan[2].end) ||)
+                All_Line_distance[i] = -1;
+            else
+                All_Line_distance[i] = msg -> data[i];
         }
-        global_env->mindis[0] = All_Line_distance[0];
-        for(int i=1; i<360/Blackangle-23; i++){
-            if(All_Line_distance[i] < global_env->mindis[0]){
-				if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
-					global_env->mindis[0] = All_Line_distance[i];
-					place = i;
-				}
-			}
-        }
+        
 
-     global_env->blackangle[0] = place*3;
-     if(global_env->blackangle[0] > 180){
-        global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
-     }
+        // for(int i=0; i<360/Blackangle; i++){
+        //     All_Line_distance[i] = msg -> data[i];
+        // }
+        // global_env->mindis[0] = All_Line_distance[0];
+        // for(int i=1; i<360/Blackangle-23; i++){
+        //     if(All_Line_distance[i] < global_env->mindis[0]){
+		// 		if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
+		// 			global_env->mindis[0] = All_Line_distance[i];
+		// 			place = i;
+		// 		}
+		// 	}
+        // }
+
+        // global_env->blackangle[0] = place*Blackangle;
+        // if(global_env->blackangle[0] > 180){
+        //     global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
+        // }
+
+
 //ROS_INFO("blackangle[0]=%d,mindis[0]=%d\n",global_env->blackangle[0],global_env->mindis[0]);
         /*}else counter++;*/
    //        std_msgs::Int32MultiArray blackdis;
