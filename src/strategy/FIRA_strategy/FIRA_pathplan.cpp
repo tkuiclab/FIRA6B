@@ -162,7 +162,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_init(int r_number){
 }
 
 void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
-    char position;
+    int position;
     int direction;
     std::string angle_fix;
     double ball_dis = env.home[r_number].ball.distance;
@@ -192,42 +192,46 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     if(opgoal_right > opgoal_left){ //on left
         position = L;
         if(opgoal_dis > 1.2){
-            if((opgoal_right - opgoal_left) > 60){
+            if((opgoal_right - opgoal_left) > 0.55){
                 direction = max_R;
             }else{
                 direction = max_M;
             }
         }else if(ball_dis > 3.5 && opgoal_dis > 0.72 ){
-            if((opgoal_right - opgoal_left) > 60){
+            if((opgoal_right - opgoal_left) > 0.55){
                 direction = max_R;
             }else{
                 direction = max_M;
             }
-        }else if(ball_dis > opgoal_angle_reverse + 30){
+        }else if(ball_angle > opgoal_angle_reverse + 30){
             rotAngle = -rotAngle;
             direction = L;
-        }else if(ball_dis < opgoal_angle_reverse + 10){
+        }else if(ball_angle < opgoal_angle_reverse + 10){
             direction = R;
+        }else{
+            direction = stop;
         }
     }else{  //on right
-        position = 'R';
+        position = R;
         if(opgoal_dis > 1.2){
-            if((opgoal_left - opgoal_right) > 60){
+            if((opgoal_left - opgoal_right) > 0.55){
                 direction = max_L;
             }else{
                 direction = max_M;
             }
         }else if(ball_dis > 3.5 && opgoal_dis > 0.72 ){
-            if((opgoal_left - opgoal_right) > 60){
+            if((opgoal_left - opgoal_right) > 0.55){
                 direction = max_L;
             }else{
                 direction = max_M;
             }
-        }else if(ball_dis < opgoal_angle_reverse - 30){
+        }else if(ball_angle < opgoal_angle_reverse - 30){
             rotAngle = -rotAngle;
             direction = L;
-        }else if(ball_dis > opgoal_angle_reverse - 10){
+        }else if(ball_angle > opgoal_angle_reverse - 10){
             direction = R;
+        }else{
+            direction = stop;
         }
     }
 
@@ -314,6 +318,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_blocking(int r_number){
     env.home[r_number].v_x =vectornt(0);
     env.home[r_number].v_y =vectornt(1);
     env.home[r_number].v_yaw = yaw;
+    std::cout << "ang2" << opgoal_left << std::endl;
     std::cout << "block," << position << " -> " << direction << " " << angle_fix << std::endl;
 
 }
@@ -365,7 +370,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_catching(int r_number){
     env.home[r_number].v_x = vectornt(0);
     env.home[r_number].v_y = vectornt(1);
     env.home[r_number].v_yaw = yaw;
-//        std::cout << "push -> " << direction << std::endl;
+        std::cout << "push -> " << direction << std::endl;
 
 }
 

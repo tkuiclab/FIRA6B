@@ -7,6 +7,7 @@
 #define BallRadius 0.1055
 #define CarRadius 0.34
 
+#define stop 0
 #define L 1
 #define R 2
 #define max_L 3
