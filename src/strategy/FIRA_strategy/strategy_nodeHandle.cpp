@@ -9,6 +9,8 @@ Strategy_nodeHandle(int argc, char** argv):
     global_env = new Environment;
     global_env->SaveParam = 0;
     roleAry[0] = Role_Goalkeeper;
+    Blackangle = 1;
+    Scan.resize(5);
 }
 
 
@@ -258,7 +260,6 @@ void Strategy_nodeHandle::pubGrpSpeed(){
         }
     }else if(IsSimulator==false){
        pubSpeed(&robot_speed_pub,global_env->home[global_env->RobotNumber].v_x,global_env->home[global_env->RobotNumber].v_y,global_env->home[global_env->RobotNumber].v_yaw,global_env->home[global_env->RobotNumber].rotation);
-       
     }
 }
 //###################################################//
@@ -267,7 +268,7 @@ void Strategy_nodeHandle::pubGrpSpeed(){
 //                                                   //
 //###################################################//
 void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
-     if(n->getParam("/FIRA/blackItem/angle",Blackangle)){
+     if(n->getParam("/FIRA/HSV/black/angle",Blackangle)){
 //     std::cout << "param Blackangle=" << Blackangle <<std::endl;
     }
      if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){
@@ -287,5 +288,9 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
         // global_env->issimulator = IsSimulator;
 //         std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
+    n->getParam("/FIRA/SCAN/Dont_Search_Angle_1",Scan[0]);
+    n->getParam("/FIRA/SCAN/Dont_Search_Angle_2",Scan[1]);
+    n->getParam("/FIRA/SCAN/Dont_Search_Angle_3",Scan[2]);
+    n->getParam("/FIRA/SCAN/Angle_range_1",Scan[3]);
+    n->getParam("/FIRA/SCAN/Angle_range_2_3",Scan[4]);
 }
-

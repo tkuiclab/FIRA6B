@@ -768,6 +768,7 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     }
 
     if(distance_dr < distance2rush){
+//        printf("RUSH!!!!!\n");
        if(op_angle_rr > 0){
            if(angle_dr > 0){    // avoid facing the enemy
                angle_Speed = -angle_dr;  //rush to the door

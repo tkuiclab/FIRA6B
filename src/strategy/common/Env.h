@@ -120,7 +120,11 @@ typedef struct
 } Environment;
 //static Environment global_env;
 
-
+typedef struct
+{
+    int begin;
+    int end;
+}Range;
 
 
 
