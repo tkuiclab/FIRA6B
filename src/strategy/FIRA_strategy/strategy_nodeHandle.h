@@ -371,13 +371,13 @@ private:
             ang2 = two_point_angle_fix(ang2);
             //angle cannot scan fix
             double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
-            if(opgoal_dis < 0.51){
+
                 if(ang1 < 57){
-                    ang1 = ang2 + 170;
+                    ang1 = ang2 + 160;
                 }else if(ang2 > -56){
-                    ang2 = ang1 - 170;
+                    ang2 = ang1 - 160;
                 }
-            }
+
             ang1 = angle_fix(ang1);
             ang2 = angle_fix(ang2);
             global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;

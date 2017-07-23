@@ -42,6 +42,7 @@ class object_Item{
   int angle;
   double distance;
   int size;
+///////////////////
   int left_dis;
   int right_dis;
   int left_x;
@@ -193,7 +194,8 @@ public:
 ///////////////////////////////////////////////////////////
 ///////////////////////FPS/////////////////////////////////
   //int frame_counter=0;
-  int topic_counter=0;
+  //int topic_counter=0;
+
   // long int EndTime;
   double dt;
   double Exposure_mm;

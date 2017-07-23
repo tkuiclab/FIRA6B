@@ -10,9 +10,10 @@
 #define stop 0
 #define L 1
 #define R 2
-#define max_L 3
-#define max_R 4
-#define max_M 5
+#define M 3
+#define max_L 4
+#define max_R 5
+#define max_M 6
 
 class FIRA_pathplan_class
 {

@@ -255,6 +255,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   Erodemap.release();
   Dilatemap.release();
   object_pub.publish(object_msg);
+
   /*
     topic_counter++;
     if(topic_counter==10){
@@ -262,7 +263,6 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     topic_counter=0;
   }*/
   //imshow(OPENCV_WINDOW, Main_frame);
-
 
   //sensor_msgs::ImagePtr thresholdMsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", Main_frame).toImageMsg();
   //image_pub_threshold_.publish(thresholdMsg);
@@ -283,9 +283,16 @@ void InterfaceProc::object_Item_reset(object_Item &obj_) {
   obj_.x = 0;
   obj_.y = 0;
   obj_.angle = 0;
-  obj_.distance = 0;
+  obj_.distance = 999;
   obj_.size = 0;
   obj_.LR = "null";
+/////////////////////////
+  obj_.left_dis = 999;
+  obj_.right_dis = 999;
+  obj_.left_x = 0;
+  obj_.left_y = 0;
+  obj_.right_x = 0;
+  obj_.right_y = 0;
 }
 double InterfaceProc::camera_f(double Omni_pixel)
 {
@@ -650,30 +657,29 @@ void InterfaceProc::find_around(Mat &frame_, int distance , int angle, int &size
 void InterfaceProc::find_object_point(object_Item &obj_, int color) {
   int x=0, y=0;
   int x_, y_;
-  int left_x, left_y;
-  int right_x, right_y;
-  int left_distance = 999, right_distance = 999;
-  int temp = 999;
-
-  int angle_, distance_;
+  int angle_;
   int angle_range;
   int find_angle;
-
   unsigned char B, G, R;
-  int right_angle, left_angle;
-  bool back = false;
 
+  int temp = 999;
+  int right_angle, left_angle;
+
+//object center point
   if (color == REDITEM || color == BLUEITEM || color == YELLOWITEM) {
     angle_ = Angle_Adjustment((obj_.ang_max + obj_.ang_min) / 2);
     angle_range = 0.7 * Angle_Adjustment((obj_.ang_max - obj_.ang_min) / 2);
-    for (int angle = 0 ; angle <= angle_range ; angle++) {
+    for (int angle = 0 ; angle <20 ; angle++) {
       for (int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++) {
         find_angle = Angle_Adjustment(angle_ + angle);
-      if (find_angle >= dont_angle[0] && find_angle <= dont_angle[1] ||
-          find_angle >= dont_angle[2] && find_angle <= dont_angle[3] ||
-          find_angle >= dont_angle[4] && find_angle <= dont_angle[5]) {
-        continue;
-      }
+
+	      if (find_angle >= dont_angle[0] && find_angle <= dont_angle[1] ||
+		  find_angle >= dont_angle[2] && find_angle <= dont_angle[3] ||
+		  find_angle >= dont_angle[4] && find_angle <= dont_angle[5]) {
+                angle_++;
+		continue;
+	      }
+
         x_ = distance * Angle_cos[find_angle];
         y_ = distance * Angle_sin[find_angle];
 
@@ -687,7 +693,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         if (color_map[R + (G << 8) + (B << 16)] & color) {
           obj_.x = x;
           obj_.y = y;
-          obj_.distance = sqrt(pow(x_, 2) + pow(y_, 2));
+          obj_.distance = Omni_distance(distance);
           angle_ = find_angle;
           break;
         }
@@ -707,7 +713,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         if (color_map[R + (G << 8) + (B << 16)] & color) {
           obj_.x = x;
           obj_.y = y;
-          obj_.distance = sqrt(pow(x_, 2) + pow(y_, 2));
+          obj_.distance = Omni_distance(distance);
           angle_ = find_angle;
           break;
         }
@@ -768,6 +774,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     }
   }
 */
+////////////////////////////////////////
   if (Angle_Adjustment(angle_ - center_front) < 180) {
     obj_.LR = "Left";
     obj_.angle = Angle_Adjustment(angle_ - center_front);
@@ -778,34 +785,11 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 ////////////////////////////////////////
 //找球門邊界點
   if (color ==  BLUEITEM || color == YELLOWITEM) {
-    //back check
-    /*for (int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++) {
-      x_ = distance * Angle_cos[180];
-      y_ = distance * Angle_sin[180];
-
-      x = Frame_Area(center_x + x_, Main_frame.cols);
-      y = Frame_Area(center_y - y_, Main_frame.rows);
-
-      B = Main_frame.data[(y * Main_frame.cols + x) * 3 + 0];
-      G = Main_frame.data[(y * Main_frame.cols + x) * 3 + 1];
-      R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
-
-      if (color_map[R + (G << 8) + (B << 16)] & color) {
-        back = true;
-        break;
-      }
-    }*/
-
-    //if (!back) {
-      right_angle = obj_.ang_max;
-      left_angle = obj_.ang_min;
-    //} else {
-      //right_angle = obj_.ang_max;
-      //left_angle = obj_.ang_min;
-    //}
+    right_angle = obj_.ang_max;
+    left_angle = obj_.ang_min;
 
     //left
-    for (int angle = 0 ; angle <= 5 ; angle++) {
+    for (int angle = 0 ; angle < 2 ; angle++) {
       for (int distance = obj_.dis_min ; distance <= obj_.dis_max; distance++) {
         x_ = distance * Angle_cos[left_angle + angle];
         y_ = distance * Angle_sin[left_angle + angle];
@@ -819,12 +803,12 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 
         if (color_map[R + (G << 8) + (B << 16)] & color) {
           temp = Omni_distance(distance);
-          if (temp < left_distance) {
-            left_x = x_;
-            left_y = y_;
-            left_distance = temp;
-          }
-					break;
+          if(obj_.left_dis >= temp){
+            obj_.left_x = x_;
+            obj_.left_y = y_;
+            obj_.left_dis = Omni_distance(distance); 
+            if(Omni_distance(distance) == 999)break;
+          }     
         }
 
         x_ = distance * Angle_cos[left_angle - angle];
@@ -839,22 +823,18 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 
         if (color_map[R + (G << 8) + (B << 16)] & color) {
           temp = Omni_distance(distance);
-          if (temp < left_distance) {
-            left_x = x_;
-            left_y = y_;
-            left_distance = temp;
+          if(obj_.left_dis >= temp){
+            obj_.left_x = x_;
+            obj_.left_y = y_;
+            obj_.left_dis = Omni_distance(distance);
+            if(Omni_distance(distance) == 999)break; 
           }
-					break;
         }
       }
     }
-    //cout << "left(" << left_x << "," << left_y << "," << left_distance << ")" << endl;
-    //x = Frame_Area(center_x + left_x, Main_frame.cols);
-    //y = Frame_Area(center_y - left_y, Main_frame.rows);
-    //line(frame_, Point(x, y), Point(x, y), Scalar(255, 0, 0), 5);
 
     //right
-    for (int angle = 0 ; angle <= 5 ; angle++) {
+    for (int angle = 0 ; angle < 2; angle++) {
       for (int distance = obj_.dis_min ; distance <= obj_.dis_max; distance++) {
         x_ = distance * Angle_cos[right_angle + angle];
         y_ = distance * Angle_sin[right_angle + angle];
@@ -867,13 +847,13 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
 
         if (color_map[R + (G << 8) + (B << 16)] & color) {
-          temp = Omni_distance(sqrt(pow(x_, 2) + pow(y_, 2)));
-          if (temp < right_distance) {
-            right_x = x_;
-            right_y = y_;
-            right_distance = temp;
+	  temp = Omni_distance(distance);
+	  if(obj_.right_dis >= temp){
+            obj_.right_x = x_;
+            obj_.right_y = y_;
+            obj_.right_dis = temp;
+            if(Omni_distance(distance) == 999)break;
           }
-					break;
         }
 
         x_ = distance * Angle_cos[right_angle - angle];
@@ -887,40 +867,23 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
 
         if (color_map[R + (G << 8) + (B << 16)] & color) {
-          temp = Omni_distance(sqrt(pow(x_, 2) + pow(y_, 2)));
-          if (temp < right_distance) {
-            right_x = x_;
-            right_y = y_;
-            right_distance = temp;
+	  temp = Omni_distance(distance);
+	  if(obj_.right_dis >= temp){
+            obj_.right_x = x_;
+            obj_.right_y = y_;
+            obj_.right_dis = temp;
+            if(Omni_distance(distance) == 999)break;
           }
-					break;
         }
       }
     }
-    //cout << "right(" << right_x << "," << right_y << "," << right_distance << ")" << endl;
-    //x = Frame_Area(center_x + right_x, Main_frame.cols);
-    //y = Frame_Area(center_y - right_y, Main_frame.rows);
-    //line(frame_, Point(x, y), Point(x, y), Scalar(255, 0, 0), 5);
-    //line(frame_, Point(x, y), Point(x, y), Scalar(0, 0, 255), 5);
-	
-    if (color ==  BLUEITEM) {
-      Blue_Item.left_dis = left_distance;
-      Blue_Item.right_dis = right_distance;
-      Blue_Item.right_x = right_x;
-      Blue_Item.right_y = right_y;
-      Blue_Item.left_x = left_x;
-      Blue_Item.left_y = left_y;
-    }
-    if (color == YELLOWITEM) {
-      Yellow_Item.left_dis = left_distance;
-      Yellow_Item.right_dis = right_distance;
-      Yellow_Item.right_x = right_x;
-      Yellow_Item.right_y = right_y;
-      Yellow_Item.left_x = left_x;
-      Yellow_Item.left_y = left_y;
-    }
+/*
+if(color==YELLOWITEM){
+cout << "left(" << Yellow_Item.left_x << "," << Yellow_Item.left_y <<","<<Yellow_Item.left_dis<<")" << endl;
+cout << "right(" << Yellow_Item.right_x << "," << Yellow_Item.right_y<<","<<Yellow_Item.right_dis<<")" << endl;
+}
+*/
   }
-
 ////////////////////////////////////////
 }
 void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
@@ -930,16 +893,6 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
   draw_Line(frame_, obj_.dis_max, obj_.dis_min, obj_.ang_min);
   //circle(frame_, Point(obj_.x, obj_.y), 2, Scalar(0, 0, 255), -1);
 /*
-	int x,y;
-	x = Frame_Area(center_x +  obj_.right_x, Main_frame.cols);
-	y = Frame_Area(center_y -  obj_.right_y, Main_frame.rows);
-	line(frame_, Point(x, y), Point(x, y), Scalar(255, 0, 0), 5);
-
-	x = Frame_Area(center_x +  obj_.left_x, Main_frame.cols);
-	y = Frame_Area(center_y -  obj_.left_y, Main_frame.rows);
-	line(frame_, Point(x, y), Point(x, y), Scalar(0, 0, 255), 5);
-
-
   vision::Two_point Two_point_msg;
   Two_point_msg.blue_dis = Blue_Item.dis_min;
   Two_point_msg.blue_ang1 = Angle_Adjustment(Blue_Item.ang_max);
@@ -960,23 +913,33 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
 ///////////////////////////////////////////////////
   vision::Two_point Two_point_msg;
 
-  if(color = BLUEITEM){
-    Two_point_msg.blue_dis = Blue_Item.dis_min;
-    Two_point_msg.blue_ang1 = Angle_Adjustment(Blue_Item.ang_max);
-    Two_point_msg.blue_ang2 = Angle_Adjustment(Blue_Item.ang_min);
-    Two_point_msg.blue_left = Blue_Item.left_dis;
-    Two_point_msg.blue_right = Blue_Item.right_dis;
+  int x,y;
+
+  if(color == BLUEITEM || color== YELLOWITEM){
+    if(obj_.ang_max != 0 && obj_.ang_min != 0){
+      Two_point_msg.blue_dis = Blue_Item.distance;
+      Two_point_msg.blue_ang1 = Angle_Adjustment(Blue_Item.ang_max);
+      Two_point_msg.blue_ang2 = Angle_Adjustment(Blue_Item.ang_min);
+      Two_point_msg.blue_left = Blue_Item.left_dis;
+      Two_point_msg.blue_right = Blue_Item.right_dis;
+
+      Two_point_msg.yellow_dis = Yellow_Item.distance;
+      Two_point_msg.yellow_ang1 = Angle_Adjustment(Yellow_Item.ang_max);
+      Two_point_msg.yellow_ang2 = Angle_Adjustment(Yellow_Item.ang_min);
+      Two_point_msg.yellow_left = Yellow_Item.left_dis;
+      Two_point_msg.yellow_right = Yellow_Item.right_dis;
+   
+      x = Frame_Area(center_x +  obj_.right_x, Main_frame.cols);
+      y = Frame_Area(center_y -  obj_.right_y, Main_frame.rows);
+      line(frame_, Point(x, y), Point(x, y), Scalar(255, 0, 0), 3);
+
+      x = Frame_Area(center_x +  obj_.left_x, Main_frame.cols);
+      y = Frame_Area(center_y -  obj_.left_y, Main_frame.rows);
+      line(frame_, Point(x, y), Point(x, y), Scalar(0, 0, 255), 3);    
+    }
   }
 
-  if(color = YELLOWITEM){
-    Two_point_msg.yellow_dis = Yellow_Item.dis_min;
-    Two_point_msg.yellow_ang1 = Angle_Adjustment(Yellow_Item.ang_max);
-    Two_point_msg.yellow_ang2 = Angle_Adjustment(Yellow_Item.ang_min);
-    Two_point_msg.yellow_left = Yellow_Item.left_dis;
-    Two_point_msg.yellow_right = Yellow_Item.right_dis;
-  }
-
-  if(Blue_Item.dis_min &&Yellow_Item.dis_min){
+  if((Two_point_msg.blue_ang1 != 0 && Two_point_msg.yellow_ang1 != 0)||((Two_point_msg.blue_ang2 != 0 && Two_point_msg.yellow_ang2 != 0))){
     Two_point_pub.publish(Two_point_msg);
   }
 

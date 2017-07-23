@@ -873,7 +873,15 @@
     font-size: 18px;
 }
 
+#CameraAngle{
+    width: 70px;
+    font-size: 18px;
+}
 
+#CenterDis{
+    width: 50px;
+    font-size: 18px;
+}
 /*========================Bar=============================*/
 
 input[type=range] {
