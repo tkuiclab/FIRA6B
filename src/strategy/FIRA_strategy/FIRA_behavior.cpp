@@ -263,26 +263,31 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
-//    printf("init\n");
-    // 暫時無條件進入
-    state_GoalKeeper = state_GoalKeeper_blocking;
 
-//        double ball_distance = env.home[r_number].ball.distance;
-//        double opgoal_distance = env.home[r_number].op_goal.distance;
-//        double opgoal_angle = env.home[r_number].op_goal.angle;
-//        double opgoal_edge_dis = env.home[r_number].opgoal_edge.distance;
-//        double opgoal_edge_angle1 = env.home[r_number].opgoal_edge.angle_1;
-//        double opgoal_edge_angle2 = env.home[r_number].opgoal_edge.angle_2;
-//        if(opgoal_distance < 0.7 && fabs(opgoal_angle) > 175 ){
-//            state_GoalKeeper = state_GoalKeeper_waiting;
-//        }
+    //無條件進入
+    state_GoalKeeper = state_GoalKeeper_blocking;
 
 }
 
 void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
     double ball_dis = env.home[r_number].ball.distance;
+    double ball_angle = env.home[r_number].ball.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-    if( ball_dis < 1.25 && opgoal_dis < 0.9){
+    double opgoal_angle = env.home[r_number].op_goal.angle;
+    double ball_to_opgoal_dis;
+    ball_to_opgoal_dis = (opgoal_angle*ball_angle)>0 ? fabs(opgoal_angle-ball_angle) : fabs(opgoal_angle)+fabs(ball_angle);
+    if(ball_to_opgoal_dis == 180){
+        ball_to_opgoal_dis = opgoal_dis + ball_dis;
+    }else{
+        if(ball_to_opgoal_dis > 180){
+        ball_to_opgoal_dis = ball_to_opgoal_dis-180;
+        }
+        ball_to_opgoal_dis =sqrt((opgoal_dis*opgoal_dis)+(ball_dis*ball_dis)-(2*opgoal_dis*ball_dis*cos(ball_to_opgoal_dis)));
+    }
+
+    if(ball_to_opgoal_dis < 1.6){
+        state_GoalKeeper = state_GoalKeeper_catching;
+    }else if( ball_dis < 1.25 && opgoal_dis < 0.9){
         state_GoalKeeper = state_GoalKeeper_catching;
     }else if(ball_dis < 1 && opgoal_dis < 1.4){
         state_GoalKeeper = state_GoalKeeper_catching;
@@ -290,9 +295,22 @@ void FIRA_behavior_class::StateGoalKeeperBlocking(int r_number){
 }
 
 void FIRA_behavior_class::StateGoalKeeperCatching(int r_number){
-    double ball_dis = env.home[r_number].ball.distance;
+//    double ball_dis = env.home[r_number].ball.distance;
+//    double ball_angle = env.home[r_number].ball.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-    if( opgoal_dis > 1.6 || ball_dis > 2){
+//    double opgoal_angle = env.home[r_number].op_goal.angle;
+//    double ball_to_opgoal_dis;
+//    ball_to_opgoal_dis = (opgoal_angle*ball_angle)>0 ? fabs(opgoal_angle-ball_angle) : fabs(opgoal_angle)+fabs(ball_angle);
+//    if(ball_to_opgoal_dis == 180){
+//        ball_to_opgoal_dis = opgoal_dis + ball_dis;
+//    }else{
+//        if(ball_to_opgoal_dis > 180){
+//        ball_to_opgoal_dis = ball_to_opgoal_dis-180;
+//        }
+//        ball_to_opgoal_dis = sqrt(pow(opgoal_dis)+pow(ball_dis)-(2*opgoal_dis +*ball_dis*cos(ball_to_opgoal_dis)));
+//    }
+
+    if( opgoal_dis > 1.5){
         state_GoalKeeper = state_GoalKeeper_blocking;
     }
 }
