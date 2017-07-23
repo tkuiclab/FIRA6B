@@ -252,6 +252,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::readroleAry(int robotIndex,int role){
+        //printf("roleplay=%d\n",role);
         switch(role){
             case Role_Goalkeeper:
                 behavior_Goalkeeper(robotIndex);
@@ -282,7 +283,7 @@ void FIRA_behavior_class::readroleAry(int robotIndex,int role){
                     break;
                 }
             case Role_Test1:
-                    behavior_Test1(robotIndex);
+                   behavior_Test1(robotIndex);
                     break;
             case Role_Test2:
                    behavior_Test2(robotIndex);
@@ -423,6 +424,7 @@ void FIRA_behavior_class::behavior_Test1(int robotIndex){
 //    printf("final_angle=%f\n",env.Support_Obstacle_angle);
 //    printf("final_distance=%f\n",env.Support_Obstacle_distance);
     actionAry[robotIndex] = action_Support_Test1;
+    //printf("test1\n");
 
 
 

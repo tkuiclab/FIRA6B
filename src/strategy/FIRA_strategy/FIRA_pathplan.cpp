@@ -1681,11 +1681,18 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-    if(fabs(angle_br)<Chase_Strategy[3] && distance_br<Chase_Strategy[4]){
-        shoot = 1;
+    static int shoot_count =1;
+    if(fabs(angle_br)<=Chase_Strategy[3] && distance_br<=Chase_Strategy[4]){
+        shoot = 25;
     }else{
         shoot = 0;
     }
+//    if(shoot_count==1){
+//        shoot = 25;
+//        shoot_count--;
+//    }else{
+//        shoot = 0;
+//    }
     double obstacle_angle =env.Support_Obstacle_angle+90;
     double transform_angle_br = angle_br+90;
     double obstacle_distance =env.Support_Obstacle_distance;
@@ -1702,15 +1709,33 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
     }
 //    printf("final_angle=%f\n",env.Support_Obstacle_angle);
 //    printf("final_distance=%f\n",env.Support_Obstacle_distance);
-    if(obstacle_distance-0.3>0){
-        obstacle_distance=obstacle_distance-0.3;
+//    printf("ball_distance = %f\n",distance_br);
+//    if(obstacle_distance-0.4>0){
+//        obstacle_distance=obstacle_distance-0.4;
+//    }else{
+//        obstacle_distance=0;
+//    }
+//    if(distance_br-0.3>0){
+//        distance_br=distance_br-0.3;
+//    }else{
+//        distance_br=0;
+//    }
+
+//        printf("ball_distance = %f\n",distance_br);
+        printf("obstacle_distance = %f\n",obstacle_distance);
+        printf("chase angle_br=%f\n",Chase_Strategy[3]);
+        printf("chase distance =%f\n",Chase_Strategy[4]);
+//        printf("shoot_count=%d\n",shoot_count);
+    if((fabs(cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br<0.05))&&(sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br)<0.05){
+        env.home[r_number].v_x = 0;
+        env.home[r_number].v_y = 0;
+    }else if(env.Support_Obstacle_angle>=999){
+        env.home[r_number].v_x = 0;
+        env.home[r_number].v_y = 0;
+    }else{
+        env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
+        env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
     }
-    if(distance_br-0.3>0){
-        distance_br=distance_br-0.3;
-    }
-    env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
-    env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
-    env.home[r_number].v_yaw=angle_br;
 
 
 
@@ -3607,7 +3632,7 @@ void FIRA_pathplan_class::loadParam(ros::NodeHandle *n){
 //            std::cout<< "param Attack_Strategy["<< i << "]=" << Attack_Strategy[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
     }
-    if(n->getParam("/FIRA/Chase_Strategy", Chase_Strategy)){
+    if(n->getParam("/FIRA_Behavior/Chase_Strategy", Chase_Strategy)){
 //        for(int i=0;i<1;i++)
 //            std::cout<< "param Chase_Strategy["<< i << "]=" << Chase_Strategy[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
