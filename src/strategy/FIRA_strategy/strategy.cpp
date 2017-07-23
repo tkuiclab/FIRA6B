@@ -154,6 +154,7 @@ int main(int argc, char **argv)
         mbehavior.setEnv(*global_env);
         mbehavior.setTeam(Team_color);
         if((global_env->issimulator)==true){
+            mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
             for(int i=0; i<PLAYERS_PER_SIDE;i++){
                 mbehavior.readroleAry(i,roleAry[i]);
             }
@@ -197,7 +198,7 @@ int main(int argc, char **argv)
         }
 
         ros::spinOnce();
-        loop_rate.sleep();
+        // loop_rate.sleep();
 
     }
 

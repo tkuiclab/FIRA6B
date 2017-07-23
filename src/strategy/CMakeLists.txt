@@ -23,7 +23,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 # this comes from qt_build's qt-ros.cmake which is automatically 
 # included via the dependency call in manifest.xml
 rosbuild_prepare_qt4(QtCore QtGui) # Add the appropriate components to the component list here
-
+add_definitions(-std=c++11)
 ##############################################################################
 # Services
 ##############################################################################
@@ -48,6 +48,7 @@ foreach(subdir
     common
     FIRA_strategy
     FIRA_teamStrategy
+    Localization_Challange
     )
   add_subdirectory(${subdir})
 endforeach()

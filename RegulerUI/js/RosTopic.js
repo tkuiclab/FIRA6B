@@ -16,6 +16,7 @@ var Remote3 = new ROSLIB.Topic({
     messageType: 'std_msgs/Bool'
 });
 
+
 function RemoteSwitch(state) {
     var check;
     if (state) {

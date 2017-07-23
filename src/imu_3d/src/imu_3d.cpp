@@ -456,7 +456,7 @@ int main(int argc,char **argv)
                 printf("0\n");
             }else{
                 stationary = true;
-                printf("1\n");
+                // printf("1\n");
             }
 
             //Render
