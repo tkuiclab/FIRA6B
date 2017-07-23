@@ -149,13 +149,12 @@ typedef struct
     double Support_Obstacle_distance;
 } Environment;
 //static Environment global_env;
+
 typedef struct
 {
     int begin;
     int end;
 }Range;
-
-
 
 
 #define pi 3.14159

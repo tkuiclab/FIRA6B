@@ -14,7 +14,7 @@ Motion_nodeHandle::Motion_nodeHandle(int argc, char **argv)
 	this->remote = false;
 #ifdef DEBUG
 	std::cout << "Motion_nodeHandle(DEBUG)\n";
-	std::cout << "x_speed: " <<*this->node_robotCMD->x_speed << std::endl;
+	std::cout << "x_speed: " << *this->node_robotCMD->x_speed << std::endl;
 	std::cout << "y_speed: " << *this->node_robotCMD->y_speed << std::endl;
 	std::cout << "yaw_speed: " << *this->node_robotCMD->yaw_speed << std::endl;
 	std::cout << "shoot_power: " << *this->node_robotCMD-> shoot_power << std::endl;
