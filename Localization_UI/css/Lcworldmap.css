@@ -78,7 +78,11 @@ body {
     cursor: pointer;
     bottom: 7px;
 }
-
+#setting_block{
+    height: auto;
+    position: relative;
+    left:-10%;
+}
 #innerModalLabel {
     font-size: 30px;
     font-family: 'Pacifico', cursive;
@@ -94,13 +98,31 @@ body {
 #SetGeneralExecute {
     text-align: center;
     position: relative;
-    top:50%;
+    top:-50%;
 }
-
+#SetGeneralButton{
+    position: relative;
+    top:0%;
+    left:2%;
+}
+#SettingButton{
+    position: relative;
+    left:23%;
+}
+#BallElementModule{
+    position: relative;
+    left:13.5%;
+    height: auto;
+    width:320px;
+    text-align: center;
+    border-style: solid;
+    /*    overflow: scroll;
+*/
+}
 #SPlanningVelocityModule {
     position: relative;
     left:13.5%;
-    height: 240px;
+    height: auto;
     width:320px;
     text-align: center;
     border-style: solid;
@@ -112,12 +134,28 @@ body {
  position: relative;
  left: 30%;
 }
+#BallElementValue{
+ text-align: left;
+ position: relative;
+ left: 30%;
+ width:50px;
+}
 #SPlanningVelocityTitle{
  text-align: left;
  position: relative;
  left: 38%;
 }
+#BallElementTitle{
+ text-align: left;
+ position: relative;
+ left: 38%;
+}
 #SPlanningVelocity{
+    position: relative;
+    left: 120%;
+    width: 50px;
+}
+#Ball{
     position: relative;
     left: 120%;
     width: 50px;

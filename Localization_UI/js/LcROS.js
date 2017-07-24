@@ -391,31 +391,48 @@ var SPlanningVelocityBox = new ROSLIB.Param({
     ros: ros,
     name: '/FIRA/SPlanning_Velocity'
 });
+var HoldConditionBox = new ROSLIB.Param({
+    ros: ros,
+    name: '/FIRA/hold_condition'
+});
 function GeneralTransfer(){
         var Box = [];
+        var Box1 = [];
         Smallbox = document.getElementsByName("SPlanningVelocityElement");
+        Smallbox1 = document.getElementsByName("BallElement");
 
         for(var i = 0 ;i < Smallbox.length ;i++){
         temp = Smallbox[i].value
         Box[i] = parseFloat(temp);
+    }
+       for(var i = 0;i < Smallbox1.length; i++){
+        temp = Smallbox1[i].value
+        Box1[i] = parseFloat(temp);
 
-        }
+       }
     SPlanningVelocityBox.set(Box);
-    //DistanceSettingsBox.set(box2);
+    HoldConditionBox.set(Box1);
     console.log(Box);
+    console.log(Box1);
+
 }
 //GeneralReset
 function GeneralReset(){
         var Smallbox;
         var obj = [2.2,0.3,80.0,50.0,20,3,144,5];
+        var obj2 = [3.0,0.33];
         Smallbox = document.getElementsByName("SPlanningVelocityElement");
+        Smallbox1 = document.getElementsByName("BallElement");
 
         for(var i = 0 ;i < Smallbox.length ;i++){
         Smallbox[i].value = obj[i];
-
-            
         }
-        GeneralTransfer(obj);
+        for(var i=0;i<Smallbox1.length ;i++){
+        Smallbox1[i].value = obj2[i];
+        }
+    
+    
+        GeneralTransfer();
         // console.log(obj);
 }
 //GeneralGet

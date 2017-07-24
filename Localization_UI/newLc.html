@@ -374,11 +374,23 @@
                             </div>
                             <div class="modal-body">
                                 <div class="modal-body" id="GeneralDisplay">
+                                    <table id="SettingButton">
+                                    <tr>
+                                        <td>
                                     <!-- General_Button -->
-                                   <!--  <div class="form-group" id="SetGeneralButton">
-                                        <input type="radio" id="SPlanningVelocity" name="radio" checked="checked" />
-                                        <label id="SPlanningVelocity" for="SPlanningVelocity">S-Planning Velocity</label>
-                                    </div> -->
+                                     <div class="form-group" id="SetSPlanningVelocityButton">
+                                        <input type="radio" id="SPlanningVelocityLabel" name="radio" checked="checked" />
+                                        <label id="SPlanningVelocityLabel" for="SPlanningVelocity">S-Planning Velocity</label>
+                                    </div>
+                                        </td>
+                                        <td>
+                                    <div class="form-group" id="SetBallElementButton">
+                                        <input type="radio" id="BallElementLabel" name="radio"/>
+                                        <label id="BallElementLabel" for="Ball">Hold_Condition</label>
+                                    </div>
+                                        </td>
+                                    </tr>
+                                    </table>
                                     <div class="form-group" id="SPlanningVelocityModule">
                                         <table >
                                             <tr>
@@ -435,6 +447,26 @@
                                             </tr>
                                         </table>
                                     </div>
+                                        <div class="form-group" id="BallElementModule">
+                                        <table >
+                                            <tr>
+                                                <th id="BallElementTitle">ConfigName&emsp;&emsp;</th>
+                                                <th id="BallElementValue">Value</th>
+                                            </tr>
+                                            <tr>
+                                                <td id="BallElementValue">(double)HoldBall_angle</td>
+                                                <td>
+                                                    <input type="text" id="Ball" name="BallElement" value="3.0" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td id="BallElementValue">(double)HoldBall_distance</td>
+                                                <td>
+                                                    <input type="text" id="Ball" name="BallElement" value="0.33" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                                 <div class="modal-footer" id="SetGeneralExecute">
                                     <!-- <input id="next" type="button" value="NEXT"/> -->
@@ -470,6 +502,18 @@
     //         GeneralTransfer(SPlanningVelocityBox);
     //     });
     // });
+    $("#SetGeneralButton").buttonset();
+
+    $("#BallElementModule").hide();
+
+    $("#SPlanningVelocityLabel").click(function() {
+        $("#SPlanningVelocityModule").show();
+        $("#BallElementModule").hide();
+    });
+    $("#BallElementLabel").click(function() {
+        $("#BallElementModule").show();
+        $("#SPlanningVelocityModule").hide();
+    });
 </script>
 </body>
 </html>
