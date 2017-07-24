@@ -2,8 +2,20 @@
     position: relative;
     top: 1px;
 }
-
-
+/*==========================================================*/
+/*click me*/
+#CliekMe{
+    width:40px;
+    height:55px;
+    position:absolute;
+    top:0.5%;
+    left:20%;
+    background-image:url(../img/click_me.png);
+    background-color:rgba(255,255,255,0.1);
+    background-size: 50px 60px;
+    background-position: 30% 30%;
+    border-radius: 25px; 
+}
 /*==========================================================*/
 
 #StartButton {
