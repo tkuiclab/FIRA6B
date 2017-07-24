@@ -614,7 +614,11 @@ private:
         int last_obstacle_distance=0;
         int degree_controller = 0; // if ball dis lower, start scan 180 degree
         int edge_controller = 1;
-        if(distance_br<0.8){
+        static int edge_count=0;
+        if(global_env->gameState==0){
+            edge_count=0;
+        }
+        if(edge_count>=100){
            degree_controller=0;
            ignore_limit_angle=45;
            limit_obstacle_dis=200;
@@ -624,7 +628,9 @@ private:
            ignore_limit_angle=25;
            limit_obstacle_dis=200;
            edge_controller = 1;
+           edge_count++;
         }
+
 
         if(transform_angle_br<0){//let ball_angle be 0~360 degree
             transform_angle_br = transform_angle_br + 360;
@@ -753,6 +759,7 @@ private:
         }
         global_env->Support_Obstacle_angle=final_angle;
         global_env->Support_Obstacle_distance= final_distance/100;
+        printf("edge_count=%d\n",edge_count);
 //        printf("final angle = %f \n",final_angle);
 //        printf("ball angle=%f\n",angle_br);
 //        printf("final_distance = %f \n",final_distance/100);

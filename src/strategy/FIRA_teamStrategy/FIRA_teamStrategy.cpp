@@ -128,7 +128,7 @@ void FIRA_teamStrategy_class::role_Play(){
     // ROS_INFO("hahaaha");
     roleAry[0]=Role_Goalkeeper;
     roleAry[1]=Role_Attack;
-    roleAry[2]=Role_Support;
+    roleAry[2]=Role_NewSupport;
 }
 
 
@@ -145,7 +145,9 @@ void FIRA_teamStrategy_class::role_Halt(){
 }
 
 void FIRA_teamStrategy_class::role_FreeKick(){
-
+    roleAry[0]=Role_Goalkeeper;
+    roleAry[1]=Role_Attack;
+    roleAry[2]=Role_Halt;
 }
 
 void FIRA_teamStrategy_class::role_PenaltyKick(){
@@ -158,9 +160,10 @@ void FIRA_teamStrategy_class::role_FreeBall(){
     roleAry[0]=Role_Goalkeeper;
     roleAry[1]=Role_Halt;
     roleAry[2]=Role_Halt;
-    if(++SupportCnt<500){
+    if(SupportCnt<300){
         roleAry[1]=Role_Attack;
         roleAry[2]=Role_NewSupport;
+        SupportCnt++;
         //  寫死一隻SUP一隻ATK
     }else{
         //  之前的團側判斷

@@ -3650,7 +3650,7 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
     double op_angle_dr = env.home[r_number].op_goal.angle;
     static int shoot_count =1;
     if(fabs(angle_br)<=Chase_Strategy[3] && distance_br<=Chase_Strategy[4]){
-        shoot = 25;
+        shoot = 21;
     }else{
         shoot = 0;
     }
@@ -3690,13 +3690,11 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
 
 //        printf("ball_distance = %f\n",distance_br);
         printf("obstacle_distance = %f\n",obstacle_distance);
+        printf("obstacle_angle = %f\n",env.Support_Obstacle_angle);
         printf("chase angle_br=%f\n",Chase_Strategy[3]);
         printf("chase distance =%f\n",Chase_Strategy[4]);
 //        printf("shoot_count=%d\n",shoot_count);
-    if((fabs(cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br<0.05))&&(sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br)<0.05){
-        env.home[r_number].v_x = 0;
-        env.home[r_number].v_y = 0;
-    }else if(env.Support_Obstacle_angle>=999){
+    if(env.Support_Obstacle_angle>=999){
         env.home[r_number].v_x = 0;
         env.home[r_number].v_y = 0;
     }else{
