@@ -6,23 +6,23 @@ Behavior::Behavior(int argc, char** argv)
 	env = getEnv();
 	init(argc, argv);
 	target = 1;
-	ball_1.pos.x = -165;
-	ball_1.pos.y = 120;
-	ball_2.pos.x = -165;
-	ball_2.pos.y = 40;
-	ball_3.pos.x = -165;
-	ball_3.pos.y = -40;
-	ball_4.pos.x = -165;
-	ball_4.pos.y = -120;
+	ball_1.pos.x = -1.65;
+	ball_1.pos.y = 1.20;
+	ball_2.pos.x = -1.65;
+	ball_2.pos.y = 0.40;
+	ball_3.pos.x = -1.65;
+	ball_3.pos.y = -0.40;
+	ball_4.pos.x = -1.65;
+	ball_4.pos.y = -1.20;
 	
-	goal_1.pos.x = 165;
-	goal_1.pos.y = 120;
-	goal_2.pos.x = 165;
-	goal_2.pos.y = 40;
-	goal_3.pos.x = 165;
-	goal_3.pos.y = -40;
-	goal_4.pos.x = 165;
-	goal_4.pos.y = -120;
+	goal_1.pos.x = 1.65;
+	goal_1.pos.y = 1.20;
+	goal_2.pos.x = 1.65;
+	goal_2.pos.y = 0.40;
+	goal_3.pos.x = 1.65;
+	goal_3.pos.y = -0.40;
+	goal_4.pos.x = 1.65;
+	goal_4.pos.y = -1.20;
 	run();
 }
 
@@ -36,7 +36,7 @@ void Behavior::chooseLevel()
 	ROS_INFO("Level:\t%d\n",level);
 	switch(level){
 		case Level_1:
-			if(holdBall()){
+			if(holdBall() == true){
 				std::cout << "Aim\n";
 				aim(getTargetGoal());
 			}else{
@@ -73,9 +73,12 @@ void Behavior::chase(const Ball target_ball)
 	double distance_x = target_ball.pos.x - env->robot.pos.x;
 	double distance_y = target_ball.pos.y - env->robot.pos.y;
 	double distance = sqrt(pow(distance_x, 2)+pow(distance_y, 2));
+	double target_angle = (distance_y >= 0)? (atan2(distance_x, distance_y)*180/M_PI-env->robot.pos.z) : (atan2(distance_x, distance_y)*180/M_PI-360-env->robot.pos.z);
+	std::cout << "Target Ball: (" << target_ball.pos.x << ", " << target_ball.pos.y << ", " << target_angle << ")\n";
 	if(distance > 60){
 		double middlePoint_x = -145;
 		double middlePoint_y = (env->robot.pos.y+target_ball.pos.y)/2;
+		std::cout << "Target Point: (" << middlePoint_x <<  ", " << middlePoint_y << ")\n";
 		gotoPoint(env, middlePoint_x, middlePoint_y);
 	}else{
 		chaseBall(env);
@@ -87,12 +90,9 @@ void Behavior::aim(const Goal target_goal)
 	double distance_x = target_goal.pos.x - env->robot.pos.x;
 	double distance_y = target_goal.pos.y - env->robot.pos.y;
 	double distance = sqrt(pow(distance_x, 2)+pow(distance_y, 2));
-	double target_angle;
-	if(distance_y >= 0){
-		target_angle = atan2(distance_x, distance_y)*180/M_PI - env->robot.pos.z;
-	}else{
-		target_angle = atan2(distance_x, distance_y)*180/M_PI - 360 - env->robot.pos.z;
-	}
+	double target_angle = (distance_y >= 0)? (atan2(distance_x, distance_y)*180/M_PI-env->robot.pos.z) : (atan2(distance_x, distance_y)*180/M_PI-360-env->robot.pos.z);
+	std::cout << "Target Goal: (" << target_goal.pos.x << ", " << target_goal.pos.y << ", " << target_angle << " )\n";
+	std::cout << "Target Goal Distace: " << target_angle << std::endl;
 	if(fabs(target_angle)<1){
 		shoot();
 	}else{
@@ -102,11 +102,8 @@ void Behavior::aim(const Goal target_goal)
 
 void Behavior::shoot()
 {
-	if(holdBall()){
-		env->robot.shoot = 50;
-	}else{
-		nextTarget();
-	}
+	env->robot.shoot = 50;
+	nextTarget();
 }
 
 void Behavior::run()
@@ -154,9 +151,11 @@ void Behavior::finish()
 
 bool Behavior::holdBall()
 {
-	if((env->ball.pos.distance<35) && (fabs(env->ball.pos.angle)<3)){
+	if((env->robot.ball.distance<0.4) && (fabs(env->robot.ball.angle)<10)){
+		std::cout << "got ball\n";
 		return true;
 	}else{
+		std::cout << "lose ball\n";
 		return false;
 	}
 }

@@ -14,11 +14,10 @@ void PathPlan::gotoPoint(Environment *env, double point_x, double point_y)
 	double myLocation_x, myLocation_y, myLocation_yaw, yaw_degree;
 	myLocation_x = env->robot.pos.x;
 	myLocation_y = env->robot.pos.y;
-	yaw_degree = env->robot.pos.z*180/M_PI;
-	if(yaw_degree>180)myLocation_yaw = yaw_degree-360;
-	env->robot.v_x = (point_x-myLocation_x)*cos(myLocation_yaw);
-	env->robot.v_y = (point_y-myLocation_y)*sin(myLocation_yaw);
-	env->robot.v_yaw = myLocation_yaw;
+	myLocation_yaw = env->robot.pos.z*M_PI/180;
+	env->robot.v_x = (point_x-myLocation_x)*cos(myLocation_yaw+(M_PI/2)) + (point_y-myLocation_y)*sin(myLocation_yaw+(M_PI/2));
+	env->robot.v_y = (point_y-myLocation_y)*cos(myLocation_yaw+(M_PI/2)) + (point_x-myLocation_x)*sin(myLocation_yaw+(M_PI/2));
+	env->robot.v_yaw = -(myLocation_yaw+(M_PI/2));
 }
 
 void PathPlan::chaseBall(Environment *env)

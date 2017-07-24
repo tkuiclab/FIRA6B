@@ -41,13 +41,15 @@ void Strategy_nodeHandle::init(int argc, char** argv)
 
 void Strategy_nodeHandle::visionCallback(const vision::Object::ConstPtr &vision_msg)
 {
-	this->environment.robot.ball.distance = vision_msg->ball_dis/100;
+	this->environment.robot.ball.distance = vision_msg->ball_dis/100.0;
 	this->environment.robot.ball.angle = (vision_msg->ball_ang <= 180)? vision_msg->ball_ang : vision_msg->ball_ang - 360;
 }
 
 void Strategy_nodeHandle::IMUCallback(const imu_3d::inertia::ConstPtr &imu_msg)
 {
-	this->environment.robot.pos.z = (imu_msg->yaw <= M_PI)? imu_msg->yaw * 180/M_PI : (imu_msg->yaw*180/M_PI-360); 
+	double imu_yaw = (imu_msg->yaw <= M_PI)? imu_msg->yaw * 180/M_PI : (imu_msg->yaw*180/M_PI-360); 
+	double map_yaw = imu_yaw - 90;
+	this->environment.robot.pos.z = (map_yaw <= (-180))? map_yaw+360 : map_yaw;
 }
 
 void Strategy_nodeHandle::motionFBCallback(const geometry_msgs::Twist::ConstPtr &motionFB_msg)
