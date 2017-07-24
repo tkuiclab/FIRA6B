@@ -87,6 +87,8 @@ public:
     void strategy_MovetoGoalEdge2(int);
     void strategy_MovetoOpGoalEdge1(int);
     void strategy_MovetoOpGoalEdge2(int);
+    void strategy_Stop(int);
+    void strategy_Block(int);
 //--------------------------------------------------
 
 //--------------role case-------------------

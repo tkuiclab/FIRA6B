@@ -77,6 +77,8 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_MovetoGoalEdge2          38
 #define action_MovetoOpGoalEdge1        39
 #define action_MovetoOpGoalEdge2        40
+#define action_Stop                     41
+#define action_Block                    42
 
 #define state_Init              0
 #define state_Chase             1

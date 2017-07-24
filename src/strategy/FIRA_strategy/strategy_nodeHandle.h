@@ -667,7 +667,7 @@ private:
                 obstacle_distance = obstacle_distance + All_Line_distance[i-i_limit];
                 obstacle_middle_angle = i*Blackangle-limit_obstacle_dis_counter*Blackangle/2;
                 last_obstacle_distance = All_Line_distance[i-i_limit];
-                printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
+                //printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
                // printf("obstacle_distance=%d\n",obstacle_distance);
                 ignore_counter=0;// something there, so get ignore chance
             }else{// not within distance
@@ -689,7 +689,7 @@ private:
                             limit_obstacle_dis_counter=0;
                             ignore_counter=0;
                             obstacle_distance=0;
-                            printf("end search\n");
+                            //printf("end search\n");
                         }
                     }
                     if(limit_obstacle_dis_counter>=2){// if something there but not large enough, still clear first time counter;
@@ -720,7 +720,7 @@ private:
 //                    //printf("obstacle_distance=%d\n",obstacle_distance);
 //                    final_distance = obstacle_distance/limit_obstacle_dis_counter;
 //                    end_search = 1;// get final angle, so end search
-                    printf("end search\n");
+                    //printf("end search\n");
                 }
                 limit_obstacle_dis_counter=0;
                 ignore_counter=0;
@@ -753,10 +753,10 @@ private:
         }
         global_env->Support_Obstacle_angle=final_angle;
         global_env->Support_Obstacle_distance= final_distance/100;
-        printf("final angle = %f \n",final_angle);
-        printf("ball angle=%f\n",angle_br);
-        printf("final_distance = %f \n",final_distance/100);
-        printf("ball_distance = %f\n",distance_br);
+//        printf("final angle = %f \n",final_angle);
+//        printf("ball angle=%f\n",angle_br);
+//        printf("final_distance = %f \n",final_distance/100);
+//        printf("ball_distance = %f\n",distance_br);
 //        printf("transform_angle_br=%f\n",transform_angle_br);
 //        printf("ignore_upper=%d\n",ignore_upper);
 //        printf("ignore_lower=%d\n",ignore_lower);

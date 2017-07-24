@@ -16,6 +16,8 @@ private:
     int send_order;
     ros::Subscriber TeamColor;
     std::vector<double> Chase_Strategy;
+    double Current_time = ros::Time::now().toSec();
+    double Begin_time = ros::Time::now().toSec();
     //end  ---simulator---
     double vecAngle(Vector2d a,Vector2d b);
 public:
