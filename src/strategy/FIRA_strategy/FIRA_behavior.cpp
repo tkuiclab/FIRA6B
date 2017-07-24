@@ -252,7 +252,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::readroleAry(int robotIndex,int role){
-        //printf("roleplay=%d\n",role);
+//        printf("roleplay=%d\n",role);
         switch(role){
             case Role_Goalkeeper:
                 behavior_Goalkeeper(robotIndex);
@@ -727,7 +727,9 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
     if(op_distance_dr<1.6){// in limit area
         actionAry[robotIndex] = action_LeaveLimitArea;
         printf("action_LeaveLimitArea\n");
+        printf("op_distance_dr=%f\n",op_distance_dr);
     }else{
+        printf("action_Block\n");
         actionAry[robotIndex] = action_Block;
     }
 

@@ -3,6 +3,7 @@
 #define counter_delay 3
 #define change_charactor_dis 0.1
 static int shoot=1;
+static int SupportCnt = 0;
 
 
 FIRA_teamStrategy_class::FIRA_teamStrategy_class(){
@@ -124,6 +125,7 @@ void FIRA_teamStrategy_class::role_Play(){
             printf("roleAry[%d]=Role_Support\n",2);
         }
     }
+    // ROS_INFO("hahaaha");
     roleAry[0]=Role_Goalkeeper;
     roleAry[1]=Role_Attack;
     roleAry[2]=Role_Support;
@@ -134,8 +136,12 @@ void FIRA_teamStrategy_class::role_Halt(){
     roleAry[0] = Role_Halt;
     roleAry[1] = Role_Halt;
     roleAry[2] = Role_Halt;
-    Begin_time = ros::Time::now().toSec();
-    Current_time = ros::Time::now().toSec();
+    if(env.gameState==0){
+        SupportCnt = 0;
+    }
+    // counter = 0;
+    // Begin_time = ros::Time::now().toSec();
+    // Current_time = ros::Time::now().toSec();
 }
 
 void FIRA_teamStrategy_class::role_FreeKick(){
@@ -148,18 +154,19 @@ void FIRA_teamStrategy_class::role_PenaltyKick(){
 }
 
 void FIRA_teamStrategy_class::role_FreeBall(){
+    printf("gamestate=%d\n",env.gameState);
     roleAry[0]=Role_Goalkeeper;
     roleAry[1]=Role_Halt;
     roleAry[2]=Role_Halt;
-    if(Current_time - Begin_time<3){
+    if(++SupportCnt<500){
         roleAry[1]=Role_Attack;
-        roleAry[2]=Role_Support;
+        roleAry[2]=Role_NewSupport;
         //  寫死一隻SUP一隻ATK
     }else{
         //  之前的團側判斷
-        //   printf("AttackerIs r[%d]\n",env.AttackerIs);
-        printf("Another robot is Get Ball = %d\n",env.AnotherGetBall);
-        printf("global_env->RobotNumber=%d\n",env.RobotNumber);
+        // printf("AttackerIs r[%d]\n",env.AttackerIs);
+        // printf("Another robot is Get Ball = %d\n",env.AnotherGetBall);
+        // printf("global_env->RobotNumber=%d\n",env.RobotNumber);
         double angle_chase = Chase_Strategy[3];//16.5
         double distance_chase = Chase_Strategy[4];//0.4
         printf("1\n");
@@ -254,10 +261,11 @@ void FIRA_teamStrategy_class::role_FreeBall(){
         }else{
             two_robot_get_ball_counter=0;
         }
-        printf("r[%d] ball dis:%f\n",env.RobotNumber,env.home[env.RobotNumber].ball.distance);
-        printf("r[%d] ball dis:%f\n",env.AnotherRobotNumber,env.AnotherBallDistance);
+//        printf("r[%d] ball dis:%f\n",env.RobotNumber,env.home[env.RobotNumber].ball.distance);
+//        printf("r[%d] ball dis:%f\n",env.AnotherRobotNumber,env.AnotherBallDistance);
     }
-    Current_time = ros::Time::now().toSec(); // 更新時間
+    printf("supportcnt=%d\n",SupportCnt);
+    // Current_time = ros::Time::now().toSec(); // 更新時間
 }
 
 void FIRA_teamStrategy_class::role_ThrowIn(){
