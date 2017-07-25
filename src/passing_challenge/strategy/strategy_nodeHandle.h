@@ -20,7 +20,7 @@
  ****************************/
 #include "Env.h"
 /****************************
- *		Define				*
+ *	Define Topic Nmae   *
  ****************************/
 #define vision_topic_name "/vision/object"
 #define IMU_topic_name "/imu_3d"
@@ -29,6 +29,8 @@
 #define level_topic_name "/level"
 #define loadParam_topic_name "/loadParam"
 #define status_topic_name "/status"
+#define motion_topic_name "/motion/cmd_vel"
+#define shoot_topic_name "/motion/shoot"
 
 #define DEBUG
 class Strategy_nodeHandle{
@@ -37,6 +39,8 @@ public:
 	~Strategy_nodeHandle();
 protected:
 	void init(int, char**);
+	ros::Publisher	motion_pub;
+	ros::Publisher	shoot_pub;
 	Environment environment;
 	int level;
 	int status;
@@ -49,8 +53,6 @@ private:
 	ros::Subscriber level_sub;
 	ros::Subscriber loadParam_sub;
 	ros::Subscriber status_sub;
-	ros::Publisher	motion_pub;
-	ros::Publisher	shoot_pub;
 
 private:
 	void visionCallback(const vision::Object::ConstPtr &);

@@ -19,5 +19,5 @@ include_directories(${INCLUDE_DIR})
 ##############################################################################
 
 
-add_executable(PassingChallenge strategy_nodeHandle.cpp main.cpp behavior.cpp pathplan.cpp)
-target_link_libraries(PassingChallenge PassingChellengeLib ${catkin_LIBRARIES})
+add_executable(PassingChallenge_node strategy_nodeHandle.cpp main.cpp behavior.cpp pathplan.cpp)
+target_link_libraries(PassingChallenge_node PassingChellengeLib ${catkin_LIBRARIES})

@@ -12,6 +12,7 @@ Strategy_nodeHandle::Strategy_nodeHandle()
 	this->environment.robot.v_x = 0;
 	this->environment.robot.v_y = 0;
 	this->environment.robot.v_yaw = 0;
+	this->environment.robot.shoot = 0;
 }
 
 Strategy_nodeHandle::~Strategy_nodeHandle()
@@ -36,6 +37,8 @@ void Strategy_nodeHandle::init(int argc, char** argv)
 	this->level_sub = n->subscribe<std_msgs::Int32>(level_topic_name, 1000, &Strategy_nodeHandle::levelCallback, this);
 	this->loadParam_sub = n->subscribe<std_msgs::Bool>(loadParam_topic_name, 1000, &Strategy_nodeHandle::loadParamCallback, this);
 	this->status_sub = n->subscribe<std_msgs::Int32>(status_topic_name, 1000, &Strategy_nodeHandle::statusCallback, this);
+	this->motion_pub = n->advertise<geometry_msgs::Twist>(motion_topic_name, 1000);
+	this->shoot_pub = n->advertise<std_msgs::Int32>(shoot_topic_name, 1000);
 
 }
 
@@ -48,7 +51,7 @@ void Strategy_nodeHandle::visionCallback(const vision::Object::ConstPtr &vision_
 void Strategy_nodeHandle::IMUCallback(const imu_3d::inertia::ConstPtr &imu_msg)
 {
 	double imu_yaw = (imu_msg->yaw <= M_PI)? imu_msg->yaw * 180/M_PI : (imu_msg->yaw*180/M_PI-360); 
-	double map_yaw = imu_yaw - 90;
+	double map_yaw = (-1)*imu_yaw - 90;
 	this->environment.robot.pos.z = (map_yaw <= (-180))? map_yaw+360 : map_yaw;
 }
 

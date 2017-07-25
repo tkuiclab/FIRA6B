@@ -5,6 +5,7 @@
  ********************************/
 #include "strategy_nodeHandle.h"
 #include "pathplan.h"
+#include <time.h>
 /********************************
  *			Define				*
  ********************************/

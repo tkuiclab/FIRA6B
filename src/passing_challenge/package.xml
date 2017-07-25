@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>passingChallenge_strategy</name>
+  <name>passingChallenge</name>
   <version>0.0.0</version>
   <description>The FIRA Passing Challenge Strategy package</description>
 
