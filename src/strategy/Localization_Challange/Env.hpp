@@ -65,4 +65,7 @@ typedef struct{
     Point LocationPoint[5];
     Point MiddlePoint[5];
 }LocationStruct;
+typedef struct{
+    double x,y,yaw;
+}Vector3D;
 #endif

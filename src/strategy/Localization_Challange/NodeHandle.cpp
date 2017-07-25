@@ -37,7 +37,7 @@ void NodeHandle::setLocationPoint(LocationStruct *LocationPoint){
 }
 void NodeHandle::subVision(const vision::Object::ConstPtr &msg){
     double ball_distance;
-    _Env->Robot.ball.distance = msg->ball_ang/100;
+    _Env->Robot.ball.distance = msg->ball_dis/100.0;
     _Env->Robot.ball.angle = msg->ball_ang;
 }
 void NodeHandle::subRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &msg){

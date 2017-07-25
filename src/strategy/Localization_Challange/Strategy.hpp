@@ -46,6 +46,7 @@ private:
     back,
     finish,
     chase,
+    turn,
     error};
 };
 #endif
