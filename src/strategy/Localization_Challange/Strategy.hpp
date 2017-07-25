@@ -29,6 +29,7 @@ public:
     Strategy();
     virtual ~Strategy(){}
     void setEnv(Environment* Env){_Env = Env;}
+    void setParam(Parameter*);
     void GameState(int);
     void setLocationPoint(LocationStruct* LocationPoint){_Location = LocationPoint;}
     Environment getEnv(){return *_Env;}
@@ -40,6 +41,7 @@ private:
     int _CurrentTarget;
     LocationStruct *_Location;
     Environment *_Env;
+    Parameter *_Param;
     void showInfo();
     enum state_location{
     forward,

@@ -68,4 +68,14 @@ typedef struct{
 typedef struct{
     double x,y,yaw;
 }Vector3D;
+typedef struct{
+    std::vector<double>HoldBall_Condition;
+}Strategy_Parameter;
+typedef struct{
+    std::vector<double>SPlanning_Velocity;
+}NodeHandle_Parameter;
+typedef struct{
+    Strategy_Parameter Strategy;
+    NodeHandle_Parameter NodeHandle;
+}Parameter;
 #endif

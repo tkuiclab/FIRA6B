@@ -13,7 +13,7 @@
 NodeHandle::NodeHandle(int argc, char** argv):BaseNode(argc,argv,NODE_NAME){
     _Env = new Environment;
     _Location = new LocationStruct;
-    SPlanning_Velocity.resize(10);
+    // _Param->NodeHandle.SPlanning_Velocity.resize(10);        
     _Env->GameState = 0;
     _Env->SaveParam = 0;
 }
@@ -31,6 +31,9 @@ void NodeHandle::ros_comms_init(){
 }
 void NodeHandle::setEnv(Environment *Env){
     _Env = Env;
+}
+void NodeHandle::setParam(Parameter *Param){
+    _Param = Param;
 }
 void NodeHandle::setLocationPoint(LocationStruct *LocationPoint){
     _Location = LocationPoint;
@@ -87,14 +90,14 @@ void NodeHandle::Transfer(Environment *Env){
     }
     double angle = Env->Robot.v_yaw * RAD2DEG;
     bool IsVectorZero=0;
-    double DistanceMax = SPlanning_Velocity[0];
-    double DistanceMin = SPlanning_Velocity[1];
-    double VelocityMax = SPlanning_Velocity[2];
-    double VelocityMin = SPlanning_Velocity[3];
-    double AngularVelocityMax = SPlanning_Velocity[4];
-    double AngularVelocityMin = SPlanning_Velocity[5];
-    double AngleMax = SPlanning_Velocity[6];
-    double AngleMin = SPlanning_Velocity[7];
+    double DistanceMax = _Param->NodeHandle.SPlanning_Velocity[0];
+    double DistanceMin = _Param->NodeHandle.SPlanning_Velocity[1];
+    double VelocityMax = _Param->NodeHandle.SPlanning_Velocity[2];
+    double VelocityMin = _Param->NodeHandle.SPlanning_Velocity[3];
+    double AngularVelocityMax = _Param->NodeHandle.SPlanning_Velocity[4];
+    double AngularVelocityMin = _Param->NodeHandle.SPlanning_Velocity[5];
+    double AngleMax = _Param->NodeHandle.SPlanning_Velocity[6];
+    double AngleMin = _Param->NodeHandle.SPlanning_Velocity[7];
     double VelocityLength;    
     double AngularVelocity;
     if(Distance==0)
@@ -131,5 +134,6 @@ void NodeHandle::VelocityPlanning(Environment *Env){
 }
 void NodeHandle::getParameter(){
     printf("success getting parameter!!\n");
-    node->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity);
+    node->getParam("/FIRA/SPlanning_Velocity", _Param->NodeHandle.SPlanning_Velocity);
+    node->getParam("/FIRA/hold_condition", _Param->Strategy.HoldBall_Condition);
 }

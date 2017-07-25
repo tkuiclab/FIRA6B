@@ -34,6 +34,7 @@ public:
     NodeHandle(int argc, char** argv);
     virtual ~NodeHandle(){}
     void setEnv(Environment*);
+    void setParam(Parameter*);
     void setLocationPoint(LocationStruct*); 
     void pubSpeed(Environment*);
     void getParameter();
@@ -51,10 +52,10 @@ private:
     ros::Subscriber ROBOTPOSE;
     ros::Subscriber IMU;
     ros::Publisher SPEED;
-    
     Environment *_Env;
     LocationStruct *_Location;
-    std::vector<double> SPlanning_Velocity;
+    Parameter *_Param;
+    // std::vector<double> SPlanning_Velocity;
     ///         private function        ///
     void subGameState(const std_msgs::Int32::ConstPtr &msg){_Env->GameState=msg->data;}
     void subSaveParam(const std_msgs::Int32::ConstPtr &msg){_Env->SaveParam=msg->data;}

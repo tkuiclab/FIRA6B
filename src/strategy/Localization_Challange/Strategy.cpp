@@ -12,8 +12,12 @@
 Strategy::Strategy(){
     _LocationState = turn;
     _CurrentTarget = 0;
+    _Param->Strategy.HoldBall_Condition.resize(10);
     _Location = new LocationStruct;
     _Env = new Environment;
+}
+void Strategy::setParam(Parameter *Param){
+    _Param = Param;
 }
 void Strategy::GameState(int int_GameState){
     switch(int_GameState){
@@ -31,14 +35,17 @@ void Strategy::StrategyHalt(){
     _Env->Robot.v_yaw = 0;
 }
 void Strategy::StrategyLocalization(){
+    // ROS_INFO("hold_angle=%lf\n",_Param->Strategy.HoldBall_Condition[0]);
     RobotData Robot;
     Robot.pos.x = _Env->Robot.pos.x;
     Robot.pos.y = _Env->Robot.pos.y;
     double imu = _Env->Robot.pos.angle;
     static int flag = TRUE;
     static int flag_chase = TRUE;
-    double lost_ball_dis = 0.33;
-    double lost_ball_angle = 3;
+    double lost_ball_dis = _Param->Strategy.HoldBall_Condition[3];
+    double lost_ball_angle = _Param->Strategy.HoldBall_Condition[2];
+    double hold_ball_dis = _Param->Strategy.HoldBall_Condition[1];
+    double hold_ball_angle = _Param->Strategy.HoldBall_Condition[0];
     static double Begin_time = ros::Time::now().toSec();// init timer begin
     double Current_time = ros::Time::now().toSec();   // init timer end
     double v_x,v_y,v_yaw;
@@ -68,7 +75,7 @@ void Strategy::StrategyLocalization(){
             _LocationState = chase;                      //  Check lost ball or not
             flag_chase = FALSE;
         }
-    }else if(_Env->Robot.ball.distance > lost_ball_dis || fabs(_Env->Robot.ball.angle) > lost_ball_angle){
+    }else if(_Env->Robot.ball.distance < hold_ball_dis && fabs(_Env->Robot.ball.angle) < hold_ball_angle){
         _LocationState = last_state;
         flag_chase = TRUE;
     }
@@ -107,7 +114,6 @@ void Strategy::StrategyLocalization(){
             v_yaw = _Env->Robot.ball.angle;
             break;
         case turn:
-        ROS_INFO("aroha");
             if(last_state == forward){
                 vector_tr.x = _Location->LocationPoint[_CurrentTarget].x - Robot.ball.x;
                 vector_tr.y = _Location->LocationPoint[_CurrentTarget].y - Robot.ball.y;
