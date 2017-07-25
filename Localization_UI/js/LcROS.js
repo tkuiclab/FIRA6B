@@ -420,7 +420,7 @@ function GeneralTransfer(){
 function GeneralReset(){
         var Smallbox;
         var obj = [2.2,0.3,80.0,50.0,20,3,144,5];
-        var obj2 = [3.0,0.33];
+        var obj2 = [3.0,0.33,9.0,0.4];
         Smallbox = document.getElementsByName("SPlanningVelocityElement");
         Smallbox1 = document.getElementsByName("BallElement");
 
