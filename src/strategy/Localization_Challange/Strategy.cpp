@@ -106,6 +106,7 @@ void Strategy::StrategyLocalization(){
             printf("ERROR STATE\n");
             exit(FAULTEXECUTING);
     }
+    last_state = _LocationState;
     if(_LocationState != chase){
         if(imu>5)
             IMU_state = 1;
@@ -188,7 +189,7 @@ void Strategy::showInfo(){
     std::string haha = Sv_x+Sv_y+Sv_yaw;
     std::cout << "Direction : " << Sv_x+Sv_y+Sv_yaw << std::endl;
     std::cout << "Speed : (" << std::fixed << std::setprecision(2)\
-    << fabs(_Env->Robot.v_x) << "," << fabs(_Env->Robot.v_x) << ","\
+    << fabs(_Env->Robot.v_x) << "," << fabs(_Env->Robot.v_y) << ","\
     << fabs(_Env->Robot.v_yaw) << ")" << std::endl;
     printf("==================== END ======================\n\n");
 }
