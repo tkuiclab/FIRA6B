@@ -204,6 +204,9 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
             case  action_Block:
                 strategy_Block(robotIndex);
                 break;
+            case  action_Kick:
+                strategy_Kick(robotIndex);
+                break;
 
         }
 }
@@ -243,6 +246,7 @@ void FIRA_pathplan_class::strategy_Chase(int r_number){
     env.home[r_number].v_x =vectornt(0);
     env.home[r_number].v_y =vectornt(1);
     env.home[r_number].v_yaw = goal_angle;
+    shoot = 0;
 }
 
 void FIRA_pathplan_class::strategy_Straight_Chase(int robotIndex){
@@ -264,6 +268,7 @@ void FIRA_pathplan_class::strategy_Straight_Chase(int robotIndex){
     env.home[r_number].v_x = vectorbr_x;
     env.home[r_number].v_y = vectorbr_y;
     env.home[r_number].v_yaw = angle_br;
+    shoot = 0;
 }
 
 void FIRA_pathplan_class::strategy_KO5_Chase(int r_number){
@@ -632,6 +637,8 @@ void FIRA_pathplan_class::strategy_typeS_Attack(int Robot_index){
 //    printf("op_angle_dr=%lf\n",op_angle_dr);
     if(fabs(angle_dr) < 7){
         shoot = 185;
+    }else{
+        shoot = 0;
     }
     env.home[r_number].v_x = vectornt(0);
     env.home[r_number].v_y = vectornt(1)*2;
@@ -748,6 +755,7 @@ void FIRA_pathplan_class::strategy_typeU_Attack(int Robot_index){
             iCondition = 0;
         }
     }
+    shoot = 0;
 }
 void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     int r_number = Robot_index;
@@ -869,6 +877,8 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
 
     if(fabs(angle_dr) < 7){ // if there is any chance, shoot!
         shoot = 185;
+    }else{
+        shoot = 0;
     }
 }
 
@@ -916,6 +926,7 @@ void FIRA_pathplan_class::strategy_SideSpeedUp(int Robot_index){
         env.home[r_number].v_x =const_vector_x;
         env.home[r_number].v_y =const_vector_y;
         env.home[r_number].v_yaw =goal_angle*2;
+        shoot = 0;
 }
 
 void FIRA_pathplan_class::strategy_Support(int Robot_index){
@@ -1030,6 +1041,7 @@ void FIRA_pathplan_class::strategy_Support(int Robot_index){
         env.home[r_number].v_x = vectornt(0);
         env.home[r_number].v_y = vectornt(1);
         env.home[r_number].v_yaw = angle*5/*5*/;
+        shoot = 0;
 
 }
 
@@ -1037,6 +1049,7 @@ void FIRA_pathplan_class::strategy_Halt(int Robot_index){
     env.home[Robot_index].v_x = 0;
     env.home[Robot_index].v_y = 0;
     env.home[Robot_index].v_yaw = 0;
+    shoot = 0;
     loopEnd = true;
 }
 
@@ -1219,55 +1232,55 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
 }
 
 void FIRA_pathplan_class::strategy_ThrowIn(int Robot_index){
-    int r_number = Robot_index;
-    int r_number1;
-    if(r_number == 1)r_number1 = 2;
-    else r_number = 1;
-    Vector3D ball = env.currentBall.pos;
-    Vector3D robot = env.home[r_number].pos;
-    Vector3D robot1 = env.home[r_number1].pos;
+//    int r_number = Robot_index;
+//    int r_number1;
+//    if(r_number == 1)r_number1 = 2;
+//    else r_number = 1;
+//    Vector3D ball = env.currentBall.pos;
+//    Vector3D robot = env.home[r_number].pos;
+//    Vector3D robot1 = env.home[r_number1].pos;
 
 
-    double Robot_head_x = robot.x + half_robot*cos(env.home[r_number].rotation*deg2rad);
-    double Robot_head_y = robot.y + half_robot*sin(env.home[r_number].rotation*deg2rad);
-    double Robot1_head_x = robot1.x + half_robot*cos(env.home[r_number1].rotation*deg2rad);
-    double Robot1_head_y = robot1.y + half_robot*sin(env.home[r_number1].rotation*deg2rad);
+//    double Robot_head_x = robot.x + half_robot*cos(env.home[r_number].rotation*deg2rad);
+//    double Robot_head_y = robot.y + half_robot*sin(env.home[r_number].rotation*deg2rad);
+//    double Robot1_head_x = robot1.x + half_robot*cos(env.home[r_number1].rotation*deg2rad);
+//    double Robot1_head_y = robot1.y + half_robot*sin(env.home[r_number1].rotation*deg2rad);
 
 
-    double vector1br_x = ball.x - Robot1_head_x;
-    double vector1br_y = ball.y - Robot1_head_y;
+//    double vector1br_x = ball.x - Robot1_head_x;
+//    double vector1br_y = ball.y - Robot1_head_y;
 
-    double vectorbr_x = ball.x - Robot_head_x;
-    double vectorbr_y = ball.y - Robot_head_y;
+//    double vectorbr_x = ball.x - Robot_head_x;
+//    double vectorbr_y = ball.y - Robot_head_y;
 
 
-    double vectorrr_x = Robot1_head_x - Robot_head_x;
-    double vectorrr_y = Robot1_head_y - Robot_head_y;
+//    double vectorrr_x = Robot1_head_x - Robot_head_x;
+//    double vectorrr_y = Robot1_head_y - Robot_head_y;
 
-    double dis_br = hypot(vectorbr_x,vectorbr_y);
-    double dis_rr = hypot(vectorrr_x,vectorrr_y);
+//    double dis_br = hypot(vectorbr_x,vectorbr_y);
+//    double dis_rr = hypot(vectorrr_x,vectorrr_y);
 
-    double v_x = vectorrr_x *4;
-    double v_y = vectorrr_y *4;
+//    double v_x = vectorrr_x *4;
+//    double v_y = vectorrr_y *4;
 
-    double phi = atan2(vectorrr_y , vectorrr_x) * rad2deg;
-    double angle = phi - env.home[r_number].rotation;
+//    double phi = atan2(vectorrr_y , vectorrr_x) * rad2deg;
+//    double angle = phi - env.home[r_number].rotation;
 
-    if(angle>180)
-    {
-        angle = angle - 360;
-    }else if(angle < -180){
-        angle = angle + 360;
-    }
-//    if((fabs(robot.y) >= 2 && dis_br<=1)){
-//        env.home[1].v_x=v_x;
-//        env.home[1].v_y=v_y;
-//        env.home[1].v_yaw=angle;
-//    }else{
-//        strategy_Support(Robot_index);
+//    if(angle>180)
+//    {
+//        angle = angle - 360;
+//    }else if(angle < -180){
+//        angle = angle + 360;
 //    }
-    shoot = 30;
-    printf("shoot = 30\n");
+////    if((fabs(robot.y) >= 2 && dis_br<=1)){
+////        env.home[1].v_x=v_x;
+////        env.home[1].v_y=v_y;
+////        env.home[1].v_yaw=angle;
+////    }else{
+////        strategy_Support(Robot_index);
+////    }
+    shoot = 0;
+//    printf("shoot = 30\n");
 }
 
 void FIRA_pathplan_class::strategy_CornerKick(int Robot_index){
@@ -1342,10 +1355,11 @@ void FIRA_pathplan_class::strategy_CornerKick(int Robot_index){
         }
         env.home[r_number].v_y = forwardV;
     }
+    shoot = 0;
 }
 
 void FIRA_pathplan_class::strategy_AvoidBarrier(int Robot_index){
-
+    shoot = 0;
 }
 
 double FIRA_pathplan_class::vecAngle(Vector2d a,Vector2d b){
@@ -1481,6 +1495,7 @@ void FIRA_pathplan_class::strategy_Support_CatchBallState(int r_number){
         if(fabs(angle_br)<10){
             env.home[r_number].v_yaw =0;
       }
+     shoot = 0;
 
 }
 
@@ -1571,6 +1586,7 @@ void FIRA_pathplan_class::strategy_Support_LostBallState(int r_number){
             }
         }
     }
+    shoot = 0;
 }
 void FIRA_pathplan_class::strategy_Support_Positioning(int r_number){
         double distance_br = env.home[r_number].ball.distance;
@@ -1672,6 +1688,7 @@ void FIRA_pathplan_class::strategy_Support_Positioning(int r_number){
        printf("r_basic_xy=%f\n",r_basic_xy);
        printf("angle_xy_target=%f\n",angle_xy_target);
        env.home[r_number].v_yaw=rb_angle;
+       shoot = 0;
        printf("target_x=%f\n",target_x);
        printf("target_y=%f\n",target_y);
        printf("vision_rx=%f\n",vision_rx);
@@ -1689,11 +1706,6 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
     static int shoot_count =1;
-    if(fabs(angle_br)<=Chase_Strategy[3] && distance_br<=Chase_Strategy[4]){
-        shoot = 25;
-    }else{
-        shoot = 0;
-    }
 //    if(shoot_count==1){
 //        shoot = 25;
 //        shoot_count--;
@@ -1743,6 +1755,7 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
         env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
         env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
     }
+    shoot = 0;
 
 
 
@@ -1942,12 +1955,11 @@ void FIRA_pathplan_class::strategy_Support_Test2(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 //    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
 //    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
@@ -2192,12 +2204,11 @@ void FIRA_pathplan_class::strategy_Support_Test3(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 
 }
@@ -2296,12 +2307,11 @@ void FIRA_pathplan_class::strategy_MovetoYellowGate(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 //    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
 //    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
@@ -2402,12 +2412,11 @@ void FIRA_pathplan_class::strategy_MovetoBlueGate(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 //    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
 //    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
@@ -2518,12 +2527,11 @@ void FIRA_pathplan_class::strategy_LeaveBall(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 //    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
 //    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
@@ -2615,12 +2623,11 @@ void FIRA_pathplan_class::strategy_LeaveLimitArea(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 //    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
 //    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
@@ -2708,15 +2715,14 @@ void FIRA_pathplan_class::strategy_LeftRightMove(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
-    printf("x_speed=%f\n",x_speed);
-    printf("y_speed=%f\n",y_speed);
-    printf("yaw_speed=%f\n",yaw_speed);
+    shoot = 0;
+//    printf("x_speed=%f\n",x_speed);
+//    printf("y_speed=%f\n",y_speed);
+//    printf("yaw_speed=%f\n",yaw_speed);
 
 }
 
@@ -2882,12 +2888,11 @@ void FIRA_pathplan_class::strategy_invLeftRightMove(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant*10)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant*10)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 //    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
 //    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
@@ -3059,12 +3064,11 @@ void FIRA_pathplan_class::strategy_Support_LostInternet(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 //    printf("x_speed*speed_constant=%f\n",x_speed*speed_constant);
 //    printf("y_speed*speed_constant=%f\n",y_speed*speed_constant);
@@ -3162,12 +3166,11 @@ void FIRA_pathplan_class::strategy_MovetoGoal(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 }
 void FIRA_pathplan_class::strategy_MovetoOpGoal(int r_number){
@@ -3251,12 +3254,11 @@ void FIRA_pathplan_class::strategy_MovetoOpGoal(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 }
 
 void FIRA_pathplan_class::strategy_MovetoGoalEdge1(int r_number){
@@ -3345,12 +3347,11 @@ void FIRA_pathplan_class::strategy_MovetoGoalEdge1(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 }
 void FIRA_pathplan_class::strategy_MovetoGoalEdge2(int r_number){
@@ -3439,12 +3440,11 @@ void FIRA_pathplan_class::strategy_MovetoGoalEdge2(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 }
 
@@ -3529,12 +3529,11 @@ void FIRA_pathplan_class::strategy_MovetoOpGoalEdge1(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 }
 
@@ -3619,12 +3618,11 @@ void FIRA_pathplan_class::strategy_MovetoOpGoalEdge2(int r_number){
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
-    if(fabs(x_speed*speed_constant)<speed_limit){
+    if((fabs(x_speed*speed_constant)<speed_limit)&&(fabs(y_speed*speed_constant)<speed_limit)){
        env.home[r_number].v_x = 0;
-    }
-    if(fabs(y_speed*speed_constant)<speed_limit){
        env.home[r_number].v_y = 0;
     }
+    shoot = 0;
 
 }
 
@@ -3639,6 +3637,7 @@ void FIRA_pathplan_class::strategy_Stop(int r_number){
     env.home[r_number].v_yaw= 0;
     env.home[r_number].v_x = 0;
     env.home[r_number].v_y = 0;
+     shoot = 0;
 }
 
 void FIRA_pathplan_class::strategy_Block(int r_number){
@@ -3648,12 +3647,12 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-    static int shoot_count =1;
-    if(fabs(angle_br)<=Chase_Strategy[3] && distance_br<=Chase_Strategy[4]){
-        shoot = 21;
-    }else{
-        shoot = 0;
-    }
+//    static int shoot_count =1;
+//    if(fabs(angle_br)<=Chase_Strategy[3] && distance_br<=Chase_Strategy[4]){
+//        shoot = 21;
+//    }else{
+//        shoot = 0;
+//    }
 //    if(shoot_count==1){
 //        shoot = 25;
 //        shoot_count--;
@@ -3701,7 +3700,17 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
         env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
         env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
     }
+     shoot = 0;
 }
+void FIRA_pathplan_class::strategy_Kick(int Robot_index){
+    if(SPlanning_Velocity[9]<=100){
+        shoot = SPlanning_Velocity[9];
+    }else{
+        shoot = 100;
+    }
+    printf("shoot=%d\n",shoot);
+}
+
 //==========for ROS special===============//
 //###################################################//
 //                                                   //
@@ -3744,6 +3753,11 @@ void FIRA_pathplan_class::loadParam(ros::NodeHandle *n){
 //       for(int i=0;i<5;i++)
 //           std::cout<< "param SideSpeedUp["<< i << "]=" << SideSpeedUp[i] << std::endl;
 //   std::cout << "====================================" << std::endl;
+   }
+   if(n->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity)){
+  //     for(int i=0;i<8;i++)
+  //         std::cout<< "param SPlanning_Velocity["<< i << "]=" << SPlanning_Velocity[i] << std::endl;
+  // std::cout << "====================================" << std::endl;
    }
 //    std::string ns = "/FIRA/R1/Strategy/Pathplan/";
 

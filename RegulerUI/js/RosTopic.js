@@ -401,11 +401,42 @@ function PublishTopicSaveParam() {
     var SaveParam = new ROSLIB.Message({
         data: 1
     });
-
     if (CheckIP[0] == 1)
         SaveParam1.publish(SaveParam);
     if (CheckIP[1] == 1)
         SaveParam2.publish(SaveParam);
     if (CheckIP[2] == 1)
         SaveParam3.publish(SaveParam);
+    console.log(213);
+}
+/*========================================================*/
+// IsTeamStrategy
+var TeamStrategy1 = new ROSLIB.Topic({
+    ros: ros,
+    name: '/FIRA/IsTeamStrategy',
+    messageType: 'std_msgs/Int32'
+});
+var TeamStrategy2 = new ROSLIB.Topic({
+    ros: ros2,
+    name: '/FIRA/IsTeamStrategy',
+    messageType: 'std_msgs/Int32'
+});
+var TeamStrategy3 = new ROSLIB.Topic({
+    ros: ros3,
+    name: '/FIRA/IsTeamStrategy',
+    messageType: 'std_msgs/Int32'
+});
+
+function IsTeamStrategy(check){
+    console.log(check);
+    var TeamStrategy = new ROSLIB.Message({
+        data: parseInt(check)
+    });
+    if (CheckIP[0] == 1)
+        TeamStrategy1.publish(TeamStrategy);
+    if (CheckIP[1] == 1)
+        TeamStrategy2.publish(TeamStrategy);
+    if (CheckIP[2] == 1)
+        TeamStrategy3.publish(TeamStrategy);
+    
 }

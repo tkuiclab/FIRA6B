@@ -33,6 +33,7 @@ void TeamStrategy_nodeHandle::ros_comms_init(){
     
     GameState = n->subscribe<std_msgs::Int32>(GameState_Topic,1000,&TeamStrategy_nodeHandle::subGameState,this);
     TeamColor = n->subscribe<std_msgs::String>(TeamColor_Topic,1000,&TeamStrategy_nodeHandle::subTeamColor,this);
+    IsTeamStrategy = n->subscribe<std_msgs::Int32>(IsTeamStrategy_Topic,1000,&TeamStrategy_nodeHandle::subIsTeamStrategy,this);
 
     //robot_role
     std::string robot_role_prefix = opponent ?  RobotOpt_Topic_Prefix : Robot_Topic_Prefix;

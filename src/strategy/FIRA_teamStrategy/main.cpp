@@ -98,11 +98,11 @@ int main(int argc, char **argv)
         mteam.teamStrategy();
         roleAry = mteam.getRoleAry();
         mNodeHandle.pubRole(roleAry);
-        mNodeHandle.pubOrder(sendOrder);
+        //mNodeHandle.pubOrder(sendOrder);
         mNodeHandle.this_robot_info_publish(global_env->RobotNumber);
 
         ros::spinOnce();
-//        loop_rate.sleep();
+        loop_rate.sleep();
     }
     
     ros::shutdown();

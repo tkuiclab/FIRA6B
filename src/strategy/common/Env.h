@@ -35,6 +35,7 @@ const long PLAYERS_PER_SIDE = 3;
 #define Role_Test2              9
 #define Role_Test3             10
 #define Role_NewSupport        11
+#define Role_Kick              12
 
 #define action_Halt             0
 #define action_Goalkeeper       1
@@ -79,6 +80,7 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_MovetoOpGoalEdge2        40
 #define action_Stop                     41
 #define action_Block                    42
+#define action_Kick                     43
 
 #define state_Init              0
 #define state_Chase             1
@@ -149,6 +151,7 @@ typedef struct
     int R1OrderR2;
     double Support_Obstacle_angle;
     double Support_Obstacle_distance;
+    int isteamstrategy;
 } Environment;
 //static Environment global_env;
 

@@ -34,6 +34,7 @@
 #define Ball_Topic_Name "/FIRA/Strategy/WorldMap/soccer"
 #define GameState_Topic "/FIRA/GameState"
 #define IsSimulator_Topic "/FIRA/IsSimulator"
+#define IsTeamStrategy_Topic "/FIRA/IsTeamStrategy"
 
 //RobotNumber
 #define RobotNumber_Topic "/FIRA/RobotNumber"
@@ -177,6 +178,7 @@ private:
     ros::Subscriber robotOpt_1_pos_sub  ;
     ros::Subscriber robotOpt_2_pos_sub  ;
     ros::Subscriber robotOpt_3_pos_sub  ;
+    ros::Subscriber IsTeamStrategy;
 
     ros::Subscriber GameState;
     ros::Subscriber TeamColor;
@@ -238,6 +240,10 @@ private:
     
     void subGameState(const std_msgs::Int32::ConstPtr &msg){
         global_env->gameState=msg->data;
+    }
+
+    void subIsTeamStrategy(const std_msgs::Int32::ConstPtr &msg){
+        global_env->isteamstrategy=msg->data;
     }
 
     void subTeamColor(const std_msgs::String::ConstPtr &msg){

@@ -21,7 +21,8 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[6].value = 144.0;
         obj[7].value = 5.0;
         obj[8].value = 10.0;
-        console.log(document.getElementsByName("SPlanningVelocityElement1")[8].value)
+        obj[9].value = 0;
+        console.log(document.getElementsByName("SPlanningVelocityElement1")[9].value)
     }
     if (localStorage.getItem("GeneralDistanceSetStr1") != null) {
         obj = document.getElementsByName("DistanceSettingsElement1");
@@ -52,6 +53,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[6].value = 144.0;
         obj[7].value = 5.0;
         obj[8].value = 10.0;
+        obj[9].value = 0;
     }
     if (localStorage.getItem("GeneralDistanceSetStr2") != null) {
         obj = document.getElementsByName("DistanceSettingsElement2");
@@ -82,6 +84,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[6].value = 144.0;
         obj[7].value = 5.0;
         obj[8].value = 10.0;
+        obj[9].value = 0;
     }
     if (localStorage.getItem("GeneralDistanceSetStr3") != null) {
         obj = document.getElementsByName("DistanceSettingsElement3");
@@ -516,6 +519,13 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[4].checked = false;
         obj[5].checked = false;
     }
+    if (localStorage.getItem("BehaviorSupportStrategyStr1") != null) {
+        obj = document.getElementsByName("SupportStrategyElement1");
+        obj[parseInt(JSON.parse(localStorage.getItem("BehaviorSupportStrategyStr1"))[0]) - 1].checked = true;
+    } else {
+        obj = document.getElementsByName("SupportStrategyElement1");
+        obj[0].checked = true;
+    }
 
     //Robot 2
     if (localStorage.getItem("BehaviorStateChaseStr2") != null) {
@@ -611,6 +621,14 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[5].checked = false;
     }
 
+    if (localStorage.getItem("BehaviorSupportStrategyStr2") != null) {
+        obj = document.getElementsByName("SupportStrategyElement2");
+        obj[parseInt(JSON.parse(localStorage.getItem("BehaviorSupportStrategyStr2"))[0]) - 1].checked = true;
+    } else {
+        obj = document.getElementsByName("SupportStrategyElement2");
+        obj[0].checked = true;
+    }
+
     //Robot 3
 
     if (localStorage.getItem("BehaviorStateChaseStr3") != null) {
@@ -704,6 +722,13 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].checked = false;
         obj[4].checked = false;
         obj[5].checked = false;
+    }
+    if (localStorage.getItem("BehaviorSupportStrategyStr3") != null) {
+        obj = document.getElementsByName("SupportStrategyElement3");
+        obj[parseInt(JSON.parse(localStorage.getItem("BehaviorSupportStrategyStr3"))[0]) - 1].checked = true;
+    } else {
+        obj = document.getElementsByName("SupportStrategyElement3");
+        obj[0].checked = true;
     }
     //===========================================================================================================
     //RobotShow

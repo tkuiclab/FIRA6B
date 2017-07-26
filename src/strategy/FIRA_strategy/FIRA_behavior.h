@@ -24,6 +24,7 @@ private:
     std::vector<double> Zone_Attack;
     std::vector<double> Corner_Kick;
     std::vector<int> Strategy_Selection;
+    std::vector<int> Support_Strategy;
     std::vector<double> Dorsad_Attack;
 
     // ========== test change roleAry[ i ] to escape from cornerkick and try to reset the state  end ==========
@@ -87,6 +88,7 @@ public:
     void behavior_Test2(int);
     void behavior_Test3(int);
     void behavior_NewSupport(int);
+    void behavior_Kick(int);
 //----------------------------------------------
     void readroleAry(int, int);
     int* getactionAry();
