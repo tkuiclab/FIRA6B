@@ -615,21 +615,25 @@ private:
         int degree_controller = 0; // if ball dis lower, start scan 180 degree
         int edge_controller = 1;
         static int edge_count=0;
+        static int Begin_time = 0;
+        static int Current_time = 0;
+        Current_time = ros::Time::now().toSec();
         if(global_env->gameState==0){
-            edge_count=0;
+            Begin_time = ros::Time::now().toSec();
+            Current_time = ros::Time::now().toSec();
         }
-        if(edge_count>=100){
-           degree_controller=0;
-           ignore_limit_angle=45;
-           limit_obstacle_dis=200;
-           edge_controller = 0;
-        }else{
+        if((abs(Current_time-Begin_time)<2)&&(global_env->gameState==5)){
            degree_controller=270;
            ignore_limit_angle=25;
            limit_obstacle_dis=200;
            edge_controller = 1;
-           edge_count++;
+        }else{
+           degree_controller=0;
+           ignore_limit_angle=45;
+           limit_obstacle_dis=200;
+           edge_controller = 0;
         }
+
 
 
         if(transform_angle_br<0){//let ball_angle be 0~360 degree
@@ -759,7 +763,6 @@ private:
         }
         global_env->Support_Obstacle_angle=final_angle;
         global_env->Support_Obstacle_distance= final_distance/100;
-        printf("edge_count=%d\n",edge_count);
 //        printf("final angle = %f \n",final_angle);
 //        printf("ball angle=%f\n",angle_br);
 //        printf("final_distance = %f \n",final_distance/100);

@@ -663,11 +663,6 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
 //    printf("Current_time=%f\n",Current_time);
     Current_time = ros::Time::now().toSec();
 
-    if(op_distance_dr<1.6){// in limit area
-        actionAry[robotIndex] = action_LeaveLimitArea;
-//        printf("action_LeaveLimitArea\n");
-//        printf("op_distance_dr=%f\n",op_distance_dr);
-    }
     switch(Support_Strategy[0]){
         case 1:     //AutoCase
             printf("AutoCase\n");
@@ -732,7 +727,7 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
             }
             break;
     }
-    printf("XXXXXXCurrent_time-Begin_time=%f\n",fabs(Current_time-Begin_time));
+    //printf("XXXXXXCurrent_time-Begin_time=%f\n",fabs(Current_time-Begin_time));
 
 
 }

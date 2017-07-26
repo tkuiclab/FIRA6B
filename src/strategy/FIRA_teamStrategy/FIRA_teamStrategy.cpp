@@ -224,6 +224,10 @@ void FIRA_teamStrategy_class::role_FreeKick(){
                 }else{
                     another_attacker_select_counter=0;
                 }
+
+                if(env.AnotherGoalDistance<distance_dr&&distance_dr<1.6){
+                    roleAry[env.RobotNumber]=Role_NewSupport;
+                }
             break;
             case 1:// this robot catch ball state
                 printf("this robot catch ball\n");
@@ -364,6 +368,10 @@ void FIRA_teamStrategy_class::role_FreeBall(){
                 }else{
                     another_attacker_select_counter=0;
                 }
+
+                if(env.AnotherGoalDistance<distance_dr&&distance_dr<1.6){
+                    roleAry[env.RobotNumber]=Role_NewSupport;
+                }
             break;
             case 1:// this robot catch ball state
                 printf("this robot catch ball\n");
@@ -488,6 +496,10 @@ void FIRA_teamStrategy_class::role_ThrowIn(){
                 }else{
                     another_attacker_select_counter=0;
                 }
+
+                if(env.AnotherGoalDistance<distance_dr&&distance_dr<1.6){
+                    roleAry[env.RobotNumber]=Role_NewSupport;
+                }
             break;
             case 1:// this robot catch ball state
                 printf("this robot catch ball\n");
@@ -611,6 +623,10 @@ void FIRA_teamStrategy_class::role_CornerKick(){
                     }
                 }else{
                     another_attacker_select_counter=0;
+                }
+
+                if(env.AnotherGoalDistance<distance_dr&&distance_dr<1.6){
+                    roleAry[env.RobotNumber]=Role_NewSupport;
                 }
             break;
             case 1:// this robot catch ball state

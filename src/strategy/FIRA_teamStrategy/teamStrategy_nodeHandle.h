@@ -213,6 +213,7 @@ private:
         global_env->AnotherGoalDistance=msg->data[3];//another robot Goal distance
         global_env->home[global_env->AnotherRobotNumber].goal.distance=msg->data[3];
         global_env->R1OrderR2=msg->data[4];
+
 //        printf("msg->data[0]=%f\n",msg->data[0]);
 //        printf("msg->data[1]=%f\n",msg->data[1]);
 //        printf("msg->data[2]=%f\n",msg->data[2]);
