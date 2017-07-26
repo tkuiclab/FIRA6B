@@ -139,6 +139,8 @@ body {
 
 /*==========================================================*/
 
+/*==========================================================*/
+
 #MapArea {
     width: 700px;
     height: 550px;
@@ -353,6 +355,10 @@ table.RobotInformationTable tfoot td {
 #RobotStrategyTable1 {
     width: 100%;
     height: 20%;
+    text-align: center;
+}
+#RobotStrategyTable1 td{
+    width: 50%;
     text-align: center;
 }
 #RobotStrategyTable2 {

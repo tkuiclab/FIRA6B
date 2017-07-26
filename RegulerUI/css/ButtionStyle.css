@@ -156,7 +156,6 @@
 
 /*==========================================================*/
 
-
 /*==========================================================*/
 
 
@@ -306,21 +305,21 @@
 
 /*RobotStrategyDiv*/
 
-#OffensiveButton {
+#IsTeamStrategyButton {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 13.8px;
     color: #663D00;
 }
 
-#OffensiveButton.ui-state-hover {
+#IsTeamStrategyButton.ui-state-hover {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 13.8px;
     background-color: #FFF;
 }
 
-#OffensiveButton.ui-state-active {
+#IsTeamStrategyButton.ui-state-active {
     background-color: #FFCC00;
     font-size: 13.8px;
     color: #1A1A65;
@@ -329,21 +328,21 @@
 
 /*==========================================================*/
 
-#DefensiveButton {
+#SingleButton {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 13.8px;
     color: #663D00;
 }
 
-#DefensiveButton.ui-state-hover {
+#SingleButton.ui-state-hover {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 13.8px;
     background-color: #FFF;
 }
 
-#DefensiveButton.ui-state-active {
+#SingleButton.ui-state-active {
     background-color: #FFCC00;
     font-size: 13.8px;
     color: #1A1A65;
@@ -493,20 +492,20 @@
 #AvoidBarrierButton {
     background-image: none;
     /*background-color: #99CCFF;*/
-    font-size: 13.8px;
+    font-size: 12px;
     color: #663D00;
 }
 
 #AvoidBarrierButton.ui-state-hover {
     background-image: none;
     /*background-color: #99CCFF;*/
-    font-size: 13.8px;
+    font-size: 12px;
     background-color: #FFF;
 }
 
 #AvoidBarrierButton.ui-state-active {
     background-color: #FFCC00;
-    font-size: 13.8px;
+    font-size: 12px;
     color: #1A1A65;
 }
 
@@ -516,19 +515,40 @@
 #RobotShowButton {
     background-image: none;
     /*background-color: #99CCFF;*/
-    font-size: 13.8px;
+    font-size: 12px;
     color: #663D00;
 }
 
 #RobotShowButton.ui-state-hover {
     background-image: none;
     /*background-color: #99CCFF;*/
-    font-size: 13.8px;
+    font-size: 12px;
     background-color: #FFF;
 }
 
 #RobotShowButton.ui-state-active {
     background-color: #FFCC00;
-    font-size: 13.8px;
+    font-size: 12px;
+    color: #1A1A65;
+}
+/*==========================================================*/
+
+#ShootBrokenButton {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 12px;
+    color: #663D00;
+}
+
+#ShootBrokenButton.ui-state-hover {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 12px;
+    background-color: #FFF;
+}
+
+#ShootBrokenButton.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 12px;
     color: #1A1A65;
 }
