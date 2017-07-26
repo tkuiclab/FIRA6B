@@ -37,8 +37,13 @@ private:
     ///         private member          /// 
     void StrategyHalt();
     void StrategyLocalization();
+    void Forward(RobotData,int&,int&,int);
+    void Back(int);
+    void Turn();
+    void Chase();
     int _LocationState;
     int _CurrentTarget;
+    int _Last_state;
     LocationStruct *_Location;
     Environment *_Env;
     Parameter *_Param;

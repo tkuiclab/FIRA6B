@@ -11,8 +11,8 @@
 #include "Strategy.hpp"
 Strategy::Strategy(){
     _LocationState = turn;
+    _Last_state = turn;
     _CurrentTarget = 0;
-    _Param->Strategy.HoldBall_Condition.resize(10);
     _Location = new LocationStruct;
     _Env = new Environment;
 }
@@ -52,7 +52,6 @@ void Strategy::StrategyLocalization(){
     double accelerate = 1;
     double slow_factor =1;
     static int IMU_state = 0;
-    static int last_state = turn;
     double compensation_distance = 0.1;
     double compensation_angle = ((int)imu+90+180)%360;
     double compensation_x = compensation_distance*cos(compensation_angle*DEG2RAD);
@@ -71,35 +70,39 @@ void Strategy::StrategyLocalization(){
         slow_factor = 1;
     if(_Env->Robot.ball.distance > lost_ball_dis || fabs(_Env->Robot.ball.angle) > lost_ball_angle){  
         if(flag_chase){
-            last_state = _LocationState;
+            _Last_state = _LocationState;
             _LocationState = chase;                      //  Check lost ball or not
             flag_chase = FALSE;
         }
     }else if(_Env->Robot.ball.distance < hold_ball_dis && fabs(_Env->Robot.ball.angle) < hold_ball_angle){
-        _LocationState = last_state;
+        _LocationState = _Last_state;
         flag_chase = TRUE;
     }
     switch(_LocationState){
         case forward:                                // Move to target poitn
-            last_state = _LocationState;
+            _Last_state = _LocationState;
             flag = FALSE;
             v_x = (_Location->LocationPoint[_CurrentTarget].x+compensation_x) - Robot.pos.x;
             v_y = (_Location->LocationPoint[_CurrentTarget].y+compensation_y) - Robot.pos.y;
+            v_x = v_x*cos((-imu)*DEG2RAD)+v_y*sin((-imu)*DEG2RAD);
+            v_y = v_x*sin((-imu)*DEG2RAD)+v_y*cos((-imu)*DEG2RAD);
             if(fabs(v_x)<=0.05 && fabs(v_y)<=0.05){
-                _LocationState = back;
+                _LocationState = turn;
                 flag = TRUE;
             }
             break;
         case back:                                   // Back to middle circle
-            last_state = _LocationState;
+            _Last_state = _LocationState;
             flag = FALSE;
             v_x = (_Location->MiddlePoint[_CurrentTarget].x+compensation_x) - Robot.pos.x;
             v_y = (_Location->MiddlePoint[_CurrentTarget].y+compensation_y) - Robot.pos.y;
+            v_x = v_x*cos((-imu)*DEG2RAD)+v_y*sin((-imu)*DEG2RAD);
+            v_y = v_x*sin((-imu)*DEG2RAD)+v_y*cos((-imu)*DEG2RAD);
             if(fabs(v_x)<=0.05 && fabs(v_y)<=0.05){
                 if(_CurrentTarget==4)
                     _LocationState = finish;
                 else{
-                    _LocationState = forward;
+                    _LocationState = turn;
                     flag = TRUE;
                 }
             _CurrentTarget++;}
@@ -114,13 +117,13 @@ void Strategy::StrategyLocalization(){
             v_yaw = _Env->Robot.ball.angle;
             break;
         case turn:
-            if(last_state == forward){
+            if(_Last_state == forward){
                 vector_tr.x = _Location->LocationPoint[_CurrentTarget].x - Robot.ball.x;
                 vector_tr.y = _Location->LocationPoint[_CurrentTarget].y - Robot.ball.y;
-            }else if(last_state == back){
+            }else if(_Last_state == back){
                 vector_tr.x = _Location->MiddlePoint[_CurrentTarget].x - Robot.ball.x;
                 vector_tr.y = _Location->MiddlePoint[_CurrentTarget].y - Robot.ball.y;
-            }else if(last_state == turn){
+            }else if(_Last_state == turn){
                 vector_tr.x = _Location->LocationPoint[_CurrentTarget].x - Robot.ball.x;
                 vector_tr.y = _Location->LocationPoint[_CurrentTarget].y - Robot.ball.y;
             }
@@ -137,11 +140,11 @@ void Strategy::StrategyLocalization(){
             v_yaw = vector_tr.yaw;
             slow_factor = 1;
             if(fabs(v_yaw) <= 3){
-                if(last_state == forward){
+                if(_Last_state == forward){
                     _LocationState = back;
-                }else if(last_state == back){
+                }else if(_Last_state == back){
                     _LocationState = forward;
-                }else if(last_state == turn){
+                }else if(_Last_state == turn){
                     _LocationState = forward;
                 }
             }
@@ -151,13 +154,33 @@ void Strategy::StrategyLocalization(){
             exit(FAULTEXECUTING);
             break;
         default:                // ERROR SIGNAL
-            printf("ERROR STATE\n");
+            printf("UNDEFINE STATE\n");
             exit(FAULTEXECUTING);
     }
     showInfo();
-    _Env->Robot.v_x = v_x*slow_factor;
-    _Env->Robot.v_y = v_y*slow_factor;
+    _Env->Robot.v_x = v_x;
+    _Env->Robot.v_y = v_y;
     _Env->Robot.v_yaw = v_yaw;
+}
+void Strategy::Forward(RobotData Robot,int &v_x,int &v_y,int flag){
+    // _Last_state = _LocationState;
+    // flag = FALSE;
+    // *v_x = (_Location->LocationPoint[_CurrentTarget].x+compensation_x) - Robot.pos.x;
+    // *v_y = (_Location->LocationPoint[_CurrentTarget].y+compensation_y) - Robot.pos.y;
+    // if(fabs(v_x)<=0.05 && fabs(v_y)<=0.05){
+    //     _LocationState = back;
+    //     flag = TRUE;
+    // }_CurrentTarget++;
+    ;
+}
+void Strategy::Back(int flag){
+    ;
+}
+void Strategy::Turn(){
+    ;
+}
+void Strategy::Chase(){
+    ;
 }
 void Strategy::showInfo(){
     std::string Sv_x = "→";
