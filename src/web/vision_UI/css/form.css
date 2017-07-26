@@ -811,14 +811,14 @@
 }
 
 #MonitorInformation {
-    width: 330px;
+    width: 340px;
     height: 300px;
     z-index: 1;
     border: 1px solid black;
     border-radius: 3px;
     position: relative;
     top: 10%;
-    left: 5%;
+    left: 4%;
     border-color: #778899;
 }
 
