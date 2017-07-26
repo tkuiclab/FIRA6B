@@ -158,7 +158,9 @@ void FIRA_teamStrategy_class::role_CornerKick(){
 }
 
 void FIRA_teamStrategy_class::role_GoalKick(){
-
+    roleAry[0] = Role_GoalKick;
+    // roleAry[1] = Role_GoalKick;
+    // roleAry[2] = Role_GoalKick;   
 }
 
 void FIRA_teamStrategy_class::role_AvoidBarrier(){

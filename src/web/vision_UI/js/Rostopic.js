@@ -235,7 +235,7 @@ var TopicParameterCheck = new ROSLIB.Topic({
 });
 
 function topicROSCheckButton(value) {
-    console.log(value);
+    //console.log(value);
     var ParameterCheck = new ROSLIB.Message({
         checkpoint: 64
     });
@@ -248,7 +248,7 @@ var View = new ROSLIB.Topic({
     messageType: '/vision/view'
 });
 function ViewButton(value){
-    console.log(value);
+    //console.log(value);
     var ViewCheck = new ROSLIB.Message({
         checkpoint: parseInt(value)
     });
@@ -261,7 +261,13 @@ var Monitor = new ROSLIB.Topic({
     messageType: '/vision/Object'
 });
 
+///////////////////////////////////////////
+var check=0;
+///////////////////////////////////////////
+
 Monitor.subscribe(function(msg) {
+    var a = new Date().getTime();
+    var n = Math.floor(a/200)%10;
     var MBox = [];
     MBox.push(msg.fps);
     MBox.push(msg.ball_x);
@@ -282,23 +288,31 @@ Monitor.subscribe(function(msg) {
     MBox.push(msg.yellow_dis);
     MBox.push(msg.yellow_ang);
     //console.log(MBox);
-    document.getElementsByName('MonitorElement')[0].innerText = MBox[0];
-    document.getElementsByName('MonitorElement')[1].innerText = '( '+MBox[1]+','+MBox[2]+' )';
-    document.getElementsByName('MonitorElement')[2].innerText = MBox[3];
-    document.getElementsByName('MonitorElement')[3].innerText = MBox[4];
-    document.getElementsByName('MonitorElement')[4].innerText = MBox[5];
+	
+	if(check!=n){
+		check=n;
+		document.getElementsByName('MonitorElement')[0].innerText = MBox[0];
+		document.getElementsByName('MonitorElement')[1].innerText = '( '+MBox[1]+','+MBox[2]+' )';
+		document.getElementsByName('MonitorElement')[2].innerText = MBox[3];
+		document.getElementsByName('MonitorElement')[3].innerText = MBox[4];//disstance
+		document.getElementsByName('MonitorElement')[4].innerText = MBox[5];
 
-    document.getElementsByName('MonitorElement')[5].innerText = '( '+MBox[6]+','+MBox[7]+' )';
-    document.getElementsByName('MonitorElement')[6].innerText = MBox[8];
-    document.getElementsByName('MonitorElement')[7].innerText = MBox[9];
-    document.getElementsByName('MonitorElement')[8].innerText = MBox[10];
+		document.getElementsByName('MonitorElement')[5].innerText = '( '+MBox[6]+','+MBox[7]+' )';
+		document.getElementsByName('MonitorElement')[6].innerText = MBox[8];
+		document.getElementsByName('MonitorElement')[7].innerText = MBox[9];
+		document.getElementsByName('MonitorElement')[8].innerText = MBox[10];
 
-    document.getElementsByName('MonitorElement')[9].innerText = '( '+MBox[11]+','+MBox[12]+' )';
-    document.getElementsByName('MonitorElement')[10].innerText = MBox[13];
-    document.getElementsByName('MonitorElement')[11].innerText = MBox[14];
-    document.getElementsByName('MonitorElement')[12].innerText = MBox[15];
+		document.getElementsByName('MonitorElement')[9].innerText = '( '+MBox[11]+','+MBox[12]+' )';
+		document.getElementsByName('MonitorElement')[10].innerText = MBox[13];
+		document.getElementsByName('MonitorElement')[11].innerText = MBox[14];
+		document.getElementsByName('MonitorElement')[12].innerText = MBox[15];
+	}
+
 });
 //====================================================================
+
+
+
 //(X,Y)
 var TopicPosition = new ROSLIB.Topic({
     ros: ros,
@@ -307,7 +321,7 @@ var TopicPosition = new ROSLIB.Topic({
 });
 
 function topicROSPosition(x,y) {
-    console.log(1111);
+    console.log("click");
     x = parseInt(x);
     y = parseInt(y);
     var position = new ROSLIB.Message({

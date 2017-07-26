@@ -187,7 +187,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     object_msg.ball_y = 0 - (Red_Item.y - CenterYMsg);
     object_msg.ball_LR = Red_Item.LR;
     object_msg.ball_ang = Red_Item.angle;
-    object_msg.ball_dis = Omni_distance(Red_Item.distance);
+    object_msg.ball_dis = Red_Item.distance;
   } else {
     object_msg.ball_ang = 999;
     object_msg.ball_dis = 999;
@@ -198,7 +198,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     object_msg.blue_y = 0 - (Blue_Item.y - CenterYMsg);
     object_msg.blue_LR = Blue_Item.LR;
     object_msg.blue_ang = Blue_Item.angle;
-    object_msg.blue_dis = Omni_distance(Blue_Item.distance);
+    object_msg.blue_dis = Blue_Item.distance;
   } else {
     object_msg.blue_ang = 999;
     object_msg.blue_dis = 999;
@@ -209,7 +209,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     object_msg.yellow_y = 0 - (Yellow_Item.y - CenterYMsg);
     object_msg.yellow_LR = Yellow_Item.LR;
     object_msg.yellow_ang = Yellow_Item.angle;
-    object_msg.yellow_dis = Omni_distance(Yellow_Item.distance);
+    object_msg.yellow_dis = Yellow_Item.distance;
   } else {
     object_msg.yellow_ang = 999;
     object_msg.yellow_dis = 999;
@@ -669,17 +669,15 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
   if (color == REDITEM || color == BLUEITEM || color == YELLOWITEM) {
     angle_ = Angle_Adjustment((obj_.ang_max + obj_.ang_min) / 2);
     angle_range = 0.7 * Angle_Adjustment((obj_.ang_max - obj_.ang_min) / 2);
-    for (int angle = 0 ; angle <20 ; angle++) {
+    for (int angle = 0 ; angle < angle_range ; angle++) {
       for (int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++) {
         find_angle = Angle_Adjustment(angle_ + angle);
-
-	      if (find_angle >= dont_angle[0] && find_angle <= dont_angle[1] ||
-		  find_angle >= dont_angle[2] && find_angle <= dont_angle[3] ||
-		  find_angle >= dont_angle[4] && find_angle <= dont_angle[5]) {
-                angle_++;
-		continue;
-	      }
-
+      if (find_angle >= dont_angle[0] && find_angle <= dont_angle[1] ||
+          find_angle >= dont_angle[2] && find_angle <= dont_angle[3] ||
+          find_angle >= dont_angle[4] && find_angle <= dont_angle[5]) {
+        angle_++;
+        continue;
+      }
         x_ = distance * Angle_cos[find_angle];
         y_ = distance * Angle_sin[find_angle];
 
@@ -789,7 +787,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     left_angle = obj_.ang_min;
 
     //left
-    for (int angle = 0 ; angle < 2 ; angle++) {
+    for (int angle = 0 ; angle < 3 ; angle++) {
       for (int distance = obj_.dis_min ; distance <= obj_.dis_max; distance++) {
         x_ = distance * Angle_cos[left_angle + angle];
         y_ = distance * Angle_sin[left_angle + angle];
@@ -834,7 +832,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     }
 
     //right
-    for (int angle = 0 ; angle < 2; angle++) {
+    for (int angle = 0 ; angle < 3; angle++) {
       for (int distance = obj_.dis_min ; distance <= obj_.dis_max; distance++) {
         x_ = distance * Angle_cos[right_angle + angle];
         y_ = distance * Angle_sin[right_angle + angle];
@@ -1179,4 +1177,3 @@ void InterfaceProc::HSVmap()
   }
 }
 //////////////////////////////////////////////////////////////////////
-

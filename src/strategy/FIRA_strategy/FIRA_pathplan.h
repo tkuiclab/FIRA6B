@@ -58,8 +58,9 @@ public:
 //--------------strategy case-------------------
 //--------------------------------------------------
     void strategy_Goalkeeper_init(int);
-    void strategy_Goalkeeper_blocking(int);
-    void strategy_Goalkeeper_catching(int);
+    void strategy_Goalkeeper_block(int);
+    void strategy_Goalkeeper_push(int);
+    void strategy_Goalkeeper_goalkick(int);
     void strategy_Attack(int);
     void strategy_typeS_Attack(int);
     void strategy_Zone_Attack(int);

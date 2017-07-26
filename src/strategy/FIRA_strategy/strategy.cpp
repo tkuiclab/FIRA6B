@@ -132,6 +132,7 @@ int main(int argc, char **argv)
     //return 0;
     while(ros::ok())
     {
+
         if(global_env->SaveParam){
             mpathplan.loadParam(mNodeHandle.getNodeHandle());
             mbehavior.loadParam(mNodeHandle.getNodeHandle());

@@ -53,8 +53,9 @@ private:
     bool decide_actionAttack;
 
     void StateGoalKeeperInit(int);
-    void StateGoalKeeperBlocking(int);
-    void StateGoalKeeperCatching(int);
+    void StateGoalKeeperBlock(int);
+    void StateGoalKeeperPush(int);
+    void StateGoalKeeperGoalKick(int);
 
     float MIN(float i,float j,float k,float l){
         if(i<=j&&i<=k&&i<=l) return i;
