@@ -35,7 +35,7 @@ class Strategy
     void setLocationPoint(LocationStruct *LocationPoint) { _Location = LocationPoint; }
     Environment getEnv() { return *_Env; }
 
-  private:
+    private:
     ///         private member          ///
     void StrategyHalt();
     void StrategyLocalization();
@@ -43,13 +43,14 @@ class Strategy
     void Back(int);
     void Turn();
     void Chase();
+    void OptimatePath();
     int _LocationState;
     int _CurrentTarget;
     int _Last_state;
     LocationStruct *_Location;
     Environment *_Env;
     Parameter *_Param;
-    void showInfo();
+    void showInfo(double,double,double);
     enum state_location
     {
         forward,

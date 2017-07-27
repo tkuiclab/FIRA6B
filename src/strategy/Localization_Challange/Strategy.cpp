@@ -166,7 +166,7 @@ void Strategy::StrategyLocalization()
         else if (v_yaw < -180)
             v_yaw += 360;
         slow_factor = 1;
-        if (fabs(v_yaw) <= 3)
+        if (fabs(v_yaw) <= 1)
         {
             if (_Last_state == forward)
             {
@@ -193,7 +193,8 @@ void Strategy::StrategyLocalization()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    showInfo();
+    // OptimatePath();
+    showInfo(imu, compensation_x, compensation_y);
     if (v_yaw > 180)
         v_yaw -= 360;
     else if (v_yaw < -180)
@@ -226,7 +227,18 @@ void Strategy::Chase()
 {
     ;
 }
-void Strategy::showInfo()
+void Strategy::OptimatePath()
+{
+    int counter = 0;
+    for(int i=0;i<5;i++)
+        for(int j=i+1;j<5;j++)
+        {
+            double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y)\
+            /(_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
+            // printf("slope%d=%lf\n",counter++,Slope);
+        }
+}
+void Strategy::showInfo(double imu, double compensation_x, double compensation_y)
 {
     std::string Sv_x = "→";
     std::string Sv_y = "↑";
@@ -270,7 +282,7 @@ void Strategy::showInfo()
         printf("State : Chase\n");
         break;
     case turn:
-        printf("Target : Turn\t");
+        printf("Target : Point %d\t", _CurrentTarget);
         printf("State : Turn\n");
         break;
     case error:
@@ -278,15 +290,17 @@ void Strategy::showInfo()
         break;
     }
     if (_LocationState == forward)
-        std::cout << "Target position : (" << _Location->LocationPoint[_CurrentTarget].x
-                  << "," << _Location->LocationPoint[_CurrentTarget].y << ")\n";
+        std::cout << "Target position : (" << _Location->LocationPoint[_CurrentTarget].x + compensation_x
+                  << "," << _Location->LocationPoint[_CurrentTarget].y + compensation_y << ")\n";
     else if (_LocationState == back)
-        std::cout << "Target position : (" << _Location->MiddlePoint[_CurrentTarget].x
-                  << "," << _Location->MiddlePoint[_CurrentTarget].y << ")\n";
+        std::cout << "Target position : (" << _Location->MiddlePoint[_CurrentTarget].x + compensation_x
+                  << "," << _Location->MiddlePoint[_CurrentTarget].y + compensation_y << ")\n";
     else if (_LocationState == chase)
         std::cout << "Target position : (" << _Env->Robot.pos.x + _Env->Robot.ball.distance * cos((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
                   << "," << _Env->Robot.pos.y + _Env->Robot.ball.distance * sin((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
                   << ")" << std::endl;
+    else if (_LocationState == turn)
+        std::cout << "Imu = " << imu << std::endl;
     std::cout << "Robot position : (" << _Env->Robot.pos.x << "," << _Env->Robot.pos.y << ")\n";
     std::string haha = Sv_x + Sv_y + Sv_yaw;
     std::cout << "Direction : " << Sv_x + Sv_y + Sv_yaw << std::endl;
