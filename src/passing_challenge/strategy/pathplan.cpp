@@ -18,8 +18,8 @@ void PathPlan::gotoPoint(Environment *env, double point_x, double point_y)
 	myLocation_yaw = env->robot.pos.z*M_PI/180;
 	//env->robot.v_x = (10)*(-1)*((point_x-myLocation_x)*sin(myLocation_yaw+(M_PI/2)) + (point_y-myLocation_y)*cos(myLocation_yaw+(M_PI/2)));
 	//env->robot.v_y = (10)*((point_y-myLocation_y)*sin(myLocation_yaw+(M_PI/2)) + (point_x-myLocation_x)*cos(myLocation_yaw+(M_PI/2)));
-	env->robot.v_x = (-10) * (point_y-myLocation_y);
-	env->robot.v_y = (10) * (point_x-myLocation_x);
+	env->robot.v_x = (10)*(point_x-myLocation_x)*cos(myLocation_yaw)-(point_y-myLocation_y)*sin(myLocation_yaw);
+	env->robot.v_y = (10)*(point_x-myLocation_x)*sin(myLocation_yaw)+(point_y-myLocation_y)*cos(myLocation_yaw);
 	yaw_speed = (-1)*(env->robot.pos.z+90);
 	env->robot.v_yaw = (fabs(yaw_speed)>10)? yaw_speed/fabs(yaw_speed)*10: yaw_speed;
 }
@@ -32,7 +32,7 @@ void PathPlan::chaseBall(Environment *env)
 	ball_angle = env->robot.ball.angle;
 	env->robot.v_x = (10)*ball_dis*sin(ball_angle*M_PI/180);
 	env->robot.v_y = (10)*ball_dis*cos(ball_angle*M_PI/180);
-	yaw_speed = ball_angle;
+	yaw_speed = (-1)*ball_angle;
 	env->robot.v_yaw = (fabs(yaw_speed)>10)? yaw_speed/fabs(yaw_speed)*10: yaw_speed;
 }
 

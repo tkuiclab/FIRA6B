@@ -88,3 +88,24 @@ void Strategy_nodeHandle::loadParam()
 {
 
 }
+
+void Strategy_nodeHandle::pub(int speed)
+{
+	motion.linear.x = 0;
+	motion.linear.y = 0;
+	motion.angular.z = 0;
+	motion_pub.publish(motion);
+	shoot.data = 0;
+	shoot_pub.publish(shoot);
+}
+
+void Strategy_nodeHandle::pub()
+{
+	motion.linear.x = environment.robot.v_x;
+	motion.linear.y = environment.robot.v_y;
+	motion.angular.z = environment.robot.v_yaw;
+	motion_pub.publish(motion);
+	shoot.data = environment.robot.shoot;
+	shoot_pub.publish(shoot);
+
+}

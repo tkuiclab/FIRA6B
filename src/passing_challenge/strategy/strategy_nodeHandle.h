@@ -39,8 +39,6 @@ public:
 	~Strategy_nodeHandle();
 protected:
 	void init(int, char**);
-	ros::Publisher	motion_pub;
-	ros::Publisher	shoot_pub;
 	Environment environment;
 	int level;
 	int status;
@@ -53,7 +51,11 @@ private:
 	ros::Subscriber level_sub;
 	ros::Subscriber loadParam_sub;
 	ros::Subscriber status_sub;
+	ros::Publisher	motion_pub;
+	ros::Publisher	shoot_pub;
 
+	geometry_msgs::Twist motion;
+	std_msgs::Int32 shoot;
 private:
 	void visionCallback(const vision::Object::ConstPtr &);
 	void IMUCallback(const imu_3d::inertia::ConstPtr &);
@@ -65,5 +67,7 @@ private:
 	void loadParam();
 public:
 	Environment* getEnv(){return &environment;}
+	void pub(int);
+	void pub();
 };
 #endif
