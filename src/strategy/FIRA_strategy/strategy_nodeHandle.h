@@ -189,6 +189,7 @@ private:
     /// load param begin
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
+    std::vector<int> Strategy_Selection;
     std::vector<int> Scan;
     int IsSimulator;
     /// load param end
@@ -719,41 +720,43 @@ private:
                 }
 
             }
-            if(((i*Blackangle>=ignore_lower)&&(i*Blackangle<=ignore_upper)||(i*Blackangle>=ignore_360lower)&&(i*Blackangle<=ignore_360upper))||(i*Blackangle>=ignore_720lower)&&(i*Blackangle<=ignore_720upper)){
-                // if angle within these area, will clear
-                if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){
-                    if(obstacle_distance/limit_obstacle_dis_counter<final_distance){// restore all information
-                        final_distance = obstacle_distance/limit_obstacle_dis_counter;
-                        final_angle = obstacle_middle_angle;
+        if(Strategy_Selection[4]!=1){
+                if(((i*Blackangle>=ignore_lower)&&(i*Blackangle<=ignore_upper)||(i*Blackangle>=ignore_360lower)&&(i*Blackangle<=ignore_360upper))||(i*Blackangle>=ignore_720lower)&&(i*Blackangle<=ignore_720upper)){
+                    // if angle within these area, will clear
+                    if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){
+                        if(obstacle_distance/limit_obstacle_dis_counter<final_distance){// restore all information
+                            final_distance = obstacle_distance/limit_obstacle_dis_counter;
+                            final_angle = obstacle_middle_angle;
+                        }
+    //                    final_angle = obstacle_middle_angle; // restore
+    //                    //printf("obstacle_distance=%d\n",obstacle_distance);
+    //                    final_distance = obstacle_distance/limit_obstacle_dis_counter;
+    //                    end_search = 1;// get final angle, so end search
+                        //printf("end search\n");
                     }
-//                    final_angle = obstacle_middle_angle; // restore
-//                    //printf("obstacle_distance=%d\n",obstacle_distance);
-//                    final_distance = obstacle_distance/limit_obstacle_dis_counter;
-//                    end_search = 1;// get final angle, so end search
-                    //printf("end search\n");
-                }
-                limit_obstacle_dis_counter=0;
-                ignore_counter=0;
-                obstacle_distance=0;
-                //printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
-                //printf("angle within these area, will clear\n");
-            }else if(((i*Blackangle>=450)&&(i*Blackangle<=630))&& (edge_controller==1)){
-                if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){
-                    if(obstacle_distance/limit_obstacle_dis_counter<final_distance){// restore all information
-                        final_distance = obstacle_distance/limit_obstacle_dis_counter;
-                        final_angle = obstacle_middle_angle;
+                    limit_obstacle_dis_counter=0;
+                    ignore_counter=0;
+                    obstacle_distance=0;
+                    //printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
+                    //printf("angle within these area, will clear\n");
+                }else if(((i*Blackangle>=450)&&(i*Blackangle<=630))&& (edge_controller==1)){
+                    if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){
+                        if(obstacle_distance/limit_obstacle_dis_counter<final_distance){// restore all information
+                            final_distance = obstacle_distance/limit_obstacle_dis_counter;
+                            final_angle = obstacle_middle_angle;
+                        }
+    //                    final_angle = obstacle_middle_angle; // restore
+    //                    //printf("obstacle_distance=%d\n",obstacle_distance);
+    //                    final_distance = obstacle_distance/limit_obstacle_dis_counter;
+    //                    end_search = 1;// get final angle, so end search
+    //                    printf("end search\n");
                     }
-//                    final_angle = obstacle_middle_angle; // restore
-//                    //printf("obstacle_distance=%d\n",obstacle_distance);
-//                    final_distance = obstacle_distance/limit_obstacle_dis_counter;
-//                    end_search = 1;// get final angle, so end search
-//                    printf("end search\n");
+                    limit_obstacle_dis_counter=0;
+                    ignore_counter=0;
+                    obstacle_distance=0;
+                    //printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
+                    //printf("infornt of woods, will clear\n");
                 }
-                limit_obstacle_dis_counter=0;
-                ignore_counter=0;
-                obstacle_distance=0;
-                //printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
-                //printf("infornt of woods, will clear\n");
             }
         }
         if(final_angle>540&&final_angle<=720){

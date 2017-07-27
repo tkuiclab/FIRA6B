@@ -302,6 +302,9 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
         // global_env->issimulator = IsSimulator;
 //         std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
+    if(n->getParam("/StrategySelection", Strategy_Selection)){
+
+    }
     n->getParam("/FIRA/SCAN/Dont_Search_Angle_1",Scan[0]);
     n->getParam("/FIRA/SCAN/Dont_Search_Angle_2",Scan[1]);
     n->getParam("/FIRA/SCAN/Dont_Search_Angle_3",Scan[2]);

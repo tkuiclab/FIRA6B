@@ -787,9 +787,10 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
 //        op_angle_rr = op_angle_rr + 360;
 //    }
     //---------on robot---------
-    double op_distance_rr = double(env.mindis[0]) / 100;
-    int op_angle_rr = env.blackangle[0];
-
+//    double op_distance_rr = double(env.mindis[0]) / 100;
+//    int op_angle_rr = env.blackangle[0];
+    double op_distance_rr = env.Support_Obstacle_distance;
+    int op_angle_rr = env.Support_Obstacle_angle;
     double distance_br = env.home[r_number].ball.distance;
     double distance_dr = env.home[r_number].goal.distance;
 
