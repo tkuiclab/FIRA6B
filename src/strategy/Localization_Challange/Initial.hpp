@@ -16,7 +16,8 @@
 #include "ros/ros.h"
 #include "NodeHandle.hpp"
 #include "Env.hpp"
-Environment InitData(Environment Env){
+Environment InitData(Environment Env)
+{
     Env.Robot.v_x = 0;
     Env.Robot.v_y = 0;
     Env.Robot.v_yaw = 0;
@@ -31,7 +32,7 @@ Environment InitData(Environment Env){
     Env.Robot.goal.x = 0;
     Env.Robot.goal.y = 0;
     Env.Robot.goal.angle = 0;
-    Env.Robot.goal.distance = 0;    
+    Env.Robot.goal.distance = 0;
     Env.Robot.op_goal.x = 0;
     Env.Robot.op_goal.y = 0;
     Env.Robot.op_goal.angle = 0;

@@ -26,22 +26,24 @@
 ** Define
 *****************************************************************************/
 
-
-class NodeHandle :public BaseNode {
-public:
+class NodeHandle : public BaseNode
+{
+  public:
     ///         public member           ///
     ///         constructor             ///
-    NodeHandle(int argc, char** argv);
-    virtual ~NodeHandle(){}
-    void setEnv(Environment*);
-    void setParam(Parameter*);
-    void setLocationPoint(LocationStruct*); 
-    void pubSpeed(Environment*);
+    NodeHandle(int argc, char **argv);
+    virtual ~NodeHandle() {}
+    void setEnv(Environment *);
+    void setParam(Parameter *);
+    void setLocationPoint(LocationStruct *);
+    void pubSpeed(Environment *);
     void getParameter();
-protected:
+
+  protected:
     ///         protected member        ///
     void ros_comms_init();
-private:
+
+  private:
     ///         private member          ///
     ros::NodeHandle *node;
     ///         subscriber              ///
@@ -57,13 +59,13 @@ private:
     Parameter *_Param;
     // std::vector<double> SPlanning_Velocity;
     ///         private function        ///
-    void subGameState(const std_msgs::Int32::ConstPtr &msg){_Env->GameState=msg->data;}
-    void subSaveParam(const std_msgs::Int32::ConstPtr &msg){_Env->SaveParam=msg->data;}
+    void subGameState(const std_msgs::Int32::ConstPtr &msg) { _Env->GameState = msg->data; }
+    void subSaveParam(const std_msgs::Int32::ConstPtr &msg) { _Env->SaveParam = msg->data; }
     void subVision(const vision::Object::ConstPtr &);
     void subRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
     void subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &);
     void subIMU(const imu_3d::inertia::ConstPtr &);
-    void Transfer(Environment*);
-    void VelocityPlanning(Environment*);
+    void Transfer(Environment *);
+    void VelocityPlanning(Environment *);
 };
 #endif

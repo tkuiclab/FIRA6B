@@ -22,22 +22,24 @@
 ** Define
 *****************************************************************************/
 
-class Strategy{
-public:
+class Strategy
+{
+  public:
     ///         public member           ///
     ///         constructor             ///
     Strategy();
-    virtual ~Strategy(){}
-    void setEnv(Environment* Env){_Env = Env;}
-    void setParam(Parameter*);
+    virtual ~Strategy() {}
+    void setEnv(Environment *Env) { _Env = Env; }
+    void setParam(Parameter *);
     void GameState(int);
-    void setLocationPoint(LocationStruct* LocationPoint){_Location = LocationPoint;}
-    Environment getEnv(){return *_Env;}
-private:
-    ///         private member          /// 
+    void setLocationPoint(LocationStruct *LocationPoint) { _Location = LocationPoint; }
+    Environment getEnv() { return *_Env; }
+
+  private:
+    ///         private member          ///
     void StrategyHalt();
     void StrategyLocalization();
-    void Forward(RobotData,int&,int&,int);
+    void Forward(RobotData, int &, int &, int);
     void Back(int);
     void Turn();
     void Chase();
@@ -48,12 +50,14 @@ private:
     Environment *_Env;
     Parameter *_Param;
     void showInfo();
-    enum state_location{
-    forward,
-    back,
-    finish,
-    chase,
-    turn,
-    error};
+    enum state_location
+    {
+        forward,
+        back,
+        finish,
+        chase,
+        turn,
+        error
+    };
 };
 #endif

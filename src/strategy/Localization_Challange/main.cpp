@@ -13,25 +13,28 @@
 #include "Initial.hpp"
 #include "Strategy.hpp"
 
-int main(int argc, char **argv){
-    Environment Env = InitData(Env);  // Initial new environment data
+int main(int argc, char **argv)
+{
+    Environment Env = InitData(Env); // Initial new environment data
     Environment OutSpeed;
     LocationStruct Location;
     Parameter Global_Param;
-    NodeHandle nodehandle(argc,argv);    // Declare nodehandle data
-    nodehandle.on_init();                // Node Initializing
-    nodehandle.setEnv(&Env);             // Set nodehandle environment datad
+    NodeHandle nodehandle(argc, argv); // Declare nodehandle data
+    nodehandle.on_init();              // Node Initializing
+    nodehandle.setEnv(&Env);           // Set nodehandle environment datad
     nodehandle.setParam(&Global_Param);
     nodehandle.setLocationPoint(&Location);
-    Strategy strategy;                   // Declare strategy class data
-    strategy.setEnv(&Env);               // Set strategy environment datad
+    Strategy strategy;     // Declare strategy class data
+    strategy.setEnv(&Env); // Set strategy environment datad
     strategy.setParam(&Global_Param);
     strategy.setLocationPoint(&Location);
     ros::Rate loop_rate(50);
     ros::Duration(0.25).sleep();
-    while(ros::ok()){
-        if(Env.SaveParam){               // Get parameter is restricted to parameter saving by web userinterface
-            nodehandle.getParameter();  
+    while (ros::ok())
+    {
+        if (Env.SaveParam)
+        { // Get parameter is restricted to parameter saving by web userinterface
+            nodehandle.getParameter();
             Env.SaveParam = 0;
         }
         strategy.GameState(Env.GameState);
