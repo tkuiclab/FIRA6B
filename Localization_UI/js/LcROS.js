@@ -3,176 +3,34 @@ var canvas = document.getElementById("Light");
 var context = canvas.getContext("2d");
 context.font = '30pt Calibri';
 context.arc(20, 20, 20, 0, Math.PI * 2, false);
-
+//////////////////////////////////////////////////////
     var RegionTimes = -1;
     var Order = [0,0,0,0,0];
     var Checkorder = [0,0,0,0,0];
-
-if (typeof(Storage) !== "undefined") {
-    if (localStorage.getItem("IP") != null) {
-        document.getElementById("RobotIP").value = localStorage.getItem("IP");
-    } else {
-        document.getElementById("RobotIP").value = "localhost";
-        localStorage.IP = "localhost";
-    }
-    if (localStorage.getItem("Host") != null) {
-        document.getElementById("RobotHost").value = localStorage.getItem("Host");
-    } else {
-        document.getElementById("RobotHost").value = "9090";
-        localStorage.Host = "9090"
-    }
-} else {
-    console.log('Sorry, your browser does not support Web Storage...');
+///////////////////////////////////Joystick
+var boom = new Image();
+boom.src = 'img/boom.png';
+boom.onload = function() {
+    joy_ctx.drawImage(boom, 0, 0);
 }
-//Robot_connnet
-var ros = new ROSLIB.Ros({
-    url: 'ws://' + document.getElementById("RobotIP").value + ':' + document.getElementById("RobotHost").value
-});
-//confirm_connect
-ros.on('connection', function() {
-    console.log('Robot1 Connected to websocket server.');
-    light = "connected";
-    context.fillStyle = "green";
-    context.fill();
-});
-ros.on('error', function(error) {
-    console.log('Robot1 Error connecting to websocket server:');
-    light = "disconnected";
-    context.fillStyle = "red";
-    context.fill();
-});
-ros.on('close', function() {
-    console.log('Robot1 Connection to websocket server closed.');
-    light = "disconnected";
-    context.fillStyle = "red";
-    context.fill();
-});
-
-function RobotConnect() {
-    var IP = document.getElementById("RobotIP").value;
-    if (IP != '') {
-        localStorage.IP = IP;
-    } else {
-        if (localStorage.getItem("IP") != null) {
-            IP = localStorage.getItem("IP");
-        } else {
-            IP = "localhost";
-            localStorage.IP = "localhost";
-        }
-    }
-
-    var Host = document.getElementById("RobotHost").value;
-    if (Host != '') {
-        localStorage.Host = Host;
-    } else {
-        if (localStorage.getItem("Host") != null) {
-            Host = localStorage.getItem("Host");
-        } else {
-            Host = "9090";
-            localStorage.Host = "9090";
-        }
-    }
-    ros = new ROSLIB.Ros({
-        url: 'ws://' + IP + ':' + Host
-    });
-}
-//confirm_connect
-ros.on('connection', function() {
-    console.log('Robot1 Connected to websocket server.');
-    light = "connected";
-    context.fillStyle = "green";
-    context.fill();
-});
-ros.on('error', function(error) {
-    console.log('Robot1 Error connecting to websocket server:');
-    light = "disconnected";
-    context.fillStyle = "red";
-    context.fill();
-});
-ros.on('close', function() {
-    console.log('Robot1 Connection to websocket server closed.');
-    light = "disconnected";
-    context.fillStyle = "red";
-    context.fill();
-});
-
-//Topic
-//Region
-var RegionBox = new ROSLIB.Topic({
-    ros: ros,
-    name: '/FIRA/Location',
-    messageType: 'std_msgs/Float32MultiArray'
-});
-//Optimization
-var OptimizationBox = new ROSLIB.Topic({
-    ros: ros,
-    name: '/FIRA/Optimization',
-    messageType: 'std_msgs/Int32MultiArray'
-});
-//GameState
-var GameState = new ROSLIB.Topic({
-    ros: ros,
-    name: '/FIRA/GameState',
-    messageType: 'std_msgs/Int32'
-});
-var SaveParam = new ROSLIB.Topic({
-    ros: ros,
-    name: '/FIRA/SaveParam',
-    messageType: 'std_msgs/Int32'
-});
-//IsSimulator
-var IsSimulator = new ROSLIB.Param({
-    ros: ros,
-    name: '/FIRA/IsSimulator'
-    // messageType: 'std_msgs/Int32'
-});
-//TopicFunction
-function TopicRegion(Num) {
-    var box = new ROSLIB.Message({
-        data: [Num[0], Num[1], Num[2], Num[3], Num[4], Num[5], Num[6], Num[7], Num[8], Num[9]]
-    });
-    RegionBox.publish(box);
-}
-function TopicOptimization(Num) {
-    var box = new ROSLIB.Message({
-        data: [Num[0], Num[1], Num[2], Num[3]]
-    });
-    OptimizationBox.publish(box);
-}
-function topicROSGameState(state) {
-    console.log(state);
-    var gameState = new ROSLIB.Message({
-        data: state
-    });
-    GameState.publish(gameState);
-}
-function OpenSimulator(checked) {
-    var temp;
-    if (checked == true) {
-        // temp = new ROSLIB.Message({
-        //     data: 1
-        // });
-        // IsSimulator.publish(temp);
-        temp = 1;
-        IsSimulator.set(temp);
-        console.log(temp);
-    } else {
-        // temp = new ROSLIB.Message({
-        //     data: 0
-        // });
-        // IsSimulator.publish(temp);
-        temp = 0;
-        IsSimulator.set(temp);
-        console.log(temp);
-    }
-}
-function topicSaveParam(value){
-    console.log(value);
-    var Param = new ROSLIB.Message({
-        data:value
-    })
-    SaveParam.publish(Param);
-}
+var joystick_Area = document.getElementById('Joystick');
+var joystick_canvas = document.getElementById("Joystick_Canvas");
+var joy_ctx = joystick_canvas.getContext("2d");
+var Round_r = 105; //var Round_r = 60;
+var mouse_click = 0;
+var logButton = -1;
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight;
+var windowWidthToHeight = windowWidth / windowHeight;
+var joystickcenter = {
+    x: joystick_Area.offsetWidth / 2,
+    y: joystick_Area.offsetHeight / 2
+};
+var joystick_V = {
+    x: 0,
+    y: 0,
+    ang: 0
+};
 //========================================================
 function RegionReset() {
     var obj = document.getElementsByName("LocalElement1");
@@ -385,90 +243,42 @@ function Optimization() {
     console.log(CheckBox);
 }
 //===========================================================
-// parameter1
-//General_variable
-var SPlanningVelocityBox = new ROSLIB.Param({
-    ros: ros,
-    name: '/FIRA/SPlanning_Velocity'
-});
-var HoldConditionBox = new ROSLIB.Param({
-    ros: ros,
-    name: '/FIRA/hold_condition'
-});
-function GeneralTransfer(){
-        var Box = [];
-        var Box1 = [];
-        Smallbox = document.getElementsByName("SPlanningVelocityElement");
-        Smallbox1 = document.getElementsByName("BallElement");
-
-        for(var i = 0 ;i < Smallbox.length ;i++){
-        temp = Smallbox[i].value
-        Box[i] = parseFloat(temp);
-    }
-       for(var i = 0;i < Smallbox1.length; i++){
-        temp = Smallbox1[i].value
-        Box1[i] = parseFloat(temp);
-
-       }
-    SPlanningVelocityBox.set(Box);
-    HoldConditionBox.set(Box1);
-    console.log(Box);
-    console.log(Box1);
-
-}
-//GeneralReset
-function GeneralReset(){
-        var Smallbox;
-        var obj = [2.2,0.3,80.0,50.0,20,3,144,5];
-        var obj2 = [3.0,0.33,9.0,0.4];
-        Smallbox = document.getElementsByName("SPlanningVelocityElement");
-        Smallbox1 = document.getElementsByName("BallElement");
-
-        for(var i = 0 ;i < Smallbox.length ;i++){
-        Smallbox[i].value = obj[i];
-        }
-        for(var i=0;i<Smallbox1.length ;i++){
-        Smallbox1[i].value = obj2[i];
-        }
-    
-    
-        GeneralTransfer();
-        // console.log(obj);
-}
-//GeneralGet
-var obj;
-SPlanningVelocityBox.get(function(value) {
-    if (value != null) {
-        obj = document.getElementsByName("SPlanningVelocityElement");
-        for (var i = 0; i < obj.length; i++) {
-            obj[i].value = value[i];
-        }
-    }
-});
 
 //service
 // -----------------
 
-var updateClient = new ROSLIB.Service({
-    ros: ros,
-    name: '/StrategyParam',
-    serviceType: 'param_convey/strategy_param'
-});
+// var updateClient = new ROSLIB.Service({
+//     ros: ros,
+//     name: '/StrategyParam',
+//     serviceType: 'param_convey/strategy_param'
+// });
 
-var request = new ROSLIB.ServiceRequest({
-    receive: 1
-});
+// var request = new ROSLIB.ServiceRequest({
+//     receive: 1
+// });
 
-function up() {
-    document.getElementById("Update").style.cursor = "wait";
-    context2.fillStyle = "yellow";
-    context2.fill();
-    updateClient.callService(request, function(res) {
-        if (res.update == 2) {
-            document.getElementById("Update").style.cursor = "default";
-            context2.fillStyle = "green";
-            context2.fill();
-        }
-    });
+// function up() {
+//     document.getElementById("Update").style.cursor = "wait";
+//     context2.fillStyle = "yellow";
+//     context2.fill();
+//     updateClient.callService(request, function(res) {
+//         if (res.update == 2) {
+//             document.getElementById("Update").style.cursor = "default";
+//             context2.fillStyle = "green";
+//             context2.fill();
+//         }
+//     });
 
+// }
+///////////////////////joystickfunction///////////////////////
+function ToInputValue(newValue, name, num) {
+    document.getElementsByName(name)[num].value = newValue;
+}
+
+function ToSliderValue(newValue, name, num) {
+    if (newValue > 100) {
+        newValue = 100;
+    }
+    document.getElementsByName(name)[1].value = newValue;
+    document.getElementsByName(name)[num].value = newValue;
 }

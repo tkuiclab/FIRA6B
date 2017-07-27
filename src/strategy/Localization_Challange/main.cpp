@@ -28,7 +28,7 @@ int main(int argc, char **argv){
     strategy.setParam(&Global_Param);
     strategy.setLocationPoint(&Location);
     ros::Rate loop_rate(50);
-    ros::Duration(0.5).sleep();
+    ros::Duration(0.25).sleep();
     while(ros::ok()){
         if(Env.SaveParam){               // Get parameter is restricted to parameter saving by web userinterface
             nodehandle.getParameter();  

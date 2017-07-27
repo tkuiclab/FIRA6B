@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////
 if (typeof(Storage) !== "undefined") {
     if (localStorage.getItem("IP") != null) {
         document.getElementById("RobotIP").value = localStorage.getItem("IP");
@@ -24,22 +25,18 @@ ros.on('connection', function() {
     light = "connected";
     context.fillStyle = "green";
     context.fill();
-
 });
 ros.on('error', function(error) {
     console.log('Robot1 Error connecting to websocket server:');
     light = "disconnected";
     context.fillStyle = "red";
     context.fill();
-    console.log('error');
-
 });
 ros.on('close', function() {
     console.log('Robot1 Connection to websocket server closed.');
     light = "disconnected";
     context.fillStyle = "red";
     context.fill();
-
 });
 
 function RobotConnect() {
@@ -70,9 +67,6 @@ function RobotConnect() {
         url: 'ws://' + IP + ':' + Host
     });
 }
-
-
-/*
 //confirm_connect
 ros.on('connection', function() {
     console.log('Robot1 Connected to websocket server.');
@@ -92,4 +86,3 @@ ros.on('close', function() {
     context.fillStyle = "red";
     context.fill();
 });
-*/

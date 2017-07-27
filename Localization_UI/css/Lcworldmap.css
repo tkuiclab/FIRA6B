@@ -15,7 +15,7 @@ body {
 
 #InterfaceSetting {
     position: relative;
-    left: 110%;
+    left: 130%;
     bottom: 100%
 }
 
@@ -359,21 +359,21 @@ body {
     position: absolute;
     width: 1000px;
     top: 15%;
-    left: 2%;
+    left: 15%;
 }
 
 #canvasMap {
     position: absolute;
     width: 1000px;
     top: 15%;
-    left: 2%;
+    left: 15%;
     height: 723px;
 }
 
 #RobotModule {
     position: absolute;
     top: 12%;
-    left: 80%;
+    left: 82.2%;
     width: 250px;
     font-family: Signika;
     font-size: 150%;
@@ -387,7 +387,7 @@ body {
 #titleModalLabel {
     position: relative;
     font-size: 60px;
-    left: 10%;
+    left: 30%;
     top: -15%;
     font-family: 'Pacifico', cursive;
 }
@@ -449,3 +449,62 @@ body {
     width: 1000px;
     height: 100px;
 }
+
+/*==========================================================*/
+
+
+/*JoyStick*/
+
+#Joystick {
+    position: relative;
+    top: 50%;
+    left: 0.8%;
+    width: 210px;
+    height: 210px;
+    z-index: 1;
+    border-radius: 210px;
+    /*border-style: dashed;*/
+    border-color: rgba(255, 255, 255, 0.5);
+    background-color: #fff;
+    cursor: crosshair;
+}
+#Joystick_Canvas {
+    width: 100%;
+    height: 100%;
+}
+#SpeedDiv {
+    width: 185px;
+    height: 60px;
+    z-index: 1;
+    position: relative;
+    top: 45%;
+    left: 0.5%;
+    font-size: 20px;
+}
+
+#SpeedDiv table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#SpeedSlider {
+    width: 185px;
+    position: relative;
+    top: 45%;
+    left:10%;
+
+}
+
+#SpeedInput {
+    width: 55px;
+    height: 25px;
+    position: relative;
+    top: 48%;
+    left: 10%;
+}
+#SpeedLabel{
+    position: relative;
+    left:10%;
+}
+/*==========================================================*/
