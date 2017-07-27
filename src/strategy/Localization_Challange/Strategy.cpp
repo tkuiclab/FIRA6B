@@ -193,8 +193,8 @@ void Strategy::StrategyLocalization()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    // OptimatePath();
-    showInfo(imu, compensation_x, compensation_y);
+    OptimatePath();
+    // showInfo(imu, compensation_x, compensation_y);
     if (v_yaw > 180)
         v_yaw -= 360;
     else if (v_yaw < -180)
@@ -229,14 +229,26 @@ void Strategy::Chase()
 }
 void Strategy::OptimatePath()
 {
-    int counter = 0;
-    for(int i=0;i<5;i++)
-        for(int j=i+1;j<5;j++)
+    for (int i = 0; i < 5; i++)
+        for (int j = i + 1; j < 5; j++)
         {
-            double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y)\
-            /(_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
-            // printf("slope%d=%lf\n",counter++,Slope);
-        }
+            double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y) \
+            / (_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
+            if (Slope > 999)
+                Slope = 999;
+            double dis = (_Location->LocationPoint[j].y - Slope * _Location->LocationPoint[j].x) / sqrt(Slope * Slope + 1);
+            if (fabs(dis) < 0.5)
+                printf("dis %d -> %d :  = %lf\n", i + 1, j + 1, dis);
+            double angle = atan2(_Location->LocationPoint[i].y, _Location->LocationPoint[i].x)*RAD2DEG;
+            double angle_next = atan2(_Location->LocationPoint[j].y, _Location->LocationPoint[j].x)*RAD2DEG;
+            double angle_diff = angle_next - angle;
+            if(angle_diff>180)
+                angle_diff -=360;
+            else if (angle_diff<-180)
+                angle_diff +=360;
+            angle_diff = fabs(angle_diff);
+            printf("angle_diff %d -> %d :  = %lf\n",i+1,j+1,angle_diff);
+        }printf("====================\n");
 }
 void Strategy::showInfo(double imu, double compensation_x, double compensation_y)
 {

@@ -16,6 +16,7 @@
 #include "../common/BaseNode.h"
 #include <ros/ros.h>
 #include "std_msgs/Int32.h"
+#include <math.h>
 #include "Env.hpp"
 #include <iomanip>
 /*****************************************************************************

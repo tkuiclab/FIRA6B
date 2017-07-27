@@ -87,4 +87,8 @@ typedef struct
     Strategy_Parameter Strategy;
     NodeHandle_Parameter NodeHandle;
 } Parameter;
+typedef struct
+{
+    
+}
 #endif
