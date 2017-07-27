@@ -352,13 +352,13 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
     Vector2d vectornt(-1.42*sin(c_ball_angle*deg2rad),1.42*cos(c_ball_angle*deg2rad));
     if(/*bool_shoot(goal_dis)&&fabs(ball_angle)<4&&*/fabs(goal_angle)<10){
         if(goal_dis<=1){
-            shoot = 30;
+            shoot = SPlanning_Velocity[9];
 }
         else if(goal_dis>1 && goal_dis <=2){
-            shoot = 65;
+            shoot = SPlanning_Velocity[9];
 }
         else {
-            shoot = 185;
+            shoot = SPlanning_Velocity[9];
 }
         env.home[r_number].v_x =vectornt(0)*1000;
         env.home[r_number].v_y =vectornt(1)*1000;
@@ -400,7 +400,7 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
     Vector2d vectornt(-1.42*sin(c_ball_angle*deg2rad),1.42*cos(c_ball_angle*deg2rad));
 
     if(/*bool_shoot(goal_dis)&&*//*fabs(ball_angle)<4&&*/fabs(goal_angle)<10){
-        shoot = 185;
+        shoot = SPlanning_Velocity[9];
         env.home[r_number].v_x =0;
         env.home[r_number].v_y =0;
         env.home[r_number].v_yaw = goal_angle*2;
@@ -534,7 +534,7 @@ void FIRA_pathplan_class::strategy_Zone_Attack(int Robot_index){
         env.home[r_number].v_y = vectordr_y;
         env.home[r_number].v_yaw = angle_dr * 2/3/*5*/;
     }
-    shoot = 185;
+    shoot = SPlanning_Velocity[9];
 }
 
 
@@ -636,7 +636,7 @@ void FIRA_pathplan_class::strategy_typeS_Attack(int Robot_index){
 //    printf("exec_time = %lf\tvectornt = %lf\n", exec_time, vectornt(0));
 //    printf("op_angle_dr=%lf\n",op_angle_dr);
     if(fabs(angle_dr) < 7){
-        shoot = 185;
+        shoot = SPlanning_Velocity[9];
     }else{
         shoot = 0;
     }
@@ -876,7 +876,7 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     env.home[r_number].v_yaw = angle_Speed;
 
     if(fabs(angle_dr) < 7){ // if there is any chance, shoot!
-        shoot = 185;
+        shoot = SPlanning_Velocity[9];
     }else{
         shoot = 0;
     }
@@ -2610,7 +2610,7 @@ void FIRA_pathplan_class::strategy_LeaveLimitArea(int r_number){
         }
     }
 
-    //env.home[r_number].v_yaw = yaw_speed;
+    env.home[r_number].v_yaw = yaw_speed;
     env.home[r_number].v_x = x_speed*speed_constant;
     env.home[r_number].v_y = y_speed*speed_constant;
 
