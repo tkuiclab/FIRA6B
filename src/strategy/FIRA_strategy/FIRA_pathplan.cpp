@@ -2697,7 +2697,7 @@ void FIRA_pathplan_class::strategy_LeftRightMove(int r_number){
     yaw_speed = inv_op_angle_dr+transform_angle_dr; // (head to angle_dr) + (tail to op_angle_dr) = face forward
 
     if(fabs(inv_op_angle_dr+transform_angle_dr)<20){// if face forward correct within error interval, give x vector speed
-       x_speed = cos(transform_angle_br*deg2rad)*distance_br;
+       x_speed = -cos(transform_angle_br*deg2rad)*distance_br;
     }else{
        x_speed = 0;// if not face correct, give v_x=0, until you turn to right angle
     }

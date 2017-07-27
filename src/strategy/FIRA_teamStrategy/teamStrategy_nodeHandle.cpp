@@ -97,8 +97,10 @@ void TeamStrategy_nodeHandle::loadParam(ros::NodeHandle *n){
          std::string robot_info_topic_name;
          if(global_env->RobotNumber==1){
              robot_info_topic_name = "r2_info";
+             printf("this is r2\n");
          }else if(global_env->RobotNumber==2){
              robot_info_topic_name = "r3_info";
+             printf("this is r3\n");
          }
          this_robot_info_pub = n->advertise<std_msgs::Float32MultiArray>(robot_info_topic_name, 1000);
 

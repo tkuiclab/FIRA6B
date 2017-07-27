@@ -1,6 +1,6 @@
 #include "FIRA_teamStrategy.h"
 #include "math.h"
-#define counter_delay 3
+#define counter_delay 2
 #define change_charactor_dis 0.1
 static int shoot=1;
 static double Begin_time = 0;
@@ -139,7 +139,7 @@ void FIRA_teamStrategy_class::role_Play(){
     // ROS_INFO("hahaaha");
     roleAry[0]=Role_Goalkeeper;
     roleAry[1]=Role_Attack;
-    roleAry[2]=Role_NewSupport;
+    roleAry[2]=Role_Test1;
 }
 
 
@@ -371,7 +371,7 @@ void FIRA_teamStrategy_class::role_FreeBall(){
 
                 if(env.AnotherGoalDistance<distance_dr&&distance_dr<1.6){
                     roleAry[env.RobotNumber]=Role_NewSupport;
-                }
+                }         
             break;
             case 1:// this robot catch ball state
                 printf("this robot catch ball\n");
@@ -423,7 +423,10 @@ void FIRA_teamStrategy_class::role_FreeBall(){
         }else{
             two_robot_get_ball_counter=0;
         }
+        printf("this_attacker_select_counter=%d\n",this_attacker_select_counter);
+        printf("another_attacker_select_counter=%d\n",another_attacker_select_counter);
     }
+
 }
 
 void FIRA_teamStrategy_class::role_ThrowIn(){
