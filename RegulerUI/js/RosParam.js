@@ -128,7 +128,7 @@ function SetParamGeneral(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3) {
 
     SPlanningVelocityBox3.set(SVBox3);
     DistanceSettingsBox3.set(DSBox3);
-
+    console.log(SVBox1, SVBox2, SVBox3);
     up();
     PublishTopicSaveParam();
 }
@@ -1075,7 +1075,7 @@ function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1,
     SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2, SupSBox2,
     SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3, SupSBox3) {
 
-    console.log(SupSBox1,SupSBox2,SupSBox3);
+    console.log(SupSBox1, SupSBox2, SupSBox3);
     StateChaseBox1.set(SCBox1);
     StateAttackBox1.set(SABox1);
     StateTypeUChaseBox1.set(STUCBox1);

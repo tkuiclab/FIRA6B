@@ -207,12 +207,12 @@
                             <table id="RobotStrategyTable1">
                                 <tr>
                                     <td>
-                                        <input id="IsTeamStrategyButton" type="radio" name="TSButton" onclick="IsTeamStrategy(1)"/>
-                                            <label id="IsTeamStrategyButton" for="IsTeamStrategyButton">TeamStrategy</label>
+                                        <input id="IsTeamStrategyButton" type="radio" name="TSButton" onclick="IsTeamStrategy(1)" />
+                                        <label id="IsTeamStrategyButton" for="IsTeamStrategyButton">TeamStrategy</label>
                                     </td>
                                     <td>
                                         <div>
-                                            <input id="SingleButton" type="radio" name="TSButton" checked="checked" onclick="IsTeamStrategy(0)"/>
+                                            <input id="SingleButton" type="radio" name="TSButton" checked="checked" onclick="IsTeamStrategy(0)" />
                                             <label id="SingleButton" for="SingleButton">Single</label>
                                         </div>
                                     </td>
@@ -460,7 +460,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="GDetail SP10">(double)Shoot</td>
+                                    <td class="GDetail SP10">(double)ATsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement1" value="1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP11">(double)Shoot</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement1" value="0" />
                                     </td>
@@ -571,7 +577,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="GDetail SP10">(double)Shoot</td>
+                                    <td class="GDetail SP10">(double)ATsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement2" value="1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP11">(double)Shoot</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement2" value="0" />
                                     </td>
@@ -678,11 +690,17 @@
                                 <tr>
                                     <td class="GDetail SP9">(double)VTsupport_min</td>
                                     <td>
-                                        <input type="text" name="SPlanningVelocityElement3" value="0" />s
+                                        <input type="text" name="SPlanningVelocityElement3" value="0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="GDetail SP10">(double)Shoot</td>
+                                    <td class="GDetail SP10">(double)ATsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement3" value="1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP11">(double)Shoot</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="0" />
                                     </td>
@@ -2692,7 +2710,7 @@
                                         <input type="radio" id="" name="TeamStrategy1" checked="checked" />
                                         <label id="" for="">1</label>
                                     </td>
-                                   <!--  <td>
+                                    <!--  <td>
                                         <input type="radio" id="" name="TeamStrategy1" />
                                         <label id="" for="">2</label>
                                     </td> -->
@@ -3759,7 +3777,7 @@
             $("#Robot3Module").show();
             $("#Robot1Module").hide();
             $("#Robot2Module").hide();
-        }); 
+        });
         //Robot1
         $("#SetTeamStrategyButton1").buttonset();
 
@@ -3768,8 +3786,6 @@
 
         //Robot3
         $("#SetTeamStrategyButton3").buttonset();
-
-
     </script>
     <!-- ChooseShow_Button_function -->
     <script>
