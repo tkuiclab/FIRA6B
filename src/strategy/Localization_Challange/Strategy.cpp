@@ -83,20 +83,14 @@ void Strategy::StrategyLocalization(){
 //            ROS_INFO("forward");
             _Last_state = _LocationState;
             flag = FALSE;
-            v_x = (_Location->LocationPoint[_CurrentTarget].x/*+compensation_x*/) - Robot.pos.x;
-            v_y = (_Location->LocationPoint[_CurrentTarget].y/*+compensation_y*/) - Robot.pos.y;
-//            ROS_INFO("lo.x=%lf\tlo.y=%lf\n",_Location->LocationPoint[_CurrentTarget].x+compensation_x,_Location->LocationPoint[_CurrentTarget].y+compensation_y);
-//            ROS_INFO("amcl.x=%lf\tamcl.y=%lf\n",Robot.pos.x,Robot.pos.y);
-//            ROS_INFO("v_x=%lf\tv_y=%lf\n",v_x,v_y);
+            v_x = (_Location->LocationPoint[_CurrentTarget].x+compensation_x) - Robot.pos.x;
+            v_y = (_Location->LocationPoint[_CurrentTarget].y+compensation_y) - Robot.pos.y;
             double v_x_temp,v_y_temp;
-//            ROS_INFO("v__x=%lf\tv_y=%lf\n",v_x,v_y);
             v_x_temp = v_x*cos((-imu)*DEG2RAD)-v_y*sin((-imu)*DEG2RAD);
             v_y_temp = v_x*sin((-imu)*DEG2RAD)+v_y*cos((-imu)*DEG2RAD);
             v_x=v_x_temp;
             v_y=v_y_temp;
-//            ROS_INFO("cos=%lf\tsin=%lf\n",cos((-imu)*DEG2RAD),sin((-imu)*DEG2RAD));
-//            ROS_INFO("imu=%lf\n",imu);
-//            ROS_INFO("v_x'=%lf\tv_y'=%lf\n",v_x,v_y);
+            // v_yaw = 0;
             if(fabs(v_x)<=0.05 && fabs(v_y)<=0.05){
                 _LocationState = turn;
                 flag = TRUE;
@@ -111,9 +105,7 @@ void Strategy::StrategyLocalization(){
             v_y_temp = v_x*sin((-imu)*DEG2RAD)+v_y*cos((-imu)*DEG2RAD);
             v_x=v_x_temp;
             v_y=v_y_temp;
-//            ROS_INFO("v__x=%lf\tv_y=%lf\n",v_x,v_y);
-//            ROS_INFO("point_x=%lf\tpoint_y=%lf\n",_Location->MiddlePoint[_CurrentTarget].x,_Location->MiddlePoint[_CurrentTarget].y);
-//            ROS_INFO("p'_x=%lf\tp'_y=%lf\n",_Location->MiddlePoint[_CurrentTarget].x+compensation_x,_Location->MiddlePoint[_CurrentTarget].y+compensation_y);
+            // v_yaw = 0;
             if(fabs(v_x)<=0.05 && fabs(v_y)<=0.05){
                 if(_CurrentTarget==4)
                     _LocationState = finish;
@@ -144,11 +136,6 @@ void Strategy::StrategyLocalization(){
                 vector_tr.y = _Location->LocationPoint[_CurrentTarget].y - Robot.pos.y;
             }
             vector_tr.yaw = atan2(vector_tr.y,vector_tr.x)*RAD2DEG - (imu+90);
-//            ROS_INFO("atan=%lf\tyaw=%lf\t",atan2(vector_tr.y,vector_tr.x)*RAD2DEG,atan2(vector_tr.y,vector_tr.x)*RAD2DEG - (imu+90));
-//            ROS_INFO("L_x=%lf\tL_y=%lf\trobot.x=%lf\trobot.y=%lf\n",_Location->MiddlePoint[_CurrentTarget].x,_Location->MiddlePoint[_CurrentTarget].y\
-//                     ,Robot.pos.x,Robot.pos.y);
-//            ROS_INFO("atan2=%lf",atan2(vector_tr.y,vector_tr.x)*RAD2DEG);
-//            ROS_INFO("x=%lf\ty=%lf\t%lf\n",vector_tr.x,vector_tr.y,vector_tr.yaw);
 //            if(vector_tr.yaw>0){
 //                vector_turn.x = cos(-90*DEG2RAD)*vector_br.x - sin(-90*DEG2RAD)*vector_br.y;
 //                vector_turn.y = sin(-90*DEG2RAD)*vector_br.x + cos(-90*DEG2RAD)*vector_br.y;
@@ -163,7 +150,6 @@ void Strategy::StrategyLocalization(){
                 v_yaw -=360;
             else if(v_yaw<-180)
                 v_yaw+=360;
-//            ROS_INFO("turn no v_yaw=%lf",v_yaw);
             slow_factor = 1;
             if(fabs(v_yaw) <= 3){
                 if(_Last_state == forward){
@@ -191,8 +177,6 @@ void Strategy::StrategyLocalization(){
         v_yaw -=360;
     else if(v_yaw<-180)
         v_yaw+=360;
-//    ROS_INFO("yaw=%lf",v_yaw);
-//    ROS_INFO("v_x=%lf\tv_y=%lf",v_x,v_y);
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
     _Env->Robot.v_yaw = v_yaw;
