@@ -194,6 +194,7 @@ void FIRA_teamStrategy_class::role_Play(){
             two_robot_get_ball_counter=0;
         }
     }else{// no teamstrategy, two attack
+        printf("single\n");
         roleAry[0]=Role_Goalkeeper;
         roleAry[1]=Role_Attack;
         roleAry[2]=Role_Attack;
@@ -545,7 +546,11 @@ void FIRA_teamStrategy_class::role_ThrowIn(){
             roleAry[env.RobotNumber] = this_robot_role;
         }
     }else{// is attacker
-        roleAry[env.RobotNumber] = this_robot_role;
+        if(fabs(Current_time-Begin_time)<=0.5){
+           roleAry[env.RobotNumber] = Role_Halt;
+        }else{
+           roleAry[env.RobotNumber] = this_robot_role;
+        }
     }
 
     int attacker_select_starter;// which role you are when 2sec, will continue on teamstrategy

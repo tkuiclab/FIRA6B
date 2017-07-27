@@ -381,8 +381,10 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 ROS_INFO("Zone_Attack\n");
                 break;
             }
-        double op_angle_dr = env.home[robotIndex].op_goal.angle;
-        if(op_angle_dr<1.6){
+        double op_distance_dr = env.home[robotIndex].op_goal.distance;
+        //printf("op_distance_dr=%f\n",op_distance_dr);
+        if(op_distance_dr<1.6){
+            //printf("limit area\n");
             actionAry[robotIndex] = action_LeaveLimitArea;
         }
 }

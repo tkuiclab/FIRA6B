@@ -3700,6 +3700,43 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
         env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
         env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
     }
+    double yaw_speed = angle_dr;
+    double transform_angle_dr = angle_dr;
+    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
+    if(inv_op_angle_dr>180){
+        inv_op_angle_dr=inv_op_angle_dr-360;
+    }
+
+    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
+        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
+            inv_op_angle_dr=0;
+        }else{
+            transform_angle_dr=0;
+        }
+    }
+
+
+    //#######################################################//
+    //                                                       //
+    //    giving speed
+    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
+    //    2.v_x = robot to ball x vector speed
+    //    3.v_y =0
+    //                                                       //
+    //#######################################################//
+
+    yaw_speed = inv_op_angle_dr+transform_angle_dr; // (head to angle_dr) + (tail to op_angle_dr) = face forward
+
+    env.home[r_number].v_yaw= yaw_speed;
+    if(fabs(yaw_speed)<yaw_speed_limit){
+       env.home[r_number].v_yaw= 0;
+    }
      shoot = 0;
 }
 void FIRA_pathplan_class::strategy_Kick(int Robot_index){
