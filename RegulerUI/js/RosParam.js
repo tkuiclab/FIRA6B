@@ -128,9 +128,7 @@ function SetParamGeneral(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3) {
 
     SPlanningVelocityBox3.set(SVBox3);
     DistanceSettingsBox3.set(DSBox3);
-
-    console.log(SVBox1,SVBox2,SVBox3);
-
+    console.log(SVBox1, SVBox2, SVBox3);
     up();
     PublishTopicSaveParam();
 }
@@ -877,6 +875,8 @@ var SupportStrategyBox3 = new ROSLIB.Param({
 
 function GetBehaviorValue() {
 
+    var flag = 0;
+
     var SCBox1 = [];
     var SABox1 = [];
     var STUCBox1 = [];
@@ -929,21 +929,34 @@ function GetBehaviorValue() {
         SCKBox1.push(parseFloat($(this).val()));
     });
     obj = document.getElementsByName("StrategySelectionElement1");
-    for (var i = 0; i < obj.length; i++) {
-        if (obj[i].checked) {
+    flag = 0;
+    for (var i = 0; i < 2; i++) {
+        if (obj[i].checked && flag == 0) {
             SSBox1.push(parseInt(1));
+            flag = 1;
         } else {
             SSBox1.push(parseInt(0));
         }
     }
+    flag = 0;
+    for (var i = 2; i < obj.length; i++) {
+        if (obj[i].checked && flag == 0) {
+            SSBox1.push(parseInt(1));
+            flag = 1;
+        } else {
+            SSBox1.push(parseInt(0));
+
+        }
+    }
+    /*
     for (var i = 0; i < obj.length; i++) {
         if ((SSBox1[0] == 0) && (SSBox1[1] == 0)) {
             SSBox1[0] = parseInt(1);
         }
-        if ((SSBox1[2] == 0) && (SSBox1[3] == 0) && (SSBox1[4] == 0) && (SSBox1[5] == 0)) {
+        if ((SSBox1[2] == 0) && (SSBox1[3] == 0) && (SSBox1[4] == 0) && (SSBox1[5] == 0) && (SSBox1[6] == 0)) {
             SSBox1[2] = parseInt(1);
         }
-    }
+    }*/
     obj = document.getElementsByName("SupportStrategyElement1");
     for (var i = 0; i < obj.length; i++) {
         if (obj[i].checked) {
@@ -983,21 +996,34 @@ function GetBehaviorValue() {
         SCKBox2.push(parseFloat($(this).val()));
     });
     obj = document.getElementsByName("StrategySelectionElement2");
-    for (var i = 0; i < obj.length; i++) {
-        if (obj[i].checked) {
+    flag = 0;
+    for (var i = 0; i < 2; i++) {
+        if (obj[i].checked && flag == 0) {
             SSBox2.push(parseInt(1));
+            flag = 1;
         } else {
             SSBox2.push(parseInt(0));
         }
     }
-    for (var i = 0; i < obj.length; i++) {
-        if ((SSBox2[0] == 0) && (SSBox2[1] == 0)) {
-            SSBox2[0] = parseInt(1);
-        }
-        if ((SSBox2[2] == 0) && (SSBox2[3] == 0) && (SSBox2[4] == 0) && (SSBox2[5] == 0)) {
-            SSBox2[2] = parseInt(1);
+    flag = 0;
+    for (var i = 2; i < obj.length; i++) {
+        if (obj[i].checked && flag == 0) {
+            SSBox2.push(parseInt(1));
+            flag = 1;
+        } else {
+            SSBox2.push(parseInt(0));
+
         }
     }
+    /*
+    for (var i = 0; i < obj.length; i++) {
+        if (((SSBox2[0] == 0) && (SSBox2[1] == 0)) || ((SSBox2[0] == 1) && (SSBox2[1] == 1))) {
+            SSBox2[0] = parseInt(1);
+        }
+        if ((SSBox2[2] == 0) && (SSBox2[3] == 0) && (SSBox2[4] == 0) && (SSBox2[5] == 0) && (SSBox2[6] == 0)) {
+            SSBox2[2] = parseInt(1);
+        }
+    }*/
     obj = document.getElementsByName("SupportStrategyElement2");
     for (var i = 0; i < obj.length; i++) {
         if (obj[i].checked) {
@@ -1037,21 +1063,34 @@ function GetBehaviorValue() {
         SCKBox3.push(parseFloat($(this).val()));
     });
     obj = document.getElementsByName("StrategySelectionElement3");
-    for (var i = 0; i < obj.length; i++) {
-        if (obj[i].checked) {
+    flag = 0;
+    for (var i = 0; i < 2; i++) {
+        if (obj[i].checked && flag == 0) {
             SSBox3.push(parseInt(1));
+            flag = 1;
         } else {
             SSBox3.push(parseInt(0));
         }
     }
-    for (var i = 0; i < obj.length; i++) {
-        if ((SSBox3[0] == 0) && (SSBox3[1] == 0)) {
-            SSBox3[0] = parseInt(1);
-        }
-        if ((SSBox3[2] == 0) && (SSBox3[3] == 0) && (SSBox3[4] == 0) && (SSBox3[5] == 0)) {
-            SSBox3[2] = parseInt(1);
+    flag = 0;
+    for (var i = 2; i < obj.length; i++) {
+        if (obj[i].checked && flag == 0) {
+            SSBox3.push(parseInt(1));
+            flag = 1;
+        } else {
+            SSBox3.push(parseInt(0));
+
         }
     }
+    /*
+        for (var i = 0; i < obj.length; i++) {
+            if ((SSBox3[0] == 0) && (SSBox3[1] == 0)) {
+                SSBox3[0] = parseInt(1);
+            }
+            if ((SSBox3[2] == 0) && (SSBox3[3] == 0) && (SSBox3[4] == 0) && (SSBox3[5] == 0) && (SSBox3[6] == 0)) {
+                SSBox3[2] = parseInt(1);
+            }
+        }*/
     obj = document.getElementsByName("SupportStrategyElement3");
     for (var i = 0; i < obj.length; i++) {
         if (obj[i].checked) {
@@ -1077,7 +1116,7 @@ function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1,
     SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2, SupSBox2,
     SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3, SupSBox3) {
 
-    console.log(SupSBox1,SupSBox2,SupSBox3);
+    console.log(SSBox1, SSBox2, SSBox3);
     StateChaseBox1.set(SCBox1);
     StateAttackBox1.set(SABox1);
     StateTypeUChaseBox1.set(STUCBox1);

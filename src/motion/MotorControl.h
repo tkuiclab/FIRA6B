@@ -191,31 +191,31 @@ int mcssl_init(/*const char *devs*/)
     //serial=cssl_open(devs, mcssl_callback, 0, 115200, 8, 0, 1);
     if (!serial){
         devs="/dev/ttyUSB0";
-        serial=cssl_open(devs, mcssl_callback, 0, 115200, 8, 0, 1);
+        serial=cssl_open(devs, NULL/*mcssl_callback*/, 0, 115200, 8, 0, 1);
     }
     if (!serial){
         devs="/dev/ttyUSB1";
-        serial=cssl_open(devs, mcssl_callback, 0, 115200, 8, 0, 1);
+        serial=cssl_open(devs, NULL/*mcssl_callback*/, 0, 115200, 8, 0, 1);
     }
     if (!serial){
         devs="/dev/ttyUSB2";
-        serial=cssl_open(devs, mcssl_callback, 0, 115200, 8, 0, 1);
+        serial=cssl_open(devs, NULL/*mcssl_callback*/, 0, 115200, 8, 0, 1);
     }
     if (!serial){
         devs="/dev/ttyUSB3";
-        serial=cssl_open(devs, mcssl_callback, 0, 115200, 8, 0, 1);
+        serial=cssl_open(devs, NULL/*mcssl_callback*/, 0, 115200, 8, 0, 1);
     }
     if (!serial){
         devs="/dev/ttyUSB4";
-        serial=cssl_open(devs, mcssl_callback, 0, 115200, 8, 0, 1);
+        serial=cssl_open(devs, NULL/*mcssl_callback*/, 0, 115200, 8, 0, 1);
     }
     if (!serial){
         devs="/dev/ttyUSB5";
-        serial=cssl_open(devs, mcssl_callback, 0, 115200, 8, 0, 1);
+        serial=cssl_open(devs, NULL/*mcssl_callback*/, 0, 115200, 8, 0, 1);
     }
     if (!serial){
         devs="/dev/ttyUSB0";
-        serial=cssl_open(devs, mcssl_callback, 0, 115200, 8, 0, 1);
+        serial=cssl_open(devs, NULL/*mcssl_callback*/, 0, 115200, 8, 0, 1);
     }
 
     ROS_INFO("Initialize Motion with port=%s...",devs);

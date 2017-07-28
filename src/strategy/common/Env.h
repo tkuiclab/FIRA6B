@@ -4,7 +4,7 @@
 
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
-
+#include <vector>
 using namespace Eigen;
 
 const long PLAYERS_PER_SIDE = 3;
@@ -31,12 +31,14 @@ const long PLAYERS_PER_SIDE = 3;
 #define Role_ThrowIn            5
 #define Role_CornerKick         6
 #define Role_AvoidBarrier       7
+
 #define Role_Test1              8
 #define Role_Test2              9
 #define Role_Test3             10
 #define Role_NewSupport        11
 #define Role_Kick              12
 #define Role_FreeKick          13
+#define Role_Escape_Attack     14
 
 #define action_Halt             0
 #define action_Goalkeeper       1
@@ -83,6 +85,7 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_Block                    42
 #define action_Kick                     43
 #define action_FreeKick                 44
+#define action_Escape_Attack            45
 
 #define state_Init              0
 #define state_Chase             1
@@ -142,6 +145,13 @@ typedef struct
     //BlackObject
     int blackangle[20];
     int mindis[20];
+    //apf
+    std::vector<int> global_angle_end;
+    std::vector<int> global_angle_start;
+    std::vector<int> global_apf_dis;
+
+    int blue_side_goal_data[3];//blue_dis,blue_ang1,blue_ang2;
+    int yellow_side_goal_data[3];//yellow_dis,yellow_ang1,yellow_ang2;
     //long whosBall;
     //void *userData;
     Goal yellow, blue;

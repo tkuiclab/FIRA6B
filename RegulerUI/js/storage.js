@@ -21,7 +21,8 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[6].value = 144.0;
         obj[7].value = 5.0;
         obj[8].value = 10.0;
-        obj[9].value = 0;
+        obj[9].value = 1;
+        obj[10].value = 0;
         console.log(document.getElementsByName("SPlanningVelocityElement1")[9].value)
     }
     if (localStorage.getItem("GeneralDistanceSetStr1") != null) {
@@ -53,7 +54,8 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[6].value = 144.0;
         obj[7].value = 5.0;
         obj[8].value = 10.0;
-        obj[9].value = 0;
+        obj[9].value = 1;
+        obj[10].value = 0;
     }
     if (localStorage.getItem("GeneralDistanceSetStr2") != null) {
         obj = document.getElementsByName("DistanceSettingsElement2");
@@ -84,7 +86,8 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[6].value = 144.0;
         obj[7].value = 5.0;
         obj[8].value = 10.0;
-        obj[9].value = 0;
+        obj[9].value = 1;
+        obj[10].value = 0;
     }
     if (localStorage.getItem("GeneralDistanceSetStr3") != null) {
         obj = document.getElementsByName("DistanceSettingsElement3");
@@ -518,6 +521,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].checked = false;
         obj[4].checked = false;
         obj[5].checked = false;
+        obj[6].checked = false;
     }
     if (localStorage.getItem("BehaviorSupportStrategyStr1") != null) {
         obj = document.getElementsByName("SupportStrategyElement1");
@@ -619,6 +623,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].checked = false;
         obj[4].checked = false;
         obj[5].checked = false;
+        obj[6].checked = false;
     }
 
     if (localStorage.getItem("BehaviorSupportStrategyStr2") != null) {
@@ -722,6 +727,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].checked = false;
         obj[4].checked = false;
         obj[5].checked = false;
+        obj[6].checked = false;
     }
     if (localStorage.getItem("BehaviorSupportStrategyStr3") != null) {
         obj = document.getElementsByName("SupportStrategyElement3");

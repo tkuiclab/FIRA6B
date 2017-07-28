@@ -91,6 +91,7 @@ public:
     void strategy_Block(int);
     void strategy_Kick(int);
     void strategy_FreeKick(int);
+    void strategy_Escape_Attack(int);
 //--------------------------------------------------
 
 //--------------role case-------------------

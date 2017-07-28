@@ -36,7 +36,6 @@
 #include "gazebo_msgs/ModelStates.h"
 #include "std_msgs/Int32MultiArray.h"
 #include "std_msgs/Float32MultiArray.h"
-
 /*****************************************************************************
 ** Define
 *****************************************************************************/
@@ -53,6 +52,8 @@
 #define SAVEPARAM_TOPIC "/FIRA/SaveParam"
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
+//TwoPointDoor
+#define  Two_point_Topic "interface/Two_point"
 //one_Robot speed
 #define Robot_Topic_Speed "/motion/cmd_vel"
 //robot suffix
@@ -125,7 +126,143 @@ public:
     long getGameState(){return gamestate;}
     std::string getTeamColor(){return teamcolor;}
     int getIsSimulator(){return IsSimulator;}
+    //apf_test
 
+//    std::vector<int>angle_start;
+//    std::vector<int>apf_dis;
+//    std::vector<int>angle_end;
+    //apf_test_ptr
+    struct node{
+        int angle_start;
+        int angle_end;
+        int distance;
+        struct node *link;
+    };
+    typedef struct node NodeStruct;
+    typedef NodeStruct *NodePtr;
+    NodePtr head=NULL;
+    int number_obstacle=0;
+
+    NodePtr creat_node(int ang_start,int ang_end,int dis){
+        NodePtr newnode = (NodePtr)malloc(sizeof(node));
+        newnode->angle_start = ang_start;
+        newnode->angle_end = ang_end;
+        newnode->distance = dis;
+        newnode->link = NULL;
+        return newnode;
+    }
+
+    NodePtr append_node(NodePtr p)
+    {
+        if(head==NULL)
+        {
+            head=p;
+            p->link=NULL;
+        }
+        else
+        {
+            p->link=head;
+            head=p;
+        }
+        return head;
+    }
+
+    void display_list(NodePtr p){
+        p=head;
+
+        while (p!=NULL)
+        {
+            printf("ang_start:%d\tang_end:%d\t dis_avg:%d\n",p->angle_start,p->angle_end,p->distance);
+            p=p->link;
+        }
+        printf("\n");
+    }
+    void list_to_global(NodePtr p){
+        p=head;
+        while (p!=NULL)
+        {
+            global_env->global_angle_end.push_back(p->angle_end);
+            global_env->global_angle_start.push_back(p->angle_start);
+            global_env->global_apf_dis.push_back(p->distance);
+            p=p->link;
+        }
+        //printf("\n");
+    }
+    void delete_test(NodePtr p){
+        p=head;
+
+        while (p!=NULL)
+        {
+            if(p->distance<7){
+                head=delete_node(p);
+            }
+            p=p->link;
+
+        }
+        printf("\n");
+    }
+
+    void list_filter(NodePtr p){
+        p=head;
+        while (p!=NULL)
+        {
+            if(p->link==NULL){
+                break;
+            }
+            else{
+                if((p->angle_start-(p->link->angle_end))<=3*Blackangle+1&&abs(p->distance-(p->link->distance))<=20)
+                {
+                    int line1=(p->angle_end-p->angle_start)/Blackangle;
+                    int line2=(p->link->angle_end-p->link->angle_start)/Blackangle;
+                    p->angle_start=p->link->angle_start;
+                    p->distance=(p->distance*line1+p->link->distance*line2)/(line1+line2);
+                    head=delete_node(p->link);
+                    number_obstacle--;
+                }
+            }
+            p=p->link;
+        }
+    }
+
+    NodePtr delete_node(NodePtr p){
+        NodePtr prev_node;
+        if(p==head){
+            head =head->link;
+            return  head;
+        }
+        else
+        {
+            prev_node = head;
+            while(prev_node->link!=p)
+            {
+                prev_node = prev_node->link;
+            }
+            if (p->link == NULL) {
+                prev_node->link =NULL;
+            }
+            else
+            {
+                prev_node->link=p->link;
+            }
+
+        }
+        free(p);
+        return head;
+    }
+
+    void freelist(void)
+    {
+        NodePtr next_node;
+
+        while(head!=NULL)
+        {
+            next_node=head->link;
+            free(head);
+            head=next_node;
+        }
+        head=NULL;
+
+    }
     //BlackObject
     int Blackangle;
     int Whiteangle;
@@ -146,6 +283,7 @@ private:
     ros::NodeHandle *n;
     long gamestate;
     std::string teamcolor;
+
 
     //gazebo_ModelStates subscriber
     ros::Subscriber Gazebo_Model_Name_sub;
@@ -366,6 +504,12 @@ private:
 
     }
     void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
+        global_env->blue_side_goal_data[0]=msg->blue_dis;
+        global_env->yellow_side_goal_data[0]=msg->yellow_dis;
+        global_env->blue_side_goal_data[1]=msg->blue_ang1;
+        global_env->blue_side_goal_data[2]=msg->blue_ang2;
+        global_env->yellow_side_goal_data[1]=msg->yellow_ang1;
+        global_env->yellow_side_goal_data[2]=msg->yellow_ang2;
         if(global_env->teamcolor == "Blue"){
             int ang1 = msg->yellow_ang1;
             int ang2 = msg->yellow_ang2;
@@ -422,9 +566,100 @@ private:
         }
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
-        static int counter=0;
+
         int All_Line_distance[360];
         int angle[360];
+        int angle_apf=0;
+        int reg_angle=0;
+        NodePtr ob_data;
+
+        for(int i=0; i<360/Blackangle; i++){
+            All_Line_distance[i] = msg -> data[i];
+            if(angle_apf<360){
+                angle_apf=Blackangle+angle_apf;
+                reg_angle=angle_apf;
+            }else{
+                angle_apf=Blackangle+angle_apf;
+                reg_angle=angle_apf-360;
+            }
+
+            reg_angle=angle_apf;
+            angle[i]=reg_angle;
+        }
+
+
+        angle_apf=0;
+
+        int count=0;
+        int dis_avg=0;
+        int apf_data[3];
+        int dis=125;
+
+
+        for(int i=0; i<360/Blackangle; i++){
+            if(abs(All_Line_distance[i]-All_Line_distance[i+1])<=10){
+                if(count==0){
+                    apf_data[0]=angle[i];
+                    dis_avg=dis_avg+All_Line_distance[i];
+                    count++;
+                }
+                else{
+                    dis_avg=dis_avg+All_Line_distance[i];
+                    count++;
+                }
+            }else{
+                if(count!=0){
+                    count++;
+                    apf_data[1]=angle[i];
+                    apf_data[2]=(dis_avg+All_Line_distance[i])/count;
+                    if(apf_data[2]<=dis){
+                        ob_data=creat_node(apf_data[0],apf_data[1],apf_data[2]);
+                        append_node(ob_data);
+                        //printf("angle_start:%d\tangle:%d\tdis:%d\n",apf_data[0],apf_data[1],apf_data[2]);
+                        //printf("angle_start:%d\tangle:%d\tdis:%d\n",angle_start[k],angle_end[k],apf_dis[k]);
+                        number_obstacle++;
+                    }
+                    dis_avg=0;
+                    count=0;
+                }
+                else
+                {
+                    dis_avg=0;
+                    count=0;
+                }
+            }
+        }
+     
+        //display_list(ob_data);
+        list_filter(ob_data);
+        //display_list(ob_data);
+
+            global_env->global_angle_end.clear();
+            global_env->global_angle_start.clear();
+            global_env->global_apf_dis.clear();
+            std::vector<int>().swap(global_env->global_angle_end);
+            std::vector<int>().swap(global_env->global_angle_start);
+            std::vector<int>().swap(global_env->global_apf_dis);
+
+            if(number_obstacle==0){
+                global_env->global_angle_end.push_back(0);
+                global_env->global_angle_start.push_back(0);
+                global_env->global_apf_dis.push_back(0);
+            }else{
+                global_env->global_angle_end.push_back(1);
+                global_env->global_angle_start.push_back(1);
+                global_env->global_apf_dis.push_back(1);
+            }
+
+
+
+
+        list_to_global(ob_data);
+
+
+        number_obstacle=0;
+        freelist();
+
         int place;
         Range Unscan[3];
         Unscan[0].begin = Scan[0] - (Scan[3]-1);
@@ -434,22 +669,11 @@ private:
         Unscan[2].begin = Scan[2] - (Scan[4]-1);
         Unscan[2].end   = Scan[2] + (Scan[4]-1);
         for(int i=0;i<360/Blackangle;i++){
-//            if((i*Blackangle >= Unscan[0].begin && i*Blackangle <= Unscan[0].end )||\
-//            (i*Blackangle >= Unscan[1].begin && i*Blackangle >= Unscan[1].end) ||\
-//            (i*Blackangle >= Unscan[2].begin && i*Blackangle >= Unscan[2].end))
-//                All_Line_distance[i] = -1;
-//            else{
-//            printf("0.begin=%d\t0.end=%d\n",Unscan[0].begin,Unscan[0].end);
-//            printf("1.begin=%d\t1.end=%d\n",Unscan[1].begin,Unscan[1].end);
-//            printf("2.begin=%d\t2.end=%d\n",Unscan[2].begin,Unscan[2].end);
-//              printf("All_Line_distance[%d]=%d\n",All_Line_distance[i],i);
                 All_Line_distance[i] = msg -> data[i];
-//        }
         }
 
         global_env->mindis[0] = All_Line_distance[0];
         for(int i=1;i<360/Blackangle;i++){
-//            printf("%d\t%d\n",i,All_Line_distance[i]);
             if(All_Line_distance[i] < global_env->mindis[0]){
                 if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
                     global_env->mindis[0] = All_Line_distance[i];
@@ -820,7 +1044,6 @@ private:
         global_env->AnotherGoalDistance=msg->data[3];//another robot Goal distance
         global_env->home[global_env->AnotherRobotNumber].goal.distance=msg->data[3];
         global_env->R1OrderR2=msg->data[4];
-
     }
      void getSaveParam(const std_msgs::Int32::ConstPtr &msg){
          global_env->SaveParam = msg->data;

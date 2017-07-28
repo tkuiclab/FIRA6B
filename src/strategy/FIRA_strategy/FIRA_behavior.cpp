@@ -274,6 +274,8 @@ void FIRA_behavior_class::readroleAry(int robotIndex,int role){
                 break;
             case Role_ThrowIn:
                 behavior_ThrowIn(robotIndex);
+            case Role_Escape_Attack:
+                behavior_Escape_Attack(robotIndex);
                 break;
             case Role_CornerKick:
                 if(EscapeCornerKick[robotIndex]){
@@ -325,14 +327,13 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
     static bool run_onetime = 0;
         if(run_onetime == 0)
         run_onetime = 1;
-
         int chaseCase = Strategy_Selection[0];
         int SchaseCase = Strategy_Selection[1];
         int attackCase = Strategy_Selection[2];
         int SattackCase = Strategy_Selection[3];
         int DattackCase = Strategy_Selection[4];
         int ShootCase = Strategy_Selection[5];
-
+        int EscapeCase = Strategy_Selection[6];
         double rushDistance = TypeS_Attack[2];
 
         switch(state_attack){
@@ -369,6 +370,9 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 }else if(ShootCase){
                     actionAry[robotIndex] = action_Shoot_Attack;
                     ROS_INFO("Shoot attack\n");
+                }else if(EscapeCase){
+                    actionAry[robotIndex] = action_Escape_Attack;
+                    ROS_INFO("Escape attack\n");
                 }
                 StateAttack(robotIndex);
                 break;
@@ -484,6 +488,8 @@ void FIRA_behavior_class::behavior_Halt(int robotIndex){
 //    printf("Begin_time=%f\n",Begin_time);
 //    printf("Current_time=%f\n",Current_time);
     ///=========================================
+}void FIRA_behavior_class::behavior_Escape_Attack(int robotIndex){
+    actionAry[robotIndex] = action_Escape_Attack;
 }
 void FIRA_behavior_class::behavior_AvoidBarrier(int robotIndex){
     actionAry[robotIndex] = action_AvoidBarrier;

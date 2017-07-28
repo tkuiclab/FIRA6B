@@ -156,7 +156,6 @@
 
 /*==========================================================*/
 
-
 /*==========================================================*/
 
 
@@ -493,20 +492,20 @@
 #AvoidBarrierButton {
     background-image: none;
     /*background-color: #99CCFF;*/
-    font-size: 13.8px;
+    font-size: 12px;
     color: #663D00;
 }
 
 #AvoidBarrierButton.ui-state-hover {
     background-image: none;
     /*background-color: #99CCFF;*/
-    font-size: 13.8px;
+    font-size: 12px;
     background-color: #FFF;
 }
 
 #AvoidBarrierButton.ui-state-active {
     background-color: #FFCC00;
-    font-size: 13.8px;
+    font-size: 12px;
     color: #1A1A65;
 }
 
@@ -516,19 +515,40 @@
 #RobotShowButton {
     background-image: none;
     /*background-color: #99CCFF;*/
-    font-size: 13.8px;
+    font-size: 12px;
     color: #663D00;
 }
 
 #RobotShowButton.ui-state-hover {
     background-image: none;
     /*background-color: #99CCFF;*/
-    font-size: 13.8px;
+    font-size: 12px;
     background-color: #FFF;
 }
 
 #RobotShowButton.ui-state-active {
     background-color: #FFCC00;
-    font-size: 13.8px;
+    font-size: 12px;
+    color: #1A1A65;
+}
+/*==========================================================*/
+
+#ShootBrokenButton {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 12px;
+    color: #663D00;
+}
+
+#ShootBrokenButton.ui-state-hover {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 12px;
+    background-color: #FFF;
+}
+
+#ShootBrokenButton.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 12px;
     color: #1A1A65;
 }

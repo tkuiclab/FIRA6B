@@ -91,6 +91,8 @@ public:
     void behavior_Kick(int);
     void behavior_FreeKick(int);
 //----------------------------------------------
+    void behavior_Escape_Attack(int);
+//--------------------------------------------------
     void readroleAry(int, int);
     int* getactionAry();
 
