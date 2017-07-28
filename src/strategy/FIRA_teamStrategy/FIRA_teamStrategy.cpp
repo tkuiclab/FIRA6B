@@ -196,7 +196,7 @@ void FIRA_teamStrategy_class::role_Play(){
     }else{// no teamstrategy, two attack
         printf("single\n");
         roleAry[0]=Role_Goalkeeper;
-        roleAry[1]=Role_Attack;
+        roleAry[1]=Role_Test1;
         roleAry[2]=Role_Attack;
     }
 
@@ -263,15 +263,24 @@ void FIRA_teamStrategy_class::role_FreeKick(){
             role_flag--;
         }
     }
+
     if(this_robot_role == Role_NewSupport){
-        if(shoot_flag==1){// is support and need shoot
-            roleAry[env.RobotNumber] = Role_Kick;
-            shoot_flag--;
-        }else{// is support and don't need shoot
-            roleAry[env.RobotNumber] = this_robot_role;
+        if(fabs(Current_time-Begin_time)<=1.5){
+           roleAry[env.RobotNumber] = Role_FreeKick;// backward
+        }else{
+            if(shoot_flag==1){// is support and need shoot
+                roleAry[env.RobotNumber] = Role_Kick;
+                shoot_flag--;
+            }else{// is support and don't need shoot
+                roleAry[env.RobotNumber] = this_robot_role;
+            }
         }
     }else{// is attacker
-        roleAry[env.RobotNumber] = this_robot_role;
+        if(fabs(Current_time-Begin_time)<=2){
+           roleAry[env.RobotNumber] = Role_Halt;
+        }else{
+           roleAry[env.RobotNumber] = Role_Attack;
+        }
     }
 
     int attacker_select_starter;// which role you are when 2sec, will continue on teamstrategy

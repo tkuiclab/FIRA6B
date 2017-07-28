@@ -2,7 +2,7 @@
 #include "math.h"
 static double Begin_time = 0;
 static double Current_time = 0;
-
+static int last_role= 0;
 
 FIRA_behavior_class::FIRA_behavior_class(){
    opponent = false;
@@ -252,7 +252,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //            Read the character array               //
 //                                                   //
 //###################################################//
-void FIRA_behavior_class::readroleAry(int robotIndex,int role){
+void FIRA_behavior_class::readroleAry(int robotIndex,int    role){
 //        printf("roleplay=%d\n",role);
         switch(role){
             case Role_Goalkeeper:
@@ -298,7 +298,16 @@ void FIRA_behavior_class::readroleAry(int robotIndex,int role){
             case Role_Kick:
                    behavior_Kick(robotIndex);
                    break;
+            case Role_FreeKick:
+                   behavior_FreeKick(robotIndex);
+                   break;
             }
+            if(last_role!=role){// switch gamestate
+                Begin_time = ros::Time::now().toSec();
+                Current_time = ros::Time::now().toSec();
+            }
+            last_role = env.gameState;
+
 }
 //###################################################//
 //                                                   //
@@ -516,20 +525,8 @@ void FIRA_behavior_class::behavior_Test1(int robotIndex){
     double op_angle_dr = env.home[r_number].op_goal.angle;
 //    printf("final_angle=%f\n",env.Support_Obstacle_angle);
 //    printf("final_distance=%f\n",env.Support_Obstacle_distance);
-    if(op_distance_dr<1.5){// in limit area
-        actionAry[robotIndex] = action_LeaveLimitArea;
-        printf("action_LeaveLimitArea\n");
-    }else if((angle_br>120||angle_br<-120)||distance_br<1){
-        actionAry[robotIndex] = action_LeaveBall;
-        printf("action_Chase\n");
-    }else if(op_distance_dr>3.5){// too far from defend gate
-        actionAry[robotIndex] = action_MovetoOpGoal;
-        printf("action_MovetoYellowGate\n");
-    }else{//all good above, left right defend ball state
-        actionAry[robotIndex] = action_LeftRightMove;
-        printf("left right defend ball state\n");
-    }
-    //printf("test1\n");
+        actionAry[robotIndex] = action_Support_Test1;
+
 
 
 
@@ -752,6 +749,10 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
 void FIRA_behavior_class::behavior_Kick(int robotIndex){
 
     actionAry[robotIndex] = action_Kick;
+}
+void FIRA_behavior_class::behavior_FreeKick(int robotIndex){
+
+    actionAry[robotIndex] = action_FreeKick;
 }
 //###################################################//
 //                                                   //

@@ -89,6 +89,7 @@ public:
     void behavior_Test3(int);
     void behavior_NewSupport(int);
     void behavior_Kick(int);
+    void behavior_FreeKick(int);
 //----------------------------------------------
     void readroleAry(int, int);
     int* getactionAry();

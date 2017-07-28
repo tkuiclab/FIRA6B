@@ -90,6 +90,7 @@ public:
     void strategy_Stop(int);
     void strategy_Block(int);
     void strategy_Kick(int);
+    void strategy_FreeKick(int);
 //--------------------------------------------------
 
 //--------------role case-------------------

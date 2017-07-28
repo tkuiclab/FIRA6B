@@ -207,6 +207,9 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
             case  action_Kick:
                 strategy_Kick(robotIndex);
                 break;
+            case  action_FreeKick:
+                strategy_FreeKick(robotIndex);
+                break;
 
         }
 }
@@ -1706,62 +1709,15 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-    static int shoot_count =1;
-//    if(shoot_count==1){
-//        shoot = 25;
-//        shoot_count--;
-//    }else{
-//        shoot = 0;
-//    }
-    double obstacle_angle =env.Support_Obstacle_angle+90;
-    double transform_angle_br = angle_br+90;
-    double obstacle_distance =env.Support_Obstacle_distance;
-    if(obstacle_angle>180){
-        obstacle_angle=obstacle_angle-360;
-    }else if(obstacle_angle<-180){
-        obstacle_angle=obstacle_angle+360;
+
+    double inv_angle_dr = angle_br + 180;
+    if(inv_angle_dr>180){
+        inv_angle_dr = inv_angle_dr -360;
+    }else if(inv_angle_dr<-180){
+        inv_angle_dr = inv_angle_dr +360;
     }
-
-    if(transform_angle_br>180){
-        transform_angle_br=transform_angle_br-360;
-    }else if(transform_angle_br<-180){
-        transform_angle_br=transform_angle_br+360;
-    }
-//    printf("final_angle=%f\n",env.Support_Obstacle_angle);
-//    printf("final_distance=%f\n",env.Support_Obstacle_distance);
-//    printf("ball_distance = %f\n",distance_br);
-//    if(obstacle_distance-0.4>0){
-//        obstacle_distance=obstacle_distance-0.4;
-//    }else{
-//        obstacle_distance=0;
-//    }
-//    if(distance_br-0.3>0){
-//        distance_br=distance_br-0.3;
-//    }else{
-//        distance_br=0;
-//    }
-
-//        printf("ball_distance = %f\n",distance_br);
-        printf("obstacle_distance = %f\n",obstacle_distance);
-        printf("chase angle_br=%f\n",Chase_Strategy[3]);
-        printf("chase distance =%f\n",Chase_Strategy[4]);
-//        printf("shoot_count=%d\n",shoot_count);
-    if((fabs(cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br<0.05))&&(sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br)<0.05){
-        env.home[r_number].v_x = 0;
-        env.home[r_number].v_y = 0;
-    }else if(env.Support_Obstacle_angle>=999){
-        env.home[r_number].v_x = 0;
-        env.home[r_number].v_y = 0;
-    }else{
-        env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
-        env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
-    }
-    shoot = 0;
-
-
-
-
-
+    printf("angle_br=%f\n",angle_br);
+    env.home[r_number].v_yaw=inv_angle_dr;
 
 }
 void FIRA_pathplan_class::strategy_Support_Test2(int r_number){
@@ -3648,21 +3604,17 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
     double angle_br = env.home[r_number].ball.angle;
     double angle_dr = env.home[r_number].goal.angle;
     double op_angle_dr = env.home[r_number].op_goal.angle;
-//    static int shoot_count =1;
-//    if(fabs(angle_br)<=Chase_Strategy[3] && distance_br<=Chase_Strategy[4]){
-//        shoot = 21;
-//    }else{
-//        shoot = 0;
-//    }
-//    if(shoot_count==1){
-//        shoot = 25;
-//        shoot_count--;
-//    }else{
-//        shoot = 0;
-//    }
+
     double obstacle_angle =env.Support_Obstacle_angle+90;
     double transform_angle_br = angle_br+90;
     double obstacle_distance =env.Support_Obstacle_distance;
+    double transform_obstacle_angle = env.Support_Obstacle_angle + 180;
+    if(transform_obstacle_angle>180){
+        transform_obstacle_angle = transform_obstacle_angle -360;
+    }else if(transform_obstacle_angle<-180){
+        transform_obstacle_angle = transform_obstacle_angle +360;
+    }
+
     if(obstacle_angle>180){
         obstacle_angle=obstacle_angle-360;
     }else if(obstacle_angle<-180){
@@ -3674,26 +3626,7 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
     }else if(transform_angle_br<-180){
         transform_angle_br=transform_angle_br+360;
     }
-//    printf("final_angle=%f\n",env.Support_Obstacle_angle);
-//    printf("final_distance=%f\n",env.Support_Obstacle_distance);
-//    printf("ball_distance = %f\n",distance_br);
-//    if(obstacle_distance-0.4>0){
-//        obstacle_distance=obstacle_distance-0.4;
-//    }else{
-//        obstacle_distance=0;
-//    }
-//    if(distance_br-0.3>0){
-//        distance_br=distance_br-0.3;
-//    }else{
-//        distance_br=0;
-//    }
 
-//        printf("ball_distance = %f\n",distance_br);
-        printf("obstacle_distance = %f\n",obstacle_distance);
-        printf("obstacle_angle = %f\n",env.Support_Obstacle_angle);
-        printf("chase angle_br=%f\n",Chase_Strategy[3]);
-        printf("chase distance =%f\n",Chase_Strategy[4]);
-//        printf("shoot_count=%d\n",shoot_count);
     if(env.Support_Obstacle_angle>=999){
         env.home[r_number].v_x = 0;
         env.home[r_number].v_y = 0;
@@ -3701,44 +3634,18 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
         env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
         env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
     }
-    double yaw_speed = angle_dr;
-    double transform_angle_dr = angle_dr;
-    double inv_op_angle_dr=op_angle_dr+180;// let tail be head
-    if(inv_op_angle_dr>180){
-        inv_op_angle_dr=inv_op_angle_dr-360;
-    }
 
-    if(inv_op_angle_dr>100&&transform_angle_dr<-100){//+and -
-        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-            inv_op_angle_dr=0;
-        }else{
-            transform_angle_dr=0;
-        }
-    }else if(inv_op_angle_dr<-100&&transform_angle_dr>100){
-        if(fabs(inv_op_angle_dr)>fabs(transform_angle_dr)){//turn to smaller way
-            inv_op_angle_dr=0;
-        }else{
-            transform_angle_dr=0;
-        }
-    }
+    double yaw_speed=transform_obstacle_angle;
 
-
-    //#######################################################//
-    //                                                       //
-    //    giving speed
-    //    1.v_yaw = (head to angle_dr) + (tail to op_angle_dr)
-    //    2.v_x = robot to ball x vector speed
-    //    3.v_y =0
-    //                                                       //
-    //#######################################################//
-
-    yaw_speed = inv_op_angle_dr+transform_angle_dr; // (head to angle_dr) + (tail to op_angle_dr) = face forward
 
     env.home[r_number].v_yaw= yaw_speed;
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
      shoot = 0;
+
+
+
 }
 void FIRA_pathplan_class::strategy_Kick(int Robot_index){
     if(SPlanning_Velocity[9]<=100){
@@ -3747,6 +3654,17 @@ void FIRA_pathplan_class::strategy_Kick(int Robot_index){
         shoot = 100;
     }
     printf("shoot=%d\n",shoot);
+}
+
+void FIRA_pathplan_class::strategy_FreeKick(int Robot_index){
+    env.home[Robot_index].v_x = 0;
+    if(env.Support_WhiteLine_distance>0.3){
+        env.home[Robot_index].v_y = -env.Support_WhiteLine_distance;
+    }else{
+        env.home[Robot_index].v_y = 0;
+    }
+    env.home[Robot_index].v_yaw= 0;
+
 }
 
 //==========for ROS special===============//
