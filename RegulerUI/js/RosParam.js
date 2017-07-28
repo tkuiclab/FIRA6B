@@ -39,12 +39,15 @@ function SetParamRobotNum() {
     }
     if (CheckIP[0] == 1) {
         RobotNumber1.set(RobNum[0]);
+        PublishTopicSaveParam();
     }
     if (CheckIP[1] == 1) {
         RobotNumber2.set(RobNum[1]);
+        PublishTopicSaveParam();
     }
     if (CheckIP[2] == 1) {
         RobotNumber3.set(RobNum[2]);
+        PublishTopicSaveParam();
     }
 }
 //============================================================================
@@ -78,7 +81,7 @@ var DistanceSettingsBox3 = new ROSLIB.Param({
 });
 
 function GetGeneralValue() {
-    up();
+
     var SVBox1 = [];
     var DSBox1 = [];
     var SVBox2 = [];
@@ -125,6 +128,9 @@ function SetParamGeneral(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3) {
 
     SPlanningVelocityBox3.set(SVBox3);
     DistanceSettingsBox3.set(DSBox3);
+    console.log(SVBox1, SVBox2, SVBox3);
+    up();
+    PublishTopicSaveParam();
 }
 
 SPlanningVelocityBox1.get(function(value) {
@@ -298,7 +304,7 @@ var PenaltyKickBox3 = new ROSLIB.Param({
 });
 
 function GetPathplanValue() {
-    up();
+
     var ASBox1 = [];
     var CSBox1 = [];
     var ZABox1 = [];
@@ -502,6 +508,9 @@ function SetParamPathplan(ASBox1, CSBox1, ZABox1, TSABox1, TUABox1, SSUBox1, DAB
     DorsadAttackBox3.set(DABox3);
     CornerKickBox3.set(CKBox3);
     PenaltyKickBox3.set(PKBox3);
+
+    up();
+    PublishTopicSaveParam();
 }
 
 AttackStrategyBox1.get(function(value) {
@@ -780,6 +789,11 @@ var StrategySelectBox1 = new ROSLIB.Param({
     name: '/StrategySelection',
 });
 
+var SupportStrategyBox1 = new ROSLIB.Param({
+    ros: ros,
+    name: '/FIRA_Behavior/Support_Strategy',
+});
+
 
 var StateChaseBox2 = new ROSLIB.Param({
     ros: ros2,
@@ -812,6 +826,11 @@ var StateCornerKickBox2 = new ROSLIB.Param({
 var StrategySelectBox2 = new ROSLIB.Param({
     ros: ros2,
     name: '/StrategySelection',
+});
+
+var SupportStrategyBox2 = new ROSLIB.Param({
+    ros: ros2,
+    name: '/FIRA_Behavior/Support_Strategy',
 });
 
 
@@ -848,9 +867,14 @@ var StrategySelectBox3 = new ROSLIB.Param({
     name: '/StrategySelection',
 });
 
+var SupportStrategyBox3 = new ROSLIB.Param({
+    ros: ros3,
+    name: '/FIRA_Behavior/Support_Strategy',
+});
+
 
 function GetBehaviorValue() {
-    up();
+
     var SCBox1 = [];
     var SABox1 = [];
     var STUCBox1 = [];
@@ -859,6 +883,7 @@ function GetBehaviorValue() {
     var SZABox1 = [];
     var SCKBox1 = [];
     var SSBox1 = [];
+    var SupSBox1 = [];
 
     var SCBox2 = [];
     var SABox2 = [];
@@ -868,6 +893,7 @@ function GetBehaviorValue() {
     var SZABox2 = [];
     var SCKBox2 = [];
     var SSBox2 = [];
+    var SupSBox2 = [];
 
     var SCBox3 = [];
     var SABox3 = [];
@@ -877,6 +903,7 @@ function GetBehaviorValue() {
     var SZABox3 = [];
     var SCKBox3 = [];
     var SSBox3 = [];
+    var SupSBox3 = [];
 
     $("[name=StateChaseElement1]").each(function() {
         SCBox1.push(parseFloat($(this).val()));
@@ -915,6 +942,12 @@ function GetBehaviorValue() {
             SSBox1[2] = parseInt(1);
         }
     }
+    obj = document.getElementsByName("SupportStrategyElement1");
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i].checked) {
+            SupSBox1.push(parseInt(i + 1));
+        }
+    }
     localStorage.setItem("BehaviorStateChaseStr1", JSON.stringify(SCBox1));
     localStorage.setItem("BehaviorStateAtkStr1", JSON.stringify(SABox1));
     localStorage.setItem("BehaviorStateTypeUChaseStr1", JSON.stringify(STUCBox1));
@@ -923,6 +956,7 @@ function GetBehaviorValue() {
     localStorage.setItem("BehaviorStateZoneAtkStr1", JSON.stringify(SZABox1));
     localStorage.setItem("BehaviorStateCornerKickStr1", JSON.stringify(SCKBox1));
     localStorage.setItem("BehaviorStrategySelectionStr1", JSON.stringify(SSBox1));
+    localStorage.setItem("BehaviorSupportStrategyStr1", JSON.stringify(SupSBox1));
 
 
     $("[name=StateChaseElement2]").each(function() {
@@ -962,6 +996,12 @@ function GetBehaviorValue() {
             SSBox2[2] = parseInt(1);
         }
     }
+    obj = document.getElementsByName("SupportStrategyElement2");
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i].checked) {
+            SupSBox2.push(parseInt(i + 1));
+        }
+    }
     localStorage.setItem("BehaviorStateChaseStr2", JSON.stringify(SCBox2));
     localStorage.setItem("BehaviorStateAtkStr2", JSON.stringify(SABox2));
     localStorage.setItem("BehaviorStateTypeUChaseStr2", JSON.stringify(STUCBox2));
@@ -970,6 +1010,7 @@ function GetBehaviorValue() {
     localStorage.setItem("BehaviorStateZoneAtkStr2", JSON.stringify(SZABox2));
     localStorage.setItem("BehaviorStateCornerKickStr2", JSON.stringify(SCKBox2));
     localStorage.setItem("BehaviorStrategySelectionStr2", JSON.stringify(SSBox2));
+    localStorage.setItem("BehaviorSupportStrategyStr2", JSON.stringify(SupSBox2));
 
 
     $("[name=StateChaseElement3]").each(function() {
@@ -1009,6 +1050,12 @@ function GetBehaviorValue() {
             SSBox3[2] = parseInt(1);
         }
     }
+    obj = document.getElementsByName("SupportStrategyElement3");
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i].checked) {
+            SupSBox3.push(parseInt(i + 1));
+        }
+    }
     localStorage.setItem("BehaviorStateChaseStr3", JSON.stringify(SCBox3));
     localStorage.setItem("BehaviorStateAtkStr3", JSON.stringify(SABox3));
     localStorage.setItem("BehaviorStateTypeUChaseStr3", JSON.stringify(STUCBox3));
@@ -1017,17 +1064,18 @@ function GetBehaviorValue() {
     localStorage.setItem("BehaviorStateZoneAtkStr3", JSON.stringify(SZABox3));
     localStorage.setItem("BehaviorStateCornerKickStr3", JSON.stringify(SCKBox3));
     localStorage.setItem("BehaviorStrategySelectionStr3", JSON.stringify(SSBox3));
+    localStorage.setItem("BehaviorSupportStrategyStr3", JSON.stringify(SupSBox3));
 
-    SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1, SCKBox1, SSBox1,
-        SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2,
-        SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3);
+    SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1, SCKBox1, SSBox1, SupSBox1,
+        SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2, SupSBox2,
+        SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3, SupSBox3);
 }
 
-function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1, SCKBox1, SSBox1,
-    SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2,
-    SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3) {
+function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1, SCKBox1, SSBox1, SupSBox1,
+    SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2, SupSBox2,
+    SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3, SupSBox3) {
 
-
+    console.log(SupSBox1, SupSBox2, SupSBox3);
     StateChaseBox1.set(SCBox1);
     StateAttackBox1.set(SABox1);
     StateTypeUChaseBox1.set(STUCBox1);
@@ -1036,6 +1084,7 @@ function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1,
     StateZoneAttackBox1.set(SZABox1);
     StateCornerKickBox1.set(SCKBox1);
     StrategySelectBox1.set(SSBox1);
+    SupportStrategyBox1.set(SupSBox1);
 
     StateChaseBox2.set(SCBox2);
     StateAttackBox2.set(SABox2);
@@ -1045,6 +1094,7 @@ function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1,
     StateZoneAttackBox2.set(SZABox2);
     StateCornerKickBox2.set(SCKBox2);
     StrategySelectBox2.set(SSBox2);
+    SupportStrategyBox2.set(SupSBox2);
 
     StateChaseBox3.set(SCBox3);
     StateAttackBox3.set(SABox3);
@@ -1054,7 +1104,10 @@ function SetParamBehavior(SCBox1, SABox1, STUCBox1, STSABox1, SSSUBox1, SZABox1,
     StateZoneAttackBox3.set(SZABox3);
     StateCornerKickBox3.set(SCKBox3);
     StrategySelectBox3.set(SSBox3);
+    SupportStrategyBox3.set(SupSBox3);
 
+    up();
+    PublishTopicSaveParam();
 }
 
 function SetBehaviorKeyborard(box1) {
@@ -1143,6 +1196,13 @@ StrategySelectBox1.get(function(value) {
     }
 });
 
+SupportStrategyBox1.get(function(value) {
+    if (value != null) {
+        obj = document.getElementsByName("SupportStrategyElement1");
+        obj[parseInt(value[0]) - 1].checked = true;
+    }
+});
+
 StateChaseBox2.get(function(value) {
     if (value != null) {
         obj = document.getElementsByName("StateChaseElement2");
@@ -1209,6 +1269,12 @@ StrategySelectBox2.get(function(value) {
                 obj[i].checked = false;
             }
         }
+    }
+});
+SupportStrategyBox2.get(function(value) {
+    if (value != null) {
+        obj = document.getElementsByName("SupportStrategyElement2");
+        obj[parseInt(value[0]) - 1].checked = true;
     }
 });
 
@@ -1280,6 +1346,12 @@ StrategySelectBox3.get(function(value) {
         }
     }
 });
+SupportStrategyBox3.get(function(value) {
+    if (value != null) {
+        obj = document.getElementsByName("SupportStrategyElement3");
+        obj[parseInt(value[0]) - 1].checked = true;
+    }
+});
 
 //============================================================================
 
@@ -1318,4 +1390,5 @@ function SetParamIsSimulator(checked) {
         if (CheckIP[2] == 1)
             IsSimulator3.set(temp);
     }
+    PublishTopicSaveParam();
 }

@@ -323,7 +323,7 @@ private:
     /// load param begin
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
-    std::vector<int>scan_parameter;
+    std::vector<int> Scan;
     int IsSimulator;
     /// load param end
 
@@ -555,9 +555,6 @@ private:
                     apf_data[1]=angle[i];
                     apf_data[2]=(dis_avg+All_Line_distance[i])/count;
                     if(apf_data[2]<=dis){
-//                        angle_start.push_back(apf_data[0]);
-//                        angle_end.push_back(apf_data[1]);
-//                        apf_dis.push_back(apf_data[2]);
                         ob_data=creat_node(apf_data[0],apf_data[1],apf_data[2]);
                         append_node(ob_data);
                         //printf("angle_start:%d\tangle:%d\tdis:%d\n",apf_data[0],apf_data[1],apf_data[2]);
@@ -574,7 +571,7 @@ private:
                 }
             }
         }
-        //printf("=========start\t%d=====\t\n",number_obstacle);
+     
         //display_list(ob_data);
         list_filter(ob_data);
         //display_list(ob_data);
@@ -596,199 +593,40 @@ private:
                 global_env->global_apf_dis.push_back(1);
             }
 
-//            for(int j=0;j<number_obstacle;j++){
-//                    global_env->global_angle_end.push_back(angle_end[j]);
-//                    global_env->global_angle_start.push_back(angle_start[j]);
-//                    global_env->global_apf_dis.push_back(apf_dis[j]);
-//                }
-//                printf("angle_start:%d\tangle_end:%d\t dis:%d\n",global_env->global_angle_start[j+1],global_env->global_angle_end[j+1],global_env->global_apf_dis[j+1]);
-//            }
 
-//        angle_end.clear();
-//        angle_start.clear();
-//        apf_dis.clear();
 
-//        std::vector<int>().swap(angle_end);
-//        std::vector<int>().swap(angle_start);
-//        std::vector<int>().swap(apf_dis);
+
         list_to_global(ob_data);
 
-//        for(int j=0;j<number_obstacle;j++){
-//            printf("angle_start:%d\tangle_end:%d\t dis:%d\n",global_env->global_angle_start[j+1],global_env->global_angle_end[j+1],global_env->global_apf_dis[j+1]);
-//        }
 
         number_obstacle=0;
         freelist();
-//     global_env->blackangle[0] = place*3;
-//     if(global_env->blackangle[0] > 180){
-//        global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
-//     }
-//ROS_INFO("blackangle[0]=%d,mindis[0]=%d\n",global_env->blackangle[0],global_env->mindis[0]);
-        /*}else counter++;*/
-   //        std_msgs::Int32MultiArray blackdis;
-   //        int blackpop=0;
-   //        for(int i=0; i<360/Blackangle; i++){
-   //            blackdis.data.push_back(msg->data[i]);
-   //        }
-   //        for(int i = 0; i < 360/Blackangle; i++){
-   //            blackpop = blackdis.data.back();
-   //            blackdis.data.pop_back();
-   //            printf("%d=%d\n",i,blackpop);
-   //        }
-   //===================================================================
-//           int All_Line_distance[360];
-//           int All_Line_angle[360];
-//           int place;
-//           int middle;
-//           int middle_place;
-//           int count=1;
-//           int lastCount = 0;
-//           for(int i=0; i<360/Blackangle; i++){
-//               All_Line_distance[i] = msg -> data[i];
-////               ROS_INFO("%d=%d\n",i, All_Line_distance[i] );
-//           }
-//           global_env->mindis = All_Line_distance[0];
 
-//          for(int i=1 ; i<360/Blackangle ; i++){
-//               if(All_Line_distance[i] < global_env->mindis){
-//                    lastCount = 0;
-//                    count = 1;
-//                    global_env->mindis = All_Line_distance[i];
-////                    ROS_INFO("count=%d\n",count);
-//               }else if(All_Line_distance[i] == All_Line_distance[i-1]){
-//                    count++;
-//                    if(count > lastCount){
-//                        lastCount = count;
-//                        place = i;
-//                    }
-////                    ROS_INFO("count=%d\n",count);
-//               }else{
-//                   if(count > lastCount){
-//                       lastCount = count;
-//                       place = i;
-//                   }
-//               }
-//               count = 1;
-//          }
-
-//          middle = lastCount/2;
-//          middle_place = place - middle;
-
-//          for(int i=0 ; i<360/Blackangle ; i++){
-//             All_Line_angle[i] = i*Blackangle;
-//          }
-//          if(All_Line_angle[middle_place] <= 180){
-//               global_env->blackangle = All_Line_angle[middle_place];
-//          }else if(All_Line_angle[middle_place] > 180){
-//               global_env->blackangle = - (360 - All_Line_angle[middle_place]);
-//          }
-
-////       ROS_INFO("min=%d\t",global_env->mindis);
-////       ROS_INFO("%d\t",place);
-////       ROS_INFO("middle_place=%d\t",middle_place);
-////       ROS_INFO("lastCount=%d\n",lastCount);
-////       ROS_INFO("%d",global_env->blackangle);
-//===============================================================================================================
-/*        int j=0,k=0;
-        bool boolha=0;
-        int meanvalue=0;
-        int All_Line_distance[360];
-        int All_Line_angle[360];
-        int temp = 0;
-        for(int i=0;i<20;i++){
-            Save[i].counter=1;
+        int place;
+        Range Unscan[3];
+        Unscan[0].begin = Scan[0] - (Scan[3]-1);
+        Unscan[0].end   = Scan[0] + (Scan[3]-1);
+        Unscan[1].begin = Scan[1] - (Scan[4]-1);
+        Unscan[1].end   = Scan[1] + (Scan[4]-1);
+        Unscan[2].begin = Scan[2] - (Scan[4]-1);
+        Unscan[2].end   = Scan[2] + (Scan[4]-1);
+        for(int i=0;i<360/Blackangle;i++){
+                All_Line_distance[i] = msg -> data[i];
         }
-        for(int i=0; i<360/Blackangle; i++){
-           All_Line_distance[i] = msg -> data[i];
-//           ROS_INFO("%d=%d\n",i, All_Line_distance[i] );
-             }
-        for(int i=0;i<(360/Blackangle)-1;i++){
-            if(All_Line_distance[i]<200){
-                if(Save[j].counter==1){
-                    Save[j].distance=All_Line_distance[i];
-                    Save[j].location=i;
-                }
-                //fabs(All_Line_distance[i]-All_Line_distance[i+1])
-                meanvalue += All_Line_distance[i]-All_Line_distance[i+1];
-                if(abs(meanvalue)<=3){
-                    Save[j].counter++;
-                    boolha=1;
-                }else if(boolha == 1){
-                    j++;
-                    meanvalue=0;
-                    boolha=0;
-                }else if(fabs(All_Line_distance[i]-All_Line_distance[i+1]) > 3){
-                    meanvalue=0;
+
+        global_env->mindis[0] = All_Line_distance[0];
+        for(int i=1;i<360/Blackangle;i++){
+            if(All_Line_distance[i] < global_env->mindis[0]){
+                if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
+                    global_env->mindis[0] = All_Line_distance[i];
+                    place = i*Blackangle;
                 }
             }
         }
-
-
-              for(int i=0;i<j;i++){
-                  if(Save[i].counter >= 3){
-                      New_Save[k].location = Save[i].location;
-                      New_Save[k].distance = Save[i].distance;
-                      New_Save[k].counter = Save[i].counter;
-                      k++;
-                  }
-              }
-              for(int i=0; i<k ; i++){
-                  for(int j=i; j<k; j++){
-                      if(New_Save[j].distance < New_Save[i].distance){
-                          temp = New_Save[j].distance;
-                          New_Save[j].distance = New_Save[i].distance;
-                          New_Save[i].distance = temp;
-
-                          temp = New_Save[j].location;
-                          New_Save[j].location = New_Save[i].location;
-                          New_Save[i].location = temp;
-
-                          temp = New_Save[j].counter;
-                          New_Save[j].counter = New_Save[i].counter;
-                          New_Save[i].counter = temp;
-                      }
-                   }
-              }
-              for(int i=0; i<k-1; i++){
-                if(New_Save[i].distance == New_Save[i+1].distance){
-                  if(New_Save[i].counter < New_Save[i+1].counter){
-                     temp = New_Save[i].location;
-                     New_Save[i].location= New_Save[i+1].location;
-                     New_Save[i+1].location = temp;
-
-                     temp = New_Save[i].counter;
-                     New_Save[i].counter= New_Save[i+1].counter;
-                     New_Save[i+1].counter = temp;
-                  }
-                }
-              }
-              for(int i=0; i<k; i++){
-                   global_env->mindis[i] = New_Save[i].distance;
-                   New_Save[i].middle = New_Save[i].counter/2;
-                   New_Save[i].middle_place = New_Save[i].location + New_Save[i].middle ;
-              }
-              for(int i=0 ; i<360/Blackangle ; i++){
-                  All_Line_angle[i] = i*Blackangle;
-              }
-              for(int i=0; i<k; i++){
-                  if(All_Line_angle[New_Save[i].middle_place] <= 180){
-                       global_env->blackangle[i] = All_Line_angle[New_Save[i].middle_place];
-                  }else if(All_Line_angle[New_Save[i].middle_place] > 180){
-                       global_env->blackangle[i] = - (360 - All_Line_angle[New_Save[i].middle_place]);
-                  }
-              }*/
-//======================================================================================================================//
-
-//              for(int i=0;i<j;i++){
-//                  ROS_INFO("min[%d]=%d\t loaction[%d]=%d\t counter[%d]=%d\n",i,Save[i].distance,i,Save[i].location,i,Save[i].counter);
-//              }
-//              for(int i=0;i<k;i++){
-//                  ROS_INFO("New.distance[%d]=%d\t New.location[%d]=%d\t New_Save[%d].counter=%d\n",i,New_Save[i].distance,i,New_Save[i].location,i,New_Save[i].counter);
-//                   ROS_INFO("global_env->mindis[%d]=%d\t global_env->blackangle[%d]=%d\n \n",i,global_env->mindis[i],i,global_env->blackangle[i]);
-//              }
-
-
-
+        global_env->blackangle[0] = place*Blackangle;
+        if(global_env->blackangle[0] > 180){
+            global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
+        }
 
     }
      void getSaveParam(const std_msgs::Int32::ConstPtr &msg){
