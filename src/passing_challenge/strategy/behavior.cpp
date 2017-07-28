@@ -71,7 +71,7 @@ void Behavior::chase(const Ball target_ball)
 	double distance = sqrt(pow(distance_x, 2)+pow(distance_y, 2));
 	double target_angle = (distance_y >= 0)? (atan2(distance_y, distance_x)*180/M_PI)+(env->robot.pos.z+90) : (-1)*(atan2(distance_y, distance_x)*180/M_PI)+(env->robot.pos.z+90);
 	if(distance > 1){
-		double middlePoint_x = -1.95;
+		double middlePoint_x = -2.0;
 		double middlePoint_y = (env->robot.pos.y+target_ball.pos.y)/2;
 		std::cout << "Target Ball Position: (" << target_ball.pos.x << ", " << target_ball.pos.y << ", " << target_angle << ")\n";
 		std::cout << "Target Ball Distance: " << distance << std::endl;
@@ -94,7 +94,7 @@ void Behavior::aim(const Goal target_goal)
 	std::cout << "Target Goal Distace: " << distance << std::endl;	
 	if(fabs(target_angle)<1){
 		pub(0);
-		sleep(0.5);
+		sleep(1);
 		ros::spinOnce();
 		distance_x = target_goal.pos.x - env->robot.pos.x;
 		distance_y = target_goal.pos.y - env->robot.pos.y;
@@ -120,7 +120,7 @@ void Behavior::shoot()
 	env->robot.v_yaw = 0;
 	env->robot.shoot = 50;
 	pub();	
-	sleep(0.5);
+	sleep(1);
 	nextTarget();
 }
 
