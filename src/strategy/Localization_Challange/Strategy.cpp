@@ -151,16 +151,9 @@ void Strategy::StrategyLocalization()
             vector_tr.y = _Location->LocationPoint[_CurrentTarget].y - Robot.pos.y;
         }
         vector_tr.yaw = atan2(vector_tr.y, vector_tr.x) * RAD2DEG - (imu + 90);
-        //            if(vector_tr.yaw>0){
-        //                vector_turn.x = cos(-90*DEG2RAD)*vector_br.x - sin(-90*DEG2RAD)*vector_br.y;
-        //                vector_turn.y = sin(-90*DEG2RAD)*vector_br.x + cos(-90*DEG2RAD)*vector_br.y;
-        //            }else{
-        //                vector_turn.x = cos(90*DEG2RAD)*vector_br.x - sin(90*DEG2RAD)*vector_br.y;
-        //                vector_turn.y = sin(90*DEG2RAD)*vector_br.x + cos(90*DEG2RAD)*vector_br.y;
-        //            }
-        //            v_x = vector_turn.x;
-        //            v_y = vector_turn.y;
-        v_yaw = vector_tr.yaw;
+        v_x = 0;                        // don't give it horizen velocity
+        v_y = 100;                      // full power
+        v_yaw = vector_tr.yaw;          //
         if (v_yaw > 180)
             v_yaw -= 360;
         else if (v_yaw < -180)
@@ -184,6 +177,7 @@ void Strategy::StrategyLocalization()
                 _LocationState = forward;
             }
         }
+        v_yaw *= 5;
         break;
     case error:
         printf("ERROR STATE\n");
