@@ -3888,7 +3888,7 @@ void FIRA_pathplan_class::strategy_Kick(int Robot_index){
 void FIRA_pathplan_class::strategy_FreeKick(int Robot_index){
     printf("FreeKick\n");
     env.home[Robot_index].v_x = 0;
-    if(env.Support_WhiteLine_distance>0.3){
+    if(env.Support_WhiteLine_distance>0.4){
         env.home[Robot_index].v_y = -env.Support_WhiteLine_distance;
     }else{
         env.home[Robot_index].v_y = 0;

@@ -843,19 +843,21 @@ private:
         int degree_controller = 0; // if ball dis lower, start scan 180 degree
         int edge_controller = 1;
         static int edge_count=0;
-        static int Begin_time = 0;
-        static int Current_time = 0;
+        static double Begin_time = 0;
+        static double Current_time = 0;
         Current_time = ros::Time::now().toSec();
         if(global_env->gameState==0){
             Begin_time = ros::Time::now().toSec();
             Current_time = ros::Time::now().toSec();
         }
+        //printf("global_env->gameState=%d\n",global_env->gameState);
         if((abs(Current_time-Begin_time)<1.5)&&(global_env->gameState==5)){
            degree_controller=270;
            ignore_limit_angle=25;
            limit_obstacle_dis=200;
            edge_controller = 1;
-        }else if((fabs(Current_time-Begin_time)<2)&&(global_env->gameState==GameState_FreeBall)){
+        }else if((fabs(Current_time-Begin_time)<1.5)&&(global_env->gameState==GameState_FreeKick)){
+           //printf("fabs(Current_time-Begin_time)=%f\n",fabs(Current_time-Begin_time));
            degree_controller=270;
            ignore_limit_angle=25;
            limit_obstacle_dis=200;
@@ -1024,7 +1026,7 @@ private:
         for(i=165/Whiteangle;i<=195/Whiteangle;i++){// only scan back 30 degree
             if(All_Line_distance[i]<shortest_distance){// good distance
                 shortest_distance = All_Line_distance[i];
-                printf("final_distance=%f\n",shortest_distance);
+                //printf("final_distance=%f\n",shortest_distance);
             }else{
                 //nothing here, skip to next round
             }

@@ -698,7 +698,6 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
                 printf("action_LeaveLimitArea\n");
             }else if((angle_br>120||angle_br<-120)||distance_br<1){
                 actionAry[robotIndex] = action_LeaveBall;
-                printf("action_Chase\n");
             }else if(op_distance_dr>3.5){// too far from defend gate
                 actionAry[robotIndex] = action_MovetoOpGoal;
                 printf("action_MovetoYellowGate\n");
