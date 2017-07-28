@@ -800,11 +800,14 @@ private:
         for(i=165/Whiteangle;i<=195/Whiteangle;i++){// only scan back 30 degree
             if(All_Line_distance[i]<shortest_distance){// good distance
                 shortest_distance = All_Line_distance[i];
+                printf("final_distance=%f\n",shortest_distance);
             }else{
                 //nothing here, skip to next round
             }
         }
-        final_distance=shortest_distance;
+        //printf("whiteangle=%d\n",Whiteangle);
+        final_distance=shortest_distance/100;
+        //printf("final_distance=%f\n",final_distance);
         global_env->Support_WhiteLine_distance = final_distance;
 
 

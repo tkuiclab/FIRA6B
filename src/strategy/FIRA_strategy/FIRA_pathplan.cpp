@@ -3695,8 +3695,8 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
 
 }
 void FIRA_pathplan_class::strategy_Kick(int Robot_index){
-    if(SPlanning_Velocity[9]<=100){
-        shoot = SPlanning_Velocity[9];
+    if(SPlanning_Velocity[10]<=100){
+        shoot = SPlanning_Velocity[10];
     }else{
         shoot = 100;
     }

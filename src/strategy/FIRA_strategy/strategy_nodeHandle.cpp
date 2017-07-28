@@ -185,18 +185,22 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     double Vdis_min = SPlanning_Velocity[1];//0.3
     double VTdis_max = SPlanning_Velocity[2];//60
     double VTdis_min = SPlanning_Velocity[3];//30
-    if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if robot is support or Newsupport, v_min=0;
-        VTdis_min = SPlanning_Velocity[8];
-        if(VTdis_min>VTdis_max){
-            VTdis_min=0;
-        }
-    }
     double VTdis;
     double Tangle_max = SPlanning_Velocity[4];// 20
     double angle_max = SPlanning_Velocity[6];//144;
     double Tangle_min = SPlanning_Velocity[5];//3
     double angle_min = SPlanning_Velocity[7];
     double Tangle;
+    if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if robot is support or Newsupport, v_min=0;
+        VTdis_min = SPlanning_Velocity[8];
+        Tangle_min = SPlanning_Velocity[9];
+        if(VTdis_min>VTdis_max){
+            VTdis_min=0;
+        }
+        if(Tangle_min>Tangle_max){
+            Tangle_min=0;
+        }
+    }
 ////Transfer vector to [0,100]
     if(Vdis==0)
         IsVectorZero=1;
