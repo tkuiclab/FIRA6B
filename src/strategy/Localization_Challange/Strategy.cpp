@@ -46,7 +46,7 @@ void Strategy::StrategyLocalization()
     Robot.pos.x = _Env->Robot.pos.x;
     Robot.pos.y = _Env->Robot.pos.y;
     double imu = _Env->Robot.pos.angle;
-    double absolute_front = imu+90;
+    double absolute_front = imu + 90;
     static int flag = TRUE;
     static int flag_chase = TRUE;
     double lost_ball_dis = _Param->Strategy.HoldBall_Condition[3];
@@ -85,7 +85,7 @@ void Strategy::StrategyLocalization()
     //        _LocationState = _Last_state;
     //        flag_chase = TRUE;
     //    }
-    Normalization(absolute_front);  
+    Normalization(absolute_front);
     switch (_LocationState)
     {
     case forward: // Move to target poitn
@@ -180,7 +180,6 @@ void Strategy::StrategyLocalization()
                 _LocationState = forward;
             }
         }
-        //        v_yaw *= 5;
         break;
     case error:
         printf("ERROR STATE\n");
@@ -190,8 +189,8 @@ void Strategy::StrategyLocalization()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    //    OptimatePath();
-    showInfo(imu, compensation_x, compensation_y);
+       OptimatePath();
+    // showInfo(imu, compensation_x, compensation_y);
     Normalization(v_yaw);
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
@@ -199,14 +198,6 @@ void Strategy::StrategyLocalization()
 }
 void Strategy::Forward(RobotData Robot, int &v_x, int &v_y, int flag)
 {
-    // _Last_state = _LocationState;
-    // flag = FALSE;
-    // *v_x = (_Location->LocationPoint[_CurrentTarget].x+compensation_x) - Robot.pos.x;
-    // *v_y = (_Location->LocationPoint[_CurrentTarget].y+compensation_y) - Robot.pos.y;
-    // if(fabs(v_x)<=0.05 && fabs(v_y)<=0.05){
-    //     _LocationState = back;
-    //     flag = TRUE;
-    // }_CurrentTarget++;
     ;
 }
 void Strategy::Back(int flag)
@@ -223,23 +214,52 @@ void Strategy::Chase()
 }
 void Strategy::OptimatePath()
 {
-    for (int i = 0; i < 5; i++)
-        for (int j = i + 1; j < 5; j++)
+    int horizon_point = -1;
+    int hotizon_location = -1;
+    for (int i = 0; i < 5; i++){
+        if (_Location->LocationPoint[i].y == 0 || _Location->LocationPoint[i].x == 0)
         {
-            double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y) / (_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
-            if (Slope > 999)
-                Slope = 999;
-            double dis = (_Location->LocationPoint[j].y - Slope * _Location->LocationPoint[j].x) / sqrt(Slope * Slope + 1);
-            if (fabs(dis) < 0.5)
-                printf("dis %d -> %d :  = %lf\n", i + 1, j + 1, dis);
-            double angle = atan2(_Location->LocationPoint[i].y, _Location->LocationPoint[i].x) * RAD2DEG;
-            double angle_next = atan2(_Location->LocationPoint[j].y, _Location->LocationPoint[j].x) * RAD2DEG;
-            double angle_diff = angle_next - angle;
-            Normalization(angle_diff);
-            angle_diff = fabs(angle_diff);
-            printf("angle_diff %d -> %d :  = %lf\n", i + 1, j + 1, angle_diff);
+            if (_Location->LocationPoint[i].y > 0)
+                hotizon_location = up;
+            else if (_Location->LocationPoint[i].y < 0)
+                hotizon_location = down;
+            else if (_Location->LocationPoint[i].x > 0)
+                hotizon_location = right;
+            else if (_Location->LocationPoint[i].x < 0)
+                hotizon_location = left;
         }
-    printf("====================\n");
+    }
+    switch (hotizon_location)
+    {
+    case up:
+        break;
+    case down:
+        break;
+    case right:
+        break;
+    case left:
+        break;
+    default:
+        printf("UNDEFINE STATE\n");
+        exit(FAULTEXECUTING);
+    }
+    // for (int i = 0; i < 5; i++)
+    //     for (int j = i + 1; j < 5; j++)
+    //     {
+    //         double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y) / (_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
+    //         if (Slope > 999)
+    //             Slope = 999;
+    //         double dis = (_Location->LocationPoint[j].y - Slope * _Location->LocationPoint[j].x) / sqrt(Slope * Slope + 1);
+    //         if (fabs(dis) < 0.5)
+    //             printf("dis %d -> %d :  = %lf\n", i + 1, j + 1, dis);
+    //         double angle = atan2(_Location->LocationPoint[i].y, _Location->LocationPoint[i].x) * RAD2DEG;
+    //         double angle_next = atan2(_Location->LocationPoint[j].y, _Location->LocationPoint[j].x) * RAD2DEG;
+    //         double angle_diff = angle_next - angle;
+    //         Normalization(angle_diff);
+    //         angle_diff = fabs(angle_diff);
+    //         printf("angle_diff %d -> %d :  = %lf\n", i + 1, j + 1, angle_diff);
+    //     }
+    // printf("====================\n");
 }
 void Strategy::showInfo(double imu, double compensation_x, double compensation_y)
 {

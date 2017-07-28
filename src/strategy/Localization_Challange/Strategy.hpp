@@ -62,5 +62,12 @@ class Strategy
         turn,
         error
     };
+    enum hotizon_location
+    {
+        up,
+        down,
+        right,
+        left
+    };
 };
 #endif
