@@ -273,8 +273,8 @@ void FIRA_behavior_class::readroleAry(int robotIndex,int role){
 //            case Role_ThrowIn:
 //                strategy_ThrowIn(robotIndex);
 //                break;
-            case Role_test:
-                behavior_test(robotIndex);
+            case Role_Escape_Attack:
+                behavior_Escape_Attack(robotIndex);
                 break;
             case Role_CornerKick:
                 if(EscapeCornerKick[robotIndex]){
@@ -377,8 +377,8 @@ void FIRA_behavior_class::behavior_Halt(int robotIndex){
     state_cornerkick = state_CornerKick;
     state_attack = state_Init;
     ///=========================================
-}void FIRA_behavior_class::behavior_test(int robotIndex){
-    actionAry[robotIndex] = action_test;
+}void FIRA_behavior_class::behavior_Escape_Attack(int robotIndex){
+    actionAry[robotIndex] = action_Escape_Attack;
 }
 void FIRA_behavior_class::behavior_AvoidBarrier(int robotIndex){
     actionAry[robotIndex] = action_AvoidBarrier;

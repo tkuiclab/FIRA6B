@@ -122,7 +122,7 @@ void FIRA_teamStrategy_class::role_Play(){
 //        }
 //    }
     roleAry[0]=Role_Attack;
-    roleAry[1]=Role_test;
+    roleAry[1]=Role_Attack;
     roleAry[2]=Role_Attack;
 }
 
