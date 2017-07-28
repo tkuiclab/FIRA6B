@@ -63,7 +63,7 @@ void Strategy_nodeHandle::ros_comms_init(){
     //contact image
     Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
     BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
-    BlackObject = n->subscribe<std_msgs::Int32MultiArray>(WhiteObject_Topic,1000,&Strategy_nodeHandle::subWhiteObject,this);
+    WhiteObject = n->subscribe<std_msgs::Int32MultiArray>(WhiteObject_Topic,1000,&Strategy_nodeHandle::subWhiteObject,this);
     Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1000,&Strategy_nodeHandle::subVision_Two_point,this);
 
 
@@ -278,7 +278,7 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
     if(n->getParam("/FIRA/HSV/black/angle",Blackangle)){
 //     std::cout << "param Blackangle=" << Blackangle <<std::endl;
     }
-    if(n->getParam("/FIRA/HSV/White/angle",Whiteangle)){
+    if(n->getParam("/FIRA/HSV/white/angle",Whiteangle)){
 //     std::cout << "param Blackangle=" << Blackangle <<std::endl;
     }
      if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){

@@ -62,6 +62,7 @@ void FIRA_teamStrategy_class::teamStrategy(){
         case GameState_AvoidBarrier:
             role_AvoidBarrier();
             break;
+
     }
      if(last_gamestate!=env.gameState){// switch gamestate
          Begin_time = ros::Time::now().toSec();
@@ -196,8 +197,8 @@ void FIRA_teamStrategy_class::role_Play(){
     }else{// no teamstrategy, two attack
         printf("single\n");
         roleAry[0]=Role_Goalkeeper;
-        roleAry[1]=Role_Test1;
-        roleAry[2]=Role_Attack;
+        roleAry[1]=Role_Attack;
+        roleAry[2]=Role_NewSupport;
     }
 
 
@@ -265,7 +266,7 @@ void FIRA_teamStrategy_class::role_FreeKick(){
     }
 
     if(this_robot_role == Role_NewSupport){
-        if(fabs(Current_time-Begin_time)<=1.5){
+        if(fabs(Current_time-Begin_time)<=0.5){
            roleAry[env.RobotNumber] = Role_FreeKick;// backward
         }else{
             if(shoot_flag==1){// is support and need shoot
@@ -276,7 +277,7 @@ void FIRA_teamStrategy_class::role_FreeKick(){
             }
         }
     }else{// is attacker
-        if(fabs(Current_time-Begin_time)<=2){
+        if(fabs(Current_time-Begin_time)<=1){
            roleAry[env.RobotNumber] = Role_Halt;
         }else{
            roleAry[env.RobotNumber] = Role_Attack;
@@ -289,7 +290,7 @@ void FIRA_teamStrategy_class::role_FreeKick(){
     }else if(this_robot_role==Role_Attack){
         attacker_select_starter=1;
     }
-    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=2){//if teamstrategy open
+    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=1.5){//if teamstrategy open
         static int attacker_select = attacker_select_starter;
         static int this_attacker_select_counter=0;
         static int another_attacker_select_counter=0;
@@ -433,7 +434,7 @@ void FIRA_teamStrategy_class::role_FreeBall(){
     }else if(this_robot_role==Role_Attack){
         attacker_select_starter=1;
     }
-    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=2){//if teamstrategy open
+    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=1.5){//if teamstrategy open
         static int attacker_select = attacker_select_starter;
         static int this_attacker_select_counter=0;
         static int another_attacker_select_counter=0;
@@ -568,7 +569,7 @@ void FIRA_teamStrategy_class::role_ThrowIn(){
     }else if(this_robot_role==Role_Attack){
         attacker_select_starter=1;
     }
-    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=2){//if teamstrategy open
+    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=1.5){//if teamstrategy open
         static int attacker_select = attacker_select_starter;
         static int this_attacker_select_counter=0;
         static int another_attacker_select_counter=0;
@@ -696,7 +697,7 @@ void FIRA_teamStrategy_class::role_CornerKick(){
     }else if(this_robot_role==Role_Attack){
         attacker_select_starter=1;
     }
-    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=2){//if teamstrategy open
+    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=1.5){//if teamstrategy open
         static int attacker_select = attacker_select_starter;
         static int this_attacker_select_counter=0;
         static int another_attacker_select_counter=0;

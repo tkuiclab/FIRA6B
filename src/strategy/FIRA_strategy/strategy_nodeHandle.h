@@ -168,6 +168,7 @@ private:
 
     //BlackObject
     ros::Subscriber BlackObject;
+    ros::Subscriber WhiteObject;
 
     //robot role publisher
     //no robot_1_role_sub, because robot_1 is always goal keeper
@@ -460,6 +461,132 @@ private:
         if(global_env->blackangle[0] > 180){
             global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
         }
+        //        //---------------------------vincent--1 meter all around------------------
+        //        double distance_br = global_env->home[global_env->RobotNumber].ball.distance;
+        //        double distance_dr = global_env->home[global_env->RobotNumber].goal.distance;
+        //        double op_distance_dr = global_env->home[global_env->RobotNumber].op_goal.distance;
+        //        double angle_br = global_env->home[global_env->RobotNumber].ball.angle;
+        //        double angle_dr = global_env->home[global_env->RobotNumber].goal.angle;
+        //        double op_angle_dr = global_env->home[global_env->RobotNumber].op_goal.angle;
+        //        double transform_angle_br=angle_br;
+        //        //let ball angle = black line angle
+        //        int ignore_limit_angle=30;
+        //        int ignore_upper=0;
+        //        int ignore_lower=0;
+        //        int ignore_360upper=0;
+        //        int ignore_360lower=0;
+        //        int ignore_720upper=0;
+        //        int ignore_720lower=0;
+        //        int limit_obstacle_dis=100;
+        //        int limit_obstacle_dis_counter=0;
+        //        int first_obstacle_clear=0;
+        //        int define_obstacle_angle=15;
+        //        double obstacle_middle_angle=0;
+        //        int ignore_counter=0;
+        //        double final_angle=0;
+        //        double final_distance=0;
+        //        int end_search = 0;
+        //        int i_limit=0;
+        //        int obstacle_distance=0;
+        //        int last_obstacle_distance=0;
+        //        if(transform_angle_br<0){//let ball_angle be 0~360 degree
+        //            transform_angle_br = transform_angle_br + 360;
+        //        }
+        //        if(transform_angle_br < ignore_limit_angle){// prepare to scan two round
+        //            transform_angle_br = transform_angle_br + 360;
+        //        }
+        //        if(transform_angle_br<360){
+        //            ignore_360upper=transform_angle_br+360+ignore_limit_angle;
+        //            ignore_360lower=transform_angle_br+360-ignore_limit_angle;
+        //            ignore_upper=transform_angle_br+30;
+        //            ignore_lower=transform_angle_br-30;
+        //        }else{
+        //            ignore_360upper=transform_angle_br+30;
+        //            ignore_360lower=transform_angle_br-30;
+        //            ignore_upper=transform_angle_br-360;
+        //            ignore_lower=0;
+        //        }
+        //        if(ignore_360upper>720){
+        //            ignore_720upper = ignore_360upper-720;
+        //            ignore_720lower = 0;
+        //        }
+
+        //        for(i=0; i<720/Blackangle; i++){
+        //            if(end_search==1){// end_search jump out for loop
+        //                break;
+        //            }
+
+        //            if(i*Blackangle>360||(i==360/Blackangle)){// if searching round two
+        //                i_limit=360/Blackangle;
+        //            }else{
+        //                i_limit=0;
+        //            }
+        //            if((All_Line_distance[0]<limit_obstacle_dis)&&(i==0)){//something at 0 degree
+        //                first_obstacle_clear=1;// first obstacle will clear
+        //            }else if(i*Blackangle>=180&&first_obstacle_clear==1){// if across 180 degree still haven't find first obstacle
+        //                first_obstacle_clear=0;
+        //            }
+        //            if(All_Line_distance[i-i_limit]<limit_obstacle_dis){//something within distance
+        //                limit_obstacle_dis_counter++;
+        //                obstacle_distance = obstacle_distance + All_Line_distance[i-i_limit];
+        //                obstacle_middle_angle = i*Blackangle-limit_obstacle_dis_counter*Blackangle/2;
+        //                last_obstacle_distance = All_Line_distance[i-i_limit];
+        //                printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
+        //                ignore_counter=0;// something there, so get ignore chance
+        //            }else{// not within distance
+        //                ignore_counter++;//give chance to ignore
+        //                if(ignore_counter>=2){//really nothing there
+        //                    if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){// if last obstacle large enough
+        //                        if(first_obstacle_clear==1){//first time dont restore
+        //                            first_obstacle_clear--;
+        //                            printf("first_obstacle_clear\n");
+        //                        }else{
+        //                            final_angle = obstacle_middle_angle; // restore
+        //                            final_distance = obstacle_distance/limit_obstacle_dis_counter;
+        //                            end_search = 1;// get final angle, so end search
+        //                            printf("end search\n");
+        //                        }
+        //                    }
+        //                    if(limit_obstacle_dis_counter>=2){// if something there but not large enough, still clear first time counter;
+        //                        first_obstacle_clear--;
+        //                    }
+        //                    printf("ignore_counter>2,clear all\n");
+        //                    limit_obstacle_dis_counter = 0;// reset obstacle
+        //                    obstacle_distance = 0;
+        //                    last_obstacle_distance = 0;
+        //                }else{//keep counting
+        //                    limit_obstacle_dis_counter++;
+        //                    obstacle_distance = obstacle_distance + last_obstacle_distance;
+        //                    obstacle_middle_angle = i*Blackangle-limit_obstacle_dis_counter*Blackangle/2;
+        //                    printf("limit_obstacle_dis_counter=%d,i=%d,i_limit=%d,angle[%d]=%d\n",limit_obstacle_dis_counter,i,i_limit,i*Blackangle,All_Line_distance[i-i_limit]);
+
+        //                }
+        //            }
+        //            if(((i*Blackangle>=ignore_lower)&&(i*Blackangle<=ignore_upper)||(i*Blackangle>=ignore_360lower)&&(i*Blackangle<=ignore_360upper))||(i*Blackangle>=ignore_720lower)&&(i*Blackangle<=ignore_720upper)){
+        //                // if angle within these area, will clear
+        //                limit_obstacle_dis_counter=0;
+        //                ignore_counter=0;
+        //                printf("angle within these area, will clear\n");
+        //            }
+        //        }
+        //        if(final_angle>540&&final_angle<=720){
+        //            final_angle=final_angle-720;
+        //        }else if(final_angle>180&&final_angle<=540){
+        //            final_angle=final_angle-360;
+        //        }
+        //        global_env->Support_Obstacle_angle=final_angle;
+        //        global_env->Support_Obstacle_distance= final_distance/100;
+        //        printf("final angle = %f \n",final_angle);
+        //        printf("final_distance = %f \n",final_distance/100);
+        //        printf("ball_distance = %f\n",distance_br);
+        //        printf("transform_angle_br=%f\n",transform_angle_br);
+        //        printf("ignore_upper=%d\n",ignore_upper);
+        //        printf("ignore_lower=%d\n",ignore_lower);
+        //        printf("ignore_360upper=%d\n",ignore_360upper);
+        //        printf("ignore_360lower=%d\n",ignore_360lower);
+        //        printf("ignore_720upper=%d\n",ignore_720upper);
+        //        printf("ignore_720lower=%d\n",ignore_720lower);
+
 
         double distance_br = global_env->home[global_env->RobotNumber].ball.distance;
         double distance_dr = global_env->home[global_env->RobotNumber].goal.distance;
@@ -492,19 +619,19 @@ private:
         int degree_controller = 0; // if ball dis lower, start scan 180 degree
         int edge_controller = 1;
         static int edge_count=0;
-        static double Begin_time = 0;
-        static double Current_time = 0;
+        static int Begin_time = 0;
+        static int Current_time = 0;
         Current_time = ros::Time::now().toSec();
         if(global_env->gameState==0){
             Begin_time = ros::Time::now().toSec();
             Current_time = ros::Time::now().toSec();
         }
-        if((fabs(Current_time-Begin_time)<2)&&(global_env->gameState==GameState_ThrowIn)){
+        if((abs(Current_time-Begin_time)<1.5)&&(global_env->gameState==5)){
            degree_controller=270;
            ignore_limit_angle=25;
            limit_obstacle_dis=200;
            edge_controller = 1;
-        }else if((fabs(Current_time-Begin_time)<3.5)&&(global_env->gameState==GameState_FreeBall)){
+        }else if((fabs(Current_time-Begin_time)<2)&&(global_env->gameState==GameState_FreeBall)){
            degree_controller=270;
            ignore_limit_angle=25;
            limit_obstacle_dis=200;
@@ -601,8 +728,7 @@ private:
                 }
 
             }
-
-            if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if is support or Newsupport, open limit area
+        if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if robot is support or newsupport, ignore limit area
                 if(((i*Blackangle>=ignore_lower)&&(i*Blackangle<=ignore_upper)||(i*Blackangle>=ignore_360lower)&&(i*Blackangle<=ignore_360upper))||(i*Blackangle>=ignore_720lower)&&(i*Blackangle<=ignore_720upper)){
                     // if angle within these area, will clear
                     if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){
@@ -660,7 +786,7 @@ private:
 //        printf("ignore_720upper=%d\n",ignore_720upper);
 //        printf("ignore_720lower=%d\n",ignore_720lower);
 
-    }
+  }
     void subWhiteObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
 
         int All_Line_distance[360];
@@ -683,7 +809,6 @@ private:
 
 
     }
-
     void  another_robot_info(const std_msgs::Float32MultiArray::ConstPtr &msg){
         global_env->AnotherRobotNumber=msg->data[0];//another robot number
         global_env->AnotherBallDistance=msg->data[1];//another robot Ball distance
