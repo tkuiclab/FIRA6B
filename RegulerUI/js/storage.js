@@ -521,6 +521,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].checked = false;
         obj[4].checked = false;
         obj[5].checked = false;
+        obj[6].checked = false;
     }
     if (localStorage.getItem("BehaviorSupportStrategyStr1") != null) {
         obj = document.getElementsByName("SupportStrategyElement1");
@@ -622,6 +623,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].checked = false;
         obj[4].checked = false;
         obj[5].checked = false;
+        obj[6].checked = false;
     }
 
     if (localStorage.getItem("BehaviorSupportStrategyStr2") != null) {
@@ -725,6 +727,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[3].checked = false;
         obj[4].checked = false;
         obj[5].checked = false;
+        obj[6].checked = false;
     }
     if (localStorage.getItem("BehaviorSupportStrategyStr3") != null) {
         obj = document.getElementsByName("SupportStrategyElement3");
