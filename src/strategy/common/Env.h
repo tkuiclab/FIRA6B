@@ -31,7 +31,7 @@ const long PLAYERS_PER_SIDE = 3;
 #define Role_ThrowIn            5
 #define Role_CornerKick         6
 #define Role_AvoidBarrier       7
-#define Role_Escape_Attack   8
+#define Role_Escape_Attack      8
 
 #define action_Halt             0
 #define action_Goalkeeper       1

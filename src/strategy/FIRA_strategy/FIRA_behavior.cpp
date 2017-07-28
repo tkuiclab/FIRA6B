@@ -315,7 +315,7 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         int SattackCase = StrategySelection[3];
         int DattackCase = StrategySelection[4];
         int ShootCase = StrategySelection[5];
-
+        int EscapeCase = StrategySelection[6];
         double rushDistance = TypeS_Attack[2];
 
         switch(state_attack){
@@ -352,6 +352,9 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 }else if(ShootCase){
                     actionAry[robotIndex] = action_Shoot_Attack;
                     ROS_INFO("Shoot attack\n");
+                }else if(EscapeCase){
+                    actionAry[robotIndex] = action_Escape_Attack;
+                    ROS_INFO("Escape attack\n");
                 }
                 StateAttack(robotIndex);
                 break;
