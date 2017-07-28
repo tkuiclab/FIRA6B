@@ -60,7 +60,7 @@ void Strategy::StrategyLocalization()
     double slow_factor = 1;
     static int IMU_state = 0;
     double compensation_distance = 0.1;
-    double compensation_angle = ((int)imu + 90 + 180) % 360;
+    double compensation_angle = ((int)absolute_front + 180) % 360;
     double compensation_x = compensation_distance * cos(compensation_angle * DEG2RAD);
     double compensation_y = compensation_distance * sin(compensation_angle * DEG2RAD);
     Robot.ball.x = _Env->Robot.ball.distance * cos((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD);
