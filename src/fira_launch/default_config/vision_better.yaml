@@ -1,8 +1,13 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
+<<<<<<< HEAD
   Center: {Camera_high: 650, Center_X: 300, Center_Y: 268, Front: 270, Inner: 41,
     Outer: 253, X: 308, Y: 266}
+=======
+  Center: {Camera_high: 650, Center_X: 275, Center_Y: 270, Front: 267, Inner: 44,
+    Outer: 235, X: 308, Y: 266}
+>>>>>>> origin/Maulder
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -23,16 +28,28 @@ FIRA:
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellow: [33, 107, 20, 85, 54, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
+<<<<<<< HEAD
     black: {angle: 3, gray: 31}
     white: {angle: 3, gray: 123}
   IsSimulator: 0
   Parameterbutton: 5
   Penalty_Kick: [-45, 1]
+=======
+    black: {angle: 1, gray: 31}
+    white: {angle: 1, gray: 170}
+  IsSimulator: 0
+  Parameterbutton: 2
+  Penalty_Kick: [-45, 2]
+>>>>>>> origin/Maulder
   RobotNumber: 1
   SCAN: {Angle_Near_Gap: 4, Angle_range_1: 1, Angle_range_2_3: 1, Dont_Search_Angle_1: 329,
     Dont_Search_Angle_2: 93, Dont_Search_Angle_3: 210, Magn_Far_End: 240, Magn_Far_Start: 141,
     Magn_Middle_Start: 98, Magn_Near_Gap: 4, Magn_Near_Start: 40}
+<<<<<<< HEAD
   SPlanning_Velocity: [3, 0.3, 80, 60, 20, 3, 143, 5, 20, 3, 100]
+=======
+  SPlanning_Velocity: [3, 0.3, 100, 80, 15, 5, 144, 5, 1]
+>>>>>>> origin/Maulder
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,
@@ -1524,6 +1541,7 @@ roslaunch:
     host_iclab__34491: 'http://iclab:34491/', host_iclab__34494: 'http://iclab:34494/',
     host_iclab__34535: 'http://iclab:34535/', host_iclab__34551: 'http://iclab:34551/',
     host_iclab__34597: 'http://iclab:34597/', host_iclab__34730: 'http://iclab:34730/',
+<<<<<<< HEAD
     host_iclab__34788: 'http://iclab:34788/', host_iclab__34845: 'http://iclab:34845/',
     host_iclab__34856: 'http://iclab:34856/', host_iclab__34867: 'http://iclab:34867/',
     host_iclab__34946: 'http://iclab:34946/', host_iclab__34974: 'http://iclab:34974/',
@@ -1531,6 +1549,12 @@ roslaunch:
     host_iclab__35074: 'http://iclab:35074/', host_iclab__35166: 'http://iclab:35166/',
     host_iclab__35207: 'http://iclab:35207/', host_iclab__35244: 'http://iclab:35244/',
     host_iclab__35455: 'http://iclab:35455/', host_iclab__35567: 'http://iclab:35567/',
+=======
+    host_iclab__34845: 'http://iclab:34845/', host_iclab__34856: 'http://iclab:34856/',
+    host_iclab__34867: 'http://iclab:34867/', host_iclab__34946: 'http://iclab:34946/',
+    host_iclab__34974: 'http://iclab:34974/', host_iclab__35207: 'http://iclab:35207/',
+    host_iclab__35244: 'http://iclab:35244/', host_iclab__35567: 'http://iclab:35567/',
+>>>>>>> origin/Maulder
     host_iclab__35614: 'http://iclab:35614/', host_iclab__35704: 'http://iclab:35704/',
     host_iclab__35719: 'http://iclab:35719/', host_iclab__35745: 'http://iclab:35745/',
     host_iclab__35872: 'http://iclab:35872/', host_iclab__35881: 'http://iclab:35881/',
@@ -1601,10 +1625,16 @@ roslaunch:
     host_iclab__45410: 'http://iclab:45410/', host_iclab__45411: 'http://iclab:45411/',
     host_iclab__45458: 'http://iclab:45458/', host_iclab__45468: 'http://iclab:45468/',
     host_iclab__45477: 'http://iclab:45477/', host_iclab__45533: 'http://iclab:45533/',
+<<<<<<< HEAD
     host_iclab__45557: 'http://iclab:45557/', host_iclab__45609: 'http://iclab:45609/',
     host_iclab__45729: 'http://iclab:45729/', host_iclab__45937: 'http://iclab:45937/',
     host_iclab__45938: 'http://iclab:45938/', host_iclab__46041: 'http://iclab:46041/',
     host_iclab__46067: 'http://iclab:46067/', host_iclab__46083: 'http://iclab:46083/',
+=======
+    host_iclab__45609: 'http://iclab:45609/', host_iclab__45729: 'http://iclab:45729/',
+    host_iclab__45937: 'http://iclab:45937/', host_iclab__45938: 'http://iclab:45938/',
+    host_iclab__46041: 'http://iclab:46041/', host_iclab__46067: 'http://iclab:46067/',
+>>>>>>> origin/Maulder
     host_iclab__46151: 'http://iclab:46151/', host_iclab__46261: 'http://iclab:46261/',
     host_iclab__46264: 'http://iclab:46264/', host_iclab__46298: 'http://iclab:46298/',
     host_iclab__46448: 'http://iclab:46448/', host_iclab__46656: 'http://iclab:46656/',
@@ -1636,8 +1666,12 @@ roslaunch:
     host_iclab_desktop__37558: 'http://iclab-desktop:37558/', host_iclab_desktop__37732: 'http://iclab-desktop:37732/',
     host_iclab_desktop__37850: 'http://iclab-desktop:37850/', host_iclab_desktop__37905: 'http://iclab-desktop:37905/',
     host_iclab_desktop__38001: 'http://iclab-desktop:38001/', host_iclab_desktop__38153: 'http://iclab-desktop:38153/',
+<<<<<<< HEAD
     host_iclab_desktop__38262: 'http://iclab-desktop:38262/', host_iclab_desktop__38332: 'http://iclab-desktop:38332/',
     host_iclab_desktop__38498: 'http://iclab-desktop:38498/', host_iclab_desktop__38591: 'http://iclab-desktop:38591/',
+=======
+    host_iclab_desktop__38332: 'http://iclab-desktop:38332/', host_iclab_desktop__38498: 'http://iclab-desktop:38498/',
+>>>>>>> origin/Maulder
     host_iclab_desktop__38594: 'http://iclab-desktop:38594/', host_iclab_desktop__38806: 'http://iclab-desktop:38806/',
     host_iclab_desktop__38896: 'http://iclab-desktop:38896/', host_iclab_desktop__38960: 'http://iclab-desktop:38960/',
     host_iclab_desktop__39017: 'http://iclab-desktop:39017/', host_iclab_desktop__39022: 'http://iclab-desktop:39022/',
@@ -1646,6 +1680,7 @@ roslaunch:
     host_iclab_desktop__39522: 'http://iclab-desktop:39522/', host_iclab_desktop__39591: 'http://iclab-desktop:39591/',
     host_iclab_desktop__39592: 'http://iclab-desktop:39592/', host_iclab_desktop__39614: 'http://iclab-desktop:39614/',
     host_iclab_desktop__40172: 'http://iclab-desktop:40172/', host_iclab_desktop__40225: 'http://iclab-desktop:40225/',
+<<<<<<< HEAD
     host_iclab_desktop__40247: 'http://iclab-desktop:40247/', host_iclab_desktop__40298: 'http://iclab-desktop:40298/',
     host_iclab_desktop__40469: 'http://iclab-desktop:40469/', host_iclab_desktop__40574: 'http://iclab-desktop:40574/',
     host_iclab_desktop__40853: 'http://iclab-desktop:40853/', host_iclab_desktop__41026: 'http://iclab-desktop:41026/',
@@ -1660,6 +1695,21 @@ roslaunch:
     host_iclab_desktop__42086: 'http://iclab-desktop:42086/', host_iclab_desktop__42099: 'http://iclab-desktop:42099/',
     host_iclab_desktop__42181: 'http://iclab-desktop:42181/', host_iclab_desktop__42235: 'http://iclab-desktop:42235/',
     host_iclab_desktop__42400: 'http://iclab-desktop:42400/', host_iclab_desktop__42426: 'http://iclab-desktop:42426/',
+=======
+    host_iclab_desktop__40247: 'http://iclab-desktop:40247/', host_iclab_desktop__40469: 'http://iclab-desktop:40469/',
+    host_iclab_desktop__40574: 'http://iclab-desktop:40574/', host_iclab_desktop__40853: 'http://iclab-desktop:40853/',
+    host_iclab_desktop__41026: 'http://iclab-desktop:41026/', host_iclab_desktop__41028: 'http://iclab-desktop:41028/',
+    host_iclab_desktop__41057: 'http://iclab-desktop:41057/', host_iclab_desktop__41083: 'http://iclab-desktop:41083/',
+    host_iclab_desktop__41174: 'http://iclab-desktop:41174/', host_iclab_desktop__41242: 'http://iclab-desktop:41242/',
+    host_iclab_desktop__41244: 'http://iclab-desktop:41244/', host_iclab_desktop__41258: 'http://iclab-desktop:41258/',
+    host_iclab_desktop__41334: 'http://iclab-desktop:41334/', host_iclab_desktop__41467: 'http://iclab-desktop:41467/',
+    host_iclab_desktop__41606: 'http://iclab-desktop:41606/', host_iclab_desktop__41689: 'http://iclab-desktop:41689/',
+    host_iclab_desktop__41799: 'http://iclab-desktop:41799/', host_iclab_desktop__41806: 'http://iclab-desktop:41806/',
+    host_iclab_desktop__41835: 'http://iclab-desktop:41835/', host_iclab_desktop__41889: 'http://iclab-desktop:41889/',
+    host_iclab_desktop__41994: 'http://iclab-desktop:41994/', host_iclab_desktop__42086: 'http://iclab-desktop:42086/',
+    host_iclab_desktop__42099: 'http://iclab-desktop:42099/', host_iclab_desktop__42181: 'http://iclab-desktop:42181/',
+    host_iclab_desktop__42235: 'http://iclab-desktop:42235/', host_iclab_desktop__42400: 'http://iclab-desktop:42400/',
+>>>>>>> origin/Maulder
     host_iclab_desktop__42533: 'http://iclab-desktop:42533/', host_iclab_desktop__42543: 'http://iclab-desktop:42543/',
     host_iclab_desktop__42635: 'http://iclab-desktop:42635/', host_iclab_desktop__42754: 'http://iclab-desktop:42754/',
     host_iclab_desktop__43014: 'http://iclab-desktop:43014/', host_iclab_desktop__43473: 'http://iclab-desktop:43473/',
@@ -1670,12 +1720,20 @@ roslaunch:
     host_iclab_desktop__43926: 'http://iclab-desktop:43926/', host_iclab_desktop__44068: 'http://iclab-desktop:44068/',
     host_iclab_desktop__44344: 'http://iclab-desktop:44344/', host_iclab_desktop__44502: 'http://iclab-desktop:44502/',
     host_iclab_desktop__44528: 'http://iclab-desktop:44528/', host_iclab_desktop__44606: 'http://iclab-desktop:44606/',
+<<<<<<< HEAD
     host_iclab_desktop__44609: 'http://iclab-desktop:44609/', host_iclab_desktop__44720: 'http://iclab-desktop:44720/',
     host_iclab_desktop__44730: 'http://iclab-desktop:44730/', host_iclab_desktop__44794: 'http://iclab-desktop:44794/',
     host_iclab_desktop__45036: 'http://iclab-desktop:45036/', host_iclab_desktop__45048: 'http://iclab-desktop:45048/',
     host_iclab_desktop__45051: 'http://iclab-desktop:45051/', host_iclab_desktop__45086: 'http://iclab-desktop:45086/',
     host_iclab_desktop__45555: 'http://iclab-desktop:45555/', host_iclab_desktop__45697: 'http://iclab-desktop:45697/',
     host_iclab_desktop__45705: 'http://iclab-desktop:45705/', host_iclab_desktop__45713: 'http://iclab-desktop:45713/',
+=======
+    host_iclab_desktop__44720: 'http://iclab-desktop:44720/', host_iclab_desktop__44730: 'http://iclab-desktop:44730/',
+    host_iclab_desktop__44794: 'http://iclab-desktop:44794/', host_iclab_desktop__45036: 'http://iclab-desktop:45036/',
+    host_iclab_desktop__45048: 'http://iclab-desktop:45048/', host_iclab_desktop__45051: 'http://iclab-desktop:45051/',
+    host_iclab_desktop__45086: 'http://iclab-desktop:45086/', host_iclab_desktop__45555: 'http://iclab-desktop:45555/',
+    host_iclab_desktop__45697: 'http://iclab-desktop:45697/', host_iclab_desktop__45713: 'http://iclab-desktop:45713/',
+>>>>>>> origin/Maulder
     host_iclab_desktop__45817: 'http://iclab-desktop:45817/', host_iclab_desktop__45867: 'http://iclab-desktop:45867/',
     host_iclab_desktop__45972: 'http://iclab-desktop:45972/', host_iclab_desktop__45979: 'http://iclab-desktop:45979/',
     host_iclab_desktop__45988: 'http://iclab-desktop:45988/', host_iclab_desktop__46107: 'http://iclab-desktop:46107/',
