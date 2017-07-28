@@ -31,7 +31,7 @@ FIRA:
   SCAN: {Angle_Near_Gap: 4, Angle_range_1: 2, Angle_range_2_3: 3, Dont_Search_Angle_1: 344,
     Dont_Search_Angle_2: 100, Dont_Search_Angle_3: 226, Magn_Far_End: 240, Magn_Far_Start: 165,
     Magn_Middle_Start: 117, Magn_Near_Gap: 1, Magn_Near_Start: 40}
-  SPlanning_Velocity: [2.3, 0.3, 50, 25, 15, 3, 144, 5, 999]
+  SPlanning_Velocity: [2.3, 0.3, 60, 30, 15, 3, 144, 5, 999]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,

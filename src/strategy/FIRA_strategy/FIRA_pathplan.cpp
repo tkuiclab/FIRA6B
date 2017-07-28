@@ -211,8 +211,12 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
         position = M;
         if(opgoal_dis > 1.25 && ball_to_opgoal_dis > 2.2){
             direction = max_M;
-        }else if(ball_dis > 3.5 && opgoal_dis > 0.75){
-            direction = max_M;
+        }else if(ball_dis > 3.5){
+            if(opgoal_dis > 0.75){
+                direction = max_M;
+            }else{
+                direction = stop;
+            }
         }else if(ball_angle > opgoal_angle_reverse + 15){
             rotAngle = -rotAngle;
             direction = L;
@@ -359,7 +363,9 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
 
     env.home[r_number].v_x =vectornt(0);
     env.home[r_number].v_y =vectornt(1);
-    env.home[r_number].v_yaw = ball_angle *2;
+    if(fabs(ball_angle) > 10){
+        env.home[r_number].v_yaw = ball_angle *2;
+    }
     std::cout << "block " << position << " -> " << direction << " " << angle_fix << std::endl;
 }
 
@@ -429,22 +435,23 @@ void FIRA_pathplan_class::strategy_Goalkeeper_goalkick(int r_number){
     double x ;
     double y ;  
     int rotAngle =0;
+    std::cout << "opgoal = " << opgoal_dis << std::endl;
     if(opgoal_dis < 0.8){
 	    x = 0.5 * sin(ball_angle * deg2rad);
 	    y = 0.5 * cos(ball_angle * deg2rad);
-        direction = M;
-    }else if(fabs(opgoal_left - opgoal_right) < 0.35){
+        direction = M;      
+    }else if(fabs(opgoal_left - opgoal_right) < 0.45){
     	x = 0;
 	    y = 0;
         direction = stop;
     }else if(opgoal_left > opgoal_right){//L
-        x = -1 * sin(opgoal_edge_angle2*deg2rad);
-        y = 1 * cos(opgoal_edge_angle2*deg2rad);
+        x = -0.3 * sin(opgoal_edge_angle2*deg2rad);
+        y = 0.3 * cos(opgoal_edge_angle2*deg2rad);
 	    rotAngle = -18;
         direction = L;
     }else{//R
-        x = - 1 * sin(opgoal_edge_angle1*deg2rad);
-        y = 1 * cos(opgoal_edge_angle1*deg2rad);
+        x = - 0.3 * sin(opgoal_edge_angle1*deg2rad);
+        y = 0.3 * cos(opgoal_edge_angle1*deg2rad);
 	    rotAngle = 18;
         direction = R;
     }

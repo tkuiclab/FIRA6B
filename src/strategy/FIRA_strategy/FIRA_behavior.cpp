@@ -291,7 +291,7 @@ void FIRA_behavior_class::StateGoalKeeperBlock(int r_number){
         }
         ball_to_opgoal_dis =sqrt((opgoal_dis*opgoal_dis)+(ball_dis*ball_dis)-(2*opgoal_dis*ball_dis*cos(ball_to_opgoal_dis*deg2rad)));
     }
-//    std::cout << ball_to_opgoal_dis << std::endl;
+    std::cout << ball_to_opgoal_dis << std::endl;
     if(ball_to_opgoal_dis < 2.2){
         state_GoalKeeper = state_GoalKeeper_push;
     }
@@ -338,7 +338,7 @@ void FIRA_behavior_class::StateGoalKeeperGoalKick(int r_number){
     ros::Time current = ros::Time::now();
     double start_time = (double)(start.sec+(double)start.nsec/1000000000);
     double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-    double const int_calculate_time = 1;
+    double const int_calculate_time = 2;
 
     if(gointoGoalKick == 1){
         start.sec = current.sec;
