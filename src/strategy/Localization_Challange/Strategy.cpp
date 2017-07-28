@@ -96,8 +96,15 @@ void Strategy::StrategyLocalization()
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         v_x = v_x_temp;
         v_y = v_y_temp;
-        v_yaw = 0;
-        if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
+        v_yaw = atan2(_Location->LocationPoint[_CurrentTarget].y + compensation_y, _Location->LocationPoint[_CurrentTarget].x + compensation_x) * RAD2DEG - (imu + 90);
+        if (v_yaw > 180)
+            v_yaw -= 360;
+        else if (v_yaw < -180)
+            v_yaw += 360;
+        ROS_INFO("v_yaw = %lf!!!!!!",v_yaw);
+        if(fabs(v_yaw)<3)
+            v_yaw = 0;
+        if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
         {
             _LocationState = turn;
             flag = TRUE;
@@ -113,7 +120,7 @@ void Strategy::StrategyLocalization()
         v_x = v_x_temp;
         v_y = v_y_temp;
         v_yaw = 0;
-        if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
+        if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
         {
             if (_CurrentTarget == 4)
                 _LocationState = finish;
@@ -154,12 +161,14 @@ void Strategy::StrategyLocalization()
         v_x = 0;                        // don't give it horizen velocity
         v_y = 100;                      // full power
         v_yaw = vector_tr.yaw;          //
+        ROS_INFO("ant2=%lf\tyaw=%lf",atan2(vector_tr.y, vector_tr.x) * RAD2DEG,vector_tr.yaw);
         if (v_yaw > 180)
             v_yaw -= 360;
         else if (v_yaw < -180)
             v_yaw += 360;
         slow_factor = 1;
-        if (fabs(v_yaw) <= 1)
+        ROS_INFO("v_yaw = %lf!!!!!!",v_yaw);
+        if (fabs(v_yaw) <= 3)
         {
             if (_Last_state == forward)
             {
@@ -177,7 +186,7 @@ void Strategy::StrategyLocalization()
                 _LocationState = forward;
             }
         }
-        v_yaw *= 5;
+//        v_yaw *= 5;
         break;
     case error:
         printf("ERROR STATE\n");
@@ -187,12 +196,13 @@ void Strategy::StrategyLocalization()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    OptimatePath();
-    // showInfo(imu, compensation_x, compensation_y);
+//    OptimatePath();
+     showInfo(imu, compensation_x, compensation_y);
     if (v_yaw > 180)
         v_yaw -= 360;
     else if (v_yaw < -180)
         v_yaw += 360;
+//    printf("v_y=%lf\n",v_y);
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
     _Env->Robot.v_yaw = v_yaw;
@@ -306,6 +316,12 @@ void Strategy::showInfo(double imu, double compensation_x, double compensation_y
                   << "," << _Env->Robot.pos.y + _Env->Robot.ball.distance * sin((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
                   << ")" << std::endl;
     else if (_LocationState == turn)
+        if(_Last_state==forward)
+            std::cout << "Target position : (" << _Location->MiddlePoint[_CurrentTarget].x + compensation_x
+                      << "," << _Location->MiddlePoint[_CurrentTarget].y + compensation_y << ")\n";
+        else
+            std::cout << "Target position : (" << _Location->MiddlePoint[_CurrentTarget].x + compensation_x
+                      << "," << _Location->MiddlePoint[_CurrentTarget].y + compensation_y << ")\n";
         std::cout << "Imu = " << imu << std::endl;
     std::cout << "Robot position : (" << _Env->Robot.pos.x << "," << _Env->Robot.pos.y << ")\n";
     std::string haha = Sv_x + Sv_y + Sv_yaw;

@@ -96,7 +96,7 @@ void NodeHandle::Transfer(Environment *Env)
         else
             alpha -= 180;
     }
-    double angle = Env->Robot.v_yaw * RAD2DEG;
+    double angle = Env->Robot.v_yaw;
     bool IsVectorZero = 0;
     double DistanceMax = _Param->NodeHandle.SPlanning_Velocity[0];
     double DistanceMin = _Param->NodeHandle.SPlanning_Velocity[1];

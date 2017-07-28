@@ -41,7 +41,7 @@ int main(int argc, char **argv)
         OutSpeed = strategy.getEnv();
         nodehandle.pubSpeed(&OutSpeed);
         ros::spinOnce();
-        loop_rate.sleep();
+//        loop_rate.sleep();
     }
     return 0;
 }

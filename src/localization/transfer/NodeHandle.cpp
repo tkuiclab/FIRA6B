@@ -6,10 +6,10 @@ Client::Client(int argc, char** argv,const char* node_name){
 }
 void Client::ros_comms_init(){
     nh = new ros::NodeHandle();
-    WhiteLine_sub = nh->subscribe(WhiteLine_Topic,1000,&Client::whiteline_sub,this);
-    LaserScan_pub = nh->advertise<sensor_msgs::LaserScan>("/scan",1000);
-    MotorFB_sub = nh->subscribe(motorFB_Topic,1000,&Client::motorFB_sub,this);
-    Imu3d_sub = nh->subscribe(imu3d_Topic,10000,&Client::imu_sub,this);
+    WhiteLine_sub = nh->subscribe(WhiteLine_Topic,1,&Client::whiteline_sub,this);
+    LaserScan_pub = nh->advertise<sensor_msgs::LaserScan>("/scan",1);
+    MotorFB_sub = nh->subscribe(motorFB_Topic,1,&Client::motorFB_sub,this);
+    Imu3d_sub = nh->subscribe(imu3d_Topic,1,&Client::imu_sub,this);
     Odom_pub = nh->advertise<nav_msgs::Odometry>("/odom", 50);
 }
 void Client::loadParam(ros::NodeHandle* nh){
@@ -19,7 +19,7 @@ void Client::whiteline_pub(){
     if(WhiteAngle==0)
         WhiteAngle = 1;
     int num_readings = 360/WhiteAngle;
-    int laser_frequency = 50; // vision fps 
+    int laser_frequency = 90; // vision fps
     sensor_msgs::LaserScan scan;
     ros::Time scan_time = ros::Time::now();
     scan.header.frame_id = "laser_frame";
