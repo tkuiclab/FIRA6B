@@ -929,9 +929,11 @@ function GetBehaviorValue() {
         SCKBox1.push(parseFloat($(this).val()));
     });
     obj = document.getElementsByName("StrategySelectionElement1");
+    flag = 0;
     for (var i = 0; i < 2; i++) {
-        if (obj[i].checked) {
+        if (obj[i].checked && flag == 0) {
             SSBox1.push(parseInt(1));
+            flag = 1;
         } else {
             SSBox1.push(parseInt(0));
         }
@@ -994,9 +996,11 @@ function GetBehaviorValue() {
         SCKBox2.push(parseFloat($(this).val()));
     });
     obj = document.getElementsByName("StrategySelectionElement2");
+    flag = 0;
     for (var i = 0; i < 2; i++) {
-        if (obj[i].checked) {
+        if (obj[i].checked && flag == 0) {
             SSBox2.push(parseInt(1));
+            flag = 1;
         } else {
             SSBox2.push(parseInt(0));
         }
@@ -1059,9 +1063,11 @@ function GetBehaviorValue() {
         SCKBox3.push(parseFloat($(this).val()));
     });
     obj = document.getElementsByName("StrategySelectionElement3");
+    flag = 0;
     for (var i = 0; i < 2; i++) {
-        if (obj[i].checked) {
+        if (obj[i].checked && flag == 0) {
             SSBox3.push(parseInt(1));
+            flag = 1;
         } else {
             SSBox3.push(parseInt(0));
         }
