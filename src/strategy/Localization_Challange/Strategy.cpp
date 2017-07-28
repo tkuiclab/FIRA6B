@@ -214,6 +214,7 @@ void Strategy::Chase()
 }
 void Strategy::OptimatePath()
 {
+    int order[5]={0};
     int horizon_point = -1;
     int hotizon_location = -1;
     for (int i = 0; i < 5; i++){
@@ -232,6 +233,11 @@ void Strategy::OptimatePath()
     switch (hotizon_location)
     {
     case up:
+        order[0] = _Location->LocationPoint[0].angle;
+        for (int i = 0; i < 5; i++)
+            if (_Location->LocationPoint[i].angle > 0)
+                if (_Location->LocationPoint[i].angle < fabs(order[0]))
+                    order[0] = _Location->LocationPoint[i].angle;
         break;
     case down:
         break;
@@ -242,6 +248,10 @@ void Strategy::OptimatePath()
     default:
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d,",order[i]);
     }
     // for (int i = 0; i < 5; i++)
     //     for (int j = i + 1; j < 5; j++)
