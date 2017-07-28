@@ -45,6 +45,7 @@ class Strategy
     void Turn();
     void Chase();
     void OptimatePath();
+    int ThroughPath(int,int);
     void Normalization(double &);
     int _LocationState;
     int _CurrentTarget;

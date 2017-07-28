@@ -212,14 +212,27 @@ void Strategy::Chase()
 {
     ;
 }
+int Strategy::ThroughPath(int i,int j)
+{
+            double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y) / (_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
+            if (Slope > 999)
+                Slope = 999;
+            double dis = (_Location->LocationPoint[j].y - Slope * _Location->LocationPoint[j].x) / sqrt(Slope * Slope + 1);
+            if (fabs(dis) < 0.5)
+                return TRUE;
+            else
+                return FALSE;
+}
 void Strategy::OptimatePath()
 {
-    int order[5]={0};
+    std::vector<int> order;
+    int order_counter = 0;
     int horizon_point = -1;
     int hotizon_location = -1;
     for (int i = 0; i < 5; i++){
         if (_Location->LocationPoint[i].y == 0 || _Location->LocationPoint[i].x == 0)
         {
+            horizon_point = i;
             if (_Location->LocationPoint[i].y > 0)
                 hotizon_location = up;
             else if (_Location->LocationPoint[i].y < 0)
@@ -233,11 +246,17 @@ void Strategy::OptimatePath()
     switch (hotizon_location)
     {
     case up:
-        order[0] = _Location->LocationPoint[0].angle;
-        for (int i = 0; i < 5; i++)
-            if (_Location->LocationPoint[i].angle > 0)
-                if (_Location->LocationPoint[i].angle < fabs(order[0]))
-                    order[0] = _Location->LocationPoint[i].angle;
+        order.push_back(horizon_point);
+        // for(int i=0;i<5;i++)
+        // {
+        //     if(i!=order[0])
+        //     {
+        //         if(ThroughPath(order[0],i))
+        //         {
+        //             order.push_back(i);
+        //         }
+        //     }
+        // }
         break;
     case down:
         break;
@@ -249,10 +268,10 @@ void Strategy::OptimatePath()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < order.size(); i++)
     {
-        printf("%d,",order[i]);
-    }
+        printf("%d\t",order[i]+1);
+    }printf("\n");
     // for (int i = 0; i < 5; i++)
     //     for (int j = i + 1; j < 5; j++)
     //     {
