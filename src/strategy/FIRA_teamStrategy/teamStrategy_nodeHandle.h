@@ -60,7 +60,7 @@ public:
     
     void pubRole(int *roleAry){
         std_msgs::Int32 robot_1_role;
-        robot_1_role.data = roleAry[0]; //roleAry[2-1]
+        robot_1_role.data = roleAry[0]; //roleAry[1-1]
         robot_1_role_pub.publish(robot_1_role);
 
         std_msgs::Int32 robot_2_role;

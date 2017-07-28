@@ -14,7 +14,8 @@ private:
     int state_attack=state_Init;
     int state_GoalKeeper = state_GoalKeeper_init;
     int state_cornerkick=state_CornerKick;
-
+    int gointoGoalKick;
+    int gointoSidespeedup;
     // ========== test change roleAry[ i ] to escape from cornerkick and try to reset the state  begin ==========
     bool EscapeCornerKick[3] = {false,false,false};
     std::vector<double> Attack_Strategy;

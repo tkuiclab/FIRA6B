@@ -153,7 +153,7 @@ void Strategy_nodeHandle::pubSpeed(ros::Publisher *puber,double v_x,double v_y,d
     speedMsg.angular.z = v_yaw ;
 
     if(IsSimulator==true){
-      speedMsg.linear.x = /*r_*/v_y;
+      speedMsg.linear.x = /*r'_*/v_y;
       speedMsg.linear.y = /*r_*/-v_x;
       puber->publish(speedMsg);
     }else if(IsSimulator==false){
@@ -177,7 +177,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     }
     double angle = msg->angular.z * rad2deg;
     bool IsVectorZero=0;
-    double Vdis_max = SPlanning_Velocity[0];//3
+    double Vdis_max = SPlanning_Velocity[0];//2.3
     double Vdis_min = SPlanning_Velocity[1];//0.3
     double VTdis_max = SPlanning_Velocity[2];//60
     double VTdis_min = SPlanning_Velocity[3];//30

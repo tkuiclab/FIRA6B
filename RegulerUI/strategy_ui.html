@@ -39,6 +39,9 @@
                     <h4 class="modal-title">Strategy UI</h4>
                 </div>
                 <!-- TopButttonDiv -->
+                <div id="ClickMeDiv">
+                    <input id="CliekMe" type="button" onclick="PublishTopicSaveParam()">
+                </div>
                 <div id="SwitchButttonDiv">
                     <table>
                         <tr>
@@ -80,7 +83,7 @@
                         <tr>
                             <td>
                                 <div>
-                                    <input id="SimulatorButton" type="checkbox" name="SimulatorButton" onclick="SetParamIsSimulator(this.checked)" />
+                                    <input id="SimulatorButton" type="checkbox" name="SimulatorButton" onclick="SetParamIsSimulator(this.checked);" />
                                     <label id="SimulatorButton" for="SimulatorButton">IsSimulator</label>
                                 </div>
                             </td>
@@ -700,7 +703,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" id="SetGeneralExecute">
-                    <input id="GeneralSave" class="btn btn-primary" type="button" value="Save" onclick="GetGeneralValue();PublishTopicSaveParam();" />
+                    <input id="GeneralSave" class="btn btn-primary" type="button" value="Save" onclick="GetGeneralValue();" />
                 </div>
             </div>
         </div>
@@ -1740,7 +1743,7 @@
                 </div>
                 <!-- SelfStraExecute -->
                 <div class="modal-footer" id="PathplanExecute">
-                    <input id="PathplanSave" class="btn btn-primary" type="button" value="Save" onclick="GetPathplanValue();PublishTopicSaveParam();" />
+                    <input id="PathplanSave" class="btn btn-primary" type="button" value="Save" onclick="GetPathplanValue();" />
                 </div>
             </div>
         </div>
@@ -1818,6 +1821,10 @@
                                     <td>
                                         <input type="radio" id="StrategySelection1" name="BehaviorStrategy1" />
                                         <label id="StrategySelection1" for="StrategySelection1">Strategy Selection</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="SupportStrategy1" name="BehaviorStrategy1" />
+                                        <label id="SupportStrategy1" for="SupportStrategy1">Support Strategy</label>
                                     </td>
                                 </tr>
                             </table>
@@ -1991,31 +1998,65 @@
                                 <tr>
                                     <th>
                                         <label>
-                                            <input name="StrategySelectionElement1" type="checkbox" value="10" style="width:50px;">Chase</label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Chase</label>
                                     </th>
                                     <th>
                                         <label>
-                                            <input name="StrategySelectionElement1" type="checkbox" value="20" style="width:50px;">Straight-chase</label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Straight-chase</label>
                                     </th>
                                 </tr>
                                 <tr>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement1" type="checkbox" value="1" style="width:50px;">Attack</label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Attack</label>
                                     </td>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement1" type="checkbox" value="2" style="width:50px;">S-Attack</label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">S-Attack</label>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement1" type="checkbox" value="4" style="width:50px;">Dorsad-Attack</label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Dorsad-Attack</label>
                                     </td>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement1" type="checkbox" value="8" style="width:50px;">Shoot-Attack</label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Shoot-Attack</label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group" id="SupportStrategyModule1">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input name="SupportStrategyElement1" type="radio" style="width:50px;" checked="checked">auto</label>
+                                    </th>
+                                    <th>
+                                        <label>
+                                            <input name="SupportStrategyElement1" type="radio" style="width:50px;">block</label>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement1" type="radio" style="width:50px;">hide</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement1" type="radio" style="width:50px;">    </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement1" type="radio" style="width:50px;">    </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement1" type="radio" style="width:50px;">    </label>
                                     </td>
                                 </tr>
                             </table>
@@ -2061,6 +2102,10 @@
                                     <td>
                                         <input type="radio" id="StrategySelection2" name="BehaviorStrategy2" />
                                         <label id="StrategySelection2" for="StrategySelection2">Strategy Selection</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="SupportStrategy2" name="BehaviorStrategy2" />
+                                        <label id="SupportStrategy2" for="SupportStrategy2">Support Strategy</label>
                                     </td>
                                 </tr>
                             </table>
@@ -2263,6 +2308,40 @@
                                 </tr>
                             </table>
                         </div>
+                        <div class="form-group" id="SupportStrategyModule2">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input name="SupportStrategyElement2" type="radio" style="width:50px;" checked="checked">auto</label>
+                                    </th>
+                                    <th>
+                                        <label>
+                                            <input name="SupportStrategyElement2" type="radio" style="width:50px;">block</label>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement2" type="radio" style="width:50px;">hide</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement2" type="radio" style="width:50px;">    </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement2" type="radio" style="width:50px;">    </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement2" type="radio" style="width:50px;">    </label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                     <div id="BehaviorRobot3Module">
                         <!-- Behavior_Button -->
@@ -2304,6 +2383,10 @@
                                     <td>
                                         <input type="radio" id="StrategySelection3" name="BehaviorStrategy3" />
                                         <label id="StrategySelection3" for="StrategySelection3">Strategy Selection</label>
+                                    </td>
+                                    <td>
+                                        <input type="radio" id="SupportStrategy3" name="BehaviorStrategy3" />
+                                        <label id="SupportStrategy3" for="SupportStrategy3">Support Strategy</label>
                                     </td>
                                 </tr>
                             </table>
@@ -2477,31 +2560,65 @@
                                 <tr>
                                     <th>
                                         <label>
-                                            <input name="StrategySelectionElement3" type="checkbox" value="10" style="width:50px;">Chase</label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Chase</label>
                                     </th>
                                     <th>
                                         <label>
-                                            <input name="StrategySelectionElement3" type="checkbox" value="20" style="width:50px;">Straight-chase</label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Straight-chase</label>
                                     </th>
                                 </tr>
                                 <tr>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement3" type="checkbox" value="1" style="width:50px;">Attack</label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Attack</label>
                                     </td>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement3" type="checkbox" value="2" style="width:50px;">S-Attack</label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">S-Attack</label>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement3" type="checkbox" value="4" style="width:50px;">Dorsad-Attack</label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Dorsad-Attack</label>
                                     </td>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement3" type="checkbox" value="8" style="width:50px;">Shoot-Attack</label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Shoot-Attack</label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group" id="SupportStrategyModule3">
+                            <table>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input name="SupportStrategyElement3" type="radio" style="width:50px;" checked="checked">auto</label>
+                                    </th>
+                                    <th>
+                                        <label>
+                                            <input name="SupportStrategyElement3" type="radio" style="width:50px;">block</label>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement3" type="radio" style="width:50px;">hide</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement3" type="radio" style="width:50px;">    </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement3" type="radio" style="width:50px;">    </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="SupportStrategyElement3" type="radio" style="width:50px;">    </label>
                                     </td>
                                 </tr>
                             </table>
@@ -3295,6 +3412,7 @@
         $("#StateZoneAttackModule1").hide();
         $("#StateCornerKickModule1").hide();
         $("#StrategySelectionModule1").hide();
+        $("#SupportStrategyModule1").hide();
 
         $("#StateChase1").click(function() {
             $("#StateChaseModule1").show();
@@ -3305,6 +3423,7 @@
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
             $("#StrategySelectionModule1").hide();
+            $("#SupportStrategyModule1").hide();
         });
         $("#StateAttack1").click(function() {
             $("#StateAttackModule1").show();
@@ -3315,6 +3434,7 @@
             $("#StateZoneAttackModule11").hide();
             $("#StateCornerKickModule11").hide();
             $("#StrategySelectionModule1").hide();
+            $("#SupportStrategyModule1").hide();
         });
         $("#StateTypeUChase1").click(function() {
             $("#StateTypeUChaseModule1").show();
@@ -3325,6 +3445,7 @@
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
             $("#StrategySelectionModule1").hide();
+            $("#SupportStrategyModule1").hide();
         });
         $("#StateTypeSAttack1").click(function() {
             $("#StateTypeSAttackModule1").show();
@@ -3335,6 +3456,7 @@
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
             $("#StrategySelectionModule1").hide();
+            $("#SupportStrategyModule1").hide();
         });
         $("#StateSideSpeedUP1").click(function() {
             $("#StateSideSpeedUPModule1").show();
@@ -3345,6 +3467,7 @@
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
             $("#StrategySelectionModule1").hide();
+            $("#SupportStrategyModule1").hide();
         });
         $("#StateZoneAttack1").click(function() {
             $("#StateZoneAttackModule1").show();
@@ -3355,6 +3478,7 @@
             $("#StateSideSpeedUPModule1").hide();
             $("#StateCornerKickModule1").hide();
             $("#StrategySelectionModule1").hide();
+            $("#SupportStrategyModule1").hide();
         });
         $("#StateCornerKick1").click(function() {
             $("#StateCornerKickModule1").show();
@@ -3365,6 +3489,7 @@
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
             $("#StrategySelectionModule1").hide();
+            $("#SupportStrategyModule1").hide();
         });
         $("#StrategySelection1").click(function() {
             $("#StrategySelectionModule1").show();
@@ -3375,6 +3500,18 @@
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
+            $("#SupportStrategyModule1").hide();
+        });
+        $("#SupportStrategy1").click(function() {
+            $("#SupportStrategyModule1").show();
+            $("#StateChaseModule1").hide();
+            $("#StateAttackModule1").hide();
+            $("#StateTypeUChaseModule1").hide();
+            $("#StateTypeSAttackModule1").hide();
+            $("#StateSideSpeedUPModule1").hide();
+            $("#StateZoneAttackModule1").hide();
+            $("#StateCornerKickModule1").hide();
+            $("#StrategySelectionModule1").hide();
         });
 
         // Robot2
@@ -3387,6 +3524,7 @@
         $("#StateZoneAttackModule2").hide();
         $("#StateCornerKickModule2").hide();
         $("#StrategySelectionModule2").hide();
+        $("#SupportStrategyModule2").hide();
 
         $("#StateChase2").click(function() {
             $("#StateChaseModule2").show();
@@ -3397,6 +3535,7 @@
             $("#StateZoneAttackModule2").hide();
             $("#StateCornerKickModule2").hide();
             $("#StrategySelectionModule2").hide();
+            $("#SupportStrategyModule2").hide();
         });
         $("#StateAttack2").click(function() {
             $("#StateAttackModule2").show();
@@ -3407,6 +3546,7 @@
             $("#StateZoneAttackModule2").hide();
             $("#StateCornerKickModule2").hide();
             $("#StrategySelectionModule2").hide();
+            $("#SupportStrategyModule2").hide();
         });
         $("#StateTypeUChase2").click(function() {
             $("#StateTypeUChaseModule2").show();
@@ -3417,6 +3557,7 @@
             $("#StateZoneAttackModule2").hide();
             $("#StateCornerKickModule2").hide();
             $("#StrategySelectionModule2").hide();
+            $("#SupportStrategyModule2").hide();
         });
         $("#StateTypeSAttack2").click(function() {
             $("#StateTypeSAttackModule2").show();
@@ -3427,6 +3568,7 @@
             $("#StateZoneAttackModule2").hide();
             $("#StateCornerKickModule2").hide();
             $("#StrategySelectionModule2").hide();
+            $("#SupportStrategyModule2").hide();
         });
         $("#StateSideSpeedUP2").click(function() {
             $("#StateSideSpeedUPModule2").show();
@@ -3437,6 +3579,7 @@
             $("#StateZoneAttackModule2").hide();
             $("#StateCornerKickModule2").hide();
             $("#StrategySelectionModule2").hide();
+            $("#SupportStrategyModule2").hide();
         });
         $("#StateZoneAttack2").click(function() {
             $("#StateZoneAttackModule2").show();
@@ -3447,6 +3590,7 @@
             $("#StateSideSpeedUPModule2").hide();
             $("#StateCornerKickModule2").hide();
             $("#StrategySelectionModule2").hide();
+            $("#SupportStrategyModule2").hide();
         });
         $("#StateCornerKick2").click(function() {
             $("#StateCornerKickModule2").show();
@@ -3457,6 +3601,7 @@
             $("#StateSideSpeedUPModule2").hide();
             $("#StateZoneAttackModule2").hide();
             $("#StrategySelectionModule2").hide();
+            $("#SupportStrategyModule2").hide();
         });
         $("#StrategySelection2").click(function() {
             $("#StrategySelectionModule2").show();
@@ -3467,6 +3612,19 @@
             $("#StateSideSpeedUPModule2").hide();
             $("#StateZoneAttackModule2").hide();
             $("#StateCornerKickModule2").hide();
+            $("#SupportStrategyModule2").hide();
+        });
+
+        $("#SupportStrategy2").click(function() {
+            $("#SupportStrategyModule2").show();
+            $("#StateChaseModule2").hide();
+            $("#StateAttackModule2").hide();
+            $("#StateTypeUChaseModule2").hide();
+            $("#StateTypeSAttackModule2").hide();
+            $("#StateSideSpeedUPModule2").hide();
+            $("#StateZoneAttackModule2").hide();
+            $("#StateCornerKickModule2").hide();
+            $("#StrategySelectionModule2").hide();
         });
 
         // Robot3
@@ -3479,6 +3637,7 @@
         $("#StateZoneAttackModule3").hide();
         $("#StateCornerKickModule3").hide();
         $("#StrategySelectionModule3").hide();
+        $("#SupportStrategyModule3").hide();
 
         $("#StateChase3").click(function() {
             $("#StateChaseModule3").show();
@@ -3489,6 +3648,7 @@
             $("#StateZoneAttackModule3").hide();
             $("#StateCornerKickModule3").hide();
             $("#StrategySelectionModule3").hide();
+            $("#SupportStrategyModule3").hide();
         });
         $("#StateAttack3").click(function() {
             $("#StateAttackModule3").show();
@@ -3499,6 +3659,7 @@
             $("#StateZoneAttackModule3").hide();
             $("#StateCornerKickModule3").hide();
             $("#StrategySelectionModule3").hide();
+            $("#SupportStrategyModule3").hide();
         });
         $("#StateTypeUChase3").click(function() {
             $("#StateTypeUChaseModule3").show();
@@ -3509,6 +3670,7 @@
             $("#StateZoneAttackModule3").hide();
             $("#StateCornerKickModule3").hide();
             $("#StrategySelectionModule3").hide();
+            $("#SupportStrategyModule3").hide();
         });
         $("#StateTypeSAttack3").click(function() {
             $("#StateTypeSAttackModule3").show();
@@ -3519,6 +3681,7 @@
             $("#StateZoneAttackModule3").hide();
             $("#StateCornerKickModule3").hide();
             $("#StrategySelectionModule3").hide();
+            $("#SupportStrategyModule3").hide();
         });
         $("#StateSideSpeedUP3").click(function() {
             $("#StateSideSpeedUPModule3").show();
@@ -3529,6 +3692,7 @@
             $("#StateZoneAttackModule3").hide();
             $("#StateCornerKickModule3").hide();
             $("#StrategySelectionModule3").hide();
+            $("#SupportStrategyModule3").hide();
         });
         $("#StateZoneAttack3").click(function() {
             $("#StateZoneAttackModule3").show();
@@ -3539,6 +3703,7 @@
             $("#StateSideSpeedUPModule3").hide();
             $("#StateCornerKickModule3").hide();
             $("#StrategySelectionModule3").hide();
+            $("#SupportStrategyModule3").hide();
         });
         $("#StateCornerKick3").click(function() {
             $("#StateCornerKickModule3").show();
@@ -3549,6 +3714,7 @@
             $("#StateSideSpeedUPModule3").hide();
             $("#StateZoneAttackModule3").hide();
             $("#StrategySelectionModule3").hide();
+            $("#SupportStrategyModule3").hide();
         });
         $("#StrategySelection3").click(function() {
             $("#StrategySelectionModule3").show();
@@ -3559,6 +3725,18 @@
             $("#StateSideSpeedUPModule3").hide();
             $("#StateZoneAttackModule3").hide();
             $("#StateCornerKickModule3").hide();
+            $("#SupportStrategyModule3").hide();
+        });
+        $("#SupportStrategy3").click(function() {
+            $("#SupportStrategyModule3").show();
+            $("#StateChaseModule3").hide();
+            $("#StateAttackModule3").hide();
+            $("#StateTypeUChaseModule3").hide();
+            $("#StateTypeSAttackModule3").hide();
+            $("#StateSideSpeedUPModule3").hide();
+            $("#StateZoneAttackModule3").hide();
+            $("#StateCornerKickModule3").hide();
+            $("#StrategySelectionModule3").hide();
         });
     </script>
     <!-- TeamStrategy_Button_function -->

@@ -129,7 +129,7 @@ function keysdown(e) {
         //SwitchRobot
         if (keys[80]) {
             PublishTopicGameState(0);
-	    StrategyStop();
+            StrategyStop();
         }else if (keys[79]) {
             PublishTopicGameState(1);
         }
