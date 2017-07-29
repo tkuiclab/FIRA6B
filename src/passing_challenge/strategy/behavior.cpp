@@ -70,7 +70,7 @@ void Behavior::chase(const Ball target_ball)
 	double distance_y = target_ball.pos.y - env->robot.pos.y;
 	double distance = sqrt(pow(distance_x, 2)+pow(distance_y, 2));
 	double target_angle = (distance_y >= 0)? (atan2(distance_y, distance_x)*180/M_PI)+(env->robot.pos.z+90) : (-1)*(atan2(distance_y, distance_x)*180/M_PI)+(env->robot.pos.z+90);
-	if(distance > 1){
+	if(distance > 1.0){
 		double middlePoint_x = -2.0;
 		double middlePoint_y = (env->robot.pos.y+target_ball.pos.y)/2;
 		std::cout << "Target Ball Position: (" << target_ball.pos.x << ", " << target_ball.pos.y << ", " << target_angle << ")\n";
@@ -173,7 +173,7 @@ void Behavior::finish()
 
 bool Behavior::holdBall()
 {
-	if((env->robot.ball.distance<0.35) && (fabs(env->robot.ball.angle)<5)){
+	if((env->robot.ball.distance<=0.32) && (fabs(env->robot.ball.angle)<3)){
 		std::cout << "got ball\n";
 		return true;
 	}else{

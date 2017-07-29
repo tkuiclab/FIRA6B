@@ -1,10 +1,37 @@
+@font-face {
+    font-family: "DSEG7";
+    src: url("DSEG7Classic-Regular.woff");
+}
+
 #interface {
     width: 750px;
     height: 600px;
     z-index: -1;
 }
-
-
+#HSVcircle{
+    width: 300px;
+    height: 80px;
+}
+#HSVrect{
+    width: 100px;
+    height: 80px;
+}
+#colorBox{
+    width: 100px;
+    height: 80px;
+}
+#MonitorElement1{
+ width: 18px;
+}
+#MonitorElement2{
+ width: 85px;
+}
+#MonitorElement3{
+ width: 33px;
+}
+#MonitorElement4{
+ width: 41px;
+}
 /*==============================================*/
 
 #InterfaceWifi {
@@ -99,15 +126,16 @@
 /*slider type-1*/
 
 .Slider1Label {
-    width: 80px;
+    width: 70px;
 }
 
 .Slider1Input {
-    width: 190px;
+    width: 180px;
 }
 
 .Slider2Label {
-    width: 270px;
+    width: 260px;
+    height: 20px;
 }
 
 .Slider2td {
@@ -126,7 +154,7 @@
     border-radius: 3px;
     position: relative;
     top: 3%;
-    left: 2%;
+    left: 3%;
     background-color: white;
 }
 
@@ -150,7 +178,7 @@
     border-radius: 3px;
     position: relative;
     top: 4%;
-    left: 2%;
+    left: 3%;
     background-color: white;
 }
 
@@ -204,7 +232,7 @@
 
 /*=============================================================*/
 
-#CenterButton {
+#CenterButton{
     background-image: none;
     font-size: 14px;
     /*background-color: #99CCFF;*/
@@ -227,7 +255,7 @@
     border-radius: 3px;
     position: relative;
     top: 4%;
-    left: 2%;
+    left: 3%;
     background-color: white;
 }
 
@@ -276,7 +304,6 @@
     width: 70px;
 }
 
-
 /*==============================================================*/
 
 #ScanButton {
@@ -302,7 +329,7 @@
     border-radius: 3px;
     position: relative;
     top: 4%;
-    left: 2%;
+    left: 3%;
     background-color: white;
 }
 
@@ -369,7 +396,6 @@
 }
 
 .RobotRange3 {
-    width: 250px;
     height: 1px;
     z-index: 1;
     border: 1px solid black;
@@ -378,14 +404,16 @@
 }
 
 .RBS1 {
-    width: 50px;
-    height: 20px;
+    width: 65px;
+    height: 30px;
     z-index: 1;
     border: 1px solid black;
     border-radius: 3px;
     position: relative;
-    font-size: 15px;
-    color: #4169E1;
+    font-size: 17px;
+    color: #000000;
+	font-family: DSEG7;
+	text-align: right;
 }
 
 #ScanButtonDiv {
@@ -519,14 +547,13 @@
     word-wrap: break-word;
 }
 
-#ColorButton {
+#ColorButton{
     background-image: none;
     font-size: 14px;
     /*background-color: #99CCFF;*/
     color: #663D00;
     border-radius: 3px;
 }
-
 #ColorButton.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
@@ -542,7 +569,7 @@
     border-radius: 3px;
     position: relative;
     top: 4%;
-    left: 2%;
+    left: 3%;
     background-color: white;
 }
 
@@ -622,13 +649,17 @@
 }
 
 .RBS2 {
-    width: 50px;
-    height: 22px;
+    width: 65px;
+    height: 30px;
     z-index: 1;
     border: 1px solid black;
     border-radius: 3px;
     color: #4169E1;
-    font-size: 18px;
+    font-size: 17px;
+	
+	color: #000000;
+	font-family: DSEG7;
+	text-align: right;
 }
 
 #WhiteButton {
@@ -764,7 +795,7 @@
     border-radius: 3px;
     position: relative;
     top: 4%;
-    left: 2%;
+    left: 3%;
     background-color: white;
 }
 
@@ -780,14 +811,14 @@
 }
 
 #MonitorInformation {
-    width: 330px;
+    width: 340px;
     height: 300px;
     z-index: 1;
     border: 1px solid black;
     border-radius: 3px;
     position: relative;
     top: 10%;
-    left: 5%;
+    left: 4%;
     border-color: #778899;
 }
 
@@ -818,7 +849,7 @@
     align: center;
     position: relative;
     bottom: 92.4%;
-    left: 36%;
+    left: 37%;
 }
 
 #player {
@@ -840,14 +871,14 @@
 /*========================================================*/
 
 #InterfaceCheckCamera {
-    width: 695px;
+    width: 660px;
     height: 75px;
     z-index: 1;
     border: 1px solid black;
     border-radius: 3px;
     position: relative;
-    bottom: 94%;
-    left: 36%;
+    bottom: 93.5%;
+    left: 37%;
     background-color: white;
 }
 
@@ -873,7 +904,15 @@
     font-size: 18px;
 }
 
+#CameraAngle{
+    width: 70px;
+    font-size: 18px;
+}
 
+#CenterDis{
+    width: 50px;
+    font-size: 18px;
+}
 /*========================Bar=============================*/
 
 input[type=range] {

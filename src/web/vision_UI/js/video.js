@@ -224,10 +224,14 @@ video_canvas.addEventListener("mousedown", function(e) {
         var x = event.clientX;
         var y = event.clientY;
 
-        document.getElementById("CameraX").innerText = x - xy[0] - centerX;
-        document.getElementById("CameraY").innerText = centerY - y + xy[1];
-        Angle_Calculation(x - xy[0], y - xy[1]);
-        topicROSPosition(x - xy[0], y - xy[1]);
+        document.getElementById("CameraX").innerText = Math.floor(x*0.966 - xy[0]*0.966 - centerX);
+        document.getElementById("CameraY").innerText = Math.floor(centerY - y*0.966 + xy[1]*0.966) ;
+
+        //document.getElementById("CameraX").innerText = x - xy[0] - centerX;
+        //document.getElementById("CameraY").innerText = centerY - y + xy[1];
+
+        Angle_Calculation((x - xy[0])*0.966, (y - xy[1])*0.966);
+        topicROSPosition((x - xy[0])*0.966, (y - xy[1])*0.966);
         //console.log(x - xy[0], y - xy[1]);
     });
 });
@@ -246,15 +250,26 @@ function MonitorCheck(value){
       video.src = "img/offline.png";
     }
 }
+
+var monitor;
 function MonitorSwitch(value) {
     var video = document.getElementById("player");
     var check = document.getElementById("CameraSwitch").checked;
-    if (value == 7){
+
+    if(value==8){
+      	video.src = "img/offline.png";
+        monitor=8;
+    }
+    //console.log(monitor);
+    if(value==2){monitor=2;}
+    if (value == 7){	
         if (check)
             video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image_monitor";
         else
             video.src = "img/offline.png";
-    }else {
+    }
+    else if(monitor!=8) {
+	//console.log(monitor);
         if (check)
             video.src = "http://" + document.getElementById("RobotIP").value + ":8080/stream?topic=/camera/image";
         else

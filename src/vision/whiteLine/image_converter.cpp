@@ -1,5 +1,4 @@
 #include "image_converter.hpp"
-#include <ros/ros.h>
 #include "math.h"
 
 using namespace std;
@@ -11,17 +10,13 @@ ImageConverter::ImageConverter()
     get_center();
     get_distance();
     get_whitedata();
-    get_Camera();
     image_sub_ = it_.subscribe("/camera/image_raw", 1, &ImageConverter::imageCb, this);
     white_pub  = nh.advertise<std_msgs::Int32MultiArray>("/vision/whiteRealDis",1);
 } 
 
-ImageConverter::~ImageConverter(){}
+ImageConverter::~ImageConverter()
+{
 
-int Frame_area(int num,int range){
-  if(num < 0) num = 0;
-  else if(num >= range) num = range-1;
-  return num;
 }
 
 void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
@@ -38,8 +33,6 @@ void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
       return;
     }
 
-
-    ////////////////////////////////////////////////bbbbbbbbbbbbbbbbbb
     Mat frame;
     cv::flip(cv_ptr->image, frame, 1);
 
@@ -59,30 +52,20 @@ void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
             }
         }
     }
-
     whiteline_pixel.clear();
     WhiteRealDis.data.clear();
-    int timesqwer = 0;
-    for(int a = 0; a < 360; a = a + white_angle){
+    for(int a=0;a<360;a=a+white_angle){
         int angle_be = a+center_front;
-        cout<<a<<endl;
-        if(angle_be>360) angle_be -= 360;
-
+        if(angle_be>360)angle_be-=360;
         double angle_af = angle_be*M_PI/180;
-
         double x = cos(angle_af);
         double y = sin(angle_af);
-
         for(int r=center_inner;r<=center_outer;r++){
             int dis_x = x*r;
             int dis_y = y*r;
-
-            int image_x = Frame_area(center_x+dis_x,frame.cols);
-            int image_y = Frame_area(center_y-dis_y,frame.rows);
-
-            if( frame.data[(image_y*frame.cols*3)+(image_x*3)+0] == 255
-              &&frame.data[(image_y*frame.cols*3)+(image_x*3)+1] == 255
-              &&frame.data[(image_y*frame.cols*3)+(image_x*3)+2] == 255){
+            if( frame.data[((center_y-dis_y)*frame.cols*3)+((center_x+dis_x)*3)+0] == 255
+              &&frame.data[((center_y-dis_y)*frame.cols*3)+((center_x+dis_x)*3)+1] == 255
+              &&frame.data[((center_y-dis_y)*frame.cols*3)+((center_x+dis_x)*3)+2] == 255){
                 whiteline_pixel.push_back(hypot(dis_x,dis_y));
                 break;
             }else{
@@ -95,7 +78,6 @@ void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
             }
         }
     }
-    /*
     int object_dis;
     int Dis_sm,Dis_bi,dis_num;
     double dis_ratio;
@@ -131,19 +113,9 @@ void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
             }
         }
         WhiteRealDis.data.push_back(object_dis);
-    }*/
-    int object_dis;
-    for(int j=0;j< whiteline_pixel.size();j++){
-        object_dis = Omni_distance( whiteline_pixel[j]);
-        WhiteRealDis.data.push_back(object_dis);
-        //cout<<object_dis<<endl;
     }
     white_pub.publish(WhiteRealDis);
     ros::spinOnce();
-    //////////////////////////////////////////////////////////b
-    ////////////////////////////////////////////////////////////rrrrrrrrrrrrrrrr
-
-
     /////////////////////Show view/////////////////
 //    cv::imshow("Image", frame);
 //    cv::waitKey(10);
@@ -151,33 +123,9 @@ void ImageConverter::imageCb(const sensor_msgs::ImageConstPtr& msg)
     /////////////////////FPS///////////////////////
     int EndTime = ros::Time::now().toNSec();
     double fps = 1000000000/(EndTime - StartTime);
-    //cout<<"FPS_avg : "<<fps<<endl;
+    cout<<"FPS_avg : "<<fps<<endl;
 
     ///////////////////////////////////////////////
-}
-
-double ImageConverter::Omni_distance(double dis_pixel){
-  double Z = -1*Camera_H;
-  double c = 83.125;
-  double b = c*0.8722;
-
-  double f = Camera_f;
-
-  double dis;
-  //cout<<Z<<endl;
-  //double pixel_dis = sqrt(pow(object_x,2)+pow(object_y,2));
-
-  double pixel_dis = dis_pixel;
-
-  double r = atan2(f,pixel_dis*0.0099);
-
-  dis = Z*(pow(b,2)-pow(c,2))*cos(r) / ((pow(b,2)+pow(c,2))*sin(r) - 2*b*c);
-
-  if(dis/10 < 0 || dis/10 > 999){
-    dis = 9990;
-  }
-
-  return dis/10;
 }
 void ImageConverter::get_center(){
     nh.getParam("/FIRA/Center/X",center_x);
@@ -194,8 +142,4 @@ void ImageConverter::get_distance(){
 void ImageConverter::get_whitedata(){
     nh.getParam("/FIRA/whiteline/gray",white_gray);
     nh.getParam("/FIRA/whiteline/angle",white_angle);
-}
-void ImageConverter::get_Camera(){
-    nh.getParam("/FIRA/Camera/High",Camera_H);
-    nh.getParam("/FIRA/Camera/Focal",Camera_f);
 }
