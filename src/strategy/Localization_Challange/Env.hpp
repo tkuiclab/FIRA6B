@@ -87,4 +87,9 @@ typedef struct
     Strategy_Parameter Strategy;
     NodeHandle_Parameter NodeHandle;
 } Parameter;
+typedef struct
+{
+    Point TargetPoint[10];
+    int size;
+} TargetStruct;
 #endif

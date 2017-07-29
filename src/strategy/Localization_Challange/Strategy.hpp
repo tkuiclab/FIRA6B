@@ -40,16 +40,21 @@ class Strategy
     ///         private member          ///
     void StrategyHalt();
     void StrategyLocalization();
-    void Forward(RobotData, int &, int &, int);
-    void Back(int);
+    void StrategyLocalization2();
+    void Forward();
+    void Back();
     void Turn();
     void Chase();
     void OptimatePath();
+    void EraseElement(std::vector<int>&,int);
+    void MinAngle(std::vector<int>&,std::vector<int>&,int);
     int ThroughPath(int,int);
     void Normalization(double &);
     int _LocationState;
     int _CurrentTarget;
     int _Last_state;
+    int through_path_ary[5][5];
+    TargetStruct _Target;
     LocationStruct *_Location;
     Environment *_Env;
     Parameter *_Param;

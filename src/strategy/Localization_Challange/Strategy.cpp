@@ -16,6 +16,9 @@ Strategy::Strategy()
     _CurrentTarget = 0;
     _Location = new LocationStruct;
     _Env = new Environment;
+    for(int i=0;i<5;i++)
+        for(int j=0;j<5;j++)
+            through_path_ary[i][j]=0;
 }
 void Strategy::setParam(Parameter *Param)
 {
@@ -29,7 +32,8 @@ void Strategy::GameState(int int_GameState)
         StrategyHalt();
         break;
     case STATE_LOCALIZATION:
-        StrategyLocalization();
+        // StrategyLocalization();
+        StrategyLocalization2();
         break;
     }
 }
@@ -41,7 +45,6 @@ void Strategy::StrategyHalt()
 }
 void Strategy::StrategyLocalization()
 {
-    // ROS_INFO("hold_angle=%lf\n",_Param->Strategy.HoldBall_Condition[0]);
     RobotData Robot;
     Robot.pos.x = _Env->Robot.pos.x;
     Robot.pos.y = _Env->Robot.pos.y;
@@ -189,18 +192,84 @@ void Strategy::StrategyLocalization()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-       OptimatePath();
+    // OptimatePath();
+    showInfo(imu, compensation_x, compensation_y);
+    Normalization(v_yaw);
+    _Env->Robot.v_x = v_x;
+    _Env->Robot.v_y = v_y;
+    _Env->Robot.v_yaw = v_yaw;
+}
+void Strategy::StrategyLocalization2()
+{
+    RobotData Robot;
+    Robot.pos.x = _Env->Robot.pos.x;
+    Robot.pos.y = _Env->Robot.pos.y;
+    double imu = _Env->Robot.pos.angle;
+    double absolute_front = imu + 90;
+    static int flag = TRUE;
+    static int flag_chase = TRUE;
+    double lost_ball_dis = _Param->Strategy.HoldBall_Condition[3];
+    double lost_ball_angle = _Param->Strategy.HoldBall_Condition[2];
+    double hold_ball_dis = _Param->Strategy.HoldBall_Condition[1];
+    double hold_ball_angle = _Param->Strategy.HoldBall_Condition[0];
+    static double Begin_time = ros::Time::now().toSec(); // init timer begin
+    double Current_time = ros::Time::now().toSec();      // init timer end
+    double v_x, v_y, v_yaw;
+    double accelerate = 1;
+    double slow_factor = 1;
+    static int IMU_state = 0;
+    double compensation_distance = 0.1;
+    double compensation_angle = ((int)absolute_front + 180) % 360;
+    double compensation_x = compensation_distance * cos(compensation_angle * DEG2RAD);
+    double compensation_y = compensation_distance * sin(compensation_angle * DEG2RAD);
+    OptimatePath();
+    if (flag)
+        Begin_time = Current_time;
+    if (Current_time - Begin_time < accelerate)
+        slow_factor = exp(-2.1 + 2 * ((Current_time - Begin_time) / accelerate));
+    else
+        slow_factor = 1;
+    //    if(_Env->Robot.ball.distance > lost_ball_dis || fabs(_Env->Robot.ball.angle) > lost_ball_angle){
+    //        if(flag_chase){
+    //            _Last_state = _LocationState;
+    //            _LocationState = chase;                      //  Check lost ball or not
+    //            flag_chase = FALSE;
+    //        }
+    //    }else if(_Env->Robot.ball.distance < hold_ball_dis && fabs(_Env->Robot.ball.angle) < hold_ball_angle){
+    //        _LocationState = _Last_state;
+    //        flag_chase = TRUE;
+    //    }
+    Normalization(absolute_front);
+    switch (_LocationState)
+    {
+    case forward: // Move to target poitn
+        Forward();
+        break;
+    case chase:
+        Chase();
+        break;
+    case turn:
+        Turn();
+        break;
+    case error:
+        printf("ERROR STATE\n");
+        exit(FAULTEXECUTING);
+        break;
+    default: // ERROR SIGNAL
+        printf("UNDEFINE STATE\n");
+        exit(FAULTEXECUTING);
+    }
     // showInfo(imu, compensation_x, compensation_y);
     Normalization(v_yaw);
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
     _Env->Robot.v_yaw = v_yaw;
 }
-void Strategy::Forward(RobotData Robot, int &v_x, int &v_y, int flag)
+void Strategy::Forward()
 {
     ;
 }
-void Strategy::Back(int flag)
+void Strategy::Back()
 {
     ;
 }
@@ -212,24 +281,41 @@ void Strategy::Chase()
 {
     ;
 }
-int Strategy::ThroughPath(int i,int j)
+int Strategy::ThroughPath(int i, int j)
 {
-            double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y) / (_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
-            if (Slope > 999)
-                Slope = 999;
-            double dis = (_Location->LocationPoint[j].y - Slope * _Location->LocationPoint[j].x) / sqrt(Slope * Slope + 1);
-            if (fabs(dis) < 0.5)
-                return TRUE;
-            else
-                return FALSE;
+    double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y) / (_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
+    if (Slope > 999)
+        Slope = 999;
+    double dis = (_Location->LocationPoint[j].y - Slope * _Location->LocationPoint[j].x) / sqrt(Slope * Slope + 1);
+    if (fabs(dis) < 0.3)
+        return TRUE;
+    else
+        return FALSE;
 }
 void Strategy::OptimatePath()
 {
+    for (int i = 0; i < 10; i++)
+    {
+        _Target.TargetPoint[i].x = 0;
+        _Target.TargetPoint[i].y = 0;
+        _Target.TargetPoint[i].angle = 0;
+        _Target.size = 0;
+    }
     std::vector<int> order;
+    std::vector<int> enable_point;
+    for(int i=0;i<5;i++)
+        enable_point.push_back(i);
+    std::vector<int>::iterator it;
+    printf("\n");
     int order_counter = 0;
     int horizon_point = -1;
     int hotizon_location = -1;
-    for (int i = 0; i < 5; i++){
+    int temp = -1;
+    double front = 0;
+    int min_rotation = 999;
+    double normalization_temp_angle;
+    for (int i = 0; i < 5; i++)
+    {
         if (_Location->LocationPoint[i].y == 0 || _Location->LocationPoint[i].x == 0)
         {
             horizon_point = i;
@@ -243,24 +329,81 @@ void Strategy::OptimatePath()
                 hotizon_location = left;
         }
     }
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (ThroughPath(i, j))
+                through_path_ary[i][j] = j + 1;
+        }
+    }
     switch (hotizon_location)
     {
     case up:
+        printf("up\n");
+        // pick first point
+        front = 90;
         order.push_back(horizon_point);
-        // for(int i=0;i<5;i++)
-        // {
-        //     if(i!=order[0])
-        //     {
-        //         if(ThroughPath(order[0],i))
-        //         {
-        //             order.push_back(i);
-        //         }
-        //     }
-        // }
+        EraseElement(enable_point, horizon_point);
+        // pick second point
+        front = -90;
+        MinAngle(order, enable_point, front);
+        // pick third point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        // pick fourth point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        // pick fifth point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        order.push_back(-1);
         break;
     case down:
+        printf("down\n");
+        // pick first point
+        front = -90;
+        order.push_back(horizon_point);
+        EraseElement(enable_point, horizon_point);
+        // pick second point
+        front = 90;
+        MinAngle(order, enable_point, front);
+        // pick third point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        // pick fourth point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        // pick fifth point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        order.push_back(-1);
         break;
     case right:
+        // pick first point
+        for(int i=0;i<enable_point.size();i++){
+            if(_Location->LocationPoint[enable_point[i]].angle>0 && _Location->LocationPoint[enable_point[i]].angle<90)
+                temp = enable_point[i];
+        }
+        order.push_back(temp);
+        EraseElement(enable_point, temp);
+        // pick second point            probleming!!!!!!!!!!
+        // front = (_Location->LocationPoint[order.back()].angle + 180);
+        // Normalization(front);
+        // MinAngle(order, enable_point, front);
+        // pick third point
+        
+        // pick fourth point
+        
+        // pick fifth point
+        
+        order.push_back(-1);
         break;
     case left:
         break;
@@ -268,27 +411,36 @@ void Strategy::OptimatePath()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
+    _Target.size = order.size();
     for (int i = 0; i < order.size(); i++)
     {
-        printf("%d\t",order[i]+1);
-    }printf("\n");
-    // for (int i = 0; i < 5; i++)
-    //     for (int j = i + 1; j < 5; j++)
-    //     {
-    //         double Slope = (_Location->LocationPoint[i].y - _Location->LocationPoint[j].y) / (_Location->LocationPoint[i].x - _Location->LocationPoint[j].x);
-    //         if (Slope > 999)
-    //             Slope = 999;
-    //         double dis = (_Location->LocationPoint[j].y - Slope * _Location->LocationPoint[j].x) / sqrt(Slope * Slope + 1);
-    //         if (fabs(dis) < 0.5)
-    //             printf("dis %d -> %d :  = %lf\n", i + 1, j + 1, dis);
-    //         double angle = atan2(_Location->LocationPoint[i].y, _Location->LocationPoint[i].x) * RAD2DEG;
-    //         double angle_next = atan2(_Location->LocationPoint[j].y, _Location->LocationPoint[j].x) * RAD2DEG;
-    //         double angle_diff = angle_next - angle;
-    //         Normalization(angle_diff);
-    //         angle_diff = fabs(angle_diff);
-    //         printf("angle_diff %d -> %d :  = %lf\n", i + 1, j + 1, angle_diff);
-    //     }
-    // printf("====================\n");
+        if (order[i] == -1)
+        {
+            _Target.TargetPoint[i].x = 0;
+            _Target.TargetPoint[i].y = 0;
+            _Target.TargetPoint[i].angle = 0;
+        }
+        else
+        {
+            _Target.TargetPoint[i].x = _Location->LocationPoint[order[i]].x;
+            _Target.TargetPoint[i].y = _Location->LocationPoint[order[i]].y;
+            _Target.TargetPoint[i].angle = _Location->LocationPoint[order[i]].angle;
+        }
+    }
+    // =================   printf final point to run  ============================  
+    // for(int i=0;i<_Target.size;i++)
+    // {
+    //     printf("%d : x=%lf\ty=%lf\tangle=%lf\n",i,_Target.TargetPoint[i].x,_Target.TargetPoint[i].y,_Target.TargetPoint[i].angle);
+    // }
+    // =================   printf order  and   unrunning point with __ to determind   ===================
+    for (int i = 0; i < order.size(); i++)          // -1 is origin point
+    {
+        printf("%d\t", order[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < enable_point.size(); i++)
+        printf("%d__", enable_point[i]);
+    printf("\n");
 }
 void Strategy::showInfo(double imu, double compensation_x, double compensation_y)
 {
@@ -371,4 +523,41 @@ void Strategy::Normalization(double &angle)
         angle -= 360;
     else if (angle < -180)
         angle += 360;
+}
+void Strategy::EraseElement(std::vector<int>& vec,int index)
+{
+    for(int i=0;i<vec.size();i++){
+        if(vec[i]==index){
+            index = i;
+            break;
+        }
+    }
+    std::vector<int>::iterator it = vec.begin()+index;
+    vec.erase(it);
+}
+void Strategy::MinAngle(std::vector<int>& order,std::vector<int>& enable_point,int front)
+{
+    int back_flag = 1;
+    int temp;
+    int min_rotation = 999;
+    double normalization_temp_angle;
+    for (int i = 0; i < enable_point.size(); i++)
+    {
+        normalization_temp_angle = fabs(_Location->LocationPoint[enable_point[i]].angle - front);
+        Normalization(normalization_temp_angle);
+        if (fabs(normalization_temp_angle) < min_rotation)
+        {
+            min_rotation = normalization_temp_angle;
+            temp = enable_point[i];
+        }
+        if (through_path_ary[order.back()][enable_point[i]])
+        {
+            temp = enable_point[i];
+            back_flag = 0;
+        }
+    }
+    if(back_flag)
+        order.push_back(-1);
+    order.push_back(temp);
+    EraseElement(enable_point, temp);
 }
