@@ -36,18 +36,18 @@ class Strategy
     void setLocationPoint(LocationStruct *LocationPoint) { _Location = LocationPoint; }
     Environment getEnv() { return *_Env; }
 
-    private:
+  private:
     ///         private member          ///
     void StrategyHalt();
     void StrategyLocalization();
     void StrategyLocalization2();
-    void Forward();
-    void Turn();
+    void Forward(RobotData &, double &, double &, double &, double, int &, double, double, double);
+    void Turn(RobotData &, double &, double &, double &, double, int &, double);
     void Chase();
-    void OptimatePath();
-    void EraseElement(std::vector<int>&,int);
-    void MinAngle(std::vector<int>&,std::vector<int>&,int);
-    int ThroughPath(int,int);
+    std::vector<int> OptimatePath();
+    void EraseElement(std::vector<int> &, int);
+    void MinAngle(std::vector<int> &, std::vector<int> &, int);
+    int ThroughPath(int, int);
     void Normalization(double &);
     int _LocationState;
     int _CurrentTarget;
@@ -57,7 +57,8 @@ class Strategy
     LocationStruct *_Location;
     Environment *_Env;
     Parameter *_Param;
-    void showInfo(double,double,double);
+    void showInfo(double, double, double);
+    void showInfo(std::vector<int>,double, double, double);
     enum state_location
     {
         forward,

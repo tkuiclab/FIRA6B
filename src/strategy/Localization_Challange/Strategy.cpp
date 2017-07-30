@@ -222,7 +222,7 @@ void Strategy::StrategyLocalization2()
     double compensation_angle = ((int)absolute_front + 180) % 360;
     double compensation_x = compensation_distance * cos(compensation_angle * DEG2RAD);
     double compensation_y = compensation_distance * sin(compensation_angle * DEG2RAD);
-    OptimatePath();
+    std::vector<int> order = OptimatePath();
     if (flag)
         Begin_time = Current_time;
     if (Current_time - Begin_time < accelerate)
@@ -242,16 +242,17 @@ void Strategy::StrategyLocalization2()
     //    }
     //   ================================   Enable chase mode end   ==================================
     Normalization(absolute_front);
+    ROS_INFO("absolute_front=%lf",absolute_front);
     switch (_LocationState)
     {
     case forward: // Move to target poitn
-        Forward();
+        Forward(Robot,v_x,v_y,v_yaw,imu,flag,absolute_front,compensation_x,compensation_y);
         break;
     case chase:
         Chase();
         break;
     case turn:
-        Turn();
+        Turn(Robot,v_x,v_y,v_yaw,imu,flag,absolute_front);
         break;
     case error:
         printf("ERROR STATE\n");
@@ -261,19 +262,55 @@ void Strategy::StrategyLocalization2()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    // showInfo(imu, compensation_x, compensation_y);
+    showInfo(order,imu, compensation_x, compensation_y);
     Normalization(v_yaw);
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
     _Env->Robot.v_yaw = v_yaw;
 }
-void Strategy::Forward()
+void Strategy::Forward(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,double imu,int &flag,double absolute_front,double compensation_x,double compensation_y)
 {
-    ;
+    _Last_state = _LocationState;
+    flag = FALSE;
+    v_x = (_Target.TargetPoint[_CurrentTarget].x + compensation_x) - Robot.pos.x;
+    v_y = (_Target.TargetPoint[_CurrentTarget].y + compensation_y) - Robot.pos.y;
+    double v_x_temp, v_y_temp;
+    v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
+    v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
+    v_x = v_x_temp;
+    v_y = v_y_temp;
+    v_yaw = atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y, _Target.TargetPoint[_CurrentTarget].x + compensation_x) * RAD2DEG - absolute_front;
+    Normalization(v_yaw);
+    ROS_INFO("v_yaw = %lf!!!!!!", v_yaw);
+    if (fabs(v_yaw) < 3)
+        v_yaw = 0;
+    if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
+    {
+        if (_CurrentTarget == _Target.size)
+            _LocationState = finish;
+        else
+        {
+            _LocationState = turn;
+            _CurrentTarget++;
+            flag = TRUE;
+        }
+    }
 }
-void Strategy::Turn()
+void Strategy::Turn(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,double imu,int &flag,double absolute_front)
 {
-    ;
+    Vector3D vector_tr;
+    vector_tr.x = _Target.TargetPoint[_CurrentTarget].x - Robot.pos.x;
+    vector_tr.y = _Target.TargetPoint[_CurrentTarget].y - Robot.pos.y;
+    vector_tr.yaw = atan2(vector_tr.y, vector_tr.x) * RAD2DEG - absolute_front;
+    v_x = 0;               // don't give it horizen velocity
+    v_y = 100;             // full power
+    v_yaw = vector_tr.yaw; // turn to target
+    Normalization(v_yaw);
+    if (fabs(v_yaw) <= 3)
+    {
+        ROS_INFO("change to forward");
+        _LocationState = forward;
+    }
 }
 void Strategy::Chase()
 {
@@ -290,7 +327,7 @@ int Strategy::ThroughPath(int i, int j)
     else
         return FALSE;
 }
-void Strategy::OptimatePath()
+std::vector<int> Strategy::OptimatePath()
 {
     for (int i = 0; i < 10; i++)
     {
@@ -338,7 +375,7 @@ void Strategy::OptimatePath()
     switch (hotizon_location)
     {
     case up:
-        printf("up\n");
+        // printf("up\n");
         // pick first point
         front = 90;
         order.push_back(horizon_point);
@@ -361,7 +398,7 @@ void Strategy::OptimatePath()
         order.push_back(-1);
         break;
     case down:
-        printf("down\n");
+        // printf("down\n");
         // pick first point
         front = -90;
         order.push_back(horizon_point);
@@ -435,7 +472,6 @@ void Strategy::OptimatePath()
         MinAngle(order, enable_point, front);
         order.push_back(-1);
         break;
-        break;
     default:
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
@@ -462,14 +498,88 @@ void Strategy::OptimatePath()
     //     printf("%d : x=%lf\ty=%lf\tangle=%lf\n",i,_Target.TargetPoint[i].x,_Target.TargetPoint[i].y,_Target.TargetPoint[i].angle);
     // }
     // =================   printf order  and   unrunning point with __ to determind   ===================
-    for (int i = 0; i < order.size(); i++)          // -1 is origin point
+    // for (int i = 0; i < order.size(); i++)          // -1 is origin point
+    // {
+    //     printf("%d\t", order[i]);
+    // }
+    // printf("\n");
+    // for (int i = 0; i < enable_point.size(); i++)
+    //     printf("%d__", enable_point[i]);
+    // printf("\n");
+    return order;
+}
+void Strategy::showInfo(std::vector<int> order,double imu, double compensation_x, double compensation_y)
+{
+    std::string Sv_x = "→";
+    std::string Sv_y = "↑";
+    std::string Sv_yaw = "↶";
+    if (_Env->Robot.v_x > 0.1)
+        Sv_x = "→ ";
+    else if (_Env->Robot.v_x < -0.1)
+        Sv_x = "← ";
+    else
+        Sv_x = "";
+    if (_Env->Robot.v_y > 0.1)
+        Sv_y = "↑ ";
+    else if (_Env->Robot.v_y < -0.1)
+        Sv_y = "↓ ";
+    else
+        Sv_y = "";
+    if (_Env->Robot.v_yaw > 2)
+        Sv_yaw = "↶";
+    else if (_Env->Robot.v_yaw < -2)
+        Sv_yaw = "↷";
+    else
+        Sv_yaw = "";
+    printf("***********************************************\n");
+    printf("*                  START                      *\n");
+    printf("***********************************************\n");
+
+
+    //   ====================   test   =========================
+    switch (_LocationState)
     {
-        printf("%d\t", order[i]);
+    case forward:
+        printf("Target : Point %d\t", order[_CurrentTarget]+1);
+        printf("State : Forward\n");
+        break;
+    case finish:
+        printf("State : Fisish\n");
+        break;
+    case chase:
+        printf("Target : Ball\t");
+        printf("State : Chase\n");
+        break;
+    case turn:
+        printf("Target : Point %d\t", order[_CurrentTarget]+1);
+        printf("State : Turn\n");
+        break;
+    case error:
+        printf("State : Error\n");
+        break;
     }
-    printf("\n");
-    for (int i = 0; i < enable_point.size(); i++)
-        printf("%d__", enable_point[i]);
-    printf("\n");
+
+    if (_LocationState == forward)
+        std::cout << "Target position : (" << _Target.TargetPoint[_CurrentTarget].x + compensation_x
+                  << "," << _Target.TargetPoint[_CurrentTarget].y + compensation_y << ")\n";
+    else if (_LocationState == chase)
+        std::cout << "Target position : (" << _Env->Robot.pos.x + _Env->Robot.ball.distance * cos((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
+                  << "," << _Env->Robot.pos.y + _Env->Robot.ball.distance * sin((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
+                  << ")" << std::endl;
+    else if (_LocationState == turn)
+        if (_Last_state == forward)
+            std::cout << "Target position : (" << _Target.TargetPoint[_CurrentTarget].x + compensation_x
+                      << "," << _Target.TargetPoint[_CurrentTarget].y + compensation_y << ")\n";
+        else
+            std::cout << "Target position : (" << _Target.TargetPoint[_CurrentTarget].x + compensation_x
+                      << "," << _Target.TargetPoint[_CurrentTarget].y + compensation_y << ")\n";
+
+    std::cout << "Imu = " << imu << std::endl;
+    std::cout << "Robot position : (" << _Env->Robot.pos.x << "," << _Env->Robot.pos.y << ")\n";
+    std::string haha = Sv_x + Sv_y + Sv_yaw;
+    std::cout << "Direction : " << Sv_x + Sv_y + Sv_yaw << std::endl;
+    printf("Speed : (%3f,%3f,%3f)\n", _Env->Robot.v_x, _Env->Robot.v_y, _Env->Robot.v_yaw);
+    printf("==================== END ======================\n\n");
 }
 void Strategy::showInfo(double imu, double compensation_x, double compensation_y)
 {
@@ -497,6 +607,7 @@ void Strategy::showInfo(double imu, double compensation_x, double compensation_y
     printf("***********************************************\n");
     printf("*                  START                      *\n");
     printf("***********************************************\n");
+
     switch (_LocationState)
     {
     case forward:
