@@ -525,20 +525,9 @@ void FIRA_behavior_class::behavior_Test1(int robotIndex){
     double op_angle_dr = env.home[r_number].op_goal.angle;
 //    printf("final_angle=%f\n",env.Support_Obstacle_angle);
 //    printf("final_distance=%f\n",env.Support_Obstacle_distance);
-    if(op_distance_dr<1.5){// in limit area
-        actionAry[robotIndex] = action_LeaveLimitArea;
-        printf("action_LeaveLimitArea\n");
-    }else if((angle_br>120||angle_br<-120)||distance_br<1){
-        actionAry[robotIndex] = action_LeaveBall;
-        printf("action_Chase\n");
-    }else if(op_distance_dr>3.5){// too far from defend gate
-        actionAry[robotIndex] = action_MovetoOpGoal;
-        printf("action_MovetoYellowGate\n");
-    }else{//all good above, left right defend ball state
-        actionAry[robotIndex] = action_LeftRightMove;
-        printf("left right defend ball state\n");
-    }
-    //printf("test1\n");
+
+        actionAry[robotIndex] = action_Block;
+
 
 
 

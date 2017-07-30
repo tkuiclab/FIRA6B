@@ -28,6 +28,8 @@ void Strategy_nodeHandle::ros_comms_init(){
 
     GameState = n->subscribe<std_msgs::Int32>(GameState_Topic,1,&Strategy_nodeHandle::subGameState,this);
     TeamColor = n->subscribe<std_msgs::String>(TeamColor_Topic,1,&Strategy_nodeHandle::subTeamColor,this);
+    IsTeamStrategy = n->subscribe<std_msgs::Int32>(IsTeamStrategy_Topic,1000,&Strategy_nodeHandle::subIsTeamStrategy,this);
+
 
     //robot_role
     std::cout << "Strategy_nodeHandle::ros_comms_init() say opponent = " << opponent << std::endl;
@@ -197,6 +199,17 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
         }
         if(Tangle_min>Tangle_max){
             Tangle_min=0;
+        }
+    }
+//    printf("roleAry[global_env->RobotNumber]=%d\n",roleAry[global_env->RobotNumber]);
+//    printf("global_env->isteamstrategy=%d\n",global_env->isteamstrategy);
+//    printf("global_env->AnotherBallDistance=%f\n",global_env->AnotherBallDistance);
+//    printf("global_env->home[global_env->RobotNumber].ball.distance=%f\n",global_env->home[global_env->RobotNumber].ball.distance);
+    if(roleAry[global_env->RobotNumber]==Role_Attack && global_env->isteamstrategy==1){//if is attacker and teamstrategy
+        if(global_env->AnotherBallDistance<global_env->home[global_env->RobotNumber].ball.distance){
+            VTdis_max = SPlanning_Velocity[2]/2;
+            VTdis_min = SPlanning_Velocity[3]/2;
+            printf("slow down\n");
         }
     }
 ////Transfer vector to [0,100]

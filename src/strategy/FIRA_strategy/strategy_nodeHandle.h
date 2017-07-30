@@ -50,6 +50,7 @@
 #define Vision_Topic "/vision/object"
 #define Vision_Two_point_Topic "/interface/Two_point"
 #define SAVEPARAM_TOPIC "/FIRA/SaveParam"
+#define IsTeamStrategy_Topic "/FIRA/IsTeamStrategy"
 //BlackObject_distance
 #define  BlackObject_Topic "/vision/BlackRealDis"
 //TwoPointDoor
@@ -303,6 +304,7 @@ private:
     ros::Subscriber TeamColor;
     ros::Subscriber Vision;
     ros::Subscriber Vision_Two_point;
+    ros::Subscriber IsTeamStrategy;
 
     //BlackObject
     ros::Subscriber BlackObject;
@@ -475,6 +477,9 @@ private:
     }
     void subGameState(const std_msgs::Int32::ConstPtr &msg){
         gamestate=msg->data;
+    }
+    void subIsTeamStrategy(const std_msgs::Int32::ConstPtr &msg){
+        global_env->isteamstrategy=msg->data;
     }
     void subTeamColor(const std_msgs::String::ConstPtr &msg){
         teamcolor= msg->data;
@@ -853,15 +858,21 @@ private:
         //printf("global_env->gameState=%d\n",global_env->gameState);
         if((abs(Current_time-Begin_time)<1.5)&&(global_env->gameState==5)){
            degree_controller=270;
-           ignore_limit_angle=25;
+           ignore_limit_angle=40;
            limit_obstacle_dis=200;
            edge_controller = 1;
-        }else if((fabs(Current_time-Begin_time)<1.5)&&(global_env->gameState==GameState_FreeKick)){
+        }else if((fabs(Current_time-Begin_time)<2)&&(global_env->gameState==GameState_FreeKick)){
            //printf("fabs(Current_time-Begin_time)=%f\n",fabs(Current_time-Begin_time));
            degree_controller=270;
-           ignore_limit_angle=25;
+           ignore_limit_angle=40;
            limit_obstacle_dis=200;
            edge_controller = 1;
+        }else if(roleAry[global_env->RobotNumber]==Role_Test1){
+//           printf("test1\n");
+//           degree_controller=270;
+//           ignore_limit_angle=50;
+//           limit_obstacle_dis=200;
+//           edge_controller = 1;
         }else{
            degree_controller=0;
            ignore_limit_angle=45;
@@ -954,7 +965,7 @@ private:
                 }
 
             }
-        if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if robot is support or newsupport, ignore limit area
+        if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==Role_Support){// if robot is support or newsupport, ignore limit area
                 if(((i*Blackangle>=ignore_lower)&&(i*Blackangle<=ignore_upper)||(i*Blackangle>=ignore_360lower)&&(i*Blackangle<=ignore_360upper))||(i*Blackangle>=ignore_720lower)&&(i*Blackangle<=ignore_720upper)){
                     // if angle within these area, will clear
                     if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){

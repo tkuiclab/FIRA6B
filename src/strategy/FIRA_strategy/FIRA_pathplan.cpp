@@ -3,7 +3,8 @@
 #include "time.h"
 #include <iostream>
 using namespace std;
-
+static double Begin_time = 0;
+static double Current_time = 0;
 static bool loopEnd;
 
 //=========Environment init=============//
@@ -1056,6 +1057,8 @@ void FIRA_pathplan_class::strategy_Halt(int Robot_index){
     env.home[Robot_index].v_y = 0;
     env.home[Robot_index].v_yaw = 0;
     shoot = 0;
+    Begin_time = ros::Time::now().toSec();
+    Current_time = ros::Time::now().toSec();
     loopEnd = true;
 }
 
@@ -3838,11 +3841,13 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
     double transform_angle_br = angle_br+90;
     double obstacle_distance =env.Support_Obstacle_distance;
     double transform_obstacle_angle = env.Support_Obstacle_angle + 180;
+    Current_time = ros::Time::now().toSec();
     if(transform_obstacle_angle>180){
         transform_obstacle_angle = transform_obstacle_angle -360;
     }else if(transform_obstacle_angle<-180){
         transform_obstacle_angle = transform_obstacle_angle +360;
     }
+    printf("transform_obstacle_angle=%f\n",transform_obstacle_angle);
 
     if(obstacle_angle>180){
         obstacle_angle=obstacle_angle-360;
@@ -3855,22 +3860,38 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
     }else if(transform_angle_br<-180){
         transform_angle_br=transform_angle_br+360;
     }
-
-    if(env.Support_Obstacle_angle>=999){
+    double yaw_speed=(fabs(transform_obstacle_angle)<15)? 0 : transform_obstacle_angle;
+    if(env.Support_Obstacle_angle>=999||env.Support_Obstacle_distance>=9.99){
         env.home[r_number].v_x = 0;
         env.home[r_number].v_y = 0;
+        env.home[r_number].v_yaw= 0;
     }else{
-        env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
-        env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
+        if(fabs(Current_time-Begin_time)<1.5){
+            env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
+            env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
+            env.home[r_number].v_yaw= yaw_speed;
+        }else{
+            env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*(obstacle_distance-0.6);
+            env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*(obstacle_distance-0.6);
+            env.home[r_number].v_yaw= yaw_speed;
+            if(obstacle_distance<0.6){
+                env.home[r_number].v_x =0;
+                env.home[r_number].v_y =0;
+                printf("obstacle_distance<0.6\n");
+            }
+        }
     }
+//    printf("fabs(Current_time-Begin_time)=%f\n",fabs(Current_time-Begin_time));
+//    printf("obstacle_angle=%f\n",env.Support_Obstacle_angle);
+//    printf("obstacle_distance=%f\n",env.Support_Obstacle_distance);
 
-    double yaw_speed=transform_obstacle_angle;
-
-
-    env.home[r_number].v_yaw= yaw_speed;
     if(fabs(yaw_speed)<yaw_speed_limit){
        env.home[r_number].v_yaw= 0;
     }
+//    if(fabs(cos(obstacle_angle*deg2rad)*(obstacle_distance-0.5)<speed_limit)&&fabs(sin(obstacle_angle*deg2rad)*(obstacle_distance-0.5)<speed_limit)){
+//       env.home[r_number].v_x = 0;
+//       env.home[r_number].v_y = 0;
+//    }
      shoot = 0;
 
 
