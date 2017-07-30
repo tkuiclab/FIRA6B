@@ -42,7 +42,6 @@ class Strategy
     void StrategyLocalization();
     void StrategyLocalization2();
     void Forward();
-    void Back();
     void Turn();
     void Chase();
     void OptimatePath();

@@ -229,6 +229,7 @@ void Strategy::StrategyLocalization2()
         slow_factor = exp(-2.1 + 2 * ((Current_time - Begin_time) / accelerate));
     else
         slow_factor = 1;
+    //   ================================   Enable chase mode   ==================================
     //    if(_Env->Robot.ball.distance > lost_ball_dis || fabs(_Env->Robot.ball.angle) > lost_ball_angle){
     //        if(flag_chase){
     //            _Last_state = _LocationState;
@@ -239,6 +240,7 @@ void Strategy::StrategyLocalization2()
     //        _LocationState = _Last_state;
     //        flag_chase = TRUE;
     //    }
+    //   ================================   Enable chase mode end   ==================================
     Normalization(absolute_front);
     switch (_LocationState)
     {
@@ -266,10 +268,6 @@ void Strategy::StrategyLocalization2()
     _Env->Robot.v_yaw = v_yaw;
 }
 void Strategy::Forward()
-{
-    ;
-}
-void Strategy::Back()
 {
     ;
 }
@@ -312,7 +310,7 @@ void Strategy::OptimatePath()
     int hotizon_location = -1;
     int temp = -1;
     double front = 0;
-    int min_rotation = 999;
+    double min_rotation = 999;
     double normalization_temp_angle;
     for (int i = 0; i < 5; i++)
     {
@@ -394,18 +392,49 @@ void Strategy::OptimatePath()
         order.push_back(temp);
         EraseElement(enable_point, temp);
         // pick second point            probleming!!!!!!!!!!
-        // front = (_Location->LocationPoint[order.back()].angle + 180);
-        // Normalization(front);
-        // MinAngle(order, enable_point, front);
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
         // pick third point
-        
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
         // pick fourth point
-        
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
         // pick fifth point
-        
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
         order.push_back(-1);
         break;
     case left:
+        // pick first point
+        for(int i=0;i<enable_point.size();i++){
+            if(_Location->LocationPoint[enable_point[i]].angle>90 && _Location->LocationPoint[enable_point[i]].angle<180)
+                temp = enable_point[i];
+        }
+        order.push_back(temp);
+        EraseElement(enable_point, temp);
+        // pick second point            probleming!!!!!!!!!!
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        // pick third point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        // pick fourth point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        // pick fifth point
+        front = (_Location->LocationPoint[order.back()].angle + 180);
+        Normalization(front);
+        MinAngle(order, enable_point, front);
+        order.push_back(-1);
+        break;
         break;
     default:
         printf("UNDEFINE STATE\n");
@@ -539,7 +568,7 @@ void Strategy::MinAngle(std::vector<int>& order,std::vector<int>& enable_point,i
 {
     int back_flag = 1;
     int temp;
-    int min_rotation = 999;
+    double min_rotation = 999;
     double normalization_temp_angle;
     for (int i = 0; i < enable_point.size(); i++)
     {
@@ -547,7 +576,7 @@ void Strategy::MinAngle(std::vector<int>& order,std::vector<int>& enable_point,i
         Normalization(normalization_temp_angle);
         if (fabs(normalization_temp_angle) < min_rotation)
         {
-            min_rotation = normalization_temp_angle;
+            min_rotation = fabs(normalization_temp_angle);
             temp = enable_point[i];
         }
         if (through_path_ary[order.back()][enable_point[i]])
