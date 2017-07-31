@@ -271,7 +271,7 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //###################################################//
 void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
     double ball_dis = env.home[r_number].ball.distance;
-    if(ball_dis != 0){
+    if(ball_dis != 0 && ball_dis < 3){
         state_GoalKeeper = state_GoalKeeper_block;
     }
 }
@@ -281,6 +281,8 @@ void FIRA_behavior_class::StateGoalKeeperBlock(int r_number){
     double ball_angle = env.home[r_number].ball.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
     double opgoal_angle = env.home[r_number].op_goal.angle;
+    double opgoal_left = env.home[r_number].opgoal_edge.left_dis;
+    double opgoal_right = env.home[r_number].opgoal_edge.right_dis;
     double ball_to_opgoal_dis;
     ball_to_opgoal_dis = (opgoal_angle*ball_angle)>0 ? fabs(opgoal_angle-ball_angle) : fabs(opgoal_angle)+fabs(ball_angle);
     if(ball_to_opgoal_dis == 180){
@@ -291,9 +293,19 @@ void FIRA_behavior_class::StateGoalKeeperBlock(int r_number){
         }
         ball_to_opgoal_dis =sqrt((opgoal_dis*opgoal_dis)+(ball_dis*ball_dis)-(2*opgoal_dis*ball_dis*cos(ball_to_opgoal_dis*deg2rad)));
     }
-    std::cout << ball_to_opgoal_dis << std::endl;
-    if(ball_to_opgoal_dis < 2.2){
+    double r_opgoal_dis = sqrt((opgoal_left*opgoal_left)+(opgoal_right*opgoal_right)-1.28);
+    double position_angle = rad2deg * acos(-((r_opgoal_dis*r_opgoal_dis)-(opgoal_dis*opgoal_dis)-0.25)/opgoal_dis);
+
+    // std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
+    if(ball_to_opgoal_dis < 2 && position_angle < 70){
         state_GoalKeeper = state_GoalKeeper_push;
+        std::cout << "push" << std::endl;
+    }else if(ball_to_opgoal_dis < 1.5 && position_angle < 80){
+        state_GoalKeeper = state_GoalKeeper_push;
+        std::cout << "push" << std::endl;
+    }else if(ball_dis < 1 && opgoal_dis < 1){
+        state_GoalKeeper = state_GoalKeeper_push;
+        std::cout << "push" << std::endl;
     }
 }
 
@@ -349,7 +361,7 @@ void FIRA_behavior_class::StateGoalKeeperGoalKick(int r_number){
     if(current_time-start_time > int_calculate_time){ 
         state_GoalKeeper = state_GoalKeeper_block;
         gointoGoalKick = 1;
-    }else if(ball_to_opgoal_dis > 1.5){
+    }else if(ball_to_opgoal_dis > 2.2){
         state_GoalKeeper = state_GoalKeeper_block;
         gointoGoalKick = 1;
     }//else if(ball_to_opgoal_dis > 1.1){
