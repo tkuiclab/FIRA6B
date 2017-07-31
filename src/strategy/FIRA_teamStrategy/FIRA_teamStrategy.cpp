@@ -290,7 +290,7 @@ void FIRA_teamStrategy_class::role_FreeKick(){
     }else if(this_robot_role==Role_Attack){
         attacker_select_starter=1;
     }
-    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=1.5){//if teamstrategy open
+    if(env.isteamstrategy==1&&fabs(Current_time-Begin_time)>=2){//if teamstrategy open
         static int attacker_select = attacker_select_starter;
         static int this_attacker_select_counter=0;
         static int another_attacker_select_counter=0;

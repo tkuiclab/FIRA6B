@@ -856,12 +856,12 @@ private:
             Current_time = ros::Time::now().toSec();
         }
         //printf("global_env->gameState=%d\n",global_env->gameState);
-        if((abs(Current_time-Begin_time)<1.5)&&(global_env->gameState==5)){
+        if((abs(Current_time-Begin_time)<2)&&(global_env->gameState==5)){
            degree_controller=270;
            ignore_limit_angle=40;
            limit_obstacle_dis=200;
            edge_controller = 1;
-        }else if((fabs(Current_time-Begin_time)<2)&&(global_env->gameState==GameState_FreeKick)){
+        }else if((fabs(Current_time-Begin_time)<2.5)&&(global_env->gameState==GameState_FreeKick)){
            //printf("fabs(Current_time-Begin_time)=%f\n",fabs(Current_time-Begin_time));
            degree_controller=270;
            ignore_limit_angle=40;
