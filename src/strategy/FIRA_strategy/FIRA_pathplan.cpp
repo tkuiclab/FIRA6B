@@ -1505,6 +1505,9 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         f_apf_total[0]=f_apf_total[0]/total_f_apf;
         f_apf_total[1]=f_apf_total[1]/total_f_apf;
     }
+    if(number_obstacle==0){
+        f_r_angle=0;
+    }
     if(goal_dis<=1.5){
         k_g[0]=1;
         k_g[1]=1;
@@ -1512,6 +1515,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         k_r[1]=0;
         k_image_r[0]=0;
         k_image_r[1]=0;
+        f_r_angle=goal_angle;
     }
 //    /////////////////
     f_total[0]=k_r[0]*f_apf_total[0]+k_g[0]*f_g[0]+k_image_r[0]*f_image_total[0];
@@ -1520,9 +1524,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     printf("f_r_angle:%f\n",f_r_angle);
     printf("k_r-x:%f,k_r-y:%f\tk_g-x:%f,k_g-y:%f\n",k_r[0],k_r[1],k_g[0],k_g[1]);
     printf("ft_x:%f\tft_y:%f\n\n",f_total[0],f_total[1]);
-    if(number_obstacle==0){
-        f_r_angle=0;
-    }
+
 //    ////////////real_state/////
     env.home[r_number].v_x = f_total[0];
     env.home[r_number].v_y = f_total[1];
