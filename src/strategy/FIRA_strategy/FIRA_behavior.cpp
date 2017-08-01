@@ -526,7 +526,7 @@ void FIRA_behavior_class::behavior_Test1(int robotIndex){
 //    printf("final_angle=%f\n",env.Support_Obstacle_angle);
 //    printf("final_distance=%f\n",env.Support_Obstacle_distance);
 
-        actionAry[robotIndex] = action_Block;
+        actionAry[robotIndex] = action_Support_Test1;
 
 
 

@@ -117,7 +117,9 @@ typedef struct{
     Vector3D pos;
     Vector3D ball;
     Vector3D goal;
+    Vector3D goal_large_area;
     Vector3D op_goal;
+    Vector3D op_goal_large_area;
     double rotation;
     double v_x,v_y,v_yaw;
     Two_point goal_edge, op_goal_edge;

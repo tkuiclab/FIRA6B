@@ -497,11 +497,21 @@ private:
             global_env->home[global_env->RobotNumber].goal.distance = yellow_distance/100;
             global_env->home[global_env->RobotNumber].goal.angle = msg->yellow_ang;
 
+            global_env->home[global_env->RobotNumber].goal_large_area.angle = msg->yellow_fix_ang;
+            global_env->home[global_env->RobotNumber].goal_large_area.distance = msg->yellow_fix_dis;
+            global_env->home[global_env->RobotNumber].op_goal_large_area.angle = msg->blue_fix_ang;
+            global_env->home[global_env->RobotNumber].op_goal_large_area.distance = msg->blue_fix_dis;
+
         }else if(global_env->teamcolor == "Yellow"){
             global_env->home[global_env->RobotNumber].op_goal.distance= yellow_distance/100;
             global_env->home[global_env->RobotNumber].op_goal.angle = msg->yellow_ang;
             global_env->home[global_env->RobotNumber].goal.distance= blue_distance/100;
             global_env->home[global_env->RobotNumber].goal.angle = msg->blue_ang;
+
+            global_env->home[global_env->RobotNumber].goal_large_area.angle = msg->blue_fix_ang;
+            global_env->home[global_env->RobotNumber].goal_large_area.distance = msg->blue_fix_dis;
+            global_env->home[global_env->RobotNumber].op_goal_large_area.angle = msg->yellow_fix_ang;
+            global_env->home[global_env->RobotNumber].op_goal_large_area.distance = msg->yellow_fix_dis;
         }
 
        ball_distance = msg->ball_dis;

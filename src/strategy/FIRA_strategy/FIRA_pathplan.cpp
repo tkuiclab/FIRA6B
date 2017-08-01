@@ -1916,64 +1916,18 @@ void FIRA_pathplan_class::strategy_Support_Positioning(int r_number){
 }
 
 void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
-    double distance_br = env.home[r_number].ball.distance;
-    double distance_dr = env.home[r_number].goal.distance;
-    double op_distance_dr = env.home[r_number].op_goal.distance;
-    double angle_br = env.home[r_number].ball.angle;
-    double angle_dr = env.home[r_number].goal.angle;
-    double op_angle_dr = env.home[r_number].op_goal.angle;
-    static int shoot_count =1;
-//    if(shoot_count==1){
-//        shoot = 25;
-//        shoot_count--;
-//    }else{
-//        shoot = 0;
-//    }
-    double obstacle_angle =env.Support_Obstacle_angle+90;
-    double transform_angle_br = angle_br+90;
-    double obstacle_distance =env.Support_Obstacle_distance;
-    if(obstacle_angle>180){
-        obstacle_angle=obstacle_angle-360;
-    }else if(obstacle_angle<-180){
-        obstacle_angle=obstacle_angle+360;
-    }
-
-    if(transform_angle_br>180){
-        transform_angle_br=transform_angle_br-360;
-    }else if(transform_angle_br<-180){
-        transform_angle_br=transform_angle_br+360;
-    }
-//    printf("final_angle=%f\n",env.Support_Obstacle_angle);
-//    printf("final_distance=%f\n",env.Support_Obstacle_distance);
-//    printf("ball_distance = %f\n",distance_br);
-//    if(obstacle_distance-0.4>0){
-//        obstacle_distance=obstacle_distance-0.4;
-//    }else{
-//        obstacle_distance=0;
-//    }
-//    if(distance_br-0.3>0){
-//        distance_br=distance_br-0.3;
-//    }else{
-//        distance_br=0;
-//    }
-
-//        printf("ball_distance = %f\n",distance_br);
-        printf("obstacle_distance = %f\n",obstacle_distance);
-        printf("chase angle_br=%f\n",Chase_Strategy[3]);
-        printf("chase distance =%f\n",Chase_Strategy[4]);
-//        printf("shoot_count=%d\n",shoot_count);
-    if((fabs(cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br<0.05))&&(sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br)<0.05){
-        env.home[r_number].v_x = 0;
-        env.home[r_number].v_y = 0;
-    }else if(env.Support_Obstacle_angle>=999){
-        env.home[r_number].v_x = 0;
-        env.home[r_number].v_y = 0;
-    }else{
-        env.home[r_number].v_x =cos(obstacle_angle*deg2rad)*obstacle_distance+cos(transform_angle_br*deg2rad)*distance_br;
-        env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
-    }
-    shoot = 0;
-
+        double distance_br = env.home[r_number].ball.distance;
+        double distance_dr = env.home[r_number].goal.distance;
+        double op_distance_dr = env.home[r_number].op_goal.distance;
+        double angle_br = env.home[r_number].ball.angle;
+        double angle_dr = env.home[r_number].goal.angle;
+        double op_angle_dr = env.home[r_number].op_goal.angle;
+        double angle_goal_large_area = env.home[r_number].goal_large_area.angle;
+        double distance_goal_large_area = env.home[r_number].goal_large_area.distance;
+        double angle_opgoal_large_area = env.home[r_number].op_goal_large_area.angle;
+        double distance_opgoal_large_area = env.home[r_number].op_goal_large_area.distance;
+        printf("goal angle =%f, distance =%f\n",angle_goal_large_area,distance_goal_large_area);
+        printf("opgoal angle =%f, op_distance =%f\n",angle_opgoal_large_area,distance_opgoal_large_area);
 
 
 
