@@ -333,6 +333,7 @@ private:
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
     std::vector<int> Strategy_Selection;
+    std::vector<int> Support_Strategy;
     std::vector<int> Scan;
     int IsSimulator;
     /// load param end

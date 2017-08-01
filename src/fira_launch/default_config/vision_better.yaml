@@ -1450,11 +1450,11 @@ FIRA_Behavior:
   Chase_Strategy: [5, 0.15, 0.2, 3, 0.32]
   Corner_Kick: [120, 0.45]
   Side_Speed_UP: [10, 0.45]
-  Support_Strategy: [2]
+  Support_Strategy: [1]
   TypeS_Attack: [20, 1, 1.5]
   TypeU_Chase: [30, 0.3]
   Zone_Attack: [0.6]
-StrategySelection: [0, 1, 0, 0, 0, 1, 0]
+StrategySelection: [0, 1, 0, 0, 0, 0, 1]
 amcl: {base_frame_id: /base_link, beam_skip_distance: 2.0, beam_skip_threshold: 1.0,
   do_beamskip: false, first_map_only: true, global_frame_id: /map, gui_publish_rate: 90.0,
   initial_cov_aa: 2.3637392544171303, initial_cov_xx: 1.81218359004809, initial_cov_yy: 1.4574361390514445,
@@ -1501,6 +1501,7 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__44234: 'http://iclab2-To-be-filled-by-O-E-M:44234/',
     host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
     host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
+    host_iclab3_to_be_filled_by_o_e_m__35826: 'http://iclab3-To-be-filled-by-O-E-M:35826/',
     host_iclab__33059: 'http://iclab:33059/', host_iclab__33179: 'http://iclab:33179/',
     host_iclab__33207: 'http://iclab:33207/', host_iclab__33261: 'http://iclab:33261/',
     host_iclab__33392: 'http://iclab:33392/', host_iclab__33493: 'http://iclab:33493/',

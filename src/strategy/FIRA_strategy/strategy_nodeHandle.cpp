@@ -322,7 +322,40 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
 //         std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
     if(n->getParam("/StrategySelection", Strategy_Selection)){
+        int chaseCase = Strategy_Selection[0];
+        int SchaseCase = Strategy_Selection[1];
+        int attackCase = Strategy_Selection[2];
+        int SattackCase = Strategy_Selection[3];
+        int DattackCase = Strategy_Selection[4];
+        int ShootCase = Strategy_Selection[5];
+        int EscapeCase = Strategy_Selection[6];
+        if(chaseCase){
+            printf("Attacker chaseCase\n");
+        }else if(SchaseCase){
+            printf("Attacker SchaseCase\n");
+        }
 
+        if(attackCase){
+            printf("Attacker attackCase\n");
+        }else if(SattackCase){
+            printf("Attacker SattackCase\n");
+        }else if(DattackCase){
+            printf("Attacker DattackCase\n");
+        }else if(ShootCase){
+            printf("Attacker ShootCase\n");
+        }else if(EscapeCase){
+            printf("Attacker EscapeCase\n");
+        }
+    }
+    if(n->getParam("/FIRA_Behavior/Support_Strategy", Support_Strategy)){
+        switch(Support_Strategy[0]){
+            case 1:
+                printf("Support AutoCase\n");
+            break;
+            case 2:
+                printf("Support BlockCase\n");
+            break;
+        }
     }
     n->getParam("/FIRA/SCAN/Dont_Search_Angle_1",Scan[0]);
     n->getParam("/FIRA/SCAN/Dont_Search_Angle_2",Scan[1]);

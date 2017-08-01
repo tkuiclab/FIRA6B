@@ -356,19 +356,21 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
           alpha+=360;
     ////========== normalization end ==========
     Vector2d vectornt(-1.42*sin(c_ball_angle*deg2rad),1.42*cos(c_ball_angle*deg2rad));
-    if(/*bool_shoot(goal_dis)&&fabs(ball_angle)<4&&*/fabs(goal_angle)<10){
-        if(goal_dis<=1){
+    double goal_edge1 = env.home[r_number].goal_edge.angle_1;
+    double goal_edge2 = env.home[r_number].goal_edge.angle_2;
+    if(goal_angle>-90&&goal_angle<-90){
+        if((goal_edge1<0&&goal_edge2>=0)||(goal_edge1>=0&&goal_edge2<0)){
             shoot = SPlanning_Velocity[10];
-}
-        else if(goal_dis>1 && goal_dis <=2){
-            shoot = SPlanning_Velocity[10];
-}
-        else {
-            shoot = SPlanning_Velocity[10];
-}
-        env.home[r_number].v_x =vectornt(0)*1000;
-        env.home[r_number].v_y =vectornt(1)*1000;
-        env.home[r_number].v_yaw = goal_angle*2;
+            env.home[r_number].v_x =vectornt(0)*1000;
+            env.home[r_number].v_y =vectornt(1)*1000;
+            env.home[r_number].v_yaw = goal_angle*2;
+        }
+//    }
+//    if(fabs(goal_angle)<10){
+//        shoot = SPlanning_Velocity[10];
+//        env.home[r_number].v_x =vectornt(0)*1000;
+//        env.home[r_number].v_y =vectornt(1)*1000;
+//        env.home[r_number].v_yaw = goal_angle*2;
     }else{
         shoot = 0;
         env.home[r_number].v_x =vectornt(0)*1000;
