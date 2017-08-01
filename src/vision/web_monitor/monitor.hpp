@@ -33,15 +33,26 @@ namespace enc = sensor_msgs::image_encodings;
 
 class object_Item{
   public:
-  int dis_max;
-  int dis_min;
-  int ang_max;
-  int ang_min;
-  int x;
-  int y;
-  int angle;
-  double distance;
+  int dis_max;        //pix
+  int dis_min;        //pix
+  int ang_max;        //pix
+  int ang_min;        //pix
+  int x;              //pix
+  int y;              //pix
+  int angle;          //front
+  double distance;    //pix
   int size;
+///////////////////
+  int left_dis;       //pix
+  int right_dis;      //pix
+  int left_x;         //pix
+  int left_y;         //pix
+  int right_x;        //pix
+  int right_y;        //pix
+  int fix_x;          //pix
+  int fix_y;          //pix
+  int fix_angle;      //fort
+  int fix_distance;   //pix
   string LR;
 };
 
@@ -187,7 +198,8 @@ public:
 ///////////////////////////////////////////////////////////
 ///////////////////////FPS/////////////////////////////////
   //int frame_counter=0;
-  int topic_counter=0;
+  //int topic_counter=0;
+
   // long int EndTime;
   double dt;
   double Exposure_mm;
