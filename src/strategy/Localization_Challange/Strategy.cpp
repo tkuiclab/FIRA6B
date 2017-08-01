@@ -279,8 +279,10 @@ void Strategy::Forward(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,do
     v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
     v_x = v_x_temp;
     v_y = v_y_temp;
-    v_yaw = atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y, _Target.TargetPoint[_CurrentTarget].x + compensation_x) * RAD2DEG - absolute_front;
+    v_yaw = atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y - Robot.pos.y, _Target.TargetPoint[_CurrentTarget].x + compensation_x - Robot.pos.x) * RAD2DEG - absolute_front;
     Normalization(v_yaw);
+    v_yaw /= 2;
+    ROS_INFO("anta=%lf\tabs=%lf\n",atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y - Robot.pos.y, _Target.TargetPoint[_CurrentTarget].x + compensation_x - Robot.pos.x) * RAD2DEG,absolute_front);
     ROS_INFO("v_yaw = %lf!!!!!!", v_yaw);
     if (fabs(v_yaw) < 3)
         v_yaw = 0;
@@ -303,7 +305,8 @@ void Strategy::Turn(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,doubl
     vector_tr.y = _Target.TargetPoint[_CurrentTarget].y - Robot.pos.y;
     vector_tr.yaw = atan2(vector_tr.y, vector_tr.x) * RAD2DEG - absolute_front;
     v_x = 0;               // don't give it horizen velocity
-    v_y = 100;             // full power
+//    v_y = 100;             // full power
+    v_y = 0;
     v_yaw = vector_tr.yaw; // turn to target
     Normalization(v_yaw);
     if (fabs(v_yaw) <= 3)

@@ -22,6 +22,8 @@
 
 
 /*====================================================*/
+
+
 /*====================================================*/
 
 
@@ -41,32 +43,34 @@
 }
 
 #BehaviorSettingRobotDiv {
-  position: absolute;
-  top: 2%;
-  left: 40%;
-  width: 250px;
-  height: 60px;
+    position: absolute;
+    top: 2%;
+    left: 40%;
+    width: 250px;
+    height: 60px;
 }
 
 #PathplanSettingRobotDiv table {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
-#SetBehaviorButton1 table{
-  width: 100%;
-  height: 100%;
-  text-align: center;
+#SetBehaviorButton1 table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
-#SetBehaviorButton2 table{
-  width: 100%;
-  height: 100%;
-  text-align: center;
+
+#SetBehaviorButton2 table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
-#SetBehaviorButton3 table{
-  width: 100%;
-  height: 100%;
-  text-align: center;
+
+#SetBehaviorButton3 table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
 
 #BehaviorRobot1Button {
@@ -116,313 +120,365 @@
 
 
 /*Robot1*/
-#StateChase1{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateChase1.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+
+#StateChase1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
 
-
-#StateAttack1{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateAttack1.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateChase1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
 
-
-#StateTypeUChase1{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateTypeUChase1.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateAttack1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
 
-
-#StateTypeSAttack1{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateTypeSAttack1.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateAttack1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
 
-
-#StateSideSpeedUP1{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateSideSpeedUP1.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateTypeUChase1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
 
-
-#StateZoneAttack1{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateZoneAttack1.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateTypeUChase1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
 
-
-#StateCornerKick1{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateCornerKick1.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateTypeSAttack1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
 
-#StrategySelection1{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
+#StateTypeSAttack1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
-#StrategySelection1.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+
+#StateSideSpeedUP1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
+
+#StateSideSpeedUP1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateZoneAttack1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateZoneAttack1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateCornerKick1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateCornerKick1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StrategySelection1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StrategySelection1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#SupportStrategy1 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#SupportStrategy1.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
 
 /*Robot2*/
-#StateChase2{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateChase2.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+
+#StateChase2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
 
-
-#StateAttack2{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateAttack2.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateChase2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
 
-
-#StateTypeUChase2{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateTypeUChase2.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateAttack2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
 
-
-#StateTypeSAttack2{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateTypeSAttack2.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateAttack2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
 
-
-#StateSideSpeedUP2{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateSideSpeedUP2.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateTypeUChase2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
 
-
-#StateZoneAttack2{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateZoneAttack2.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateTypeUChase2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
 
-
-#StateCornerKick2{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateCornerKick2.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+#StateTypeSAttack2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
 
-#StrategySelection2{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
+#StateTypeSAttack2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
-#StrategySelection2.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+
+#StateSideSpeedUP2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
+
+#StateSideSpeedUP2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateZoneAttack2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateZoneAttack2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateCornerKick2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateCornerKick2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StrategySelection2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StrategySelection2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#SupportStrategy2 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#SupportStrategy2.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
 
 /*Robot3*/
-#StateChase3{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
+
+#StateChase3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
 }
-#StateChase3.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
+
+#StateChase3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateAttack3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateAttack3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateTypeUChase3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateTypeUChase3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateTypeSAttack3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateTypeSAttack3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateSideSpeedUP3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateSideSpeedUP3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateZoneAttack3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateZoneAttack3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StateCornerKick3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StateCornerKick3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#StrategySelection3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#StrategySelection3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+}
+
+#SupportStrategy3 {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 14px;
+    color: #663D00;
+}
+
+#SupportStrategy3.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
 }
 
 
-#StateAttack3{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateAttack3.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
-}
-
-
-#StateTypeUChase3{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateTypeUChase3.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
-}
-
-
-#StateTypeSAttack3{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateTypeSAttack3.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
-}
-
-
-#StateSideSpeedUP3{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateSideSpeedUP3.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
-}
-
-
-#StateZoneAttack3{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateZoneAttack3.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
-}
-
-
-#StateCornerKick3{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StateCornerKick3.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
-}
-
-#StrategySelection3{
-  background-image: none;
-  /*background-color: #99CCFF;*/
-  font-size: 14px;
-  color: #663D00;
-}
-#StrategySelection3.ui-state-active{
-  background-color: #FFCC00;
-  font-size: 14px;
-  color: #1A1A65;
-}
 /*====================================================*/
 
 
@@ -438,24 +494,35 @@
 #StateAttackModule1 td {
     width: 50%;
 }
+
 #StateTypeUChaseModule1 td {
     width: 50%;
 }
+
 #StateTypeSAttackModule1 td {
     width: 50%;
 }
+
 #StateSideSpeedUPModule1 td {
     width: 50%;
 }
+
 #StateZoneAttackModule1 td {
     width: 50%;
 }
+
 #StateCornerKickModule1 td {
     width: 50%;
 }
+
 #StrategySelectionModule1 td {
     width: 50%;
 }
+
+#SupportStrategyModule1 td {
+    width: 50%;
+}
+
 
 /*Robot2*/
 
@@ -466,24 +533,35 @@
 #StateAttackModule2 td {
     width: 50%;
 }
+
 #StateTypeUChaseModule2 td {
     width: 50%;
 }
+
 #StateTypeSAttackModule2 td {
     width: 50%;
 }
+
 #StateSideSpeedUPModule2 td {
     width: 50%;
 }
+
 #StateZoneAttackModule2 td {
     width: 50%;
 }
+
 #StateCornerKickModule2 td {
     width: 50%;
 }
+
 #StrategySelectionModule2 td {
     width: 50%;
 }
+
+#SupportStrategyModule2 td {
+    width: 50%;
+}
+
 
 /*Robot3*/
 
@@ -494,26 +572,41 @@
 #StateAttackModule3 td {
     width: 50%;
 }
+
 #StateTypeUChaseModule3 td {
     width: 50%;
 }
+
 #StateTypeSAttackModule3 td {
     width: 50%;
 }
+
 #StateSideSpeedUPModule3 td {
     width: 50%;
 }
+
 #StateZoneAttackModule3 td {
     width: 50%;
 }
+
 #StateCornerKickModule3 td {
     width: 50%;
 }
+
 #StrategySelectionModule3 td {
     width: 50%;
 }
+
+#SupportStrategyModule3 td {
+    width: 50%;
+}
+
+
 /*=====================================================*/
+
+
 /*Module*/
+
 
 /*Robot1*/
 
@@ -523,48 +616,63 @@
     border-style: solid;
     overflow: scroll;
 }
+
 #StateAttackModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateTypeUChaseModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateTypeSAttackModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateSideSpeedUPModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateZoneAttackModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateCornerKickModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StrategySelectionModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
+#SupportStrategyModule1 {
+    height: 200px;
+    text-align: left;
+    border-style: solid;
+    overflow: scroll;
+}
+
 
 /*Robot2*/
 
@@ -574,48 +682,63 @@
     border-style: solid;
     overflow: scroll;
 }
+
 #StateAttackModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateTypeUChaseModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateTypeSAttackModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateSideSpeedUPModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateZoneAttackModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateCornerKickModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StrategySelectionModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
+#SupportStrategyModule2 {
+    height: 200px;
+    text-align: left;
+    border-style: solid;
+    overflow: scroll;
+}
+
 
 /*Robot3*/
 
@@ -625,50 +748,69 @@
     border-style: solid;
     overflow: scroll;
 }
+
 #StateAttackModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateTypeUChaseModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateTypeSAttackModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateSideSpeedUPModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateZoneAttackModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StateCornerKickModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 #StrategySelectionModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
+#SupportStrategyModule3 {
+    height: 200px;
+    text-align: left;
+    border-style: solid;
+    overflow: scroll;
+}
+
+
 /*=====================================================*/
+
+
 /*form-group*/
+
 #StateChaseModule1.form-group {
     background-color: #ffb6c1;
 }
@@ -764,8 +906,25 @@
 #StrategySelectionModule3.form-group {
     background-color: #b0c4de;
 }
+
+#SupportStrategyModule1.form-group {
+    background-color: #ffb6c1;
+}
+
+#SupportStrategyModule2.form-group {
+    background-color: #90ee90;
+}
+
+#SupportStrategyModule3.form-group {
+    background-color: #b0c4de;
+}
+
+
 /*=====================================================*/
+
+
 /*Save*/
-#SetBehaviorExecute{
-  text-align:center;
+
+#SetBehaviorExecute {
+    text-align: center;
 }

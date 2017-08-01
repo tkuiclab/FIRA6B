@@ -16,28 +16,28 @@ function keysdown(e) {
 
         //Strategy_Choose
         if (keys[32] && keys[49]) {
-            SetBehaviorKeyborard([0, 1, 1, 0, 0, 0]);
+            SetBehaviorKeyborard([0, 1, 1, 0, 0, 0, 0]);
             e.preventDefault();
         } else if (keys[32] && keys[50]) {
-            SetBehaviorKeyborard([1, 0, 1, 0, 0, 0]);
+            SetBehaviorKeyborard([1, 0, 1, 0, 0, 0, 0]);
             e.preventDefault();
         } else if (keys[32] && keys[51]) {
-            SetBehaviorKeyborard([0, 1, 0, 0, 1, 0]);
+            SetBehaviorKeyborard([0, 1, 0, 0, 1, 0, 0]);
             e.preventDefault();
         } else if (keys[32] && keys[52]) {
-            SetBehaviorKeyborard([1, 0, 0, 0, 1, 0]);
+            SetBehaviorKeyborard([1, 0, 0, 0, 1, 0, 0]);
             e.preventDefault();
         } else if (keys[32] && keys[53]) {
-            SetBehaviorKeyborard([0, 1, 0, 0, 0, 1]);
+            SetBehaviorKeyborard([0, 1, 0, 0, 0, 1, 0]);
             e.preventDefault();
         } else if (keys[32] && keys[54]) {
-            SetBehaviorKeyborard([1, 0, 0, 0, 0, 1]);
+            SetBehaviorKeyborard([1, 0, 0, 0, 0, 1, 0]);
             e.preventDefault();
         } else if (keys[32] && keys[55]) {
-            SetBehaviorKeyborard([0, 1, 0, 1, 0, 0]);
+            SetBehaviorKeyborard([0, 1, 0, 1, 0, 0, 0]);
             e.preventDefault();
         } else if (keys[32] && keys[56]) {
-            SetBehaviorKeyborard([1, 0, 0, 1, 0, 0]);
+            SetBehaviorKeyborard([1, 0, 0, 1, 0, 0, 0]);
             e.preventDefault();
         }
         //RobotControl
@@ -129,7 +129,8 @@ function keysdown(e) {
         //SwitchRobot
         if (keys[80]) {
             PublishTopicGameState(0);
-        }else if (keys[79]) {
+            StrategyStop();
+        } else if (keys[79]) {
             PublishTopicGameState(1);
         }
 
