@@ -24,19 +24,19 @@
     <param name="initial_cov_yy" value="0.5 * 0.5"/>
     <param name="initial_cov_aa" value="（π/ 12）*（π/ 12）"/>
     <param name="odom_model_type" value="omni"/>
-    <param name="odom_alpha1" value="2.5"/>
-    <param name="odom_alpha2" value="2.5"/>
-    <param name="odom_alpha3" value="2.5"/>
-    <param name="odom_alpha4" value="2.5"/>
-    <param name="odom_alpha5" value="2.5"/>
+    <param name="odom_alpha1" value="3"/>
+    <param name="odom_alpha2" value="3"/>
+    <param name="odom_alpha3" value="3"/>
+    <param name="odom_alpha4" value="3"/>
+    <param name="odom_alpha5" value="3"/>
     <!--Laser model parameters-->
     <!--likelihood_field model uses only 2: z_hit and z_rand.-->
-    <param name="laser_z_hit" value="0.9"/>
+    <param name="laser_z_hit" value="0.95"/>
     <param name="laser_z_rand" value="0.5"/>
     <param name="laser_sigma_hit" value="0.2"/>
-    <param name="laser_likelihood_max_dist" value="1.0"/>
+    <param name="laser_likelihood_max_dist" value="0.5"/>
     <!--<param name="resample_interval" value="1"/>
-    <param name="transform_tolerance" value="0.01"/>
+    <param name="transform_tolerance" value="0.1"/>
     <param name="recovery_alpha_slow" value="0.0"/>
     <param name="recovery_alpha_fast" value="0.0"/>-->
   </node>

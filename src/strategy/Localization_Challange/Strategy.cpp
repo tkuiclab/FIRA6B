@@ -304,12 +304,12 @@ void Strategy::Turn(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,doubl
     vector_tr.x = _Target.TargetPoint[_CurrentTarget].x - Robot.pos.x;
     vector_tr.y = _Target.TargetPoint[_CurrentTarget].y - Robot.pos.y;
     vector_tr.yaw = atan2(vector_tr.y, vector_tr.x) * RAD2DEG - absolute_front;
-    v_x = 0;               // don't give it horizen velocity
-//    v_y = 100;             // full power
-    v_y = 0;
+    v_x = 0.7;               // don't give it horizen velocity
+    v_y = 0.7;             // full power
+//    v_y = 0;
     v_yaw = vector_tr.yaw; // turn to target
     Normalization(v_yaw);
-    if (fabs(v_yaw) <= 3)
+    if (fabs(v_yaw) <= 15)
     {
         ROS_INFO("change to forward");
         _LocationState = forward;
