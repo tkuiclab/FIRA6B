@@ -358,13 +358,17 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
     Vector2d vectornt(-1.42*sin(c_ball_angle*deg2rad),1.42*cos(c_ball_angle*deg2rad));
     double goal_edge1 = env.home[r_number].goal_edge.angle_1;
     double goal_edge2 = env.home[r_number].goal_edge.angle_2;
-    if(goal_angle>-90&&goal_angle<-90){
+    if(goal_angle>-90&&goal_angle<90){
         if((goal_edge1<0&&goal_edge2>=0)||(goal_edge1>=0&&goal_edge2<0)){
+            printf("i can shoot \n");
             shoot = SPlanning_Velocity[10];
             env.home[r_number].v_x =vectornt(0)*1000;
             env.home[r_number].v_y =vectornt(1)*1000;
             env.home[r_number].v_yaw = goal_angle*2;
         }
+        env.home[r_number].v_x =vectornt(0)*1000;
+        env.home[r_number].v_y =vectornt(1)*1000;
+        env.home[r_number].v_yaw = goal_angle*2;
 //    }
 //    if(fabs(goal_angle)<10){
 //        shoot = SPlanning_Velocity[10];
@@ -407,11 +411,22 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
     ////========== normalization end ==========
     Vector2d vectornt(-1.42*sin(c_ball_angle*deg2rad),1.42*cos(c_ball_angle*deg2rad));
 
-    if(/*bool_shoot(goal_dis)&&*//*fabs(ball_angle)<4&&*/fabs(goal_angle)<10){
-        shoot = SPlanning_Velocity[10];
+    double goal_edge1 = env.home[r_number].goal_edge.angle_1;
+    double goal_edge2 = env.home[r_number].goal_edge.angle_2;
+    if(goal_angle>-90&&goal_angle<90){
+        if((goal_edge1<0&&goal_edge2>=0)||(goal_edge1>=0&&goal_edge2<0)){
+            printf("i can shoot \n");
+            shoot = SPlanning_Velocity[10];
+        }
         env.home[r_number].v_x =0;
         env.home[r_number].v_y =0;
         env.home[r_number].v_yaw = goal_angle*2;
+//    }
+//    if(fabs(goal_angle)<10){
+//        shoot = SPlanning_Velocity[10];
+//        env.home[r_number].v_x =vectornt(0)*1000;
+//        env.home[r_number].v_y =vectornt(1)*1000;
+//        env.home[r_number].v_yaw = goal_angle*2;
     }else{
         shoot = 0;
         env.home[r_number].v_x =0;
@@ -884,8 +899,19 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     }
     env.home[r_number].v_yaw = angle_Speed;
 
-    if(fabs(angle_dr) < 7){ // if there is any chance, shoot!
-        shoot = SPlanning_Velocity[10];
+    double goal_edge1 = env.home[r_number].goal_edge.angle_1;
+    double goal_edge2 = env.home[r_number].goal_edge.angle_2;
+    if(angle_dr>-90&&angle_dr<90){
+        if((goal_edge1<0&&goal_edge2>=0)||(goal_edge1>=0&&goal_edge2<0)){
+            printf("i can shoot \n");
+            shoot = SPlanning_Velocity[10];
+        }
+//    }
+//    if(fabs(goal_angle)<10){
+//        shoot = SPlanning_Velocity[10];
+//        env.home[r_number].v_x =vectornt(0)*1000;
+//        env.home[r_number].v_y =vectornt(1)*1000;
+//        env.home[r_number].v_yaw = goal_angle*2;
     }else{
         shoot = 0;
     }
