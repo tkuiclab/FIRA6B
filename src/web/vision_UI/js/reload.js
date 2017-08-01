@@ -8,6 +8,9 @@ topicROSSaveButton(64);
 
 setTimeout(ParameterbuttonTransfer,1000,1);
 setTimeout(topicROSParameterButton,1000,1);
+//ColorRecord(0);
+//topicColorTransfer(0);
+//showHsvColor(0);
 var notHSV=0;
 function HSV(value){
 	//console.log(value);

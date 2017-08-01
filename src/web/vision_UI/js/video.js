@@ -202,11 +202,18 @@ Element.prototype.leftTopScreen = function() {
 
 function Angle_Calculation(mouseX, mouseY) {
     var centerX = document.getElementsByName('CenterElement')[0].value;
-    var centerY = document.getElementsByName('CenterElement')[1].value
+    var centerY = document.getElementsByName('CenterElement')[1].value;
+    var front = document.getElementsByName('CenterElement')[4].value;
     y = mouseY - centerY;
     x = mouseX - centerX;
     var angle = Math.floor(Math.atan2(-y, x) * 180 * 10 / Math.PI) / 10;
     if (angle < 0) { angle += 360; }
+    if ((angle-front) < 180) {
+      angle = angle-front;
+    } else {
+      angle = angle-front-360;
+    }
+    angle=Math.floor(angle*10)/10;
     document.getElementById("CameraAngle").innerText = angle;
 }
 video_canvas.addEventListener("mousedown", function(e) {
@@ -214,7 +221,7 @@ video_canvas.addEventListener("mousedown", function(e) {
 
     var xy = flip.leftTopScreen();
     var centerX = document.getElementsByName('CenterElement')[0].value;
-    var centerY = document.getElementsByName('CenterElement')[1].value
+    var centerY = document.getElementsByName('CenterElement')[1].value;
     var context = flip.getContext("2d");
 
     context.fillStyle = 'rgba(255, 255, 255, 0)';

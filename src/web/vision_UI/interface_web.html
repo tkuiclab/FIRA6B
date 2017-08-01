@@ -531,12 +531,12 @@
                                                 <button id="sendHSV" type="button" class="Button" onmousedown="showHsvColor();topicROSCheckButton(value);ParameterHSVTransfer();topicROSSaveButton()">Save</button>
                                             </td>
                                             <td>
-                                                <select id="HSVSelect" onchange="ColorRecord(this.value);topicColorTransfer(this.value);showHsvColor()">
+                                                <select autocomplete="off" id="HSVSelect" onchange="ColorRecord(this.value);topicColorTransfer(this.value);showHsvColor()">
                                                     <option value = "0">Red</option>
                                                     <option value = "1">Green</option>
                                                     <option value = "2">Blue</option>
                                                     <option value = "3">Yellow</option>
-                                                    <option value = "4">White</option>
+                                                    <!--<option value = "4">White</option>-->
                                                 </select>
                                             </td>
                                             <td>
