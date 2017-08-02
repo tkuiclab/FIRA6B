@@ -1396,7 +1396,11 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     float k_g[2]={1,1};
     float k_image[2]={0,0};
     float k_image_r[2]={0,0};
-
+    ///////////////////////////cal_yaw///////////////
+    double min_obstacle_dis=0;
+    double check_obstacle_dis=0;
+    double v_yaw_angle=0;
+    ////////////////////////////////
     //printf("===========f_g_cal=======\t%d\n\n",env.global_angle_end.size());
     ////////////////// f_g to unit vector//////////
     f_g[0]=goal_dis*-sin(goal_angle*deg2rad);
@@ -1418,17 +1422,27 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     //printf("%d\t%d\t%d\n",env.global_angle_end[0],env.global_angle_start[0],env.global_apf_dis[0]);
     if(env.global_angle_end[0]==1&&env.global_angle_start[0]==1&&env.global_apf_dis[0]==1){
         number_obstacle=0;
-        for(int i=1;i<=env.global_angle_end.size()-1;i++){number_obstacle++;}//cal obstacle_number
+        for(int i=1;i<=env.global_angle_end.size()-1;i++){
+            number_obstacle++;
+        }
+        //cal obstacle_number
         //printf("number_obstacle:%d\n",number_obstacle);
 
         for(int i=1;i<=env.global_angle_end.size()-1;i++){
             angle_avg.push_back((env.global_angle_end[i]+env.global_angle_start[i])/2);
-
+            /////////////cal_for_apf_angle/////////////
             if(angle_avg[i-1]<=180){
                 angle_avg[i-1]=angle_avg[i-1]+180;
             }else{
                 angle_avg[i-1]=angle_avg[i-1]-180;
             }
+            //////////////cal_v_yaw///////////////
+            check_obstacle_dis=env.global_apf_dis[i];
+            if(check_obstacle_dis<=min_obstacle_dis){
+                min_obstacle_dis=check_obstacle_dis;
+                v_yaw_angle=angle_avg[i-1];
+            }
+            ///////////////////////////////
             //printf("angle_start:%d\tangle_end:%d\tangle_avg:%f\n",env.global_angle_start[i],env.global_angle_end[i],angle_avg[i-1]);
             apf_f[0]=-sin(angle_avg[i-1]*deg2rad);//x
             apf_f[1]=cos(angle_avg[i-1]*deg2rad);//y
@@ -1488,6 +1502,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         }
     }
 
+
     env.global_angle_end.clear();
     env.global_angle_start.clear();
     env.global_apf_dis.clear();
@@ -1506,7 +1521,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         f_apf_total[1]=f_apf_total[1]/total_f_apf;
     }
     if(number_obstacle==0){
-        f_r_angle=0;
+        v_yaw_angle=0;
     }
     if(goal_dis<=1.5){
         k_g[0]=1;
@@ -1515,7 +1530,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         k_r[1]=0;
         k_image_r[0]=0;
         k_image_r[1]=0;
-        f_r_angle=goal_angle;
+        v_yaw_angle=goal_angle;
     }
 //    /////////////////
     f_total[0]=k_r[0]*f_apf_total[0]+k_g[0]*f_g[0]+k_image_r[0]*f_image_total[0];
@@ -1528,22 +1543,10 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
 //    ////////////real_state/////
     env.home[r_number].v_x = f_total[0];
     env.home[r_number].v_y = f_total[1];
-    env.home[r_number].v_yaw = f_r_angle;
-//    printf("v_x=%lf\n",env.home[r_number].v_x);
-//    printf("=============end_f=======\n");
+    env.home[r_number].v_yaw = v_yaw_angle;
+//    printf("v_yaw=%f\n",env.home[r_number].v_yaw);
+    printf("=============end_f=======\n");
 
-//    ////////////test_state//////////
-////    if(goal_dis<=0.75){
-////        env.home[r_number].v_x = 0;
-////        env.home[r_number].v_y = 0;
-////        env.home[r_number].v_yaw = 0;
-////        printf("=====get_goal=====\n");
-////    }else{
-////        env.home[r_number].v_x = f_total[0];
-////        env.home[r_number].v_y = f_total[1];
-////        env.home[r_number].v_yaw = goal_angle;
-////        printf("=============end_f=======\n");
-////    }
 //    ////////////////////test_mode_end////////////
 //    angle_avg.clear();
 //    std::vector<double>().swap(angle_avg);
@@ -1944,9 +1947,6 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
         env.home[r_number].v_y =sin(obstacle_angle*deg2rad)*obstacle_distance+sin(transform_angle_br*deg2rad)*distance_br;
     }
     shoot = 0;
-
-
-
 
 
 
