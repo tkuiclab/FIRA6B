@@ -242,7 +242,8 @@ void Strategy::StrategyLocalization2()
     //    }
     //   ================================   Enable chase mode end   ==================================
     Normalization(absolute_front);
-    ROS_INFO("absolute_front=%lf",absolute_front);
+//    ROS_INFO("absolute_front=%lf",absolute_front);
+    static int counter = 0;
     switch (_LocationState)
     {
     case forward: // Move to target poitn
@@ -262,7 +263,10 @@ void Strategy::StrategyLocalization2()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    showInfo(order,imu, compensation_x, compensation_y);
+    if(counter++>5){
+        showInfo(order,imu, compensation_x, compensation_y);
+        counter = 0;
+    }
     Normalization(v_yaw);
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
@@ -282,8 +286,6 @@ void Strategy::Forward(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,do
     v_yaw = atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y - Robot.pos.y, _Target.TargetPoint[_CurrentTarget].x + compensation_x - Robot.pos.x) * RAD2DEG - absolute_front;
     Normalization(v_yaw);
     v_yaw /= 2;
-    ROS_INFO("anta=%lf\tabs=%lf\n",atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y - Robot.pos.y, _Target.TargetPoint[_CurrentTarget].x + compensation_x - Robot.pos.x) * RAD2DEG,absolute_front);
-    ROS_INFO("v_yaw = %lf!!!!!!", v_yaw);
     if (fabs(v_yaw) < 3)
         v_yaw = 0;
     if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
@@ -304,11 +306,22 @@ void Strategy::Turn(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,doubl
     vector_tr.x = _Target.TargetPoint[_CurrentTarget].x - Robot.pos.x;
     vector_tr.y = _Target.TargetPoint[_CurrentTarget].y - Robot.pos.y;
     vector_tr.yaw = atan2(vector_tr.y, vector_tr.x) * RAD2DEG - absolute_front;
-    v_x = 0.7;               // don't give it horizen velocity
-    v_y = 0.7;             // full power
-//    v_y = 0;
+    //v_x = 0.7;               // don't give it horizen velocity
+    //v_y = 0.7;             // full power
+    v_y = 0.7;
+    v_x = 0;
     v_yaw = vector_tr.yaw; // turn to target
     Normalization(v_yaw);
+    if(fabs(vector_tr.x)<0.1 && fabs(vector_tr.y)<0.1)
+    {
+        printf("vx=%lf\tvy=%lf\n",vector_tr.x,vector_tr.y);
+        printf("a\nA\na\na\n\a\n");
+        _CurrentTarget++;
+        if(_CurrentTarget>_Target.size){
+            printf("error\n");
+            exit(0);
+        }
+    }
     if (fabs(v_yaw) <= 15)
     {
         ROS_INFO("change to forward");
@@ -496,10 +509,10 @@ std::vector<int> Strategy::OptimatePath()
         }
     }
     // =================   printf final point to run  ============================  
-    // for(int i=0;i<_Target.size;i++)
-    // {
-    //     printf("%d : x=%lf\ty=%lf\tangle=%lf\n",i,_Target.TargetPoint[i].x,_Target.TargetPoint[i].y,_Target.TargetPoint[i].angle);
-    // }
+//     for(int i=0;i<_Target.size;i++)
+//     {
+//         printf("%d : x=%lf\ty=%lf\tangle=%lf\n",i,_Target.TargetPoint[i].x,_Target.TargetPoint[i].y,_Target.TargetPoint[i].angle);
+//     }
     // =================   printf order  and   unrunning point with __ to determind   ===================
     // for (int i = 0; i < order.size(); i++)          // -1 is origin point
     // {
