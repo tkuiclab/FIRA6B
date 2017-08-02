@@ -31,6 +31,19 @@ function drawjoystick_base() {
     GetJoystickSpeed();
 }
 
+function drawjoystick_base_rightkey() {
+    joy_ctx.beginPath();
+    joy_ctx.lineWidth = 1;
+    joy_ctx.arc(joystick_canvas.width / 2, joystick_canvas.height / 2, Round_r, 0, 2 * Math.PI);
+    joy_ctx.moveTo(joystick_canvas.width / 2, (joystick_canvas.height / 2) - Round_r);
+    joy_ctx.lineTo(joystick_canvas.width / 2, (joystick_canvas.height / 2) + Round_r);
+    joy_ctx.moveTo((joystick_canvas.width / 2) - Round_r, joystick_canvas.height / 2);
+    joy_ctx.lineTo((joystick_canvas.width / 2) + Round_r, joystick_canvas.height / 2);
+    joy_ctx.globalAlpha = 0.7;
+    joy_ctx.stroke();
+
+}
+
 function getMousePos(cv, e) {
     var rect = cv.getBoundingClientRect();
     return {
@@ -106,7 +119,7 @@ joystick_canvas.addEventListener("mousedown", function(e) {
     } else if (e.button == 2) {
         if (checkArea() == 1) {
             joy_ctx.clearRect(0, 0, windowWidth, windowHeight);
-            drawjoystick(joystick_canvas.width / 2, joystick_canvas.height / 2);
+            drawjoystick_base_rightkey();
             var radius = Math.sqrt(Math.pow((joystick_canvas.width / 2) - pos.x, 2) + Math.pow((joystick_canvas.height / 2) - pos.y, 2));
             var c_length = Math.sqrt(Math.pow((joystick_canvas.width / 2) - pos.x, 2) + Math.pow((joystick_canvas.height / 2) - radius - pos.y, 2));
             var h = Math.sqrt(Math.pow(radius, 2) - Math.pow(c_length / 2, 2));
@@ -141,7 +154,7 @@ joystick_canvas.addEventListener("mousedown", function(e) {
             joy_ctx.closePath();
             joy_ctx.fillStyle = '#FFCEBE';
             joy_ctx.fill();
-            console.log(vec3);
+            //console.log(vec3);
             PublishTopicCmdVel(vec3);
             mouse_click = 1;
         }
@@ -177,7 +190,7 @@ joystick_canvas.addEventListener("mousemove", function(e) {
         } else if (logButton == 2) {
             if (checkArea() == 1) {
                 joy_ctx.clearRect(0, 0, windowWidth, windowHeight);
-                drawjoystick_base();
+                drawjoystick_base_rightkey();
                 var radius = Math.sqrt(Math.pow((joystick_canvas.width / 2) - pos.x, 2) + Math.pow((joystick_canvas.height / 2) - pos.y, 2));
                 var c_length = Math.sqrt(Math.pow((joystick_canvas.width / 2) - pos.x, 2) + Math.pow((joystick_canvas.height / 2) - radius - pos.y, 2));
                 var h = Math.sqrt(Math.pow(radius, 2) - Math.pow(c_length / 2, 2));
