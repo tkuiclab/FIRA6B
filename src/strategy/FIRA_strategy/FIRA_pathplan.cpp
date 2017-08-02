@@ -1214,7 +1214,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             printf("degree=%f\n",degree);
             if(fabs(des_angle-right_goal_angle)<=7){
                 if(shoot_count == 1){
-                    shoot = 50;
+                    shoot = SPlanning_Velocity[10];
                     shoot_count = 0;
                 }
             }else{
@@ -1237,7 +1237,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             if(des_angle <= 0){
                 env.home[Robot_index].v_yaw = 0;
                 if(env.home[Robot_index].ball.distance < 0.35 /*&& fabs(env.home[Robot_index].ball.angle)<5*/ ){
-                    shoot = 50;
+                    shoot = SPlanning_Velocity[10];
                 }
             }else{
                 shoot = 0;
@@ -1259,7 +1259,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
             if(des_angle >= 0){
                 env.home[Robot_index].v_yaw = 0;
                 if(env.home[Robot_index].ball.distance < 0.35 /*&& fabs(env.home[Robot_index].ball.angle)<5*/ ){
-                    shoot = 50;
+                    shoot = SPlanning_Velocity[10];
                 }
             }else{
                 shoot = 0;
@@ -1928,9 +1928,6 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
         double distance_opgoal_large_area = env.home[r_number].op_goal_large_area.distance;
         printf("goal angle =%f, distance =%f\n",angle_goal_large_area,distance_goal_large_area);
         printf("opgoal angle =%f, op_distance =%f\n",angle_opgoal_large_area,distance_opgoal_large_area);
-
-
-
 
 
 }
@@ -3202,7 +3199,7 @@ void FIRA_pathplan_class::strategy_Support_LostInternet(int r_number){
                switch_attacker=0;
                if(fabs(angle_br)<1 && distance_br<0.39){//catch ball state
                    //fabs(angle_br)<Chase_Strategy[3] && distance_br<Chase_Strategy[4]
-                   shoot = 30;
+                   shoot = SPlanning_Velocity[10];
                }else{
                    shoot = 0;
                }
@@ -3880,8 +3877,8 @@ void FIRA_pathplan_class::strategy_Block(int r_number){
 
 }
 void FIRA_pathplan_class::strategy_Kick(int Robot_index){
-    if(SPlanning_Velocity[10]<=100){
-        shoot = SPlanning_Velocity[10];
+    if(SPlanning_Velocity[11]<=100){
+        shoot = SPlanning_Velocity[11];
     }else{
         shoot = 100;
     }

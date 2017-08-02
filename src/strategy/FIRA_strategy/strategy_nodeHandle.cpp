@@ -210,7 +210,13 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
             VTdis_max = SPlanning_Velocity[2]/2;
             VTdis_min = SPlanning_Velocity[3]/2;
             printf("slow down\n");
+        }else{
+            VTdis_max = SPlanning_Velocity[2];
+            VTdis_min = SPlanning_Velocity[3];
         }
+    }else{
+        VTdis_max = SPlanning_Velocity[2];
+        VTdis_min = SPlanning_Velocity[3];
     }
 ////Transfer vector to [0,100]
     if(Vdis==0)
