@@ -369,192 +369,22 @@ private:
 
     }
     void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
+        global_env->blue_side_goal_data[0]=msg->blue_dis;
+        global_env->yellow_side_goal_data[0]=msg->yellow_dis;
+        global_env->blue_side_goal_data[1]=msg->blue_ang_max;
+        global_env->blue_side_goal_data[2]=msg->blue_ang_min;
+        global_env->yellow_side_goal_data[1]=msg->yellow_ang_max;
+        global_env->yellow_side_goal_data[2]=msg->yellow_ang_min;
         if(global_env->teamcolor == "Blue"){
-            double ang1 = msg->yellow_ang1;
-            double ang2 = msg->yellow_ang2;
-            double ang3 = msg->blue_ang1;
-            double ang4 = msg->blue_ang2;
-            double goal_angle ;
-            double op_goal_angle ;
-            if(ang1 == ang2){
-                return;
-            }
-
-            //----------------------------
-            if(ang1>180){
-                ang1=ang1-360;
-            }
-            ang1=ang1+90;
-            if(ang1>180){
-                ang1=ang1-360;
-            }else if(ang1<-180){
-                ang1=ang1+360;
-            }
-            //--------------------------------
-            if(ang2>180){
-                ang2=ang2-360;
-            }
-            ang2=ang2+90;
-            if(ang2>180){
-                ang2=ang2-360;
-            }else if(ang2<-180){
-                ang2=ang2+360;
-            }
-            //--------------------------------
-            if(ang3>180){
-                ang3=ang3-360;
-            }
-            ang3=ang3+90;
-            if(ang3>180){
-                ang3=ang3-360;
-            }else if(ang3<-180){
-                ang3=ang3+360;
-            }
-            //--------------------------------
-            if(ang4>180){
-                ang4=ang4-360;
-            }
-            ang4=ang4+90;
-            if(ang4>180){
-                ang4=ang4-360;
-            }else if(ang4<-180){
-                ang4=ang4+360;
-            }
-
-            if((ang1>=0&&ang2<0)||(ang1<0&&ang2>=0)){
-                if(fabs(ang1-ang2)>180){
-                    goal_angle=(ang1+ang2+360)/2;
-                }else{
-                    goal_angle=(ang1+ang2)/2;
-                }
-            }else{
-                goal_angle=(ang1+ang2)/2;
-            }
-
-            if(goal_angle>180){
-                goal_angle=goal_angle-360;
-            }else if(goal_angle<-180){
-                goal_angle=goal_angle+360;
-            }
-
-            if((ang3>=0&&ang4<0)||(ang3<0&&ang4>=0)){
-                if(fabs(ang3-ang4)>180){
-                    op_goal_angle=(ang3+ang4+360)/2;
-                }else{
-                    op_goal_angle=(ang3+ang4)/2;
-                }
-            }else{
-                op_goal_angle=(ang3+ang4)/2;
-            }
-
-            if(op_goal_angle>180){
-                op_goal_angle=op_goal_angle-360;
-            }else if(op_goal_angle<-180){
-                op_goal_angle=op_goal_angle+360;
-            }
-            global_env->home[global_env->RobotNumber].goal_edge.angle_1 = ang1;
-            global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
-            global_env->home[global_env->RobotNumber].op_goal_edge.angle_1 = ang3;
-            global_env->home[global_env->RobotNumber].op_goal_edge.angle_2 = ang4;
-           // global_env->home[global_env->RobotNumber].goal.angle = goal_angle;
-            //global_env->home[global_env->RobotNumber].op_goal.angle = op_goal_angle;
-//            printf("NEW angle_dr = %f\n",goal_angle);
-//            printf("NEW op_angle_dr = %f\n",op_goal_angle);
-
-        }else if(global_env->teamcolor == "Yellow" && msg->yellow_ang1 != msg->yellow_ang2){
-            double ang1 = msg->blue_ang1;
-            double ang2 = msg->blue_ang2;
-            double ang3 = msg->yellow_ang1;
-            double ang4 = msg->yellow_ang2;
-            double goal_angle;
-            double op_goal_angle;
-            if(ang1 == ang2){
-                return;
-            }
-
-            //----------------------------
-            if(ang1>180){
-                ang1=ang1-360;
-            }
-
-            ang1=ang1+90;
-            if(ang1>180){
-                ang1=ang1-360;
-            }else if(ang1<-180){
-                ang1=ang1+360;
-            }
-
-            if(ang2>180){
-                ang2=ang2-360;
-            }
-            ang2=ang2+90;
-            if(ang2>180){
-                ang2=ang2-360;
-            }else if(ang2<-180){
-                ang2=ang2+360;
-            }
-            //--------------------------------
-            if(ang3>180){
-                ang3=ang3-360;
-            }
-            ang3=ang3+90;
-            if(ang3>180){
-                ang3=ang3-360;
-            }else if(ang3<-180){
-                ang3=ang3+360;
-            }
-            //--------------------------------
-            if(ang4>180){
-                ang4=ang4-360;
-            }
-
-            ang4=ang4+90;
-            if(ang4>180){
-                ang4=ang4-360;
-            }else if(ang4<-180){
-                ang4=ang4+360;
-            }
-
-            if((ang1>=0&&ang2<0)||(ang1<0&&ang2>=0)){
-                if(fabs(ang1-ang2)>180){
-                    goal_angle=(ang1+ang2+360)/2;
-                }else{
-                    goal_angle=(ang1+ang2)/2;
-                }
-            }else{
-                goal_angle=(ang1+ang2)/2;
-            }
-
-            if(goal_angle>180){
-                goal_angle=goal_angle-360;
-            }else if(goal_angle<-180){
-                goal_angle=goal_angle+360;
-            }
-
-            if((ang3>=0&&ang4<0)||(ang3<0&&ang4>=0)){
-                if(fabs(ang3-ang4)>180){
-                    op_goal_angle=(ang3+ang4+360)/2;
-                }else{
-                    op_goal_angle=(ang3+ang4)/2;
-                }
-            }else{
-                op_goal_angle=(ang3+ang4)/2;
-            }
-            if(op_goal_angle>180){
-                op_goal_angle=op_goal_angle-360;
-            }else if(op_goal_angle<-180){
-                op_goal_angle=op_goal_angle+360;
-            }
-            global_env->home[global_env->RobotNumber].goal_edge.angle_1 = ang1;
-            global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
-            global_env->home[global_env->RobotNumber].op_goal_edge.angle_1 = ang3;
-            global_env->home[global_env->RobotNumber].op_goal_edge.angle_2 = ang4;
-           // global_env->home[global_env->RobotNumber].goal.angle = goal_angle;
-           // global_env->home[global_env->RobotNumber].op_goal.angle = op_goal_angle;
-//            printf("NEW angle_dr = %f\n",goal_angle);
-//            printf("NEW op_angle_dr = %f\n",op_goal_angle);
-
-
+            global_env->home[global_env->RobotNumber].goal_edge.max = msg->yellow_ang_max;
+            global_env->home[global_env->RobotNumber].goal_edge.min = msg->yellow_ang_min;
+            global_env->home[global_env->RobotNumber].op_goal_edge.max = msg->blue_ang_max;
+            global_env->home[global_env->RobotNumber].op_goal_edge.min = msg->blue_ang_min;
+        }else if(global_env->teamcolor == "Yellow"){
+            global_env->home[global_env->RobotNumber].goal_edge.max = msg->blue_ang_max;
+            global_env->home[global_env->RobotNumber].goal_edge.min = msg->blue_ang_min;
+            global_env->home[global_env->RobotNumber].op_goal_edge.max = msg->yellow_ang_max;
+            global_env->home[global_env->RobotNumber].op_goal_edge.min = msg->yellow_ang_min;
         }
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){

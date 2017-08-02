@@ -110,7 +110,7 @@ typedef struct{
 }Vector3D;
 
 typedef struct{
-    double angle_1, angle_2;
+    double max, min;
 }Two_point;
 
 typedef struct{

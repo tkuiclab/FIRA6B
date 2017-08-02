@@ -522,63 +522,20 @@ private:
     void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
         global_env->blue_side_goal_data[0]=msg->blue_dis;
         global_env->yellow_side_goal_data[0]=msg->yellow_dis;
-        global_env->blue_side_goal_data[1]=msg->blue_ang1;
-        global_env->blue_side_goal_data[2]=msg->blue_ang2;
-        global_env->yellow_side_goal_data[1]=msg->yellow_ang1;
-        global_env->yellow_side_goal_data[2]=msg->yellow_ang2;
+        global_env->blue_side_goal_data[1]=msg->blue_ang_max;
+        global_env->blue_side_goal_data[2]=msg->blue_ang_min;
+        global_env->yellow_side_goal_data[1]=msg->yellow_ang_max;
+        global_env->yellow_side_goal_data[2]=msg->yellow_ang_min;
         if(global_env->teamcolor == "Blue"){
-            int ang1 = msg->yellow_ang1;
-            int ang2 = msg->yellow_ang2;
-
-            if(ang1>180){
-                ang1=ang1-360;
-            }
-            ang1=ang1+90;
-            if(ang1>180){
-                ang1=ang1-360;
-            }else if(ang1<-180){
-                ang1=ang1+360;
-            }
-
-            if(ang2>180){
-                ang2=ang2-360;
-            }
-            ang2=ang2+90;
-            if(ang2>180){
-                ang2=ang2-360;
-            }else if(ang2<-180){
-                ang2=ang2+360;
-            }
-
-            global_env->home[global_env->RobotNumber].goal_edge.angle_1 = ang1;
-            global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
-
-        }else if(global_env->teamcolor == "Yellow" && msg->yellow_ang1 != msg->yellow_ang2){
-            double ang1 = msg->blue_ang1;
-            double ang2 = msg->blue_ang2;
-
-            if(ang1>180){
-                ang1=ang1-360;
-            }
-            ang1=ang1+90;
-            if(ang1>180){
-                ang1=ang1-360;
-            }else if(ang1<-180){
-                ang1=ang1+360;
-            }
-
-            if(ang2>180){
-                ang2=ang2-360;
-            }
-            ang2=ang2+90;
-            if(ang2>180){
-                ang2=ang2-360;
-            }else if(ang2<-180){
-                ang2=ang2+360;
-            }
-
-            global_env->home[global_env->RobotNumber].goal_edge.angle_1 = ang1;
-            global_env->home[global_env->RobotNumber].goal_edge.angle_2 = ang2;
+            global_env->home[global_env->RobotNumber].goal_edge.max = msg->yellow_ang_max;
+            global_env->home[global_env->RobotNumber].goal_edge.min = msg->yellow_ang_min;
+            global_env->home[global_env->RobotNumber].op_goal_edge.max = msg->blue_ang_max;
+            global_env->home[global_env->RobotNumber].op_goal_edge.min = msg->blue_ang_min;
+        }else if(global_env->teamcolor == "Yellow"){
+            global_env->home[global_env->RobotNumber].goal_edge.max = msg->blue_ang_max;
+            global_env->home[global_env->RobotNumber].goal_edge.min = msg->blue_ang_min;
+            global_env->home[global_env->RobotNumber].op_goal_edge.max = msg->yellow_ang_max;
+            global_env->home[global_env->RobotNumber].op_goal_edge.min = msg->yellow_ang_min;
         }
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
