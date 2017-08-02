@@ -141,7 +141,9 @@ void FIRA_teamStrategy_class::role_Play(){
                 }
 
                 if(env.AnotherGoalDistance<distance_dr&&distance_dr<1.6){
-                    roleAry[env.RobotNumber]=Role_NewSupport;
+                    if(env.AnotherGoalDistance!=0){
+                        roleAry[env.RobotNumber]=Role_NewSupport;
+                    }
                 }
             break;
             case 1:// this robot catch ball state

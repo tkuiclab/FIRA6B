@@ -209,7 +209,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
         if((global_env->AnotherBallDistance<global_env->home[global_env->RobotNumber].ball.distance)&&(global_env->AnotherBallDistance!=0)){
             VTdis_max = SPlanning_Velocity[2]/2;
             VTdis_min = SPlanning_Velocity[3]/2;
-            printf("slow down\n");
+            printf("slow down=%f\n",global_env->AnotherBallDistance);
         }else{
             VTdis_max = SPlanning_Velocity[2];
             VTdis_min = SPlanning_Velocity[3];

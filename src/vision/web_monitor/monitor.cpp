@@ -9,6 +9,7 @@
 #define BLUEITEM 0x04
 #define YELLOWITEM 0x08
 #define WHITEITEM 0x10
+//WHITEITEM=robot
 #define OBSTACLEITEM 0x00
 #define IMAGE_TEST1 "/home/testa/image_transport_ws/src/interface_ws/vision/1.jpg"//圖片路徑
 static const std::string OPENCV_WINDOW = "Image window";
@@ -741,9 +742,13 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 //object center point
   if (color == REDITEM || color == BLUEITEM || color == YELLOWITEM) {
     angle_ = Angle_Adjustment((obj_.ang_max + obj_.ang_min) / 2);
-    angle_range = 5;//0.7 * Angle_Adjustment((obj_.ang_max - obj_.ang_min) / 2);
+    if(color == REDITEM){
+      angle_range=5;
+    } else {
+      angle_range = 0.7 * Angle_Adjustment((obj_.ang_max - obj_.ang_min) / 2);
+    }
     for (int angle = 0 ; angle < angle_range ; angle++) {
-      for (int distance = obj_.dis_min ; distance <= obj_.dis_max ; distance++) {
+      for (int distance = obj_.dis_min ; distance <= (obj_.dis_min + obj_.dis_max)/2 ; distance++) {
         find_angle = Angle_Adjustment(angle_ + angle);
         if (find_angle >= dont_angle[0] && find_angle <= dont_angle[1] ||
             find_angle >= dont_angle[2] && find_angle <= dont_angle[3] ||
@@ -938,12 +943,12 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     }
   }
 ////////////////////////////////中心點：被障礙物阻擋時偏移修正///////////////////////////////////////////
-  if(color == BLUEITEM || color == YELLOWITEM){
+  if(color == BLUEITEM ){//|| color == YELLOWITEM){
      //找最大範圍
-     int find_gap[100][7]={0},gap=0;
-     int max_gap=0;
-     int dis_range = obj_.dis_min + 15;
-     for (int angle =  obj_.ang_min ; angle < obj_.ang_max ; angle++) {
+     int find_gap[2][7]={0};
+
+     int dis_range = obj_.dis_max;
+     for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
       for (int distance = obj_.dis_min ; distance <= dis_range; distance++) {
         if (angle >= dont_angle[0] && angle <= dont_angle[1] ||
             angle >= dont_angle[2] && angle <= dont_angle[3] ||
@@ -951,7 +956,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
           angle++;
           continue;
         }        
-	//中心座標
+        //中心座標
         x_ = distance * Angle_cos[angle];
         y_ = distance * Angle_sin[angle];
         //實際座標
@@ -963,37 +968,39 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
 
         if (color_map[R + (G << 8) + (B << 16)] & color) {
-          if(find_gap[gap][0]==0){
-            find_gap[gap][0]=x_;
-            find_gap[gap][1]=y_;
-            find_gap[gap][2]=angle;
+          if(find_gap[1][0]==0){
+            find_gap[1][0]=x;
+            find_gap[1][1]=y;
+            find_gap[1][2]=angle;
           }else{
-            find_gap[gap][3]=x_;
-            find_gap[gap][4]=y_;
-            find_gap[gap][5]=angle;
+            find_gap[1][3]=x;
+            find_gap[1][4]=y;
+            find_gap[1][5]=angle;
           }
-          angle++;
-          continue;
+          if(angle!=obj_.ang_max){
+            angle++;
+            continue;
+          }
         }
-
-        if(distance == dis_range){
-	  if(gap<50){
-            find_gap[gap][6] = find_gap[gap][5] - find_gap[gap][2];
-            //find_gap[gap][6]=sqrt(pow(find_gap[gap][0]-find_gap[gap][3],2)+pow(find_gap[gap][1]-find_gap[gap][3],4));
-            gap++;
+//if(angle == obj_.ang_max){printf("333");}
+//color_map[R + (G << 8) + (B << 16)] & WHITEITEM ||
+        if(color_map[R + (G << 8) + (B << 16)] & WHITEITEM || distance == ((obj_.dis_max + obj_.dis_min)/2) || angle == obj_.ang_max){
+          find_gap[1][6] = find_gap[1][5] - find_gap[1][2];
+          if(find_gap[0][6] < find_gap[1][6]){
+            for(int i=0;i<7;i++){
+              find_gap[0][i] = find_gap[1][i];
+              find_gap[1][i] = 0;
+            }
           }
         }
       }
     }
-    for(int i=0;i<50;i++){
-      if(find_gap[i][6]>find_gap[max_gap][6]) max_gap = i;
-    }
-    obj_.fix_ang_min = find_gap[max_gap][2];
-    obj_.fix_ang_max = find_gap[max_gap][5];
-    //if(color==BLUEITEM)cout<<obj_.ang_min<<" "<<find_gap[max_gap][2]<<" "<<obj_.ang_max<<" "<<find_gap[max_gap][5]<<endl;
+    obj_.fix_ang_min = find_gap[0][2];
+    obj_.fix_ang_max = find_gap[0][5];
+    
     //找中心
-    int center_angle = Angle_Adjustment((find_gap[max_gap][2] + find_gap[max_gap][5]) / 2);
-    angle_range = 0.7 * Angle_Adjustment((find_gap[max_gap][2] - find_gap[max_gap][5]) / 2);
+    int center_angle = Angle_Adjustment((find_gap[0][2] + find_gap[0][5]) / 2);
+    angle_range = 0.7 * Angle_Adjustment((find_gap[0][2] - find_gap[0][5]) / 2);
     for (int angle = 0 ; angle < angle_range ; angle++) {
       for (int distance = obj_.dis_min ; distance <= (obj_.dis_min + obj_.dis_max)/2 ; distance++) {
         find_angle = Angle_Adjustment(center_angle + angle);
@@ -1016,7 +1023,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         if (color_map[R + (G << 8) + (B << 16)] & color) {
           obj_.fix_x = x;
           obj_.fix_y = y;
-          center_angle = find_angle;
+          obj_.fix_angle = find_angle;
           obj_.fix_distance = distance;
           break;
         }
@@ -1036,7 +1043,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         if (color_map[R + (G << 8) + (B << 16)] & color) {
           obj_.fix_x = x;
           obj_.fix_y = y;
-          center_angle = find_angle;
+          obj_.fix_angle = find_angle;
           obj_.fix_distance = distance;
           break;
         }
@@ -1045,10 +1052,8 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         break;
       }
     }
-    obj_.fix_angle = center_angle;
-    
   }
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
   if (Angle_Adjustment(angle_ - center_front) < 180) {
     obj_.LR = "Left";
     obj_.angle = angle_;
@@ -1057,7 +1062,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     obj_.angle = angle_ ;
   }
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
   ellipse(frame_, Point(center_x, center_y), Size(obj_.dis_min, obj_.dis_min), 0, 360 - obj_.ang_max, 360 - obj_.ang_min, Scalar(255, 255, 0), 1);
   ellipse(frame_, Point(center_x, center_y), Size(obj_.dis_max, obj_.dis_max), 0, 360 - obj_.ang_max, 360 - obj_.ang_min, Scalar(255, 255, 0), 1);
@@ -1066,7 +1071,7 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
   //circle(frame_, Point(obj_.x, obj_.y), 2, Scalar(0, 0, 255), -1);
  vision::Two_point Two_point_msg;
 
-  if(color == BLUEITEM || color== YELLOWITEM){
+  if(color == BLUEITEM || color == YELLOWITEM){
     if(obj_.distance != 0){
       int x,y;
    
