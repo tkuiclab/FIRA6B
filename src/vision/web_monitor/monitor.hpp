@@ -39,7 +39,7 @@ class object_Item{
   int ang_min;        //pix
   int x;              //pix
   int y;              //pix
-  int angle;          //front
+  int angle;          //pix
   double distance;    //pix
   int size;
 ///////////////////
@@ -51,8 +51,10 @@ class object_Item{
   int right_y;        //pix
   int fix_x;          //pix
   int fix_y;          //pix
-  int fix_angle;      //fort
+  int fix_angle;      //pix
   int fix_distance;   //pix
+  int fix_ang_max;    //pix
+  int fix_ang_min;    //pix
   string LR;
 };
 
@@ -246,7 +248,7 @@ public:
   void objectdet_change(Mat &, int, object_Item &);
   void creat_Obstclemap(Mat &, int);
   void creat_FIRA_map(Mat &, Mat &);
-
+  int Strategy_Angle(int angle);
   void objectdet_Obstacle(Mat &, int, object_Item *);
   void Mark_point(Mat &, int, int, int, int, int &, int);
   void object_Item_reset(object_Item &);
