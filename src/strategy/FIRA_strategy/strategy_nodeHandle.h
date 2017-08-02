@@ -537,6 +537,8 @@ private:
             global_env->home[global_env->RobotNumber].op_goal_edge.max = msg->yellow_ang_max;
             global_env->home[global_env->RobotNumber].op_goal_edge.min = msg->yellow_ang_min;
         }
+//        printf("blue max=%d min=%d\n",msg->blue_ang_max,msg->blue_ang_min);
+//        printf("yellow max=%d min=%d\n",msg->yellow_ang_max,msg->yellow_ang_min);
     }
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){
 

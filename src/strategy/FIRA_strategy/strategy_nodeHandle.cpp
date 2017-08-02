@@ -206,7 +206,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
 //    printf("global_env->AnotherBallDistance=%f\n",global_env->AnotherBallDistance);
 //    printf("global_env->home[global_env->RobotNumber].ball.distance=%f\n",global_env->home[global_env->RobotNumber].ball.distance);
     if(roleAry[global_env->RobotNumber]==Role_Attack && global_env->isteamstrategy==1){//if is attacker and teamstrategy
-        if(global_env->AnotherBallDistance<global_env->home[global_env->RobotNumber].ball.distance){
+        if((global_env->AnotherBallDistance<global_env->home[global_env->RobotNumber].ball.distance)&&(global_env->AnotherBallDistance!=0)){
             VTdis_max = SPlanning_Velocity[2]/2;
             VTdis_min = SPlanning_Velocity[3]/2;
             printf("slow down\n");
