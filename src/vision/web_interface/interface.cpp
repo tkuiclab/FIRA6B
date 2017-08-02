@@ -107,14 +107,13 @@ void InterfaceProc::scancall(const vision::scan msg)
   search_near     = msg.Magn_Middle_Start;
   search_middle   = msg.Magn_Far_Start;
   search_end      = msg.Magn_Far_End;
-/*
+
   dont_angle[0] = msg.Dont_Search_Angle_1;
   dont_angle[1] = msg.Dont_Search_Angle_2;
   dont_angle[2] = msg.Dont_Search_Angle_3;
   dont_angle[3] = msg.Angle_range_1;
   dont_angle[4] = msg.Angle_range_2_3;
   dont_angle[5] = msg.Angle_range_2_3;
-*/
 }
 void InterfaceProc::positioncall(const vision::position msg)
 {

@@ -16,8 +16,8 @@ void PathPlan::gotoPoint(Environment *env, double point_x, double point_y)
 	myLocation_x = env->robot.pos.x;
 	myLocation_y = env->robot.pos.y;
 	myLocation_yaw = env->robot.pos.z*M_PI/180;
-	env->robot.v_x = (-10)*(point_y-myLocation_y);
-	env->robot.v_y = (10)*(point_x-myLocation_x);
+    env->robot.v_x = (-15)*(point_y-myLocation_y);
+    env->robot.v_y = (15)*(point_x-myLocation_x);
 	//printf("%f\t%f\t%f\n",point_x-myLocation_x, point_y-myLocation_y, env->robot.pos.z);
 	//printf("%f\t%f\n",cos(myLocation_yaw), sin(myLocation_yaw));
 

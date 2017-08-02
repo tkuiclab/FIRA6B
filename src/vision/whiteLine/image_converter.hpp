@@ -26,16 +26,18 @@ private:
     int dis_gap;
     std::vector<int>dis_space, dis_pixel;
     int white_gray,white_angle;
-
+    double Camera_H,Camera_f;
     std::vector<int>whiteline_pixel;
 
 public:
     ImageConverter();
     ~ImageConverter();
-
+    
+    double Omni_distance(double dis_pixel);
     void imageCb(const sensor_msgs::ImageConstPtr&);
     void get_center();
     void get_distance();
     void get_whitedata();
+    void get_Camera();
 };
 
