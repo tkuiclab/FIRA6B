@@ -940,7 +940,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 ////////////////////////////////中心點：被障礙物阻擋時偏移修正///////////////////////////////////////////
   if(color == BLUEITEM || color == YELLOWITEM){
      //找最大範圍
-     int find_gap[20][7]={0},gap=0;
+     int find_gap[100][7]={0},gap=0;
      int max_gap=0;
      int dis_range = obj_.dis_min + 15;
      for (int angle =  obj_.ang_min ; angle < obj_.ang_max ; angle++) {
@@ -977,7 +977,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         }
 
         if(distance == dis_range){
-	  if(gap<20){
+	  if(gap<50){
             find_gap[gap][6] = find_gap[gap][5] - find_gap[gap][2];
             //find_gap[gap][6]=sqrt(pow(find_gap[gap][0]-find_gap[gap][3],2)+pow(find_gap[gap][1]-find_gap[gap][3],4));
             gap++;
@@ -985,7 +985,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         }
       }
     }
-    for(int i=0;i<5;i++){
+    for(int i=0;i<50;i++){
       if(find_gap[i][6]>find_gap[max_gap][6]) max_gap = i;
     }
     obj_.fix_ang_min = find_gap[max_gap][2];
