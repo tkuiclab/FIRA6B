@@ -5,6 +5,7 @@
 <head>
     <title>Vision Interface</title>
     <meta charset="UTF-8">
+    <META NAME="Creation-Date" CONTENT="01-august-2017 20:40:01">
     <!-- Styles -->
     <link rel="shortcut icon" href="img/vision.ico" />
     <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
@@ -512,13 +513,13 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <canvas id="HSVcircle" width="360px" height="100px" ></canvas>
+                                                <canvas id="HSVcircle" width="360px" height="100px" style="border:1px solid brown"></canvas>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <canvas id="HSVrect" width="100px" height="100px" ></canvas>
-                                                <canvas id="colorBox" width="100px" height="100px" ></canvas>
+                                                <canvas id="HSVrect" width="100px" height="100px"  style="border:1px solid brown"></canvas>
+                                                <canvas id="colorBox" width="100px" height="100px"  style="border:1px solid brown"></canvas>
                                             </td>
                                         </tr>
                                     </table>
@@ -530,12 +531,12 @@
                                                 <button id="sendHSV" type="button" class="Button" onmousedown="showHsvColor();topicROSCheckButton(value);ParameterHSVTransfer();topicROSSaveButton()">Save</button>
                                             </td>
                                             <td>
-                                                <select id="HSVSelect" onchange="ColorRecord(this.value);topicColorTransfer(this.value);showHsvColor()">
+                                                <select autocomplete="off" id="HSVSelect" onchange="ColorRecord(this.value);topicColorTransfer(this.value);showHsvColor()">
                                                     <option value = "0">Red</option>
                                                     <option value = "1">Green</option>
                                                     <option value = "2">Blue</option>
                                                     <option value = "3">Yellow</option>
-                                                    <option value = "4">White</option>
+                                                    <option value = "4">Robot</option>
                                                 </select>
                                             </td>
                                             <td>
@@ -714,7 +715,7 @@
                         <div id="InterfaceCheckCamera" class="form-group">
                             <div>
                                 <label>
-                                    <input id="CameraSwitch" type="checkbox" onclick=" MonitorSwitch(this.checked);"> Camera </label>
+                                    <input autocomplete="off" id="CameraSwitch" type="checkbox" onclick=" MonitorSwitch(this.checked);"> Camera </label>
                                 &nbsp;
                                 <label>X = </label>
                                 <label id="CameraX"></label>

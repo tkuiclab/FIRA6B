@@ -296,7 +296,8 @@ void FIRA_behavior_class::StateGoalKeeperBlock(int r_number){
     double r_opgoal_dis = sqrt((opgoal_left*opgoal_left)+(opgoal_right*opgoal_right)-1.28);
     double position_angle = rad2deg * acos(-((r_opgoal_dis*r_opgoal_dis)-(opgoal_dis*opgoal_dis)-0.25)/opgoal_dis);
 
-    // std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
+    std::cout << "position_angle = " << position_angle << std::endl;
+    std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
     if(ball_to_opgoal_dis < 2 && position_angle < 70){
         state_GoalKeeper = state_GoalKeeper_push;
         std::cout << "push" << std::endl;

@@ -240,6 +240,7 @@ function topicROSCheckButton(value) {
         checkpoint: 64
     });
     TopicParameterCheck.publish(ParameterCheck);
+    topicROSSaveButton(64);
 }
 //===================================================================
 var View = new ROSLIB.Topic({
