@@ -1243,7 +1243,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
         case 1:
             des_angle = left_goal_angle - 20;
             if(des_angle < 15){
-                env.home[Robot_index].v_yaw = (yaw_speed)/4;
+                env.home[Robot_index].v_yaw = (yaw_speed)/6;
             }else{
                 env.home[Robot_index].v_yaw = yaw_speed;
             }
@@ -1265,7 +1265,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
         case 2:
             des_angle = right_goal_angle + 20;
             if(des_angle > -15){
-                env.home[Robot_index].v_yaw = (-yaw_speed)/4;
+                env.home[Robot_index].v_yaw = (-yaw_speed)/6;
             }else{
                 env.home[Robot_index].v_yaw = -yaw_speed;
             }
@@ -3747,14 +3747,22 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
             }
             env.home[r_number].v_yaw = transform_obstacle_angle;
         }
-        if(distance_dr<2.5){
+        if(distance_dr<3){
+            if(distance_dr>2.5&&fabs(gla_angle)>90){
+                env.home[r_number].v_x = cos(transform_goal*deg2rad)*distance_dr/3;
+                env.home[r_number].v_y = sin(transform_goal*deg2rad)*distance_dr/3;
+            }
             if(goal_min<0&&goal_max>=0){
                 if(fabs(gla_angle)<=2){
                     printf("i can shoot \n");
                     shoot = SPlanning_Velocity[10];
                 }
             }
-            env.home[r_number].v_yaw = gla_angle;
+            if(fabs(gla_angle)>5){
+               env.home[r_number].v_yaw = gla_angle*5;
+            }else{
+               env.home[r_number].v_yaw = gla_angle;
+            }
 
         }
         printf("distance_dr=%f\n",distance_dr);
