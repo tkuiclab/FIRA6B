@@ -106,18 +106,12 @@ void Client::odom_tf_pub(){
     odom.pose.pose.orientation.x = sin(0)*cos(0)*cos(-imu3d/2)-cos(0)*sin(0)*sin(-imu3d/2);
     odom.pose.pose.orientation.y = cos(0)*sin(0)*cos(-imu3d/2)+sin(0)*cos(0)*sin(-imu3d/2);
     odom.pose.pose.orientation.z = cos(0)*cos(0)*sin(-imu3d/2)-sin(0)*sin(0)*cos(-imu3d/2);
-//    odom.pose.covariance =  boost::assign::list_of(1e-3) (0) (0)  (0)  (0)  (0)
-//                                                           (0) (1e-3)  (0)  (0)  (0)  (0)
-//                                                           (0)   (0)  (1e6) (0)  (0)  (0)
-//                                                           (0)   (0)   (0) (1e6) (0)  (0)
-//                                                           (0)   (0)   (0)  (0) (1e6) (0)
-//                                                           (0)   (0)   (0)  (0)  (0)  (1e3) ;
     odom.pose.covariance[0] =  1e-3;
     odom.pose.covariance[7] =  1e-3;
-    odom.pose.covariance[14] =  1e6;
-    odom.pose.covariance[21] =  1e6;
-    odom.pose.covariance[28] =  1e6;
-    odom.pose.covariance[35] =  1e-3;
+    odom.pose.covariance[14] =  1e-3;
+    odom.pose.covariance[21] =  1e-2;
+    odom.pose.covariance[28] =  1e-2;
+    odom.pose.covariance[35] =  1e-2;
     odom.twist.twist.linear.x = delta_x;
     odom.twist.twist.linear.y = delta_y;
     odom.twist.twist.angular.z = (-1)*(imu3d - last_imu);
