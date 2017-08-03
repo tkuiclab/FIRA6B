@@ -145,6 +145,7 @@ function StandBy() {
 }
 
 function PublishTopicCmdVel(vec3) {
+    console.log(vec3);
     var twist = new ROSLIB.Message({
         linear: {
             x: vec3.x,
@@ -427,7 +428,7 @@ var TeamStrategy3 = new ROSLIB.Topic({
     messageType: 'std_msgs/Int32'
 });
 
-function IsTeamStrategy(check){
+function IsTeamStrategy(check) {
     console.log(check);
     var TeamStrategy = new ROSLIB.Message({
         data: parseInt(check)
@@ -438,5 +439,5 @@ function IsTeamStrategy(check){
         TeamStrategy2.publish(TeamStrategy);
     if (CheckIP[2] == 1)
         TeamStrategy3.publish(TeamStrategy);
-    
+
 }
