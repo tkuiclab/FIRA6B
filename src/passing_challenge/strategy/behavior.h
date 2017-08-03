@@ -42,6 +42,7 @@ private:
 	void nextTarget();
 	Ball getTargetBall();
 	Goal getTargetGoal();
+	void angleRegular(double &);
 public:
 	int getGameState(){return gameStatus;}
 };

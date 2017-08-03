@@ -1,0 +1,417 @@
+.main_content {
+    background-color: #696969;
+}
+
+body {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+
+/*==============================================*/
+
+.modal-content {
+    position: relative;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+.modal-title {
+    color: black;
+    font-size: 25px;
+}
+
+#PassingParameter {
+    width: 1100px;
+    height: 600px;
+    z-index: 1;
+    border: 1px solid black;
+    border-radius: 3px;
+    background-color: lightgrey;
+}
+
+
+/*==========================================================*/
+
+
+/* wifi  */
+
+#PassingWifi {
+    border: 0px solid #d3d3d3;
+}
+
+#PassingWifi span {
+    cursor: pointer;
+    position: absolute;
+    top: 1%;
+    right: 5%;
+}
+
+#PassingSetting {
+    border: 0px solid #d3d3d3;
+}
+
+#PassingSetting span {
+    cursor: pointer;
+    position: absolute;
+    top: 1%;
+    right: 10%;
+}
+
+#Setting_Wifi {
+    height: 100%;
+    width: 50px;
+}
+
+#Setting_All {
+    height: 100%;
+    width: 50px;
+}
+
+#WifiLight {
+    width: 45px;
+    height: 45px;
+    border: 0px solid #d3d3d3;
+    position: absolute;
+    top: 2%;
+    left: 23%;
+}
+
+.Wifimodal_content {
+    position: relative;
+    background-color: #FFFFFF;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+
+
+/*=====================================================*/
+
+
+/*Level table*/
+
+#PassingLv {
+    width: 270px;
+    height: 250px;
+    z-index: 1;
+    border: 1px solid black;
+    border-radius: 3px;
+    position: relative;
+    top: 3%;
+    left: 1%;
+    background-color: white;
+}
+
+#PassingLv table {
+    width: 100%;
+    height: 50%;
+    z-index: 1;
+    text-align: center;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+#Level1Button {
+    background-image: none;
+    font-size: 14px;
+    color: #663D00;
+    border-radius: 3px;
+}
+
+#Level1Button.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+    border-radius: 3px;
+}
+
+#Level2Button {
+    background-image: none;
+    font-size: 14px;
+    color: #663D00;
+    border-radius: 3px;
+}
+
+#Level2Button.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+    border-radius: 3px;
+}
+
+#Level3Button {
+    background-image: none;
+    font-size: 14px;
+    color: #663D00;
+    border-radius: 3px;
+}
+
+#Level3Button.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+    border-radius: 3px;
+}
+
+#Level4Button {
+    background-image: none;
+    font-size: 14px;
+    color: #663D00;
+    border-radius: 3px;
+}
+
+#Level4Button.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+    border-radius: 3px;
+}
+
+
+/*==========================================================================================*/
+
+
+/*Switch Button  */
+
+#StartButton {
+    background-image: none;
+    font-size: 14px;
+    color: #1A1A65;
+    border-radius: 3px;
+}
+
+#StartButton.ui-state-hover {
+    background-color: #CCEEFF;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border-color: #009FCC;
+}
+
+#StartButton.ui-state-active {
+    background-color: #009FCC;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border-color: #009FCC;
+}
+
+#StopButton {
+    background-image: none;
+    font-size: 14px;
+    color: #663D00;
+    border-radius: 3px;
+}
+
+#StopButton.ui-state-hover {
+    background-color: #DDDDDD;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border-color: #AAAAAA;
+}
+
+#StopButton.ui-state-active {
+    background-color: #AAAAAA;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border-color: #AAAAAA;
+}
+
+
+/*=====================================================================  */
+
+
+/*Mode Button  */
+
+#ModeButton1 {
+    background-image: none;
+    font-size: 14px;
+    color: #663D00;
+    border-radius: 3px;
+}
+
+#ModeButton1.ui-state-hover {
+    background-color: #f4e9a9;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border-color: #f4e9a9;
+}
+
+#ModeButton1.ui-state-active {
+    background-color: #f4b506;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border-color: #f4b506;
+}
+
+#ModeButton2 {
+    background-image: none;
+    font-size: 14px;
+    color: #663D00;
+    border-radius: 3px;
+}
+
+#ModeButton2.ui-state-hover {
+    background-color: #f4e9a9;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border-color: #f4e9a9;
+}
+
+#ModeButton2.ui-state-active {
+    background-color: #f4b506;
+    font-size: 14px;
+    color: #FFFFFF;
+    border-radius: 3px;
+    border-color: #f4b506;
+}
+
+
+/*===========================================================================  */
+
+
+/*info  */
+
+#PassingInfo {
+    width: 270px;
+    height: 250px;
+    z-index: 1;
+    border: 1px solid black;
+    border-radius: 3px;
+    position: relative;
+    top: 8%;
+    left: 1%;
+    background-color: white;
+}
+
+#PassingInfo table {
+    width: 100%;
+    height: 25%;
+    z-index: 1;
+    text-align: center;
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+#shoot_in {
+    width: 50px;
+    height: 22px;
+    z-index: 1;
+    border: 1px solid black;
+    border-radius: 3px;
+    color: #4169E1;
+    font-size: 18px;
+}
+
+#shoot_bar {
+    width: 100px;
+    z-index: 1;
+    border: 1px solid black;
+    border-radius: 3px;
+    position: relative;
+}
+
+
+/*===================================================================  */
+
+
+/*Setting  */
+
+#Parameter {
+    background-image: none;
+    font-size: 14px;
+    color: #663D00;
+    border-radius: 3px;
+}
+
+#Parameter.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 14px;
+    color: #1A1A65;
+    border-radius: 3px;
+}
+
+
+/*==========================================================*/
+
+#ShootButton {
+    -moz-box-shadow: inset 0px 1px 0px 0px #f9eca0;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #f9eca0;
+    box-shadow: inset 0px 1px 0px 0px #f9eca0;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f0c911), color-stop(1, #f2ab1e));
+    background: -moz-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
+    background: -webkit-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
+    background: -o-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
+    background: -ms-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
+    background: linear-gradient(to bottom, #f0c911 5%, #f2ab1e 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f0c911', endColorstr='#f2ab1e', GradientType=0);
+    background-color: #f0c911;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #e65f44;
+    display: inline-block;
+    cursor: pointer;
+    color: #c92200;
+    font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 12px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #ded17c;
+}
+
+#ShootButton:hover {
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f2ab1e), color-stop(1, #f0c911));
+    background: -moz-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
+    background: -webkit-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
+    background: -o-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
+    background: -ms-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
+    background: linear-gradient(to bottom, #f2ab1e 5%, #f0c911 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f2ab1e', endColorstr='#f0c911', GradientType=0);
+    background-color: #f2ab1e;
+}
+
+#ShootButton:active {
+    position: relative;
+    top: 1px;
+}
+
+
+/*===================================================================================================================================  */
+
+
+/*setting param */
+
+#ParameterModule {
+    height: 200px;
+    text-align: left;
+    border-style: solid;
+    overflow: scroll;
+}
+
+#ParameterModule table {
+    height: 100%;
+    width: 100%;
+}
+
+#ParameterModule table td {
+    width: 50%;
+}

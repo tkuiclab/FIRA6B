@@ -50,9 +50,8 @@ void Strategy_nodeHandle::visionCallback(const vision::Object::ConstPtr &vision_
 
 void Strategy_nodeHandle::IMUCallback(const imu_3d::inertia::ConstPtr &imu_msg)
 {
-	double imu_yaw = (imu_msg->yaw <= M_PI)? imu_msg->yaw * 180/M_PI : (imu_msg->yaw*180/M_PI-360); 
-	double map_yaw = (-1)*imu_yaw - 90;
-	this->environment.robot.pos.z = (map_yaw <= (-180))? map_yaw+360 : map_yaw;
+	double imu_yaw = (imu_msg->yaw >= (M_PI))? (imu_msg->yaw*180/M_PI-360) : (imu_msg->yaw*180/M_PI); 
+	this->environment.robot.pos.z = (-1)*imu_yaw; 
 }
 
 void Strategy_nodeHandle::motionFBCallback(const geometry_msgs::Twist::ConstPtr &motionFB_msg)

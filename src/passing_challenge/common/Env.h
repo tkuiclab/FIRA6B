@@ -103,11 +103,22 @@ typedef struct{
     Vector3D pos;
 }Goal;
 
+typedef struct{
+	double hold_ball_distance;
+	double hold_ball_angle;
+	double speed_const;
+	double shoot_const;
+	double yaw_const;
+	double target_ball_distance;
+	double target_goal_distance;
+}Parameter;
+
 typedef struct
 {
     Robot	robot;
 	Ball	ball;
     Goal	target;
+	Parameter param;
     long	gameState;
     int		RobotNumber;
     int		issimulator;

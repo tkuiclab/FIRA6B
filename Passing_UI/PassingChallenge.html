@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://blog.themearmada.com/demos/off-canvas-menu/ -->
+<html lang="en">
+
+<head>
+    <title>Passing Challenge</title>
+    <meta charset="UTF-8">
+    <!--Font-->
+    <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/Psgeneral.css">
+    <link rel="stylesheet" href="css/Psworldmap.css">
+    <link rel="stylesheet" href="css/allPassingStyle.css">
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+    <script src="jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <script src="js/eventemitter2.min.js"></script>
+    <script src="js/close_right_button.js"></script>
+    <script src="js/CloseReverseOut.js"></script>
+    <script src="js/roslib.js"></script>
+</head>
+
+<body onload="Level0DrawLine();">
+    <img src="img/BG.jpg" id="full-screen-background-image" />
+    <div class="modal-dialog" style="width:1125px">
+        <div class="modal-content main_content">
+            <div class="modal-header ">
+                <h4 class="modal-title" id="exampleModalLabel">Passing Challenge</h4>
+            </div>
+
+            <div id="PassingWifi">
+                <span><img id="Setting_Wifi" src="img/wifi.png"  data-toggle="modal" data-target="#connect_Robot"></img></span>
+            </div>
+            <div id="PassingSetting">
+                <span><img id="Setting_All" src="img/setting.png"  data-toggle="modal" data-target="#Setting_General"></img></span>
+            </div>
+            <!--Connection Light-->
+            <div id="WifiLight">
+                <canvas id="Light"></canvas>
+            </div>
+
+            <div class="modal-body" id="PassingFunction">
+                <div id="PassingParameter" class="form-group">
+                    <div id="PassingLv">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <input type="radio" id="Level1Button" name="LevelElement" onclick="Level1DrawLine();PubTopic_Level_Choice(1);" autocomplete="off" />
+                                        <label id="Level1Button" for="Level1Button">Lv.1</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="radio" id="Level2Button" name="LevelElement" onclick="Level2DrawLine();PubTopic_Level_Choice(2);" autocomplete="off" />
+                                        <label id="Level2Button" for="Level2Button">Lv.2</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="radio" id="Level3Button" name="LevelElement" onclick="Level3DrawLine();PubTopic_Level_Choice(3);" autocomplete="off" />
+                                        <label id="Level3Button" for="Level3Button">Lv.3</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="radio" id="Level4Button" name="LevelElement" onclick="Level4DrawLine();PubTopic_Level_Choice(4);" autocomplete="off" />
+                                        <label id="Level4Button" for="Level4Button">Lv.4</label>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <input type="radio" id="ModeButton1" name="ModeButtonElement" />
+                                        <label id="ModeButton1" for="ModeButton1" autocomplete="off" onclick="PubTopic_Mode_Choice(1);">Mode 1</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="radio" id="ModeButton2" name="ModeButtonElement" />
+                                        <label id="ModeButton2" for="ModeButton2" autocomplete="off" onclick="PubTopic_Mode_Choice(2);">Mode 2</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <input type="radio" id="StartButton" name="ButtonElement" />
+                                        <label id="StartButton" for="StartButton" autocomplete="off" onclick="PubTopic_Status_Choice(1);">Start</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="radio" id="StopButton" name="ButtonElement" />
+                                        <label id="StopButton" for="StopButton" onclick="Level0DrawLine();PubTopic_Status_Choice(0);" autocomplete="off">Stop</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="PassingInfo">
+                        <table>
+                            <tr>
+                                <td rowspan="2">
+                                    <label>Shoot</label>
+                                </td>
+                                <td>
+                                    <input id="shoot_bar" autocomplete="off" name="shoot_barElement" type="range" min="0" max="100" value="0" oninput='showValue(this.value,"shoot_inElement",0);'></input>
+                                </td>
+                                <td>
+                                    <input id="shoot_in" autocomplete="off" name="shoot_inElement" type="number" min="0" max="100" value="0" oninput='showValue(this.value,"shoot_barElement",0);checkvalue(this.name,this.value,0);'></input>
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input id="ShootButton" type="button" value="Shoot" onclick="PubTopic_Shoot(document.getElementById('shoot_in').value)">
+                                </td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    <label>Information</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Shoot :</label>
+                                    <label name="MonitorElement">0</label>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Position :</label>
+                                    <label name="MonitorElement">( 0 , 0 )</label>
+                                </td>
+                                <td>
+                                    <label>Angle :</label>
+                                    <label name="MonitorElement">0</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>cmd_vel :</label>
+                                    <label name="MonitorElement">( 0 , 0 )</label>
+                                </td>
+                                <td>
+                                    <label>Angle :</label>
+                                    <label name="MonitorElement">0</label>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <div id="strategy_Area">
+                    <div id="worldmap_Area">
+                        <img id="myImg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wifi Setting-->
+    <div class="modal fade" id="connect_Robot" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="Wifimodal_content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Connect To Robot</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="RobotIPDATA" class="control-label">Robot_IP:</label>
+                            <input name="RobotIPDATA" type="text" class="form-control" id="RobotIP" value=IP.textContent>
+                        </div>
+                        <div class="form-group">
+                            <label for="RobotHostDATA" class="control-label">Robot_Host:</label>
+                            <input name="RobotHostDATA" type="text" class="form-control" id="RobotHost" value=Host.textContent>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ros.close();">Close</button>
+                    <button type="button" class="btn btn-primary" id="send-message" onclick="RobotConnect();history.go(0);">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- General Setting -->
+    <div class="modal fade" id="Setting_General" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 500px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">Settings</h4>
+                </div>
+
+                <div class="modal-body" id="GeneralDisplay" style="margin:auto;text-align:center;">
+                    <!-- General_Button -->
+                    <div class="form-group" id="SetGeneralButton">
+                        <input type="radio" id="Parameter" name="radio" />
+                        <label id="Parameter" for="Parameter">Parameter</label>
+                    </div>
+
+                    <div class="form-group" id="ParameterModule">
+                        <table>
+                            <tr>
+                                <th>ConfigName&emsp;&emsp;</th>
+                                <th>Value</th>
+                            </tr>
+                            <tr>
+                                <td>(int) speed_const</td>
+                                <td>
+                                    <input type="text" name="ParameterElement" value="0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(int) yaw_const</td>
+                                <td>
+                                    <input type="text" name="ParameterElement" value="0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(int) shoot_const</td>
+                                <td>
+                                    <input type="text" name="ParameterElement" value="0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double) ball_distance</td>
+                                <td>
+                                    <input type="text" name="ParameterElement" value="0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double) goal_distance</td>
+                                <td>
+                                    <input type="text" name="ParameterElement" value="0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double) holdBall_distance</td>
+                                <td>
+                                    <input type="text" name="ParameterElement" value="0" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>(double) holdBall_angle</td>
+                                <td>
+                                    <input type="text" name="ParameterElement" value="0" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer" id="SetGeneralExecute" style="text-align:center;">
+                    <!-- <input id="next" type="button" value="NEXT"/> -->
+                    <!-- &emsp;&emsp;&emsp;&emsp;&emsp; -->
+                    <input id="GeneralSave" class="btn btn-primary" type="button" value="SAVE" onclick="Save_Param();" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Connection Light-->
+    <div>
+        <canvas id="Light" width="45" height="45" style="border:0px solid #d3d3d3;top:9.5%; position:absolute;left:4%;"></canvas>
+    </div>
+
+
+
+
+    <script>
+        $("#PassingLv").buttonset();
+        $("#SetGeneralButton").buttonset();
+    </script>
+    <script src="js/variable.js"></script>
+    <script src="js/RobotConnect.js"></script>
+    <script src="js/PsRosService.js"></script>
+    <script src="js/PsRosTopic.js"></script>
+    <script src="js/PsRosParam.js"></script>
+    <script src="js/Psworldmap.js"></script>
+    <script src="js/SliderControl.js"></script>
+</body>
+
+</html>

@@ -7,14 +7,10 @@ public:
 	PathPlan();
 	~PathPlan();
 public:
-	void gotoPoint(Environment*, double, double);
+	void gotoPoint(Environment*, double, double, double);
 	void chaseBall(Environment*);
 	void aimTargetCone(Environment*, double);
-	void level1();
-	void level2();
-	void level3();
-	void level4();
-public:
-	void setLevel();
+private:
+	void transform(Environment*, const double &, const double &); 
 };
 #endif
