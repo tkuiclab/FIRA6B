@@ -48,10 +48,36 @@ void Client::whiteline_pub(){
 }
 void Client::odom_tf_pub(){
     ros::Time current_time = ros::Time::now();
-    geometry_msgs::TransformStamped odom_trans;
-    odom_trans.header.stamp = current_time;
-    odom_trans.header.frame_id = "odom";
-    odom_trans.child_frame_id = "base_link";
+    // geometry_msgs::TransformStamped odom_trans;
+    // odom_trans.header.stamp = current_time;
+    // odom_trans.header.frame_id = "odom";
+    // odom_trans.child_frame_id = "base_link";
+    // static double last_FB_x = FB_x;
+    // static double last_FB_y = FB_y;
+    // static double map_x = FB_x;
+    // static double map_y = FB_y;
+    // double delta_x,delta_y;
+    // if(fabs(FB_x - last_FB_x)>0.1)
+    //     FB_x = last_FB_x;
+    // if(fabs(FB_y - last_FB_y)>0.1)
+    //     FB_y = last_FB_y;
+    // delta_x = FB_x - last_FB_x;
+    // delta_y = FB_y - last_FB_y;
+    // last_FB_x = FB_x;
+    // last_FB_y = FB_y;
+    // map_x += (delta_x * cos(-imu3d) - delta_y * sin(-imu3d));
+    // map_y += (delta_x * sin(-imu3d) + delta_y * cos(-imu3d));
+    // // imu direction is nagitive for quaternion
+    // odom_trans.transform.translation.x = map_x;
+    // odom_trans.transform.translation.y = map_y;
+    // odom_trans.transform.translation.z = 0;
+    // odom_trans.transform.rotation.w = cos(0)*cos(0)*cos(-imu3d/2)+sin(0)*sin(0)*sin(-imu3d/2);
+    // odom_trans.transform.rotation.x = sin(0)*cos(0)*cos(-imu3d/2)-cos(0)*sin(0)*sin(-imu3d/2);
+    // odom_trans.transform.rotation.y = cos(0)*sin(0)*cos(-imu3d/2)+sin(0)*cos(0)*sin(-imu3d/2);
+    // odom_trans.transform.rotation.z = cos(0)*cos(0)*sin(-imu3d/2)-sin(0)*sin(0)*cos(-imu3d/2);
+    // odom_broadcaster.sendTransform(odom_trans);
+
+    nav_msgs::Odometry odom;
     static double last_FB_x = FB_x;
     static double last_FB_y = FB_y;
     static double map_x = FB_x;
@@ -67,20 +93,22 @@ void Client::odom_tf_pub(){
     last_FB_y = FB_y;
     map_x += (delta_x * cos(-imu3d) - delta_y * sin(-imu3d));
     map_y += (delta_x * sin(-imu3d) + delta_y * cos(-imu3d));
-    //imu3d  minerse is good  but i don't know why  :D
-    odom_trans.transform.translation.x = map_x;
-    odom_trans.transform.translation.y = map_y;
-    odom_trans.transform.translation.z = 0;
-    odom_trans.transform.rotation.w = cos(0)*cos(0)*cos(-imu3d/2)+sin(0)*sin(0)*sin(-imu3d/2);
-    odom_trans.transform.rotation.x = sin(0)*cos(0)*cos(-imu3d/2)-cos(0)*sin(0)*sin(-imu3d/2);
-    odom_trans.transform.rotation.y = cos(0)*sin(0)*cos(-imu3d/2)+sin(0)*cos(0)*sin(-imu3d/2);
-    odom_trans.transform.rotation.z = cos(0)*cos(0)*sin(-imu3d/2)-sin(0)*sin(0)*cos(-imu3d/2);
-    odom_broadcaster.sendTransform(odom_trans);
-    nav_msgs::Odometry odom;
+
     odom.header.stamp = current_time;
     odom.header.frame_id = "odom";
     odom.child_frame_id = "base_link";
-    std::cout << "x=" << map_x << "\ty=" << map_y << "\tyaw=" << imu3d << std::endl;
+    odom.pose.pose.position.x = map_x;
+    odom.pose.pose.position.y = map_y;
+    odom.pose.pose.position.z = 0.0;
+    odom.pose.pose.orientation.w = cos(0)*cos(0)*cos(-imu3d/2)+sin(0)*sin(0)*sin(-imu3d/2);
+    odom.pose.pose.orientation.x = sin(0)*cos(0)*cos(-imu3d/2)-cos(0)*sin(0)*sin(-imu3d/2);
+    odom.pose.pose.orientation.y = cos(0)*sin(0)*cos(-imu3d/2)+sin(0)*cos(0)*sin(-imu3d/2);
+    odom.pose.pose.orientation.z = cos(0)*cos(0)*sin(-imu3d/2)-sin(0)*sin(0)*cos(-imu3d/2);
+    odom.twist.twist.linear.x = delta_x;
+    odom.twist.twist.linear.y = delta_y;
+    odom.twist.twist.angular.z = imu3d;
+    Odom_pub.publish(odom);
+    // std::cout << "x=" << map_x << "\ty=" << map_y << "\tyaw=" << imu3d << std::endl;
 }
 void Client::initialpose_pub(){
     ros::Time current_time = ros::Time::now();  

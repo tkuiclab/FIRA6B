@@ -36,6 +36,7 @@ private:
     double imu3d;
     double FB_x;
     double FB_y;
+    double FB_yaw;
     double new_FB_x;
     double new_FB_y;    
 public:

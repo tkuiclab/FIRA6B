@@ -9,6 +9,9 @@
 #include "imu_3d/inertia.h"
 #include <eigen3/Eigen/Dense>
 #include "geometry_msgs/Twist.h"
+#include "sensor_msgs/Imu.h"
+// #include "geometry_msgs/Quaternion.h"
+// #include "geometry_msgs/Vector3.h"
 
 #include <stdlib.h>
 #include <signal.h>
@@ -371,6 +374,7 @@ int main(int argc,char **argv)
     ros::init(argc, argv, "imu_3d");
     ros::NodeHandle n;
     ros::Publisher imu_pub = n.advertise<imu_3d::inertia>("imu_3d",1000);
+    ros::Publisher imu_data_pub = n.advertise<sensor_msgs::Imu>("imu_data",1000);
     ros::Subscriber speed_sub = n.subscribe("/FIRA/R1/Strategy/PathPlan/RobotSpeed",100,speed_stationary);
 
     ros::Rate loop_rate(100);
@@ -381,6 +385,7 @@ int main(int argc,char **argv)
     struct MultiAxisSensor accel;
     struct MultiAxisSensor sensor;
     struct MultiAxisSensor angularVel;
+    struct MultiAxisSensor orientation;
     int rc;
 
     // Flag to indicate that the application should quit
@@ -413,10 +418,11 @@ int main(int argc,char **argv)
             freespace_util_getCompassHeading(&meOut, &sensor);
             freespace_util_getAccNoGravity(&meOut, &accel);
             freespace_util_getAngularVelocity(&meOut, &angularVel);
+            freespace_util_getAngPos(&meOut, &orientation);
             //freespace_util_getAcceleration(&meOut, &accel);
 
             //double gaga_tmp = sqrt(angularVel.z*angularVel.z);
-
+            
             acc_mag = sqrt(accel.x*accel.x + accel.y*accel.y);
             setHP();
             double acc_filter = BW_HIGH(acc_mag);
@@ -453,7 +459,7 @@ int main(int argc,char **argv)
             if(haha!=0)
             {
                 stationary = false;
-                printf("0\n");
+                // printf("0\n");
             }else{
                 stationary = true;
                 // printf("1\n");
@@ -537,6 +543,25 @@ int main(int argc,char **argv)
         inertia.shift_x = position(0);
         inertia.shift_y = position(1);
 
+        /*
+        *   @ brief  : ROS publish msg for robot_pose_ekf
+        *   @ date   : 2017/08/03
+        *   @ author : Chu
+        */
+        sensor_msgs::Imu imuData;
+        imuData.header.frame_id = "imu_data";
+        imuData.header.stamp = ros::Time::now();
+        imuData.orientation.x = orientation.x;
+        imuData.orientation.y = orientation.y;
+        imuData.orientation.z = orientation.z;
+        imuData.orientation.w = orientation.w;
+        imuData.angular_velocity.x = angularVel.x;
+        imuData.angular_velocity.y = angularVel.y;
+        imuData.angular_velocity.z = angularVel.z;
+        imuData.linear_acceleration.x = accel.x;
+        imuData.linear_acceleration.y = accel.y;
+        imuData.linear_acceleration.z = accel.z;
+        imu_data_pub.publish(imuData);
         //printf("%f\t%f\n",position(0),position(1));
 
         inertia.yaw = DEGREES_TO_RADIANS(degree);
