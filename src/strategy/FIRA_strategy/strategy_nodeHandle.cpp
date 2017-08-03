@@ -191,7 +191,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     double Tangle_min = SPlanning_Velocity[5];//3
     double angle_min = SPlanning_Velocity[7];
     double Tangle;
-    if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if robot is support or Newsupport, v_min=0;
+    if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if robot is support or Newsupport, v_min= SupportVTmin;
         VTdis_min = SPlanning_Velocity[8];
         Tangle_min = SPlanning_Velocity[9];
         if(VTdis_min>VTdis_max){
