@@ -17,7 +17,7 @@ using namespace std;
 namespace enc = sensor_msgs::image_encodings;
 const double ALPHA = 0.5;
 
-//std::string visionpath = ros::package::getPath("vision");
+//std::string visionpath = ros::package::getPath("fvision");
 std::string visionpath = ros::package::getPath("fira_launch");
 
 std::string parameterpath = "/default_config/vision_better.yaml";
@@ -430,9 +430,9 @@ void InterfaceProc::objectdet_change(Mat &frame_, int color, object_Item &obj_it
 
   for (int distance = search_start ; distance <= search_end ; distance += search_distance) {
     for (int angle = 0; angle < 360;) {
-      if (angle >= dont_angle[0] && angle <= dont_angle[1] ||
-          angle >= dont_angle[2] && angle <= dont_angle[3] ||
-          angle >= dont_angle[4] && angle <= dont_angle[5]) {
+      if ((angle >= dont_angle[0] && angle <= dont_angle[1]) ||
+          (angle >= dont_angle[2] && angle <= dont_angle[3]) ||
+          (angle >= dont_angle[4] && angle <= dont_angle[5])) {
         angle += Angle_Interval(distance);
         continue;
       }
@@ -750,9 +750,9 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     for (int angle = 0 ; angle < angle_range ; angle++) {
       for (int distance = obj_.dis_min ; distance <= (obj_.dis_min + obj_.dis_max)/2 ; distance++) {
         find_angle = Angle_Adjustment(angle_ + angle);
-        if (find_angle >= dont_angle[0] && find_angle <= dont_angle[1] ||
-            find_angle >= dont_angle[2] && find_angle <= dont_angle[3] ||
-            find_angle >= dont_angle[4] && find_angle <= dont_angle[5]) {
+        if ((find_angle >= dont_angle[0] && find_angle <= dont_angle[1]) ||
+            (find_angle >= dont_angle[2] && find_angle <= dont_angle[3]) ||
+            (find_angle >= dont_angle[4] && find_angle <= dont_angle[5])) {
           angle++;
           continue;
         }
@@ -950,9 +950,9 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
      int dis_range = obj_.dis_max;
      for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
       for (int distance = obj_.dis_min ; distance <= dis_range; distance++) {
-        if (angle >= dont_angle[0] && angle <= dont_angle[1] ||
-            angle >= dont_angle[2] && angle <= dont_angle[3] ||
-            angle >= dont_angle[4] && angle <= dont_angle[5]) {
+        if ((angle >= dont_angle[0] && angle <= dont_angle[1]) ||
+            (angle >= dont_angle[2] && angle <= dont_angle[3]) ||
+            (angle >= dont_angle[4] && angle <= dont_angle[5])) {
           angle++;
           continue;
         }        
@@ -1004,9 +1004,9 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     for (int angle = 0 ; angle < angle_range ; angle++) {
       for (int distance = obj_.dis_min ; distance <= (obj_.dis_min + obj_.dis_max)/2 ; distance++) {
         find_angle = Angle_Adjustment(center_angle + angle);
-        if (find_angle >= dont_angle[0] && find_angle <= dont_angle[1] ||
-            find_angle >= dont_angle[2] && find_angle <= dont_angle[3] ||
-            find_angle >= dont_angle[4] && find_angle <= dont_angle[5]) {
+        if ((find_angle >= dont_angle[0] && find_angle <= dont_angle[1]) ||
+            (find_angle >= dont_angle[2] && find_angle <= dont_angle[3]) ||
+            (find_angle >= dont_angle[4] && find_angle <= dont_angle[5])) {
           angle++;
           continue;
         }

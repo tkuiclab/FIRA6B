@@ -840,6 +840,7 @@ private:
            limit_obstacle_dis=200;
            edge_controller = 1;
         }else if(roleAry[global_env->RobotNumber]==Role_Test1){
+           //printf("transform_angle_dr=%f\n",transform_angle_dr);
            degree_controller=0;
            limit_obstacle_dis=200;
            edge_controller = 0;
@@ -851,6 +852,7 @@ private:
                transform_angle_dr-360;
            }
            transform_angle_br=transform_angle_dr;
+           //printf("transform_angle_dr=%f\n",transform_angle_dr);
            ignore_limit_angle=90;
         }else{// dorsad attack or normal block, can scan within 2 meters closest object
            degree_controller=0;

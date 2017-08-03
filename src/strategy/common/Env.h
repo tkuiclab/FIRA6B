@@ -86,6 +86,7 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_Kick                     43
 #define action_FreeKick                 44
 #define action_Escape_Attack            45
+#define action_Straight_Attack          46
 
 #define state_Init              0
 #define state_Chase             1
