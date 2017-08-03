@@ -943,7 +943,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     }
   }
 ////////////////////////////////中心點：被障礙物阻擋時偏移修正///////////////////////////////////////////
-  if(color == BLUEITEM ){//|| color == YELLOWITEM){
+  if(color == BLUEITEM || color == YELLOWITEM){
      //找最大範圍
      int find_gap[2][7]={0};
 

@@ -794,6 +794,7 @@ private:
         double angle_dr = global_env->home[global_env->RobotNumber].goal.angle;
         double op_angle_dr = global_env->home[global_env->RobotNumber].op_goal.angle;
         double transform_angle_br=angle_br;
+        double transform_angle_dr=angle_dr;//just for test
         //let ball angle = black line angle
         int i=0;
         int ignore_limit_angle=25;
@@ -820,30 +821,38 @@ private:
         static int edge_count=0;
         static double Begin_time = 0;
         static double Current_time = 0;
+
         Current_time = ros::Time::now().toSec();
         if(global_env->gameState==0){
             Begin_time = ros::Time::now().toSec();
             Current_time = ros::Time::now().toSec();
         }
         //printf("global_env->gameState=%d\n",global_env->gameState);
-        if((abs(Current_time-Begin_time)<2)&&(global_env->gameState==5)){
+        if(((abs(Current_time-Begin_time)<2)&&(global_env->gameState==GameState_ThrowIn))&&(roleAry[global_env->RobotNumber]==Role_NewSupport)){
            degree_controller=270;
            ignore_limit_angle=40;
            limit_obstacle_dis=200;
            edge_controller = 1;
-        }else if((fabs(Current_time-Begin_time)<2.5)&&(global_env->gameState==GameState_FreeKick)){
+        }else if(((fabs(Current_time-Begin_time)<2.5)&&(global_env->gameState==GameState_FreeKick))&&(roleAry[global_env->RobotNumber]==Role_NewSupport)){
            //printf("fabs(Current_time-Begin_time)=%f\n",fabs(Current_time-Begin_time));
            degree_controller=270;
            ignore_limit_angle=40;
            limit_obstacle_dis=200;
            edge_controller = 1;
         }else if(roleAry[global_env->RobotNumber]==Role_Test1){
-//           printf("test1\n");
-//           degree_controller=270;
-//           ignore_limit_angle=50;
-//           limit_obstacle_dis=200;
-//           edge_controller = 1;
-        }else{
+           degree_controller=0;
+           limit_obstacle_dis=200;
+           edge_controller = 0;
+           if(transform_angle_dr<0){// let angle_dr be 0~360 degree
+               transform_angle_dr=transform_angle_dr+360;
+           }
+           transform_angle_dr=transform_angle_dr+180;//search back of gate
+           if(transform_angle_dr>360){
+               transform_angle_dr-360;
+           }
+           transform_angle_br=transform_angle_dr;
+           ignore_limit_angle=90;
+        }else{// dorsad attack or normal block, can scan within 2 meters closest object
            degree_controller=0;
            ignore_limit_angle=45;
            limit_obstacle_dis=200;
@@ -935,7 +944,7 @@ private:
                 }
 
             }
-        if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==Role_Support){// if robot is support or newsupport, ignore limit area
+            if((roleAry[global_env->RobotNumber]==Role_NewSupport||roleAry[global_env->RobotNumber]==Role_Support)||roleAry[global_env->RobotNumber]==Role_Test1){// if robot is support or newsupport, ignore limit area
                 if(((i*Blackangle>=ignore_lower)&&(i*Blackangle<=ignore_upper)||(i*Blackangle>=ignore_360lower)&&(i*Blackangle<=ignore_360upper))||(i*Blackangle>=ignore_720lower)&&(i*Blackangle<=ignore_720upper)){
                     // if angle within these area, will clear
                     if(limit_obstacle_dis_counter*Blackangle>define_obstacle_angle){
