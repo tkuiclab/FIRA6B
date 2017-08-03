@@ -8,5 +8,6 @@
     <param name="vo_used" value="false"/>
     <param name="debug" value="false"/>
     <param name="self_diagnose" value="false"/>
+    <param name="output_frame" value="odom" />
   </node>
  </launch>
