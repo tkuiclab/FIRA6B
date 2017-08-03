@@ -365,67 +365,61 @@ private:
 /*****/    //for goalkeeper on 5th robot with ros  //front = 45
     void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
         if(global_env->teamcolor == "Blue"){
-            int ang1 = msg->blue_ang1;
-            int ang2 = msg->blue_ang2;
-            ang1 = two_point_angle_fix(ang1);
-            ang2 = two_point_angle_fix(ang2);
+            int ang_max = msg->blue_ang_max;
+            int ang_min = msg->blue_ang_min;
+            // ang_max = two_point_angle_fix(ang_max);
+            // ang_min = two_point_angle_fix(ang_min);
             //angle cannot scan fix
-            double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
-
-                if(ang1 < 57){
-                    ang1 = ang2 + 160;
-                }else if(ang2 > -56){
-                    ang2 = ang1 - 160;
-                }
-
-            ang1 = angle_fix(ang1);
-            ang2 = angle_fix(ang2);
-            global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
-            global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
+//                if(ang_max > - 56){
+//                    ang_max = ang_min - 160;
+//                }else if(ang_min < 57){
+//                    ang_min = ang_max + 160;
+//                }
+//            ang_max = angle_fix(ang_max);
+//            ang_min = angle_fix(ang_min);
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_max = ang_max;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_min = ang_min;
             double opgoal_left = msg->blue_left,opgoal_right = msg->blue_right;
             global_env->home[global_env->RobotNumber].opgoal_edge.left_dis = opgoal_left/100;
             global_env->home[global_env->RobotNumber].opgoal_edge.right_dis = opgoal_right/100;
         }else if(global_env->teamcolor == "Yellow"){
-            int ang1 = msg->yellow_ang1;
-            int ang2 = msg->yellow_ang2;
-            ang1 = two_point_angle_fix(ang1);
-            ang2 = two_point_angle_fix(ang2);
+            int ang_max = msg->yellow_ang_max;
+            int ang_min = msg->yellow_ang_min;
+            // ang_max = two_point_angle_fix(ang_max);
+            // ang_min = two_point_angle_fix(ang_min);
             //angle cannot scan fix
-            double opgoal_dis = global_env->home[global_env->RobotNumber].op_goal.distance;
-            if(opgoal_dis < 0.51){
-                if(ang1 < 57){
-                    ang1 = ang2 + 170;
-                }else if(ang2 > -56){
-                    ang2 = ang1 - 170;
-                }
-            }
-            ang1 = angle_fix(ang1);
-            ang2 = angle_fix(ang2);
-            global_env->home[global_env->RobotNumber].opgoal_edge.angle_1 = ang1;
-            global_env->home[global_env->RobotNumber].opgoal_edge.angle_2 = ang2;
+//                if(ang_max > - 56){
+//                    ang_max = ang_min - 160;
+//                }else if(ang_min < 57){
+//                    ang_min = ang_max + 160;
+//                }
+//            ang_max = angle_fix(ang_max);
+//            ang_min = angle_fix(ang_min);
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_max = ang_max;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_min = ang_min;
             double opgoal_left = msg->yellow_left,opgoal_right = msg->yellow_right;
             global_env->home[global_env->RobotNumber].opgoal_edge.left_dis = opgoal_left/100;
             global_env->home[global_env->RobotNumber].opgoal_edge.right_dis = opgoal_right/100;
         }
     }
 
-    int two_point_angle_fix(int angle){
-        int front = 46;
-        if(angle <= 225){
-            angle = angle - front;
-        }else{
-            angle = angle -(360+front);
-        }
-        return angle;
-    }
-    int angle_fix(int angle){
-        if(angle > 180){
-            angle = angle -360;
-        }else if(angle < -180){
-            angle = angle +360;
-        }
-        return angle;
-    }
+    // int two_point_angle_fix(int angle){
+    //     int front = 46;
+    //     if(angle <= 225){
+    //         angle = angle - front;
+    //     }else{
+    //         angle = angle -(360+front);
+    //     }
+    //     return angle;
+    // }
+//    int angle_fix(int angle){
+//        if(angle > 180){
+//            angle = angle -360;
+//        }else if(angle < -180){
+//       angle = angle +360;
+//        }
+//        return angle;
+//    }
 /*****/
 
     void subBlackObject(const std_msgs::Int32MultiArray::ConstPtr &msg){

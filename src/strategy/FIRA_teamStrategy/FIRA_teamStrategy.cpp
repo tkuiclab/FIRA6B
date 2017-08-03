@@ -26,6 +26,8 @@ void FIRA_teamStrategy_class::setEnv(Environment iEnv){
 //                                                   //
 //###################################################//
 void FIRA_teamStrategy_class::teamStrategy(){
+    // std::cout << "team_gamestate = " << env.gameState << std::endl;
+    static ros::Time start = ros::Time::now();
      switch(env.gameState){
         case GameState_Play:
             role_Play();
@@ -48,12 +50,12 @@ void FIRA_teamStrategy_class::teamStrategy(){
         case GameState_CornerKick:
             role_CornerKick();
             break;
-        case GameState_GoalKick:
-            role_GoalKick();
-            break;
         case GameState_AvoidBarrier:
             role_AvoidBarrier();
             break;
+        case GameState_GoalKick:
+            role_GoalKick();
+            break;            
     }
 }
 
@@ -131,6 +133,7 @@ void FIRA_teamStrategy_class::role_Halt(){
     roleAry[0] = Role_Halt;
     roleAry[1] = Role_Halt;
     roleAry[2] = Role_Halt;
+    gointoGoalKick = 1;
 }
 
 void FIRA_teamStrategy_class::role_FreeKick(){
@@ -158,7 +161,25 @@ void FIRA_teamStrategy_class::role_CornerKick(){
 }
 
 void FIRA_teamStrategy_class::role_GoalKick(){
+    // roleAry[1] = Role_GoalKick;
+    // roleAry[2] = Role_GoalKick; 
+    static ros::Time start = ros::Time::now();
+    ros::Time current = ros::Time::now();
+    double start_time = (double)(start.sec+(double)start.nsec/1000000000);
+    double current_time = (double)(current.sec+(double)current.nsec/1000000000);
+    double const int_calculate_time = 0.5;
 
+    if(gointoGoalKick == 1){
+        start.sec = current.sec;
+        start.nsec = current.nsec;
+        gointoGoalKick = 0;
+    }
+
+    if(current_time-start_time > int_calculate_time){ 
+        roleAry[0] = Role_Goalkeeper;
+    }else{
+        roleAry[0] = Role_GoalKick;
+    }
 }
 
 void FIRA_teamStrategy_class::role_AvoidBarrier(){

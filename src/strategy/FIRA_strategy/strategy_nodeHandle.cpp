@@ -14,7 +14,7 @@ Strategy_nodeHandle(int argc, char** argv):
 
 void Strategy_nodeHandle::ros_comms_init(){
     n = new ros::NodeHandle();
-    shoot = n->advertise<std_msgs::Int32>("/motion/shoot",1000);
+    shoot = n->advertise<std_msgs::Int32>("/motion/shoot",1);
     std::string robot_prefix = Robot_Topic_Prefix;
     std::string robotOpt_prefix = RobotOpt_Topic_Prefix;
     std::string robotPos_suffix = Robot_Position_Topic_Suffix;
@@ -39,16 +39,16 @@ void Strategy_nodeHandle::ros_comms_init(){
 
     //speed subscriber
     std::string robotSpeed_suffix = RobotSpeed_Topic_Suffix;
-    robot_1_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"1"+robotSpeed_suffix,1000);
-    robot_2_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"2"+robotSpeed_suffix,1000);
-    robot_3_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"3"+robotSpeed_suffix,1000);
-    robotOpt_1_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"1"+robotSpeed_suffix,1000);
-    robotOpt_2_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"2"+robotSpeed_suffix,1000);
-    robotOpt_3_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"3"+robotSpeed_suffix,1000);
+    robot_1_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"1"+robotSpeed_suffix,5);
+    robot_2_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"2"+robotSpeed_suffix,5);
+    robot_3_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"3"+robotSpeed_suffix,5);
+    robotOpt_1_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"1"+robotSpeed_suffix,5);
+    robotOpt_2_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"2"+robotSpeed_suffix,5);
+    robotOpt_3_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"3"+robotSpeed_suffix,5);
 
     //one_Robot speed publish
     std::string robotSpeed= Robot_Topic_Speed;
-    robot_speed_pub = n->advertise<geometry_msgs::Twist>(Robot_Topic_Speed,1000);
+    robot_speed_pub = n->advertise<geometry_msgs::Twist>(Robot_Topic_Speed,5);
 
     //Use_topic_gazebo_msgs_Model_States to get model position
     ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::ball_sub_fun,this);
@@ -153,7 +153,7 @@ void Strategy_nodeHandle::pubSpeed(ros::Publisher *puber,double v_x,double v_y,d
     speedMsg.angular.z = v_yaw ;
 
     if(IsSimulator==true){
-      speedMsg.linear.x = /*r_*/v_y;
+      speedMsg.linear.x = /*r'_*/v_y;
       speedMsg.linear.y = /*r_*/-v_x;
       puber->publish(speedMsg);
     }else if(IsSimulator==false){
@@ -177,7 +177,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     }
     double angle = msg->angular.z * rad2deg;
     bool IsVectorZero=0;
-    double Vdis_max = SPlanning_Velocity[0];//3
+    double Vdis_max = SPlanning_Velocity[0];//2.3
     double Vdis_min = SPlanning_Velocity[1];//0.3
     double VTdis_max = SPlanning_Velocity[2];//60
     double VTdis_min = SPlanning_Velocity[3];//30

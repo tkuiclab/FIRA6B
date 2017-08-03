@@ -31,6 +31,7 @@ const long PLAYERS_PER_SIDE = 3;
 #define Role_ThrowIn            5
 #define Role_CornerKick         6
 #define Role_AvoidBarrier       7
+#define Role_GoalKick           8
 
 #define action_Halt             0
 #define action_Goalkeeper       1
@@ -54,8 +55,9 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_Straight_Chase  19
 
 #define action_Goalkeeper_init 20
-#define action_Goalkeeper_blocking 21
-#define action_Goalkeeper_catching 22
+#define action_Goalkeeper_block 21
+#define action_Goalkeeper_push 22
+#define action_Goalkeeper_goalkick 23
 
 #define state_Init              0
 #define state_Chase             1
@@ -67,8 +69,9 @@ const long PLAYERS_PER_SIDE = 3;
 #define state_CornerKick        7
 
 #define state_GoalKeeper_init 8
-#define state_GoalKeeper_blocking 9
-#define state_GoalKeeper_catching 10
+#define state_GoalKeeper_block 9
+#define state_GoalKeeper_push 10
+#define state_GoalKeeper_goalkick 11
 
 #define Team_Blue 1
 #define Team_Yellow 2
@@ -84,7 +87,7 @@ typedef struct{
 }Vector3D;
 
 typedef struct{
-    int angle_1,angle_2;
+    int angle_max,angle_min;
     double distance,left_dis,right_dis;
 }Two_point;
 

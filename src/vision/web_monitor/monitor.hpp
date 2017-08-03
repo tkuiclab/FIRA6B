@@ -33,22 +33,28 @@ namespace enc = sensor_msgs::image_encodings;
 
 class object_Item{
   public:
-  int dis_max;
-  int dis_min;
-  int ang_max;
-  int ang_min;
-  int x;
-  int y;
-  int angle;
-  double distance;
+  int dis_max;        //pix
+  int dis_min;        //pix
+  int ang_max;        //pix
+  int ang_min;        //pix
+  int x;              //pix
+  int y;              //pix
+  int angle;          //pix
+  double distance;    //pix
   int size;
 ///////////////////
-  int left_dis;
-  int right_dis;
-  int left_x;
-  int left_y;
-  int right_x;
-  int right_y;
+  int left_dis;       //pix
+  int right_dis;      //pix
+  int left_x;         //pix
+  int left_y;         //pix
+  int right_x;        //pix
+  int right_y;        //pix
+  int fix_x;          //pix
+  int fix_y;          //pix
+  int fix_angle;      //pix
+  int fix_distance;   //pix
+  int fix_ang_max;    //pix
+  int fix_ang_min;    //pix
   string LR;
 };
 
@@ -242,7 +248,7 @@ public:
   void objectdet_change(Mat &, int, object_Item &);
   void creat_Obstclemap(Mat &, int);
   void creat_FIRA_map(Mat &, Mat &);
-
+  int Strategy_Angle(int angle);
   void objectdet_Obstacle(Mat &, int, object_Item *);
   void Mark_point(Mat &, int, int, int, int, int &, int);
   void object_Item_reset(object_Item &);

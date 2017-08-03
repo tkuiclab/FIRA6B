@@ -14,6 +14,7 @@ private:
     int roleAry[PLAYERS_PER_SIDE];
     //end  ---simulator---
     double vecAngle(Vector2d a,Vector2d b);
+    int gointoGoalKick;
 public:
     //start---simulator---
     void setOpponent(bool iBool){opponent = iBool;}
