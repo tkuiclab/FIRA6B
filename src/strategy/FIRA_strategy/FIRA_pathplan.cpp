@@ -361,7 +361,7 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
     double gla_angle = env.home[r_number].goal_large_area.angle;
     if(goal_angle>-90&&goal_angle<90){
         if(goal_min<0&&goal_max>=0){
-            if(fabs(gla_angle)<=1){
+            if(fabs(gla_angle)<=2){
                 printf("i can shoot \n");
                 shoot = SPlanning_Velocity[10];
             }
@@ -424,7 +424,7 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
     printf("gla_angle=%f\n",gla_angle);
     if(goal_angle>-90&&goal_angle<90){
         if(goal_min<0&&goal_max>=0){
-            if(fabs(gla_angle)<=1){
+            if(fabs(gla_angle)<=0.5){
                 printf("i can shoot \n");
                 shoot = SPlanning_Velocity[10];
             }
@@ -915,7 +915,7 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     double gla_angle = env.home[r_number].goal_large_area.angle;
     if(angle_dr>-90&&angle_dr<90){
         if(goal_min<0&&goal_max>=0){
-            if(fabs(gla_angle)<=1){
+            if(fabs(gla_angle)<=2){
                 printf("i can shoot \n");
                 shoot = SPlanning_Velocity[10];
             }
