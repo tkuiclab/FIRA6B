@@ -374,10 +374,10 @@ int main(int argc,char **argv)
     ros::init(argc, argv, "imu_3d");
     ros::NodeHandle n;
     ros::Publisher imu_pub = n.advertise<imu_3d::inertia>("imu_3d",1000);
-    ros::Publisher imu_data_pub = n.advertise<sensor_msgs::Imu>("imu_data",1000);
+    ros::Publisher imu_data_pub = n.advertise<sensor_msgs::Imu>("base_footprint",1000);
     ros::Subscriber speed_sub = n.subscribe("/FIRA/R1/Strategy/PathPlan/RobotSpeed",100,speed_stationary);
 
-    ros::Rate loop_rate(100);
+    ros::Rate loop_rate(20);
 
     struct InputLoopState inputLoop;
     struct freespace_MotionEngineOutput meOut;
@@ -386,6 +386,7 @@ int main(int argc,char **argv)
     struct MultiAxisSensor sensor;
     struct MultiAxisSensor angularVel;
     struct MultiAxisSensor orientation;
+    struct MultiAxisSensor accel_gravity;
     int rc;
 
     // Flag to indicate that the application should quit
@@ -419,6 +420,7 @@ int main(int argc,char **argv)
             freespace_util_getAccNoGravity(&meOut, &accel);
             freespace_util_getAngularVelocity(&meOut, &angularVel);
             freespace_util_getAngPos(&meOut, &orientation);
+            freespace_util_getAcceleration(&meOut, &accel_gravity);
             //freespace_util_getAcceleration(&meOut, &accel);
 
             //double gaga_tmp = sqrt(angularVel.z*angularVel.z);
@@ -549,7 +551,7 @@ int main(int argc,char **argv)
         *   @ author : Chu
         */
         sensor_msgs::Imu imuData;
-        imuData.header.frame_id = "imu_data";
+        imuData.header.frame_id = "base_footprint";
         imuData.header.stamp = ros::Time::now();
         imuData.orientation.x = orientation.x;
         imuData.orientation.y = orientation.y;
@@ -561,7 +563,13 @@ int main(int argc,char **argv)
         imuData.linear_acceleration.x = accel.x;
         imuData.linear_acceleration.y = accel.y;
         imuData.linear_acceleration.z = accel.z;
+        for(int i=0;i<9;i++){
+        imuData.orientation_covariance[i] = 1e-3;
+        imuData.angular_velocity_covariance[i] = 1e-3;
+        imuData.linear_acceleration_covariance[i] = 1e-3;
+        }
         imu_data_pub.publish(imuData);
+
         //printf("%f\t%f\n",position(0),position(1));
 
         inertia.yaw = DEGREES_TO_RADIANS(degree);
