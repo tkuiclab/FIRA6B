@@ -412,8 +412,8 @@
     position: relative;
     font-size: 15px;
     color: #000000;
-	font-family: DSEG7;
-	text-align: right;
+    font-family: DSEG7;
+    text-align: right;
 }
 
 #ScanButtonDiv {
@@ -657,9 +657,9 @@
     color: #4169E1;
     font-size: 15px;
 	
-	color: #000000;
-	font-family: DSEG7;
-	text-align: right;
+    color: #000000;
+    font-family: DSEG7;
+    text-align: right;
 }
 
 #WhiteButton {

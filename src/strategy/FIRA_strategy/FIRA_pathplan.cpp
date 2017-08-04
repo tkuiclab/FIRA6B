@@ -1945,36 +1945,20 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
         double distance_goal_large_area = env.home[r_number].goal_large_area.distance;
         double angle_opgoal_large_area = env.home[r_number].op_goal_large_area.angle;
         double distance_opgoal_large_area = env.home[r_number].op_goal_large_area.distance;
-//        printf("goal angle =%f, distance =%f\n",angle_goal_large_area,distance_goal_large_area);
-//        printf("opgoal angle =%f, op_distance =%f\n",angle_opgoal_large_area,distance_opgoal_large_area);
-        double transform_goal = env.home[r_number].goal.angle+90;
-        if(transform_goal>180){
-            transform_goal = transform_goal - 360;
-        }else if(transform_goal<-180){
-            transform_goal = transform_goal + 360;
+        double transform_angle_br = env.home[r_number].ball.angle+90;
+        //x:rcoswt y:rsinwt
+        if(transform_angle_br>180){
+            transform_angle_br=transform_angle_br-360;
         }
-        env.home[r_number].v_x = cos(transform_goal*deg2rad)*distance_dr;
-        env.home[r_number].v_y = sin(transform_goal*deg2rad)*distance_dr;
+        env.home[r_number].v_x =-sin(transform_angle_br*deg2rad)*distance_br;
+        env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*distance_br;
+        if(distance_br>0.35){
+            env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*distance_br*1.4;
+        }
+        env.home[r_number].v_yaw=angle_br;
+        printf("test1\n");
 
-        double transform_obstacle_angle = env.Support_Obstacle_angle;
-        if(transform_obstacle_angle>=999){
-            env.home[r_number].v_yaw = 0;
-        }else{
-            transform_obstacle_angle=transform_obstacle_angle+180;
-            printf("env.Support_Obstacle_angle=%f\n",env.Support_Obstacle_angle);
-            if(transform_obstacle_angle>180){
-                transform_obstacle_angle = transform_obstacle_angle -360;
-            }else if(transform_obstacle_angle<-180){
-                transform_obstacle_angle = transform_obstacle_angle +360;
-            }
-            env.home[r_number].v_yaw = transform_obstacle_angle;
-        }
-        if(distance_dr<2.5){
-            env.home[r_number].v_yaw = angle_goal_large_area;
-        }
-        printf("distance_dr=%f\n",distance_dr);
-        printf("env.Support_Obstacle_angle=%f\n",env.Support_Obstacle_angle);
-        printf("transform_obstacle_angle=%f\n",transform_obstacle_angle);
+
 
 
 }
