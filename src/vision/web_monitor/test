@@ -1,0 +1,201 @@
+int x_,y_;
+unsigned char B, G, R;
+if( color == YELLOWITEM){
+	for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
+		for (int distance = obj_.dis_min-20; distance <= obj_.dis_max; distance++) {
+			if ((angle >= dont_angle[0] && angle <= dont_angle[1]) ||
+				(angle >= dont_angle[2] && angle <= dont_angle[3]) ||
+				(angle >= dont_angle[4] && angle <= dont_angle[5])) {
+				break;
+			}     
+			//中心座標
+			x_ = distance * Angle_cos[angle];
+			y_ = distance * Angle_sin[angle];
+			//實際座標
+			x = Frame_Area(center_x + x_, Main_frame.cols);
+			y = Frame_Area(center_y - y_, Main_frame.rows);
+
+			B = Main_frame.data[(y * Main_frame.cols + x) * 3 + 0];
+			G = Main_frame.data[(y * Main_frame.cols + x) * 3 + 1];
+			R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
+			//if(color_map[R + (G << 8) + (B << 16)] & WHITEITEM){
+				// line(frame_, Point(x, y), Point(x, y), Scalar(255, 255, 255), 1);
+			//}
+
+
+///////////////////////////
+			if(color_map[R + (G << 8) + (B << 16)] & WHITEITEM) ){
+				find_gap[1][6] = find_gap[1][5] - find_gap[1][2];
+				if(find_gap[0][6] < find_gap[1][6]){
+					for(int i=0;i<7;i++){
+						find_gap[0][i] = find_gap[1][i];
+					}
+				}
+				for(int i=0;i<7;i++){
+					find_gap[1][i] = 0;
+				}
+
+			}
+ if (color_map[R + (G << 8) + (B << 16)] & color) {
+          if(find_gap[1][0]==0){
+            find_gap[1][0]=x;
+            find_gap[1][1]=y;
+            find_gap[1][2]=angle;
+          }else{
+            find_gap[1][3]=x;
+            find_gap[1][4]=y;
+            find_gap[1][5]=angle;
+          }
+          if(angle!=obj_.ang_max){
+            angle++;
+            //continue;
+          }
+        }
+/////////////////////
+		}
+	}	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////
+/*
+int x_,y_;
+unsigned char B, G, R;
+int find_gap[2][7]={0};
+if( color == YELLOWITEM){
+	for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
+		for (int distance = obj_.dis_min-20; distance <= obj_.dis_max; distance++) {
+			if ((angle >= dont_angle[0] && angle <= dont_angle[1]) ||
+				(angle >= dont_angle[2] && angle <= dont_angle[3]) ||
+				(angle >= dont_angle[4] && angle <= dont_angle[5])) {
+				break;
+			}     
+			//中心座標
+			x_ = distance * Angle_cos[angle];
+			y_ = distance * Angle_sin[angle];
+			//實際座標
+			x = Frame_Area(center_x + x_, Main_frame.cols);
+			y = Frame_Area(center_y - y_, Main_frame.rows);
+
+			B = Main_frame.data[(y * Main_frame.cols + x) * 3 + 0];
+			G = Main_frame.data[(y * Main_frame.cols + x) * 3 + 1];
+			R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
+
+			if (color_map[R + (G << 8) + (B << 16)] & color) {
+				if(find_gap[1][0]==0){
+					find_gap[1][0]=x;
+					find_gap[1][1]=y;
+					find_gap[1][2]=angle;
+				}else{
+					find_gap[1][3]=x;
+					find_gap[1][4]=y;
+					find_gap[1][5]=angle;
+				}
+			}
+
+			if(color_map[R + (G << 8) + (B << 16)] & WHITEITEM){
+				find_gap[1][6] = find_gap[1][5] - find_gap[1][2];
+				if(find_gap[0][6] < find_gap[1][6]){
+					for(int i=0;i<7;i++){
+						find_gap[0][i] = find_gap[1][i];
+					}
+				}
+				for(int i=0;i<7;i++){
+					find_gap[1][i] = 0;
+				}
+				//line(frame_, Point(x, y), Point(x, y), Scalar(255, 255, 255), 8);
+				break;
+			}
+		}
+	}	
+}
+
+
+
+  int x_,y_;
+  unsigned char B, G, R;
+  if( color == YELLOWITEM){
+     //找最大範圍
+     int find_gap[2][7]={0};
+     for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
+      for (int distance = obj_.dis_min; distance <= obj_.dis_max; distance++) {
+
+        if (angle >= dont_angle[0] && angle <= dont_angle[1] ||
+            angle >= dont_angle[2] && angle <= dont_angle[3] ||
+            angle >= dont_angle[4] && angle <= dont_angle[5]) {
+          angle++;
+          continue;
+        }        
+        //中心座標
+        x_ = distance * Angle_cos[angle];
+        y_ = distance * Angle_sin[angle];
+        //實際座標
+        x = Frame_Area(center_x + x_, Main_frame.cols);
+        y = Frame_Area(center_y - y_, Main_frame.rows);
+
+        B = Main_frame.data[(y * Main_frame.cols + x) * 3 + 0];
+        G = Main_frame.data[(y * Main_frame.cols + x) * 3 + 1];
+        R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
+
+		if(color_map[R + (G << 8) + (B << 16)] & WHITEITEM){
+			 line(frame_, Point(x, y), Point(x, y), Scalar(255, 255, 255), 1);
+		}
+      }
+    }
+  
+//if(color==YELLOWITEM)cout<<Strategy_Angle(find_gap[0][2])<<" "<<Strategy_Angle(find_gap[0][5])<<endl;
+    obj_.fix_ang_min = find_gap[0][2];
+    obj_.fix_ang_max = find_gap[0][5];
+}
+*/
+
+int x_,y_;
+unsigned char B, G, R;
+if( color == YELLOWITEM){
+	int start = obj_.dis_min;
+	if(obj_.dis_min > 60){start=obj_.dis_min-20;}
+	for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
+		for (int distance = start; distance <= obj_.dis_max; distance++) {
+			if ((angle >= dont_angle[0] && angle <= dont_angle[1]) ||
+				(angle >= dont_angle[2] && angle <= dont_angle[3]) ||
+				(angle >= dont_angle[4] && angle <= dont_angle[5])) {
+				break;
+			}     
+			//中心座標
+			x_ = distance * Angle_cos[angle];
+			y_ = distance * Angle_sin[angle];
+			//實際座標
+			x = Frame_Area(center_x + x_, Main_frame.cols);
+			y = Frame_Area(center_y - y_, Main_frame.rows);
+
+			B = Main_frame.data[(y * Main_frame.cols + x) * 3 + 0];
+			G = Main_frame.data[(y * Main_frame.cols + x) * 3 + 1];
+			R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
+			if(color_map[R + (G << 8) + (B << 16)] & WHITEITEM){
+				 line(frame_, Point(x, y), Point(x, y), Scalar(255, 255, 255), 1);
+			}
+
+		}
+	}	
+}
+///////////////////////////////////////////
