@@ -39,19 +39,19 @@ class object_Item{
   int ang_min;        //pix
   int x;              //pix
   int y;              //pix
-  int angle;          //front
+  int angle;          //pix
   double distance;    //pix
   int size;
 ///////////////////
-  int left_dis;       //onmi
-  int right_dis;      //onmi
+  int left_dis;       //pix
+  int right_dis;      //pix
   int left_x;         //pix
   int left_y;         //pix
   int right_x;        //pix
   int right_y;        //pix
   int fix_x;          //pix
   int fix_y;          //pix
-  int fix_angle;      //fort
+  int fix_angle;      //pix
   int fix_distance;   //pix
   int fix_ang_max;    //pix
   int fix_ang_min;    //pix
