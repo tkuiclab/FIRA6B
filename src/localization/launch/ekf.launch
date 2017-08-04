@@ -9,6 +9,5 @@
     <param name="debug" value="false"/>
     <param name="self_diagnose" value="false"/>
     <param name="output_frame" value="odom"/>
-    <param name="output_child_frame" value="base_link"/>
   </node>
  </launch>
