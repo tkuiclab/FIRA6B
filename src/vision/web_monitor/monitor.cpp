@@ -243,13 +243,10 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     Two_point_msg.blue_dis = Omni_distance(Blue_Item.distance);
     Two_point_msg.blue_ang_max = Strategy_Angle(Blue_Item.ang_max);
     Two_point_msg.blue_ang_min = Strategy_Angle(Blue_Item.ang_min);
-    if (Blue_Item.fix_distance != 0){
+
       Two_point_msg.blue_fix_ang_max = Strategy_Angle(Blue_Item.fix_ang_max);
       Two_point_msg.blue_fix_ang_min = Strategy_Angle(Blue_Item.fix_ang_min);
-    } else {
-      Two_point_msg.blue_fix_ang_max = Strategy_Angle(Blue_Item.ang_max);
-      Two_point_msg.blue_fix_ang_min = Strategy_Angle(Blue_Item.ang_min);
-    }
+
     Two_point_msg.blue_left = Omni_distance(Blue_Item.left_dis);
     Two_point_msg.blue_right = Omni_distance(Blue_Item.right_dis);
   } else {
@@ -259,13 +256,10 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     Two_point_msg.yellow_dis = Omni_distance(Yellow_Item.distance);
     Two_point_msg.yellow_ang_max = Strategy_Angle(Yellow_Item.ang_max);
     Two_point_msg.yellow_ang_min = Strategy_Angle(Yellow_Item.ang_min);
-    if (Yellow_Item.fix_distance != 0){
+
       Two_point_msg.yellow_fix_ang_max = Strategy_Angle(Yellow_Item.fix_ang_max);
       Two_point_msg.yellow_fix_ang_min = Strategy_Angle(Yellow_Item.fix_ang_min);
-    } else {
-      Two_point_msg.yellow_fix_ang_max = Strategy_Angle(Yellow_Item.ang_max);
-      Two_point_msg.yellow_fix_ang_min = Strategy_Angle(Yellow_Item.ang_min);
-    }
+
     Two_point_msg.yellow_left = Omni_distance(Yellow_Item.left_dis);
     Two_point_msg.yellow_right = Omni_distance(Yellow_Item.right_dis);
   } else {
@@ -1017,14 +1011,14 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
       }
     }
 //if(color==YELLOWITEM)cout<<obj_.angle<<" "<<obj_.fix_angle<<" "<<endl;
-    /*if(obj_.fix_distance == 0){
-      obj_.fix_x = obj_.x;
-      obj_.fix_y = obj_.y;
-      obj_.fix_angle = obj_.angle;
-      obj_.fix_distance = obj_.distance;
-      obj_.fix_ang_min = obj_.ang_min;
-      obj_.fix_ang_max = obj_.ang_max; 
-    }*/
+//    if(obj_.fix_distance == 0){
+//      obj_.fix_x = obj_.x;
+//      obj_.fix_y = obj_.y;
+//      obj_.fix_angle = obj_.angle;
+//      obj_.fix_distance = obj_.distance;
+//      obj_.fix_ang_min = obj_.ang_min;
+//      obj_.fix_ang_max = obj_.ang_max;
+//    }
   }
 /////////////////////////////////////////////////////////////////////////
   if (Angle_Adjustment(angle_ - center_front) < 180) {

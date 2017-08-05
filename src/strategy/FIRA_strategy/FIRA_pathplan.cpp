@@ -5,6 +5,9 @@
 using namespace std;
 static double Begin_time = 0;
 static double Current_time = 0;
+static double Shoot_Begin_time = 0;
+static double Shoot_Current_time = 0;
+static int    last_action= 0;
 static bool loopEnd;
 
 //=========Environment init=============//
@@ -218,6 +221,11 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
                 strategy_Straight_Attack(robotIndex);
                 break;
         }
+        if(last_action!=action){// switch gamestate
+            Shoot_Begin_time = ros::Time::now().toSec();
+            Shoot_Current_time = ros::Time::now().toSec();
+        }
+        last_action = action;
 }
 //###################################################//
 //                                                   //
@@ -424,17 +432,28 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
     double goal_max = env.home[r_number].goal_edge.max;
     double goal_min = env.home[r_number].goal_edge.min;
     double gla_angle = env.home[r_number].goal_large_area.angle;
+    double gla_distance = env.home[r_number].goal_large_area.distance;
     printf("gla_angle=%f\n",gla_angle);
     if(goal_angle>-90&&goal_angle<90){
-        if(goal_min<0&&goal_max>=0){
-            if(fabs(gla_angle)<=0.5){
-                printf("i can shoot \n");
-                shoot = SPlanning_Velocity[10];
+        if((goal_min<0&&goal_max>=0)/*&&((goal_angle<=goal_max-4)&&(goal_angle>=goal_min+8))*/){
+            if(fabs(gla_angle)<=2){
+                printf("target\n");
+                Shoot_Current_time = ros::Time::now().toSec();
+                if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.3){
+                    printf("shoot\n");
+                    printf("goal_angle=%f\n",goal_angle);
+                    printf("goal_max=%f\n",goal_max);
+                    printf("goal_min=%f\n",goal_min);
+                    shoot = SPlanning_Velocity[10];
+                }
+//                printf("goal_angle=%f\n",goal_angle);
+//                printf("goal_max=%f\n",goal_max);
+//                printf("goal_min=%f\n",goal_min);
+            }else{
+                Shoot_Current_time = ros::Time::now().toSec();
+                Shoot_Begin_time = ros::Time::now().toSec();
             }
         }
-        env.home[r_number].v_x =0;
-        env.home[r_number].v_y =0;
-        env.home[r_number].v_yaw = gla_angle*2;
 //    }
 //    if(fabs(goal_angle)<10){
 //        shoot = SPlanning_Velocity[10];
@@ -443,10 +462,16 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
 //        env.home[r_number].v_yaw = goal_angle*2;
     }else{
         shoot = 0;
-        env.home[r_number].v_x =0;
-        env.home[r_number].v_y =0;
-        env.home[r_number].v_yaw = gla_angle*2;
     }
+    env.home[r_number].v_x =0;
+    env.home[r_number].v_y =0;
+    if(gla_distance==0&&gla_angle==90){// cant find gla
+        env.home[r_number].v_yaw = 0;
+    }else{
+        env.home[r_number].v_yaw = gla_angle*5;
+    }
+
+
 }
 // useless play
 void FIRA_pathplan_class::strategy_KO5_Attack(int Robot_index){
@@ -1243,7 +1268,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
         case 1:
             des_angle = left_goal_angle - 20;
             if(des_angle < 15){
-                env.home[Robot_index].v_yaw = (yaw_speed)/6;
+                env.home[Robot_index].v_yaw = (yaw_speed)/5;
             }else{
                 env.home[Robot_index].v_yaw = yaw_speed;
             }
@@ -1265,7 +1290,7 @@ void FIRA_pathplan_class::strategy_PenaltyKick(int Robot_index){
         case 2:
             des_angle = right_goal_angle + 20;
             if(des_angle > -15){
-                env.home[Robot_index].v_yaw = (-yaw_speed)/6;
+                env.home[Robot_index].v_yaw = (-yaw_speed)/5;
             }else{
                 env.home[Robot_index].v_yaw = -yaw_speed;
             }
@@ -1950,12 +1975,12 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
         if(transform_angle_br>180){
             transform_angle_br=transform_angle_br-360;
         }
-        env.home[r_number].v_x =-sin(transform_angle_br*deg2rad)*distance_br;
-        env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*distance_br;
-        if(distance_br>0.35){
-            env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*distance_br*1.4;
-        }
-        env.home[r_number].v_yaw=angle_br;
+        env.home[r_number].v_x =-sin(transform_angle_br*deg2rad)*0.4;
+        env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*0.4;
+//        if(distance_br>0.35){
+//            env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*distance_br*1.4;
+//        }
+        env.home[r_number].v_yaw=-100;
         printf("test1\n");
 
 
@@ -3702,7 +3727,7 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
         double distance_dr = env.home[r_number].goal.distance;
         double op_distance_dr = env.home[r_number].op_goal.distance;
         double angle_br = env.home[r_number].ball.angle;
-        double angle_dr = env.home[r_number].goal.angle;
+        double goal_angle = env.home[r_number].goal.angle;
         double op_angle_dr = env.home[r_number].op_goal.angle;
         double goal_max = env.home[r_number].goal_edge.max;
         double goal_min = env.home[r_number].goal_edge.min;
@@ -3710,6 +3735,11 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 //        printf("goal angle =%f, distance =%f\n",angle_goal_large_area,distance_goal_large_area);
 //        printf("opgoal angle =%f, op_distance =%f\n",angle_opgoal_large_area,distance_opgoal_large_area);
         double transform_goal = env.home[r_number].goal.angle+90;
+        double transform_angle_br = env.home[r_number].ball.angle+90;
+        //x:rcoswt y:rsinwt
+        if(transform_angle_br>180){
+            transform_angle_br=transform_angle_br-360;
+        }
         if(transform_goal>180){
             transform_goal = transform_goal - 360;
         }else if(transform_goal<-180){
@@ -3731,27 +3761,67 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
             }
             env.home[r_number].v_yaw = transform_obstacle_angle;
         }
-        if(distance_dr<3){
-            if(distance_dr>2.5&&fabs(gla_angle)>90){
-                env.home[r_number].v_x = cos(transform_goal*deg2rad)*distance_dr/3;
-                env.home[r_number].v_y = sin(transform_goal*deg2rad)*distance_dr/3;
-            }
-            if(goal_min<0&&goal_max>=0){
-                if(fabs(gla_angle)<=2){
-                    printf("i can shoot \n");
-                    shoot = SPlanning_Velocity[10];
-                }
-            }
-            if(fabs(gla_angle)>5){
-               env.home[r_number].v_yaw = gla_angle*5;
+        if(distance_dr<3.5){
+            if(distance_dr<3.5&&gla_angle>60){
+                env.home[r_number].v_x =sin(transform_angle_br*deg2rad)*0.4;
+                env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*0.4;
+                env.home[r_number].v_yaw=100;
+            }else if(distance_dr<3.5&&gla_angle<-60){
+                env.home[r_number].v_x =-sin(transform_angle_br*deg2rad)*0.4;
+                env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*0.4;
+                env.home[r_number].v_yaw=-100;
             }else{
-               env.home[r_number].v_yaw = gla_angle;
+                env.home[r_number].v_x = cos(transform_goal*deg2rad)*distance_dr;
+                env.home[r_number].v_y = sin(transform_goal*deg2rad)*distance_dr;
+                env.home[r_number].v_yaw = gla_angle;
+            }
+//            if(goal_min<0&&goal_max>=0){
+//                if(fabs(gla_angle)<=2){
+//                    printf("i can shoot \n");
+//                    shoot = SPlanning_Velocity[10];
+//                }
+//            }
+            if(goal_angle>-90&&goal_angle<90){
+                if((goal_min<0&&goal_max>=0)/*&&((goal_angle<=goal_max-4)&&(goal_angle>=goal_min+8))*/){
+                    if(fabs(gla_angle)<=5){
+                        printf("target\n");
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.3){
+                            printf("shoot\n");
+                            printf("goal_angle=%f\n",goal_angle);
+                            printf("goal_max=%f\n",goal_max);
+                            printf("goal_min=%f\n",goal_min);
+                            shoot = SPlanning_Velocity[10];
+                        }
+        //                printf("goal_angle=%f\n",goal_angle);
+        //                printf("goal_max=%f\n",goal_max);
+        //                printf("goal_min=%f\n",goal_min);
+                    }else{
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        Shoot_Begin_time = ros::Time::now().toSec();
+                    }
+                }
+        //    }
+        //    if(fabs(goal_angle)<10){
+        //        shoot = SPlanning_Velocity[10];
+        //        env.home[r_number].v_x =vectornt(0)*1000;
+        //        env.home[r_number].v_y =vectornt(1)*1000;
+        //        env.home[r_number].v_yaw = goal_angle*2;
+            }else{
+                shoot = 0;
             }
 
         }
         printf("distance_dr=%f\n",distance_dr);
         printf("env.Support_Obstacle_angle=%f\n",env.Support_Obstacle_angle);
         printf("transform_obstacle_angle=%f\n",transform_obstacle_angle);
+//        env.home[r_number].v_x =-sin(transform_angle_br*deg2rad)*0.4;
+//        env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*0.4;
+//        if(distance_br>0.35){
+//            env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*distance_br*1.4;
+//        }
+//        env.home[r_number].v_yaw=-100;
+//        printf("test1\n");
 
 
 }
