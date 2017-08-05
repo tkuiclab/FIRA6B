@@ -270,10 +270,13 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
-    double ball_dis = env.home[r_number].ball.distance;
-
-    if(ball_dis != 0 && ball_dis < 3){
+    double ball_angle = env.home[r_number].ball.angle;
+    if(ball_angle != 0 && ball_angle != 999){
         state_GoalKeeper = state_GoalKeeper_block;
+    }else if(ball_angle == 999){
+        std::cout << "cannot find the ball" << std::endl;
+    }else if(ball_angle == 0){
+        std::cout << "need teamColor" << std::endl;
     }
 }
 
@@ -298,19 +301,27 @@ void FIRA_behavior_class::StateGoalKeeperBlock(int r_number){
         r_opgoal_dis = sqrt(r_opgoal_dis-0.64);
     }
     double position_angle = rad2deg * acos(-((r_opgoal_dis*r_opgoal_dis)-(opgoal_dis*opgoal_dis)-0.25)/opgoal_dis);
-
-    if(ball_to_opgoal_dis < 2 && position_angle < 70){
-//        state_GoalKeeper = state_GoalKeeper_push;
-    }else if(ball_to_opgoal_dis < 1.5 && position_angle < 80){
-//        state_GoalKeeper = state_GoalKeeper_push;
-    }else if(ball_dis < 0.7 && opgoal_left + opgoal_right < 1.8 ){
-//        state_GoalKeeper = state_GoalKeeper_push;
+    double opgoal_angle_reverse;
+    if(opgoal_angle > 0){
+        opgoal_angle_reverse = opgoal_angle - 180;
     }else{
-        std::cout << "not push" << std::endl;
+        opgoal_angle_reverse = 180 + opgoal_angle;
     }
-    std::cout << "r_opgoal_dis = " << r_opgoal_dis << std::endl;
-    std::cout << "position_angle = " << position_angle << std::endl;
-    std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
+
+    if(ball_angle == 999){
+       state_GoalKeeper = state_GoalKeeper_init;
+    }else if(ball_to_opgoal_dis < 2 && position_angle < 40 && opgoal_dis < 1){
+       state_GoalKeeper = state_GoalKeeper_push;
+            // std::cout << "push" << std::endl;
+    }else if(ball_dis < 0.7 && opgoal_left  < 1.2 && opgoal_right < 1.2 && opgoal_dis < 1){
+       state_GoalKeeper = state_GoalKeeper_push;
+            // std::cout << "push" << std::endl;
+    }else{
+        // std::cout << "no push" << std::endl;
+    }
+    // std::cout << "opgoal_reverse = " << opgoal_angle_reverse << std::endl;
+    // std::cout << "position_angle = " << position_angle << std::endl;
+    // std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
 }
 
 void FIRA_behavior_class::StateGoalKeeperPush(int r_number){
@@ -318,14 +329,36 @@ void FIRA_behavior_class::StateGoalKeeperPush(int r_number){
     double ball_angle = env.home[r_number].ball.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
     double opgoal_angle = env.home[r_number].op_goal.angle;
+    double opgoal_left = env.home[r_number].opgoal_edge.left_dis;
+    double opgoal_right = env.home[r_number].opgoal_edge.right_dis;
+    int opgoal_edge_angle_R = env.home[r_number].opgoal_edge.angle_max;
+    int opgoal_edge_angle_L = env.home[r_number].opgoal_edge.angle_min;
+
     double ball_to_opgoal_dis;
     ball_to_opgoal_dis = (opgoal_angle*ball_angle)>0 ? fabs(opgoal_angle-ball_angle) : fabs(opgoal_angle)+fabs(ball_angle);
     if(ball_to_opgoal_dis > 180){
         ball_to_opgoal_dis = 360 - ball_to_opgoal_dis;
     }
     ball_to_opgoal_dis =sqrt((opgoal_dis*opgoal_dis)+(ball_dis*ball_dis)-(2*opgoal_dis*ball_dis*cos(ball_to_opgoal_dis*deg2rad)));
-    if( opgoal_dis > 1.1 && ball_to_opgoal_dis > 1.3){
+    double r_opgoal_dis = 0.5*((opgoal_left*opgoal_left)+(opgoal_right*opgoal_right));
+    if(r_opgoal_dis < 0.64){
+        r_opgoal_dis = fabs(opgoal_dis - 0.5);
+    }else{
+        r_opgoal_dis = sqrt(r_opgoal_dis-0.64);
+    }
+    double position_angle = rad2deg * acos(-((r_opgoal_dis*r_opgoal_dis)-(opgoal_dis*opgoal_dis)-0.25)/opgoal_dis);
+
+    
+    if(ball_angle == 999){
+       state_GoalKeeper = state_GoalKeeper_init;
+    }else if( opgoal_dis > 1.1 && ball_to_opgoal_dis > 1.3){
         state_GoalKeeper = state_GoalKeeper_block;
+    }else if(position_angle > 40){
+        if(opgoal_left < 1.2 && ball_angle < opgoal_edge_angle_R - 10){
+        }else if(opgoal_right < 1.2 && ball_angle > opgoal_edge_angle_L + 10){
+        }else{
+            state_GoalKeeper = state_GoalKeeper_block;
+        }
     }
 //    std::cout << opgoal_dis << "   " << ball_to_opgoal_dis << std::endl;
 }
