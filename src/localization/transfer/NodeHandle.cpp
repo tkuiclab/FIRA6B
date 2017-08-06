@@ -97,10 +97,16 @@ void Client::odom_tf_pub()
         static double map_y = FB_y;
         static double last_imu = imu3d;
         double delta_x, delta_y;
-        if (fabs(FB_x - last_FB_x) / dt > 300) //  Detection the odom error
-            FB_x = last_FB_x;                  // let velocity > 6 m/s is error signal
-        if (fabs(FB_y - last_FB_y)/dt > 300)
+        if (fabs(FB_x - last_FB_x) / dt > 300) //  Detection the odom error let velocity > 6 m/s is error signal
+        {
+            printf("error odom\n");
+            FB_x = last_FB_x;
+        }
+        if (fabs(FB_y - last_FB_y) / dt > 300)
+        {
+            printf("error odom\n");
             FB_y = last_FB_y;
+        }
         delta_x = FB_x - last_FB_x;
         delta_y = FB_y - last_FB_y;
         last_FB_x = FB_x;
@@ -127,10 +133,6 @@ void Client::odom_tf_pub()
         odom.twist.twist.linear.x = delta_x / dt;
         odom.twist.twist.linear.y = delta_y / dt;
         odom.twist.twist.angular.z = (-1) * (imu3d - last_imu) / dt;
-        // printf("dx=%lf\tdy=%lf\tdz=%lf\n",delta_x,delta_y,(-1) * (imu3d - last_imu));
-        if(odom.twist.twist.linear.x != 0 || odom.twist.twist.linear.y != 0 || odom.twist.twist.angular.z != 0)
-            printf("x=%lf\ty=%lf\tz=%lf\n",odom.twist.twist.linear.x,odom.twist.twist.linear.y,odom.twist.twist.angular.z);
-
         last_imu = imu3d;
         Odom_pub.publish(odom);
     }
