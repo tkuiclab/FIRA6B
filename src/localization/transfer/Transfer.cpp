@@ -11,7 +11,7 @@ int main(int argc, char **argv){
     mNodeHandle.ros_comms_init();
     imgNode.ros_comms_init();
     imgNode.load_map();             //Building map
-    sleep(1);
+    sleep(0.5);
     ros::Rate loop_rate(50);
     while(ros::ok())
     {
