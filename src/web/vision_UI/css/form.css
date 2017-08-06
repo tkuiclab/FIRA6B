@@ -410,10 +410,10 @@
     border: 1px solid black;
     border-radius: 3px;
     position: relative;
-    font-size: 15px;
+    font-size: 17px;
     color: #000000;
-    font-family: DSEG7;
-    text-align: right;
+	font-family: DSEG7;
+	text-align: right;
 }
 
 #ScanButtonDiv {
@@ -655,11 +655,11 @@
     border: 1px solid black;
     border-radius: 3px;
     color: #4169E1;
-    font-size: 15px;
+    font-size: 17px;
 	
-    color: #000000;
-    font-family: DSEG7;
-    text-align: right;
+	color: #000000;
+	font-family: DSEG7;
+	text-align: right;
 }
 
 #WhiteButton {

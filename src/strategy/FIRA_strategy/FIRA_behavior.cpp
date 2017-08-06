@@ -393,9 +393,12 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 break;
             }
         double op_distance_dr = env.home[robotIndex].op_goal.distance;
+        double distance_dr = env.home[robotIndex].goal.distance;
         //printf("op_distance_dr=%f\n",op_distance_dr);
         if(op_distance_dr<1.6){
-            //printf("limit area\n");
+            printf("limit area\n");
+            printf("distance_dr=%f\n",distance_dr);
+            printf("op_distance_dr=%f\n",op_distance_dr);
             actionAry[robotIndex] = action_LeaveLimitArea;
         }
 }
