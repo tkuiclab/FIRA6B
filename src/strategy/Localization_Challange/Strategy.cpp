@@ -16,9 +16,9 @@ Strategy::Strategy()
     _CurrentTarget = 0;
     _Location = new LocationStruct;
     _Env = new Environment;
-    for(int i=0;i<5;i++)
-        for(int j=0;j<5;j++)
-            through_path_ary[i][j]=0;
+    for (int i = 0; i < 5; i++)
+        for (int j = 0; j < 5; j++)
+            through_path_ary[i][j] = 0;
 }
 void Strategy::setParam(Parameter *Param)
 {
@@ -101,14 +101,12 @@ void Strategy::StrategyLocalization()
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         v_x = v_x_temp;
         v_y = v_y_temp;
-        v_yaw = atan2(_Location->LocationPoint[_CurrentTarget].y + compensation_y, _Location->LocationPoint[_CurrentTarget].x + compensation_x) * RAD2DEG - absolute_front;
         Normalization(v_yaw);
-        ROS_INFO("v_yaw = %lf!!!!!!", v_yaw);
         if (fabs(v_yaw) < 3)
             v_yaw = 0;
         if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
         {
-            _LocationState = turn;
+            _LocationState = back;
             flag = TRUE;
         }
         break;
@@ -121,14 +119,13 @@ void Strategy::StrategyLocalization()
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         v_x = v_x_temp;
         v_y = v_y_temp;
-        v_yaw = atan2(_Location->MiddlePoint[_CurrentTarget].y + compensation_y, _Location->MiddlePoint[_CurrentTarget].x + compensation_x) * RAD2DEG - absolute_front;
         if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
         {
             if (_CurrentTarget == 4)
                 _LocationState = finish;
             else
             {
-                _LocationState = turn;
+                _LocationState = forward;
                 flag = TRUE;
             }
             _CurrentTarget++;
@@ -137,52 +134,12 @@ void Strategy::StrategyLocalization()
     case finish: // Finish localization challange
         v_x = 0;
         v_y = 0;
+        v_yaw = 0;
         break;
     case chase: // When robot lost the ball
         v_x = _Env->Robot.ball.distance * cos(_Env->Robot.ball.angle * DEG2RAD);
         v_y = _Env->Robot.ball.distance * cos(_Env->Robot.ball.angle * DEG2RAD);
         v_yaw = _Env->Robot.ball.angle;
-        break;
-    case turn:
-        if (_Last_state == forward)
-        {
-            vector_tr.x = _Location->MiddlePoint[_CurrentTarget].x - Robot.pos.x;
-            vector_tr.y = _Location->MiddlePoint[_CurrentTarget].y - Robot.pos.y;
-        }
-        else if (_Last_state == back)
-        {
-            vector_tr.x = _Location->LocationPoint[_CurrentTarget].x - Robot.pos.x;
-            vector_tr.y = _Location->LocationPoint[_CurrentTarget].y - Robot.pos.y;
-        }
-        else if (_Last_state == turn)
-        {
-            vector_tr.x = _Location->LocationPoint[_CurrentTarget].x - Robot.pos.x;
-            vector_tr.y = _Location->LocationPoint[_CurrentTarget].y - Robot.pos.y;
-        }
-        vector_tr.yaw = atan2(vector_tr.y, vector_tr.x) * RAD2DEG - absolute_front;
-        v_x = 0;               // don't give it horizen velocity
-        v_y = 100;             // full power
-        v_yaw = vector_tr.yaw; // turn to target
-        Normalization(v_yaw);
-        ROS_INFO("v_yaw = %lf!!!!!!", v_yaw);
-        if (fabs(v_yaw) <= 3)
-        {
-            if (_Last_state == forward)
-            {
-                ROS_INFO("change to back");
-                _LocationState = back;
-            }
-            else if (_Last_state == back)
-            {
-                ROS_INFO("change to forward");
-                _LocationState = forward;
-            }
-            else if (_Last_state == turn)
-            {
-                ROS_INFO("change to forward");
-                _LocationState = forward;
-            }
-        }
         break;
     case error:
         printf("ERROR STATE\n");
@@ -192,7 +149,6 @@ void Strategy::StrategyLocalization()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    // OptimatePath();
     showInfo(imu, compensation_x, compensation_y);
     Normalization(v_yaw);
     _Env->Robot.v_x = v_x;
@@ -242,18 +198,17 @@ void Strategy::StrategyLocalization2()
     //    }
     //   ================================   Enable chase mode end   ==================================
     Normalization(absolute_front);
-//    ROS_INFO("absolute_front=%lf",absolute_front);
     static int counter = 0;
     switch (_LocationState)
     {
     case forward: // Move to target poitn
-        Forward(Robot,v_x,v_y,v_yaw,imu,flag,absolute_front,compensation_x,compensation_y);
+        Forward(Robot, v_x, v_y, v_yaw, imu, flag, absolute_front, compensation_x, compensation_y);
         break;
     case chase:
         Chase();
         break;
     case turn:
-        Turn(Robot,v_x,v_y,v_yaw,imu,flag,absolute_front);
+        Turn(Robot, v_x, v_y, v_yaw, imu, flag, absolute_front);
         break;
     case finish:
         v_x = 0;
@@ -269,8 +224,9 @@ void Strategy::StrategyLocalization2()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    if(counter++>5){
-        showInfo(order,imu, compensation_x, compensation_y);
+    if (counter++ > 5)
+    {
+        showInfo(order, imu, compensation_x, compensation_y);
         counter = 0;
     }
     Normalization(v_yaw);
@@ -278,7 +234,7 @@ void Strategy::StrategyLocalization2()
     _Env->Robot.v_y = v_y;
     _Env->Robot.v_yaw = v_yaw;
 }
-void Strategy::Forward(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,double imu,int &flag,double absolute_front,double compensation_x,double compensation_y)
+void Strategy::Forward(RobotData &Robot, double &v_x, double &v_y, double &v_yaw, double imu, int &flag, double absolute_front, double compensation_x, double compensation_y)
 {
     _Last_state = _LocationState;
     flag = FALSE;
@@ -306,7 +262,7 @@ void Strategy::Forward(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,do
         }
     }
 }
-void Strategy::Turn(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,double imu,int &flag,double absolute_front)
+void Strategy::Turn(RobotData &Robot, double &v_x, double &v_y, double &v_yaw, double imu, int &flag, double absolute_front)
 {
     Vector3D vector_tr;
     vector_tr.x = _Target.TargetPoint[_CurrentTarget].x - Robot.pos.x;
@@ -318,12 +274,13 @@ void Strategy::Turn(RobotData &Robot,double &v_x,double &v_y,double &v_yaw,doubl
     v_x = 0;
     v_yaw = vector_tr.yaw; // turn to target
     Normalization(v_yaw);
-    if(fabs(vector_tr.x)<0.1 && fabs(vector_tr.y)<0.1)
+    if (fabs(vector_tr.x) < 0.1 && fabs(vector_tr.y) < 0.1)
     {
-        printf("vx=%lf\tvy=%lf\n",vector_tr.x,vector_tr.y);
+        printf("vx=%lf\tvy=%lf\n", vector_tr.x, vector_tr.y);
         printf("a\nA\na\na\n\a\n");
         _CurrentTarget++;
-        if(_CurrentTarget>_Target.size){
+        if (_CurrentTarget > _Target.size)
+        {
             printf("error\n");
             exit(0);
         }
@@ -360,7 +317,7 @@ std::vector<int> Strategy::OptimatePath()
     }
     std::vector<int> order;
     std::vector<int> enable_point;
-    for(int i=0;i<5;i++)
+    for (int i = 0; i < 5; i++)
         enable_point.push_back(i);
     std::vector<int>::iterator it;
     printf("\n");
@@ -444,8 +401,9 @@ std::vector<int> Strategy::OptimatePath()
         break;
     case right:
         // pick first point
-        for(int i=0;i<enable_point.size();i++){
-            if(_Location->LocationPoint[enable_point[i]].angle>0 && _Location->LocationPoint[enable_point[i]].angle<90)
+        for (int i = 0; i < enable_point.size(); i++)
+        {
+            if (_Location->LocationPoint[enable_point[i]].angle > 0 && _Location->LocationPoint[enable_point[i]].angle < 90)
                 temp = enable_point[i];
         }
         order.push_back(temp);
@@ -470,8 +428,9 @@ std::vector<int> Strategy::OptimatePath()
         break;
     case left:
         // pick first point
-        for(int i=0;i<enable_point.size();i++){
-            if(_Location->LocationPoint[enable_point[i]].angle>90 && _Location->LocationPoint[enable_point[i]].angle<180)
+        for (int i = 0; i < enable_point.size(); i++)
+        {
+            if (_Location->LocationPoint[enable_point[i]].angle > 90 && _Location->LocationPoint[enable_point[i]].angle < 180)
                 temp = enable_point[i];
         }
         order.push_back(temp);
@@ -514,11 +473,11 @@ std::vector<int> Strategy::OptimatePath()
             _Target.TargetPoint[i].angle = _Location->LocationPoint[order[i]].angle;
         }
     }
-    // =================   printf final point to run  ============================  
-//     for(int i=0;i<_Target.size;i++)
-//     {
-//         printf("%d : x=%lf\ty=%lf\tangle=%lf\n",i,_Target.TargetPoint[i].x,_Target.TargetPoint[i].y,_Target.TargetPoint[i].angle);
-//     }
+    // =================   printf final point to run  ============================
+    //     for(int i=0;i<_Target.size;i++)
+    //     {
+    //         printf("%d : x=%lf\ty=%lf\tangle=%lf\n",i,_Target.TargetPoint[i].x,_Target.TargetPoint[i].y,_Target.TargetPoint[i].angle);
+    //     }
     // =================   printf order  and   unrunning point with __ to determind   ===================
     // for (int i = 0; i < order.size(); i++)          // -1 is origin point
     // {
@@ -530,7 +489,7 @@ std::vector<int> Strategy::OptimatePath()
     // printf("\n");
     return order;
 }
-void Strategy::showInfo(std::vector<int> order,double imu, double compensation_x, double compensation_y)
+void Strategy::showInfo(std::vector<int> order, double imu, double compensation_x, double compensation_y)
 {
     std::string Sv_x = "→";
     std::string Sv_y = "↑";
@@ -557,12 +516,11 @@ void Strategy::showInfo(std::vector<int> order,double imu, double compensation_x
     printf("*                  START                      *\n");
     printf("***********************************************\n");
 
-
     //   ====================   test   =========================
     switch (_LocationState)
     {
     case forward:
-        printf("Target : Point %d\t", order[_CurrentTarget]+1);
+        printf("Target : Point %d\t", order[_CurrentTarget] + 1);
         printf("State : Forward\n");
         break;
     case finish:
@@ -573,7 +531,7 @@ void Strategy::showInfo(std::vector<int> order,double imu, double compensation_x
         printf("State : Chase\n");
         break;
     case turn:
-        printf("Target : Point %d\t", order[_CurrentTarget]+1);
+        printf("Target : Point %d\t", order[_CurrentTarget] + 1);
         printf("State : Turn\n");
         break;
     case error:
@@ -686,18 +644,20 @@ void Strategy::Normalization(double &angle)
     else if (angle < -180)
         angle += 360;
 }
-void Strategy::EraseElement(std::vector<int>& vec,int index)
+void Strategy::EraseElement(std::vector<int> &vec, int index)
 {
-    for(int i=0;i<vec.size();i++){
-        if(vec[i]==index){
+    for (int i = 0; i < vec.size(); i++)
+    {
+        if (vec[i] == index)
+        {
             index = i;
             break;
         }
     }
-    std::vector<int>::iterator it = vec.begin()+index;
+    std::vector<int>::iterator it = vec.begin() + index;
     vec.erase(it);
 }
-void Strategy::MinAngle(std::vector<int>& order,std::vector<int>& enable_point,int front)
+void Strategy::MinAngle(std::vector<int> &order, std::vector<int> &enable_point, int front)
 {
     int back_flag = 1;
     int temp;
@@ -718,7 +678,7 @@ void Strategy::MinAngle(std::vector<int>& order,std::vector<int>& enable_point,i
             back_flag = 0;
         }
     }
-    if(back_flag)
+    if (back_flag)
         order.push_back(-1);
     order.push_back(temp);
     EraseElement(enable_point, temp);
