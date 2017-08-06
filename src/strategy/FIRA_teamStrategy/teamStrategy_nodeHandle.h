@@ -131,13 +131,16 @@ public:
         }else{
           pubMsg.data.push_back(0);
         }
+
         pubMsg.data.push_back(global_env->home[rolearray].goal.distance);
         pubMsg.data.push_back(left_right);
 //        printf("Chase_Strategy[3]=%lf\n",fabs(Chase_Strategy[3]));
 //        printf("ball.angle=%lf\n",global_env->home[rolearray].ball.angle);
 //        printf("Chase_Strategy[4]=%lf\n",fabs(Chase_Strategy[4]));
 //        printf("ball.distance=%lf\n",global_env->home[rolearray].ball.distance);
+
         this_robot_info_pub.publish(pubMsg);
+
 
     }
     ros::Publisher this_robot_info_pub;
