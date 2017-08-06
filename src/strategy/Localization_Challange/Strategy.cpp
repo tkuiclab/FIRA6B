@@ -255,6 +255,12 @@ void Strategy::StrategyLocalization2()
     case turn:
         Turn(Robot,v_x,v_y,v_yaw,imu,flag,absolute_front);
         break;
+    case finish:
+        v_x = 0;
+        v_y = 0;
+        v_yaw = 0;
+        printf("Congratulation !!!\n");
+        break;
     case error:
         printf("ERROR STATE\n");
         exit(FAULTEXECUTING);
