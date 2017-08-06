@@ -8,7 +8,7 @@ Strategy_nodeHandle(int argc, char** argv):
 {   
     global_env = new Environment;
     global_env->SaveParam = 0;
-    roleAry[0] = Role_Goalkeeper;
+    //roleAry[0] = Role_Goalkeeper;
 }
 
 

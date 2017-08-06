@@ -271,11 +271,10 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //###################################################//
 void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
     double ball_angle = env.home[r_number].ball.angle;
-    if(ball_angle != 0 && ball_angle != 999){
+    double ball_dis = env.home[r_number].ball.distance;    
+    if( ball_dis !=0 && ball_angle != 999 ){
         state_GoalKeeper = state_GoalKeeper_block;
-    }else if(ball_angle == 999){
-        std::cout << "cannot find the ball" << std::endl;
-    }else if(ball_angle == 0){
+    }else if(ball_angle == 0 && ball_dis == 0){
         std::cout << "need teamColor" << std::endl;
     }
 }
@@ -309,15 +308,13 @@ void FIRA_behavior_class::StateGoalKeeperBlock(int r_number){
     }
 
     if(ball_angle == 999){
-       state_GoalKeeper = state_GoalKeeper_init;
-    }else if(ball_to_opgoal_dis < 2 && position_angle < 40 && opgoal_dis < 1){
+        state_GoalKeeper = state_GoalKeeper_init;
+     }else if(ball_to_opgoal_dis < 2.5 && position_angle < 40 && opgoal_dis < 1.1){
        state_GoalKeeper = state_GoalKeeper_push;
-            // std::cout << "push" << std::endl;
-    }else if(ball_dis < 0.7 && opgoal_left  < 1.2 && opgoal_right < 1.2 && opgoal_dis < 1){
-       state_GoalKeeper = state_GoalKeeper_push;
-            // std::cout << "push" << std::endl;
-    }else{
-        // std::cout << "no push" << std::endl;
+    }else if(ball_to_opgoal_dis < 1.2 && position_angle < 40){
+        state_GoalKeeper = state_GoalKeeper_push;
+    }else if(ball_dis < 1.2 && opgoal_dis < 1.25){
+        state_GoalKeeper = state_GoalKeeper_push;
     }
     // std::cout << "opgoal_reverse = " << opgoal_angle_reverse << std::endl;
     // std::cout << "position_angle = " << position_angle << std::endl;
@@ -351,16 +348,21 @@ void FIRA_behavior_class::StateGoalKeeperPush(int r_number){
     
     if(ball_angle == 999){
        state_GoalKeeper = state_GoalKeeper_init;
-    }else if( opgoal_dis > 1.1 && ball_to_opgoal_dis > 1.3){
+    }else if( opgoal_dis > 1.2 && ball_to_opgoal_dis > 1.5){
         state_GoalKeeper = state_GoalKeeper_block;
-    }else if(position_angle > 40){
-        if(opgoal_left < 1.2 && ball_angle < opgoal_edge_angle_R - 10){
-        }else if(opgoal_right < 1.2 && ball_angle > opgoal_edge_angle_L + 10){
-        }else{
-            state_GoalKeeper = state_GoalKeeper_block;
-        }
     }
-//    std::cout << opgoal_dis << "   " << ball_to_opgoal_dis << std::endl;
+    // }else if(position_angle > 40){
+    //     if(opgoal_left < 1.2 && ball_angle < opgoal_edge_angle_R - 15){
+    //     }else if(opgoal_right < 1.2 && ball_angle > opgoal_edge_angle_L + 15){
+    //     }else{
+    //         state_GoalKeeper = state_GoalKeeper_block;
+    //     }
+    // }
+
+    // std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
+    // std::cout << "opgoal_dis = " << opgoal_dis << std::endl;
+    // std::cout << "ball_dis = " << ball_dis << std::endl;
+
 }
 
 void FIRA_behavior_class::StateGoalKeeperGoalKick(int r_number){
