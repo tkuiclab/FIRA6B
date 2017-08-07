@@ -50,11 +50,10 @@ parameter END	=	8'b10000000;
 //=============================================================================
 //	divide information to 6 part and 8 bits per part
 reg		[7:0]	rData_0, rData_1, rData_2, rData_3, rData_4, rData_5,rData_6;
-reg		[7:0]	rCheck_sum;
+
 reg	[SIZE-1:0]	state;
 
 reg				rRx_ready;
-
 
 //=============================================================================
 // Structural coding
@@ -117,25 +116,11 @@ always @(posedge iCLK) begin
 		endcase
 	end
 	else begin
-//		oCMD_Motor1	<=	rData_2;		// give oCMD_Motor1 Data
-//		oCMD_Motor2	<=	rData_3;		// give oCMD_Motor2 Data
-//		oCMD_Motor3	<=	rData_4;		// give oCMD_Motor3 Data
-//		oCMD_Motor4	<=	rData_5;		// give oCMD_Motor4 Data
-//		okick		<=	rData_6[7];		// shoot a ball at the goal
-		rCheck_sum <= (rData_2+rData_3)+(rData_4+rData_5);
-		if((rCheck_sum==rData_6)&&(rData_0==8'hFF)&&(rData_1==8'hFA))begin
-			oCMD_Motor1	<=	rData_2;		// give oCMD_Motor1 Data
-			oCMD_Motor2	<=	rData_3;		// give oCMD_Motor2 Data
-			oCMD_Motor3	<=	rData_4;		// give oCMD_Motor3 Data
-			oCMD_Motor4	<=	rData_5;		// give oCMD_Motor4 Data
-//			okick		<=	rData_6[7];		// shoot a ball at the goal
-		end
-		else begin
-			oCMD_Motor1	<=	oCMD_Motor1;		// give oCMD_Motor1 Data
-			oCMD_Motor2	<=	oCMD_Motor1;		// give oCMD_Motor2 Data
-			oCMD_Motor3	<=	oCMD_Motor1;		// give oCMD_Motor3 Data
-			oCMD_Motor4	<=	oCMD_Motor1;		// give oCMD_Motor4 Data
-		end
+		oCMD_Motor1	<=	rData_2;		// give oCMD_Motor1 Data
+		oCMD_Motor2	<=	rData_3;		// give oCMD_Motor2 Data
+		oCMD_Motor3	<=	rData_4;		// give oCMD_Motor3 Data
+		oCMD_Motor4	<=	rData_5;		// give oCMD_Motor4 Data
+		okick		<=	rData_6[7];		// shoot a ball at the goal
 		oRx_done	<=	0;
 	end
 	rRx_ready	<=	iRx_ready;
