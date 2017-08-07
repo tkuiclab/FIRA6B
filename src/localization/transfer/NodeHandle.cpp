@@ -100,11 +100,13 @@ void Client::odom_tf_pub()
         if (fabs(FB_x - last_FB_x) / dt > 300) //  Detection the odom error let velocity > 6 m/s is error signal
         {
             printf("error odom\n");
+            printf("last_FB_x=%lf\tcurrent_FB_x=%lf\n",last_FB_x,FB_x);
             FB_x = last_FB_x;
         }
         if (fabs(FB_y - last_FB_y) / dt > 300)
         {
             printf("error odom\n");
+            printf("last_FB_y=%lf\tcurrent_FB_y=%lf\n",last_FB_y,FB_y);
             FB_y = last_FB_y;
         }
         delta_x = FB_x - last_FB_x;

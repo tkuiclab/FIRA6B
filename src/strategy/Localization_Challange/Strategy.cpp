@@ -218,11 +218,14 @@ void Strategy::StrategyLocalization2()
         break;
     case error:
         printf("ERROR STATE\n");
-        exit(FAULTEXECUTING);
+        v_x = 0;
+        v_y = 0;
+        v_yaw = 0;
+        //exit(FAULTEXECUTING);
         break;
     default: // ERROR SIGNAL
         printf("UNDEFINE STATE\n");
-        exit(FAULTEXECUTING);
+        //exit(FAULTEXECUTING);
     }
     if (counter++ > 5)
     {
@@ -247,7 +250,6 @@ void Strategy::Forward(RobotData &Robot, double &v_x, double &v_y, double &v_yaw
     v_y = v_y_temp;
     v_yaw = atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y - Robot.pos.y, _Target.TargetPoint[_CurrentTarget].x + compensation_x - Robot.pos.x) * RAD2DEG - absolute_front;
     Normalization(v_yaw);
-    v_yaw /= 2;
     if (fabs(v_yaw) < 3)
         v_yaw = 0;
     if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
@@ -268,27 +270,30 @@ void Strategy::Turn(RobotData &Robot, double &v_x, double &v_y, double &v_yaw, d
     vector_tr.x = _Target.TargetPoint[_CurrentTarget].x - Robot.pos.x;
     vector_tr.y = _Target.TargetPoint[_CurrentTarget].y - Robot.pos.y;
     vector_tr.yaw = atan2(vector_tr.y, vector_tr.x) * RAD2DEG - absolute_front;
-    //v_x = 0.7;               // don't give it horizen velocity
-    //v_y = 0.7;             // full power
-    v_y = 0.7;
-    v_x = 0;
-    v_yaw = vector_tr.yaw; // turn to target
-    Normalization(v_yaw);
-    if (fabs(vector_tr.x) < 0.1 && fabs(vector_tr.y) < 0.1)
+    if (fabs(vector_tr.x) < 0.3 && fabs(vector_tr.y) < 0.3)
     {
-        printf("vx=%lf\tvy=%lf\n", vector_tr.x, vector_tr.y);
-        printf("a\nA\na\na\n\a\n");
         _CurrentTarget++;
         if (_CurrentTarget > _Target.size)
         {
             printf("error\n");
-            exit(0);
+            _LocationState = finish;
         }
     }
-    if (fabs(v_yaw) <= 15)
+    v_y = 99;   // old value is 0.7 
+    v_x = 0;
+    v_yaw = vector_tr.yaw; // turn to target
+    Normalization(v_yaw);
+    if (fabs(v_yaw) <= 35)
     {
-        ROS_INFO("change to forward");
-        _LocationState = forward;
+        printf("Special slow motion \n");
+        v_x = 0;
+        v_y = 0;
+        v_yaw = vector_tr.yaw; // turn to target
+        if (fabs(v_yaw) <= 3)
+        {
+            printf("Change mode to forward \n");
+            _LocationState = forward;
+        }
     }
 }
 void Strategy::Chase()
