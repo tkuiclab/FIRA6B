@@ -244,8 +244,20 @@ void Strategy::Forward(RobotData &Robot, double &v_x, double &v_y, double &v_yaw
     v_x = (_Target.TargetPoint[_CurrentTarget].x + compensation_x) - Robot.pos.x;
     v_y = (_Target.TargetPoint[_CurrentTarget].y + compensation_y) - Robot.pos.y;
     double v_x_temp, v_y_temp;
-    v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
-    v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
+    //    <<<<<<<  HEAD   origin code in 2017.8.8
+    // v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
+    // v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
+    //    >>>>>>>>  END   origin code in 2017.8.8
+
+    //    <<<<<<<  HEAD   temp code in 2017.8.8
+    double min_compensation = 0;                                            // because of yaw i need to rotate a min
+    if((-imu) * DEG2RAD > 0)
+    min_compensation = -3;                                                  // 3 is a value to compensation the yaw speed 
+    else if ((-imu) * DEG2RAD < 0)
+        min_compensation = 3;
+    v_x_temp = v_x * cos((-imu) * DEG2RAD + min_compensation) - v_y * sin((-imu) * DEG2RAD + min_compensation);       
+    v_y_temp = v_x * sin((-imu) * DEG2RAD + min_compensation) + v_y * cos((-imu) * DEG2RAD + min_compensation);
+    //    >>>>>>>>  END   temp code in 2017.8.8
     v_x = v_x_temp;
     v_y = v_y_temp;
     v_yaw = atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y - Robot.pos.y, _Target.TargetPoint[_CurrentTarget].x + compensation_x - Robot.pos.x) * RAD2DEG - absolute_front;
@@ -279,22 +291,37 @@ void Strategy::Turn(RobotData &Robot, double &v_x, double &v_y, double &v_yaw, d
             _LocationState = finish;
         }
     }
-    v_y = 99;   // old value is 0.7 
+    //    <<<<<<<  HEAD   origin code in 2017.8.8
+    // v_y = 0.7;   // old value is 0.7 
+    // v_x = 0;
+    // v_yaw = vector_tr.yaw; // turn to target
+    // Normalization(v_yaw);
+    // if (fabs(v_yaw) <= 35)
+    // {
+    //     printf("Special slow motion \n");
+    //     v_x = 0;
+    //     v_y = 0;
+    //     v_yaw = vector_tr.yaw; // turn to target
+    //     if (fabs(v_yaw) <= 3)
+    //     {
+    //         printf("Change mode to forward \n");
+    //         _LocationState = forward;
+    //     }
+    // }
+    //    <<<<<<<  END    origin code in 2017.8.8
+
+    //    <<<<<<<  HEAD   temp code in 2017.8.8
+    double v_strike = 1.0;
+    v_y = fabs(vector_tr.yaw/180.0)*v_strike;   
     v_x = 0;
     v_yaw = vector_tr.yaw; // turn to target
     Normalization(v_yaw);
-    if (fabs(v_yaw) <= 35)
+    if (fabs(v_yaw) <= 5)
     {
-        printf("Special slow motion \n");
-        v_x = 0;
-        v_y = 0;
-        v_yaw = vector_tr.yaw; // turn to target
-        if (fabs(v_yaw) <= 3)
-        {
-            printf("Change mode to forward \n");
-            _LocationState = forward;
-        }
+        printf("Change mode to forward \n");
+        _LocationState = forward;
     }
+    //    <<<<<<<  END    temp code in 2017.8.8
 }
 void Strategy::Chase()
 {
