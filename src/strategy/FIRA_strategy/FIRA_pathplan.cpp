@@ -1520,12 +1520,14 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         f_apf_total[0]=f_apf_total[0]/total_f_apf;
         f_apf_total[1]=f_apf_total[1]/total_f_apf;
     }
+
     if(number_obstacle==0){
         v_yaw_angle=0;
     }
-    if(goal_dis<=1.5){
-        k_g[0]=1;
-        k_g[1]=1;
+
+    if(goal_dis<=2.3){
+        k_g[0]=2;
+        k_g[1]=2;
         k_r[0]=0;
         k_r[1]=0;
         k_image_r[0]=0;
