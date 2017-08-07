@@ -31,7 +31,7 @@
 
 </head>
 
-<body onload="joystick_main()">
+<body onload="joystick_main();PublishTopicSaveParam()">
     <div>
         <div class="modal-dialog">
             <div class="modal-content">
@@ -207,15 +207,13 @@
                             <table id="RobotStrategyTable1">
                                 <tr>
                                     <td>
-                                        <div>
-                                            <input id="OffensiveButton" type="radio" checked="checked" name="ODButton" />
-                                            <label id="OffensiveButton" for="OffensiveButton">Offensive</label>
-                                        </div>
+                                        <input id="IsTeamStrategyButton" type="radio" name="TSButton" onclick="IsTeamStrategy(1)" />
+                                        <label id="IsTeamStrategyButton" for="IsTeamStrategyButton">TeamStrategy</label>
                                     </td>
                                     <td>
                                         <div>
-                                            <input id="DefensiveButton" type="radio" name="ODButton" />
-                                            <label id="DefensiveButton" for="DefensiveButton">Defensive</label>
+                                            <input id="SingleButton" type="radio" name="TSButton" checked="checked" onclick="IsTeamStrategy(0)" />
+                                            <label id="SingleButton" for="SingleButton">Single</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -245,6 +243,7 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <button id="ShootBrokenButton" onclick="PublishTopicGameState(11);">ShootBroken</button>
                                     </td>
                                     <td>
                                         <button id="AvoidBarrierButton" onclick="PublishTopicGameState(8);">Avoid Barrier</button>
@@ -460,6 +459,24 @@
                                         <input type="text" name="SPlanningVelocityElement1" value="12.0" />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td class="GDetail SP10">(double)ATsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement1" value="1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP11">(double)Shoot</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement1" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP12">(double)Pass ball</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement1" value="0" />
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <div class="form-group" id="DistanceSettingsModule1">
@@ -565,6 +582,24 @@
                                         <input type="text" name="SPlanningVelocityElement2" value="0" />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td class="GDetail SP10">(double)ATsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement2" value="1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP11">(double)Shoot</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement2" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP12">(double)Pass ball</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement2" value="0" />
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <div class="form-group" id="DistanceSettingsModule2">
@@ -666,6 +701,24 @@
                                 </tr>
                                 <tr>
                                     <td class="GDetail SP9">(double)VTsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement3" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP10">(double)ATsupport_min</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement3" value="1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP11">(double)Shoot</td>
+                                    <td>
+                                        <input type="text" name="SPlanningVelocityElement3" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="GDetail SP12">(double)Pass ball</td>
                                     <td>
                                         <input type="text" name="SPlanningVelocityElement3" value="0" />
                                     </td>
@@ -2025,6 +2078,16 @@
                                             <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Shoot-Attack</label>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Escape-Attack</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Straight-Attack</label>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <div class="form-group" id="SupportStrategyModule1">
@@ -2279,31 +2342,41 @@
                                 <tr>
                                     <th>
                                         <label>
-                                            <input name="StrategySelectionElement2" type="checkbox" value="10" style="width:50px;">Chase</label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Chase</label>
                                     </th>
                                     <th>
                                         <label>
-                                            <input name="StrategySelectionElement2" type="checkbox" value="20" style="width:50px;">Straight-chase</label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Straight-chase</label>
                                     </th>
                                 </tr>
                                 <tr>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement2" type="checkbox" value="1" style="width:50px;">Attack</label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Attack</label>
                                     </td>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement2" type="checkbox" value="2" style="width:50px;">S-Attack</label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">S-Attack</label>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement2" type="checkbox" value="4" style="width:50px;">Dorsad-Attack</label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Dorsad-Attack</label>
                                     </td>
                                     <td>
                                         <label>
-                                            <input name="StrategySelectionElement2" type="checkbox" value="8" style="width:50px;">Shoot-Attack</label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Shoot-Attack</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Escape-Attack</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Straight-Attack</label>
                                     </td>
                                 </tr>
                             </table>
@@ -2587,6 +2660,16 @@
                                             <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Shoot-Attack</label>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Escape-Attack</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Straight-Attack</label>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <div class="form-group" id="SupportStrategyModule3">
@@ -2640,156 +2723,138 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="exampleModalLabel">TeamStrategy</h4>
+                    <div id="TeamStrategySettingRobotDiv">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <input id="TeamStrategyRobot1Button" type="radio" checked="checked" name="TeamStrategyStateButton" />
+                                        <label id="TeamStrategyRobot1Button" for="TeamStrategyRobot1Button">Robot 1</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input id="TeamStrategyRobot2Button" type="radio" name="TeamStrategyStateButton" />
+                                        <label id="TeamStrategyRobot2Button" for="TeamStrategyRobot2Button">Robot 2</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input id="TeamStrategyRobot3Button" type="radio" name="TeamStrategyStateButton" />
+                                        <label id="TeamStrategyRobot3Button" for="TeamStrategyRobot3Button">Robot 3</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-body">
-                    <!-- TeamStrategy_Button -->
-                    <div class="form-group" align="center" id="TeamStrategyButtonDiv">
-                        <input type="radio" id="manual" checked="true" name="auto" />
-                        <label id="manual" for="manual">Manual</label>
-                        <input type="radio" id="auto" name="auto" />
-                        <label id="auto" for="auto">Auto</label>
+                    <div id="Robot1Module" class="form-group">
+                        <!-- TeamStrategy_Button -->
+                        <div class="form-group" id="SetTeamStrategyButton1">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input type="radio" id="" name="TeamStrategy1" checked="checked" />
+                                        <label id="" for="">1</label>
+                                    </td>
+                                    <!--  <td>
+                                        <input type="radio" id="" name="TeamStrategy1" />
+                                        <label id="" for="">2</label>
+                                    </td> -->
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group" id="">
+                            <table>
+                                <tr>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td class="">(double)Vdis_max</td>
+                                    <td>
+                                        <input type="text" name="" value="2.2" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="">(double)Vdis_min</td>
+                                    <td>
+                                        <input type="text" name="" value="0.3" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <!-- TeamStrategy_Display -->
-                    <div class="modal-body" id="TeamStrategyDisplay" style="margin:auto;text-align:center;">
-                        <div class="form-group" id="RobotModule">
+                    <div id="Robot2Module" class="form-group">
+                        <!-- General_Button -->
+                        <div class="form-group" id="SetTeamStrategyButton2">
                             <table>
                                 <tr>
-                                    <th>
-                                        <label for="GoalKeeper">Robot1</label>
-                                    </th>
+                                    <td>
+                                        <input type="radio" id="" name="TeamStrategy2" checked="checked" />
+                                        <label id="" for="">1</label>
+                                    </td>
+                                    <!-- <td>
+                                        <input type="radio" id="" name="TeamStrategy2" />
+                                        <label id="" for="">2</label>
+                                    </td> -->
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group" id="">
+                            <table>
+                                <tr>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
                                 </tr>
                                 <tr>
+                                    <td class="">(double)Vdis_max</td>
                                     <td>
-                                        <label>
-                                            <input name="TeamStrategyElement1" type="radio" value="0" style="width:50px;">Halt</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement1" type="radio" checked="checked" value="1" style="width:50px;">Goalkeeper</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement1" type="radio" value="2" style="width:50px;">Attacker</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement1" type="radio" value="3" style="width:50px;">Support</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement1" type="radio" value="4" style="width:50px;">PenaltyKick</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement1" type="radio" value="5" style="width:50px;">ThrowIn</label>
+                                        <input type="text" name="" value="2.2" />
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="">(double)Vdis_min</td>
                                     <td>
-                                        <label>
-                                            <input name="TeamStrategyElement1" type="radio" value="6" style="width:50px;">CornerKick</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement1" type="radio" value="7" style="width:50px;">AvoidBarrier</label>
+                                        <input type="text" name="" value="0.3" />
                                     </td>
                                 </tr>
                             </table>
+                        </div>
+                    </div>
+                    <div id="Robot3Module" class="form-group">
+                        <!-- General_Button -->
+                        <div class="form-group" id="SetTeamStrategyButton3">
                             <table>
                                 <tr>
-                                    <th>
-                                        <label for="GoalKeeper">Robot2</label>
-                                    </th>
-                                </tr>
-                                <tr>
                                     <td>
-                                        <label>
-                                            <input name="TeamStrategyElement2" type="radio" value="0" style="width:50px;">Halt</label>
+                                        <input type="radio" id="" name="TeamStrategy3" checked="checked" />
+                                        <label id="" for="">1</label>
                                     </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement2" type="radio" value="1" style="width:50px;">Goalkeeper</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement2" type="radio" checked="checked" value="2" style="width:50px;">Attacker</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement2" type="radio" value="3" style="width:50px;">Support</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement2" type="radio" value="4" style="width:50px;">PenaltyKick</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement2" type="radio" value="5" style="width:50px;">ThrowIn</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement2" type="radio" value="6" style="width:50px;">CornerKick</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement2" type="radio" value="7" style="width:50px;">AvoidBarrier</label>
-                                    </td>
+                                    <!-- <td>
+                                        <input type="radio" id="" name="TeamStrategy3" />
+                                        <label id="" for="">2</label>
+                                    </td> -->
                                 </tr>
                             </table>
+                        </div>
+                        <div class="form-group" id="">
                             <table>
                                 <tr>
-                                    <th>
-                                        <label for="GoalKeeper">Robot3</label>
-                                    </th>
+                                    <th>ConfigName</th>
+                                    <th>Value</th>
                                 </tr>
                                 <tr>
+                                    <td class="">(double)Vdis_max</td>
                                     <td>
-                                        <label>
-                                            <input name="TeamStrategyElement3" type="radio" value="0" style="width:50px;">Halt</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement3" type="radio" value="1" style="width:50px;">Goalkeeper</label>
+                                        <input type="text" name="" value="2.2" />
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="">(double)Vdis_min</td>
                                     <td>
-                                        <label>
-                                            <input name="TeamStrategyElement3" type="radio" value="2" style="width:50px;">Attacker</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement3" type="radio" checked="checked" value="3" style="width:50px;">Support</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement3" type="radio" value="4" style="width:50px;">PenaltyKick</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement3" type="radio" value="5" style="width:50px;">ThrowIn</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement3" type="radio" value="6" style="width:50px;">CornerKick</label>
-                                    </td>
-                                    <td>
-                                        <label>
-                                            <input name="TeamStrategyElement3" type="radio" value="7" style="width:50px;">AvoidBarrier</label>
+                                        <input type="text" name="" value="0.3" />
                                     </td>
                                 </tr>
                             </table>
@@ -2808,7 +2873,7 @@
             <div class="modal-content ChooseShowContent">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel">TeamStrategy</h4>
+                    <h4 class="modal-title" id="exampleModalLabel">ChooseShow</h4>
                 </div>
                 <div class="modal-body">
                     <!-- TeamStrategy_Button -->
@@ -3741,19 +3806,39 @@
     </script>
     <!-- TeamStrategy_Button_function -->
     <script>
-        $("#TeamStrategyButtonDiv").buttonset();
+        $("#TeamStrategySettingRobotDiv").buttonset();
 
-        $('#auto').change(function() {
-            $('#RobotModule :input').attr('disabled', this.checked);
+        $("#Robot2Module").hide();
+        $("#Robot3Module").hide();
+
+        $("#TeamStrategyRobot1Button").click(function() {
+            $("#Robot1Module").show();
+            $("#Robot2Module").hide();
+            $("#Robot3Module").hide();
         });
-        $('#manual').change(function() {
-            $('#RobotModule :input').attr('disabled', !this.checked);
+        $("#TeamStrategyRobot2Button").click(function() {
+            $("#Robot2Module").show();
+            $("#Robot1Module").hide();
+            $("#Robot3Module").hide();
         });
+        $("#TeamStrategyRobot3Button").click(function() {
+            $("#Robot3Module").show();
+            $("#Robot1Module").hide();
+            $("#Robot2Module").hide();
+        });
+        //Robot1
+        $("#SetTeamStrategyButton1").buttonset();
+
+        //Robot2
+        $("#SetTeamStrategyButton2").buttonset();
+
+        //Robot3
+        $("#SetTeamStrategyButton3").buttonset();
     </script>
     <!-- ChooseShow_Button_function -->
     <script>
         $("#ChooseShowButtonDiv").buttonset();
-        $("#NotShowModule").hide();
+
 
         $("#NotShow").click(function() {
             $("#NotShowModule").show();
