@@ -28,8 +28,8 @@ reg		[7:0]	rShoot_power;
 reg		[7:0]	rPower;
 
 
-parameter SHOOTCONST = 10000;	//Shoot Time Const => 0.4 ms
-parameter WAITSHOOTCONST = 100000000;	//Shoot Wait Time Const => (50M * 2) => 2s 
+parameter SHOOTCONST = 5000;	//Shoot Time Const => 0.2 ms
+parameter WAITSHOOTCONST = 250000000;	//Shoot Wait Time Const => (50M * 1) => 5s 
 
 wire			wClk_Shoot;
 always@(posedge iClk)begin	// 50MHz -> ShootConst
