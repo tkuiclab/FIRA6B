@@ -144,6 +144,7 @@ public:
     std::vector<double> Dorsad_Attack;
     std::vector<double> Corner_Kick;
     std::vector<double> Penalty_Kick;
+    std::vector<int> Strategy_Selection;
 
 
     // Robot shoot signal publisher

@@ -138,6 +138,7 @@ void FIRA_behavior_class::StateAttack(int r_number){
         }
     }else counter_test = 0;
    if(distance_dr < distance_attack /*&& fabs(alpha)<=10*/ && distance_dr >= -100) {
+
        state_attack=state_ZoneAttack;
    }
 }
