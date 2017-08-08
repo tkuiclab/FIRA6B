@@ -96,14 +96,14 @@ function PubTopic_Call_Get_Param() {
 //====================================================================
 //Position
 
-var position = new ROSLIB.Topic({
+var position_ = new ROSLIB.Topic({
     ros: ros,
     name: '/amcl_pose',
-    messageType: 'geometry_msgs/PoseWithCovariance'
+    messageType: 'geometry_msgs/PoseWithCovarianceStamped'
 });
 
-position.subscribe(function(msg) {
-    document.getElementsByName('MonitorElement')[1].innerText = "( " + msg.pose.pose.position.x + ' , ' + msg.pose.pose.position.y + ' )';
+position_.subscribe(function(msg) {
+    document.getElementsByName('MonitorElement')[1].innerText = "( " + msg.pose.pose.position.x.toFixed(2) + ' , ' + msg.pose.pose.position.y.toFixed(2) + ' )';
 });
 
 //====================================================================
@@ -116,7 +116,7 @@ var position_anlge = new ROSLIB.Topic({
 });
 
 position_anlge.subscribe(function(msg) {
-    document.getElementsByName('MonitorElement')[2].innerText = msg.yaw;
+    document.getElementsByName('MonitorElement')[2].innerText = msg.yaw.toFixed(2);
 });
 
 //====================================================================
@@ -129,6 +129,6 @@ var cmd_vel = new ROSLIB.Topic({
 });
 
 cmd_vel.subscribe(function(msg) {
-    document.getElementsByName('MonitorElement')[3].innerText = "( " + msg.linear.x + ' , ' + msg.linear.y + ' )';
-    document.getElementsByName('MonitorElement')[4].innerText = msg.angular.z;
+    document.getElementsByName('MonitorElement')[3].innerText = "( " + msg.linear.x.toFixed(2) + ' , ' + msg.linear.y.toFixed(2) + ' )';
+    document.getElementsByName('MonitorElement')[4].innerText = msg.angular.z.toFixed(2);
 });
