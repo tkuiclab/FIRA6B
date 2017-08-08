@@ -350,7 +350,7 @@ void FIRA_behavior_class::StateGoalKeeperPush(int r_number){
     double position_angle = rad2deg * acos(-((r_opgoal_dis*r_opgoal_dis)-(opgoal_dis*opgoal_dis)-0.25)/opgoal_dis);
 
     
-    if( opgoal_dis > 1.3 && ball_to_opgoal_dis > 1.7){
+    if( opgoal_dis > 1.35 && ball_to_opgoal_dis > 1.6){
         state_GoalKeeper = state_GoalKeeper_block;
     }else if( ball_angle > opgoal_edge_angle_L-7 && opgoal_left < 0.5 && opgoal_right > 1.15){
         state_GoalKeeper = state_GoalKeeper_init;
