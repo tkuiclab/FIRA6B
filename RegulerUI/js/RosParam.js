@@ -790,7 +790,7 @@ var StrategySelectBox1 = new ROSLIB.Param({
 });
 var StrategySelectPrefixBox1 = new ROSLIB.Param({
     ros: ros,
-    name: '/StrategySelection/PrefixSetting',
+    name: '/FIRA_Behavior/PrefixSetting',
 });
 var SupportStrategyBox1 = new ROSLIB.Param({
     ros: ros,
@@ -832,7 +832,7 @@ var StrategySelectBox2 = new ROSLIB.Param({
 });
 var StrategySelectPrefixBox2 = new ROSLIB.Param({
     ros: ros2,
-    name: '/StrategySelection/PrefixSetting',
+    name: '/FIRA_Behavior/PrefixSetting',
 });
 var SupportStrategyBox2 = new ROSLIB.Param({
     ros: ros2,
@@ -874,7 +874,7 @@ var StrategySelectBox3 = new ROSLIB.Param({
 });
 var StrategySelectPrefixBox3 = new ROSLIB.Param({
     ros: ros3,
-    name: '/StrategySelection/PrefixSetting',
+    name: '/FIRA_Behavior/PrefixSetting',
 });
 var SupportStrategyBox3 = new ROSLIB.Param({
     ros: ros3,
@@ -1193,7 +1193,7 @@ function GetBehaviorValue() {
 function SetParamBehavior(SCBox1, SABox1, GKBox1, STSABox1, SSSUBox1, SZABox1, SCKBox1, SSBox1, SSPBox1, SupSBox1,
     SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2, SSPBox2, SupSBox2,
     SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3, SSPBox3, SupSBox3) {
-
+    console.log(SSBox1, SSBox2, SSBox3);
     console.log(SSPBox1, SSPBox2, SSPBox3);
     StateChaseBox1.set(SCBox1);
     StateAttackBox1.set(SABox1);
@@ -1203,6 +1203,7 @@ function SetParamBehavior(SCBox1, SABox1, GKBox1, STSABox1, SSSUBox1, SZABox1, S
     StateZoneAttackBox1.set(SZABox1);
     StateCornerKickBox1.set(SCKBox1);
     StrategySelectBox1.set(SSBox1);
+    StrategySelectPrefixBox1.set(SSPBox1);
     SupportStrategyBox1.set(SupSBox1);
 
     StateChaseBox2.set(SCBox2);
@@ -1213,6 +1214,7 @@ function SetParamBehavior(SCBox1, SABox1, GKBox1, STSABox1, SSSUBox1, SZABox1, S
     StateZoneAttackBox2.set(SZABox2);
     StateCornerKickBox2.set(SCKBox2);
     StrategySelectBox2.set(SSBox2);
+    StrategySelectPrefixBox2.set(SSPBox2);
     SupportStrategyBox2.set(SupSBox2);
 
     StateChaseBox3.set(SCBox3);
@@ -1223,6 +1225,7 @@ function SetParamBehavior(SCBox1, SABox1, GKBox1, STSABox1, SSSUBox1, SZABox1, S
     StateZoneAttackBox3.set(SZABox3);
     StateCornerKickBox3.set(SCKBox3);
     StrategySelectBox3.set(SSBox3);
+    StrategySelectPrefixBox3.set(SSPBox3);
     SupportStrategyBox3.set(SupSBox3);
 
     up();
