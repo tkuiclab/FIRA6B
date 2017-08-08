@@ -54,7 +54,7 @@ void NodeHandle::subRobotPose(const geometry_msgs::PoseWithCovarianceStamped::Co
 }
 void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &msg)
 {
-    double _radius = 0.5;
+    double _radius = 0.2;
     for (int i = 0; i < 5; i++)
     {
         _Location->LocationPoint[i].y = -msg->data[i * 2] / 100;

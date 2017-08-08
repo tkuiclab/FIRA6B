@@ -11,7 +11,7 @@
 #include "Strategy.hpp"
 Strategy::Strategy()
 {
-    _LocationState = turn;
+    _LocationState = forward;
     _Last_state = turn;
     _CurrentTarget = 0;
     _Location = new LocationStruct;
@@ -32,8 +32,8 @@ void Strategy::GameState(int int_GameState)
         StrategyHalt();
         break;
     case STATE_LOCALIZATION:
-        // StrategyLocalization();
-        StrategyLocalization2();
+        StrategyLocalization();
+        // StrategyLocalization2();
         break;
     }
 }
@@ -104,7 +104,7 @@ void Strategy::StrategyLocalization()
         Normalization(v_yaw);
         if (fabs(v_yaw) < 3)
             v_yaw = 0;
-        if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
+        if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
         {
             _LocationState = back;
             flag = TRUE;
@@ -119,7 +119,7 @@ void Strategy::StrategyLocalization()
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         v_x = v_x_temp;
         v_y = v_y_temp;
-        if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
+        if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
         {
             if (_CurrentTarget == 4)
                 _LocationState = finish;
@@ -151,6 +151,29 @@ void Strategy::StrategyLocalization()
     }
     showInfo(imu, compensation_x, compensation_y);
     Normalization(v_yaw);
+    if (imu > 5)
+        IMU_state = 1;
+    else if (imu < -5)
+        IMU_state = 2;
+    else if (fabs(imu) < 3)
+        IMU_state = 0;
+    else
+        ; //do nothing
+    switch (IMU_state)
+    {
+    case 0:
+        v_yaw = 0;
+        break;
+    case 1:
+        v_yaw = imu;
+        break;
+    case 2:
+        v_yaw = -imu;
+        break;
+    default:
+        break;
+    }
+    printf("yaw=%lf\n",v_yaw);
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
     _Env->Robot.v_yaw = v_yaw;
@@ -255,8 +278,8 @@ void Strategy::Forward(RobotData &Robot, double &v_x, double &v_y, double &v_yaw
     min_compensation = -3;                                                  // 3 is a value to compensation the yaw speed 
     else if ((-imu) * DEG2RAD < 0)
         min_compensation = 3;
-    v_x_temp = v_x * cos((-imu) * DEG2RAD + min_compensation) - v_y * sin((-imu) * DEG2RAD + min_compensation);       
-    v_y_temp = v_x * sin((-imu) * DEG2RAD + min_compensation) + v_y * cos((-imu) * DEG2RAD + min_compensation);
+    v_x_temp = v_x * cos((-imu + min_compensation) * DEG2RAD ) - v_y * sin((-imu + min_compensation) * DEG2RAD);       
+    v_y_temp = v_x * sin((-imu + min_compensation) * DEG2RAD ) + v_y * cos((-imu + min_compensation) * DEG2RAD);
     //    >>>>>>>>  END   temp code in 2017.8.8
     v_x = v_x_temp;
     v_y = v_y_temp;
@@ -278,6 +301,8 @@ void Strategy::Forward(RobotData &Robot, double &v_x, double &v_y, double &v_yaw
 }
 void Strategy::Turn(RobotData &Robot, double &v_x, double &v_y, double &v_yaw, double imu, int &flag, double absolute_front)
 {
+    static ros::Time last_time = ros::Time::now();
+    ros::Time current_time = ros::Time::now();
     Vector3D vector_tr;
     vector_tr.x = _Target.TargetPoint[_CurrentTarget].x - Robot.pos.x;
     vector_tr.y = _Target.TargetPoint[_CurrentTarget].y - Robot.pos.y;
@@ -333,7 +358,7 @@ int Strategy::ThroughPath(int i, int j)
     if (Slope > 999)
         Slope = 999;
     double dis = (_Location->LocationPoint[j].y - Slope * _Location->LocationPoint[j].x) / sqrt(Slope * Slope + 1);
-    if (fabs(dis) < 0.3)
+    if (fabs(dis) < 0.1)
         return TRUE;
     else
         return FALSE;
