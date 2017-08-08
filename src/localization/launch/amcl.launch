@@ -12,8 +12,8 @@
     <param name="base_frame_id" value="/base_footprint"/>
     <param name="tf_broadcast" value="true"/>
 
-    <param name="min_particles" value ="4999"/>
-    <param name="max_particles" value ="5000"/>
+    <param name="min_particles" value ="999"/>
+    <param name="max_particles" value ="1000"/>
     <param name="update_min_d" value="0.03"/>
     <param name="update_min_a" value="0.03"/>
     <param name="save_pose_rate" value="90"/>

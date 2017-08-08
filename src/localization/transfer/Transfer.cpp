@@ -12,7 +12,7 @@ int main(int argc, char **argv){
     imgNode.ros_comms_init();
     imgNode.load_map();             //Building map
     sleep(0.5);
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(100);
     while(ros::ok())
     {
         mNodeHandle.loadParam(mNodeHandle.getNodeHandle());

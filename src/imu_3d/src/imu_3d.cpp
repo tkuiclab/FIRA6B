@@ -562,6 +562,12 @@ int main(int argc,char **argv)
         imuData.linear_acceleration.x = accel.x;
         imuData.linear_acceleration.y = accel.y;
         imuData.linear_acceleration.z = accel.z;
+        for (int i = 0; i < 9; i++)
+        {
+            imuData.orientation_covariance[i] = 0.01;
+            imuData.angular_velocity_covariance[i] = 0.01;
+            imuData.linear_acceleration_covariance[i] = 0.01;
+        }
         imu_data_pub.publish(imuData);
 
         //printf("%f\t%f\n",position(0),position(1));
