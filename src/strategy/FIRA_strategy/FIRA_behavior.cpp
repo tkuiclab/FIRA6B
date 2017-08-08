@@ -1,7 +1,9 @@
 #include "FIRA_behavior.h"
 #include "math.h"
-static double Begin_time = 0;
-static double Current_time = 0;
+static double NewSupport_Begin_time = 0;
+static double NewSupport_Current_time = 0;
+static double Movement_Begin_time = 0;
+static double Movement_Current_time = 0;
 
 
 FIRA_behavior_class::FIRA_behavior_class(){
@@ -396,6 +398,35 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         double op_distance_dr = env.home[robotIndex].op_goal.distance;
         double distance_dr = env.home[robotIndex].goal.distance;
         //printf("op_distance_dr=%f\n",op_distance_dr);
+        double Forward = PrefixSetting[0];
+        double Backward = PrefixSetting[1];
+        double Left = PrefixSetting[2];
+        double Right = PrefixSetting[3];
+        double Continue_Time = PrefixSetting[4];
+        Movement_Current_time = ros::Time::now().toSec();
+        if(fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time){// da su time delay
+            printf("special movement time left : %f\n",Continue_Time-fabs(Movement_Current_time-Movement_Begin_time));
+            if(Left&&Forward){
+                actionAry[robotIndex] = action_LeftForward;
+            }else if(Right&&Forward){
+                actionAry[robotIndex] = action_RightForward;
+            }else if(Left&&Backward){
+                actionAry[robotIndex] = action_LeftBackward;
+            }else if(Right&&Backward){
+                actionAry[robotIndex] = action_RightBackward;
+            }else if(Forward){
+                actionAry[robotIndex] = action_Forward;
+            }else if(Backward){
+                actionAry[robotIndex] = action_Backward;
+            }else if(Left){
+                actionAry[robotIndex] = action_Left;
+            }else if(Right){
+                actionAry[robotIndex] = action_Right;
+            }else{
+                //nothing, will continue upper
+            }
+
+        }
         if(op_distance_dr<1.6){
             printf("limit area\n");
             printf("distance_dr=%f\n",distance_dr);
@@ -491,8 +522,10 @@ void FIRA_behavior_class::behavior_Halt(int robotIndex){
     actionAry[robotIndex] = action_Halt;
     state_cornerkick = state_CornerKick;
     state_attack = state_Init;
-    Begin_time = ros::Time::now().toSec();
-    Current_time = ros::Time::now().toSec();
+    NewSupport_Begin_time = ros::Time::now().toSec();
+    NewSupport_Current_time = ros::Time::now().toSec();
+    Movement_Begin_time = ros::Time::now().toSec();
+    Movement_Current_time = ros::Time::now().toSec();
 //    printf("Begin_time=%f\n",Begin_time);
 //    printf("Current_time=%f\n",Current_time);
     ///=========================================
@@ -685,7 +718,7 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
 //    printf("game.state=%d\n",env.gameState);
 //    printf("Begin_time=%f\n",Begin_time);
 //    printf("Current_time=%f\n",Current_time);
-    Current_time = ros::Time::now().toSec();
+    NewSupport_Current_time = ros::Time::now().toSec();
 
     switch(Support_Strategy[0]){
         case 1:     //AutoCase
@@ -705,7 +738,7 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
             break;
         case 2:     //BlockCase
             printf("BlockCase\n");
-            if(fabs(Current_time-Begin_time)>=3){
+            if(fabs(NewSupport_Current_time-NewSupport_Begin_time)>=3){
                 if(op_distance_dr<1.5){// in limit area
                     actionAry[robotIndex] = action_LeaveLimitArea;
                     printf("action_LeaveLimitArea\n");
@@ -812,6 +845,9 @@ void FIRA_behavior_class::loadParam(ros::NodeHandle *n){
 //    std::cout << "====================================" << std::endl;
     }
     if(n->getParam("/StrategySelection", Strategy_Selection)){
+
+    }
+    if(n->getParam("/FIRA_Behavior/PrefixSetting", PrefixSetting)){
 
     }
     if(n->getParam("/FIRA_Behavior/Support_Strategy", Support_Strategy)){

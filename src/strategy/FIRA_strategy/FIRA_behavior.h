@@ -26,6 +26,7 @@ private:
     std::vector<int> Strategy_Selection;
     std::vector<int> Support_Strategy;
     std::vector<double> Dorsad_Attack;
+    std::vector<double>PrefixSetting;
 
     // ========== test change roleAry[ i ] to escape from cornerkick and try to reset the state  end ==========
     void ActionChase();

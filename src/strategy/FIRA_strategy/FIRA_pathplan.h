@@ -93,6 +93,17 @@ public:
     void strategy_FreeKick(int);
     void strategy_Escape_Attack(int);
     void strategy_Straight_Attack(int);
+    void Movement_Forward(int);
+    void Movement_Backward(int);
+    void Movement_Left(int);
+    void Movement_LeftForward(int);
+    void Movement_LeftBackward(int);
+    void Movement_Right(int);
+    void Movement_RightForward(int);
+    void Movement_RightBackward(int);
+
+
+
 //--------------------------------------------------
 
 //--------------role case-------------------
