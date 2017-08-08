@@ -6,6 +6,7 @@ Behavior::Behavior(int argc, char** argv)
 	env = getEnv();
 	init(argc, argv);
 	target = 1;
+    gotBall = false;
 	ball_1.pos.x = -1.65;
 	ball_1.pos.y = 1.20;
 	ball_2.pos.x = -1.65;
@@ -13,7 +14,7 @@ Behavior::Behavior(int argc, char** argv)
 	ball_3.pos.x = -1.65;
 	ball_3.pos.y = -0.40;
 	ball_4.pos.x = -1.65;
-	ball_4.pos.y = -1.20;
+    ball_4.pos.y = -1.20;
 	
 	goal_1.pos.x = 1.65;
 	goal_1.pos.y = 1.20;
@@ -158,6 +159,8 @@ void Behavior::run()
 				halt();
 				break;
 		}
+        std::cout << "Hold Ball Distance: " << env->param.hold_ball_distance << std::endl;
+        std::cout << "Hold Ball Angle: " << env->param.hold_ball_angle << std::endl;
 		std::cout << "Robot position: (" << env->robot.pos.x << ", " << env->robot.pos.y << ", " << env->robot.pos.z << ")\n";
 		std::cout << "Motion feedback(yaw): " << env->robot.pos.angle << std::endl;
 		std::cout << "Robot speed: (" << env->robot.v_x << ", " << env->robot.v_y << ", " << env->robot.v_yaw << ")\n";
@@ -177,13 +180,23 @@ void Behavior::finish()
 
 bool Behavior::holdBall()
 {
-    if((env->robot.ball.distance<=0.36) && (fabs(env->robot.ball.angle)<=3)){
-		std::cout << "got ball\n";
-		return true;
-	}else{
-		std::cout << "lose ball\n";
-		return false;
-	}
+    if(gotBall == false){
+        if((env->robot.ball.distance<=env->param.hold_ball_distance) && (fabs(env->robot.ball.angle)<=env->param.hold_ball_angle)){
+            std::cout << "got ball\n";
+            return true;
+        }else{
+            std::cout << "lose ball\n";
+            return false;
+        }
+    }else{
+        if((env->robot.ball.distance<=env->param.loss_ball_distance) && (fabs(env->robot.ball.angle)<=env->param.loss_ball_angle)){
+            std::cout << "got ball\n";
+            return true;
+        }else{
+            std::cout << "lose ball\n";
+            return false;
+        }
+    }
 }
 
 void Behavior::nextTarget()
@@ -220,10 +233,10 @@ Ball Behavior::getTargetBall()
 		case Level3:
 			switch(target){
 				case Target1:
-					return ball_2;
+                    return ball_1;
 					break;
 				case Target2:
-					return ball_1;
+                    return ball_2;
 					break;
 				case Target3:
 					return ball_4;
@@ -284,10 +297,10 @@ Goal Behavior::getTargetGoal()
 		case Level3:
 			switch(target){
 				case Target1:
-					return goal_2;
+                    return goal_4;
 					break;
 				case Target2:
-					return goal_4;
+                    return goal_2;
 					break;
 				case Target3:
 					return goal_1;

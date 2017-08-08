@@ -30,12 +30,13 @@ void Strategy_nodeHandle::init(int argc, char** argv)
 	
 	ros::init(argc, argv, "Passing_Challenge_Strategy");
 	n = new ros::NodeHandle();
+    loadParam();
 	this->vision_sub = n->subscribe<vision::Object>(vision_topic_name, 1000, &Strategy_nodeHandle::visionCallback, this);
 	this->IMU_sub = n->subscribe<imu_3d::inertia>(IMU_topic_name, 1000, &Strategy_nodeHandle::IMUCallback, this);
 	this->motionFB_sub = n->subscribe<geometry_msgs::Twist>(motionFB_topic_name, 1000, &Strategy_nodeHandle::motionFBCallback, this);
 	this->localization_sub = n->subscribe<geometry_msgs::PoseWithCovarianceStamped>(localization_topic_name, 1000, &Strategy_nodeHandle::localizationCallback, this);
 	this->level_sub = n->subscribe<std_msgs::Int32>(level_topic_name, 1000, &Strategy_nodeHandle::levelCallback, this);
-	this->loadParam_sub = n->subscribe<std_msgs::Bool>(loadParam_topic_name, 1000, &Strategy_nodeHandle::loadParamCallback, this);
+	this->loadParam_sub = n->subscribe<std_msgs::Int32>(loadParam_topic_name, 1000, &Strategy_nodeHandle::loadParamCallback, this);
 	this->status_sub = n->subscribe<std_msgs::Int32>(status_topic_name, 1000, &Strategy_nodeHandle::statusCallback, this);
 	this->motion_pub = n->advertise<geometry_msgs::Twist>(motion_topic_name, 1000);
 	this->shoot_pub = n->advertise<std_msgs::Int32>(shoot_topic_name, 1000);
@@ -71,9 +72,9 @@ void Strategy_nodeHandle::levelCallback(const std_msgs::Int32::ConstPtr &level_m
 	this->level = level_msg->data;
 }
 
-void Strategy_nodeHandle::loadParamCallback(const std_msgs::Bool::ConstPtr &loadParam_msg)
+void Strategy_nodeHandle::loadParamCallback(const std_msgs::Int32::ConstPtr &loadParam_msg)
 {
-	if(loadParam_msg->data==true){
+	if(loadParam_msg->data==1){
 		loadParam();
 	}
 }
@@ -85,7 +86,10 @@ void Strategy_nodeHandle::statusCallback(const std_msgs::Int32::ConstPtr &status
 
 void Strategy_nodeHandle::loadParam()
 {
-
+	this->n->getParam("/hold_ball_distance", this->environment.param.hold_ball_distance);
+	this->n->getParam("/hold_ball_angle", this->environment.param.hold_ball_angle);
+    this->environment.param.loss_ball_distance = this->environment.param.hold_ball_distance + 10;
+    this->environment.param.loss_ball_angle = this->environment.param.hold_ball_angle + 10;
 }
 
 void Strategy_nodeHandle::pub(int speed)

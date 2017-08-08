@@ -106,6 +106,8 @@ typedef struct{
 typedef struct{
 	double hold_ball_distance;
 	double hold_ball_angle;
+    double loss_ball_distance;
+    double loss_ball_angle;
 	double speed_const;
 	double shoot_const;
 	double yaw_const;

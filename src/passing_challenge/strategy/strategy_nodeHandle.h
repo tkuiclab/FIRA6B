@@ -27,7 +27,7 @@
 #define motionFB_topic_name "/motion/motionFB"
 #define localization_topic_name "/amcl_pose"
 #define level_topic_name "/level"
-#define loadParam_topic_name "/loadParam"
+#define loadParam_topic_name "/call_get_param"
 #define status_topic_name "/status"
 #define motion_topic_name "/motion/cmd_vel"
 #define shoot_topic_name "/motion/shoot"
@@ -62,7 +62,7 @@ private:
 	void motionFBCallback(const geometry_msgs::Twist::ConstPtr &);
 	void localizationCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
 	void levelCallback(const std_msgs::Int32::ConstPtr &);
-	void loadParamCallback(const std_msgs::Bool::ConstPtr &);
+	void loadParamCallback(const std_msgs::Int32::ConstPtr &);
 	void statusCallback(const std_msgs::Int32::ConstPtr &);
 	void loadParam();
 public:

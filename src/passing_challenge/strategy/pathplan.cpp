@@ -33,8 +33,8 @@ void PathPlan::chaseBall(Environment *env)
 	ball_dis = env->robot.ball.distance;
 	ball_angle = env->robot.ball.angle;
 	
-	x_speed = (15)*sin(ball_angle*M_PI/180);
-	y_speed = (15)*cos(ball_angle*M_PI/180);
+    x_speed = (15)*cos(ball_angle*M_PI/180);
+    y_speed = (15)*sin(ball_angle*M_PI/180);
 	env->robot.v_yaw = (fabs(ball_angle)>10)? ball_angle/fabs(ball_angle)*10: ball_angle;
 
 	transform(env, x_speed, y_speed);

@@ -24,6 +24,7 @@ public:
 private:
 	int gameStatus;
 	int target;
+    bool gotBall;
 	Environment *env;
 	Ball ball_1, ball_2, ball_3, ball_4;
 	Goal goal_1, goal_2, goal_3, goal_4;
