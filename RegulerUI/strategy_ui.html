@@ -31,7 +31,7 @@
 
 </head>
 
-<body onload="joystick_main();PublishTopicSaveParam()">
+<body onload="joystick_main();PublishTopicSaveParam();MonitorSwitch(false);">
     <div>
         <div class="modal-dialog">
             <div class="modal-content">
@@ -93,6 +93,12 @@
                                     <label id="KeyboardControlButton" for="KeyboardControlButton">KeyboardControl</label>
                                 </div>
                             </td>
+                            <td>
+                                <div>
+                                    <input autocomplete="off" id="CameraSwitch" type="checkbox" onclick="MonitorSwitch(this.checked);">
+                                    <label id="CameraSwitch" for="CameraSwitch">Camera</label>
+                                </div>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -117,9 +123,7 @@
                     <div id="StrategyParameter" class="form-group">
                         <!-- Map -->
                         <div id="MapArea">
-                            <canvas id="MapCanvas">
-                                Your browser does not support the HTML5 canvas tag.
-                            </canvas>
+                            <img id="MapCanvas"></img>
                         </div>
                         <!-- RightButttonDiv -->
                         <div id="RobotStateDiv">
@@ -138,7 +142,7 @@
                                 <tr>
                                     <td>
                                         <div style="width: 120px">
-                                            <input id="RobotTwoButton" type="radio" checked="checked" name="RobotStateButton" onclick="GetChooseRobot(2)" />
+                                            <input id="RobotTwoButton" type="radio" name="RobotStateButton" onclick="GetChooseRobot(2)" />
                                             <label id="RobotTwoButton" for="RobotTwoButton">Robot 2</label>
                                         </div>
                                     </td>
@@ -259,87 +263,75 @@
                             <table class="RobotInformationTable">
                                 <thead>
                                     <tr>
-                                        <th>
+                                        <th class="info1">
                                             <label>Robot</label>
                                         </th>
-                                        <th>
-                                            <label>Position</label>
-                                        </th>
-                                        <th>
+                                        <th class="info2">
                                             <label>fps</label>
                                         </th>
-                                        <th>
+                                        <th class="info3">
                                             <label>Ball</label>
                                         </th>
-                                        <th>
+                                        <th class="info3">
                                             <label>Blue</label>
                                         </th>
-                                        <th>
+                                        <th class="info3">
                                             <label>Yellow</label>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="RobotInformationTbody1">
-                                            <label>Robot 1</label>
+                                        <td class="RobotInformationTbody1 info1">
+                                            <label>R1</label>
                                         </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label>(-999,-999)</label>
+                                        <td class="RobotInformationTbody1 info2">
+                                            <label name="RobotVision1">0</label>
                                         </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label name="RobotVision1">-999</label>
+                                        <td class="RobotInformationTbody1 info3">
+                                            <label name="RobotVision1">0 , 0°</label>
                                         </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label name="RobotVision1">(-999,-999)</label>
+                                        <td class="RobotInformationTbody1 info3">
+                                            <label name="RobotVision1">0 , 0°</label>
                                         </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label name="RobotVision1">(-999,-999)</label>
-                                        </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label name="RobotVision1">(-999,-999)</label>
+                                        <td class="RobotInformationTbody1 info3">
+                                            <label name="RobotVision1">0 , 0°</label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="RobotInformationTbody2">
-                                            <label>Robot 2</label>
+                                        <td class="RobotInformationTbody2 info1">
+                                            <label>R2</label>
                                         </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label>(-999,-999)</label>
+                                        <td class="RobotInformationTbody2 info2">
+                                            <label name="RobotVision2">0</label>
                                         </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label name="RobotVision2">-999</label>
+                                        <td class="RobotInformationTbody2 info3">
+                                            <label name="RobotVision2">0 , 0°</label>
                                         </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label name="RobotVision2">(-999,-999)</label>
+                                        <td class="RobotInformationTbody2 info3">
+                                            <label name="RobotVision2">0 , 0°</label>
                                         </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label name="RobotVision2">(-999,-999)</label>
-                                        </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label name="RobotVision2">(-999,-999)</label>
+                                        <td class="RobotInformationTbody2 info3">
+                                            <label name="RobotVision2">0 , 0°</label>
                                         </td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td>
-                                            <label>Robot 3</label>
+                                        <td class="info1">
+                                            <label>R3</label>
                                         </td>
-                                        <td>
-                                            <label>(-999,-999)</label>
+                                        <td class="info2">
+                                            <label name="RobotVision3">0</label>
                                         </td>
-                                        <td>
-                                            <label name="RobotVision3">-999</label>
+                                        <td class="info3">
+                                            <label name="RobotVision3">0 , 0°</label>
                                         </td>
-                                        <td>
-                                            <label name="RobotVision3">(-999,-999)</label>
+                                        <td class="info3">
+                                            <label name="RobotVision3">0 , 0°</label>
                                         </td>
-                                        <td>
-                                            <label name="RobotVision3">(-999,-999)</label>
-                                        </td>
-                                        <td>
-                                            <label name="RobotVision3">(-999,-999)</label>
+                                        <td class="info3">
+                                            <label name="RobotVision3">0 , 0°</label>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -1848,8 +1840,8 @@
                                         <label id="StateAttack1" for="StateAttack1">State Attack</label>
                                     </td>
                                     <td>
-                                        <input type="radio" id="StateTypeUChase1" name="BehaviorStrategy1" />
-                                        <label id="StateTypeUChase1" for="StateTypeUChase1">Type-U Chase</label>
+                                        <input type="radio" id="GoalKeeper1" name="BehaviorStrategy1" />
+                                        <label id="GoalKeeper1" for="GoalKeeper1">Goal Keeper</label>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1946,22 +1938,34 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="form-group" id="StateTypeUChaseModule1">
+                        <div class="form-group" id="GoalKeeperModule1">
                             <table>
                                 <tr>
                                     <th>ConfigName</th>
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)angle_chase</td>
+                                    <td>(double)push_ball2opgoal_dis</td>
                                     <td>
-                                        <input type="text" name="StateTypeUChaseElement1" value="30.0" />
+                                        <input type="text" name="GoalKeeperElement1" value="0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)distance_chase</td>
+                                    <td>(double)push_opgoal_dis</td>
                                     <td>
-                                        <input type="text" name="StateTypeUChaseElement1" value="0.3" />
+                                        <input type="text" name="GoalKeeperElement1" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)push_opgoal_dis</td>
+                                    <td>
+                                        <input type="text" name="GoalKeeperElement1" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)push_opgoal_dis</td>
+                                    <td>
+                                        <input type="text" name="GoalKeeperElement1" value="0" />
                                     </td>
                                 </tr>
                             </table>
@@ -2086,6 +2090,34 @@
                                     <td>
                                         <label>
                                             <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Straight-Attack</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement1" type="checkbox" style="width:50px;">Forward</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement1" type="checkbox" style="width:50px;">Backward</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement1" type="checkbox" style="width:50px;">Left</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement1" type="checkbox" style="width:50px;">Right</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 50px;">
+                                        <label>Delay Time</label>
+                                    </td>
+                                    <td style="padding-left: 20px;">
+                                        <input name="StrategySelectionPrefixElement1" type="text" style="width:100%;" value="0" />
                                     </td>
                                 </tr>
                             </table>
@@ -2379,6 +2411,34 @@
                                             <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Straight-Attack</label>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement2" type="checkbox" style="width:50px;">Forward</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement2" type="checkbox" style="width:50px;">Backward</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement2" type="checkbox" style="width:50px;">Left</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement2" type="checkbox" style="width:50px;">Right</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 50px;">
+                                        <label>Delay Time</label>
+                                    </td>
+                                    <td style="padding-left: 20px;">
+                                        <input name="StrategySelectionPrefixElement2" type="text" style="width:100%;" value="0" />
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                         <div class="form-group" id="SupportStrategyModule2">
@@ -2668,6 +2728,34 @@
                                     <td>
                                         <label>
                                             <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Straight-Attack</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement3" type="checkbox" style="width:50px;">Forward</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement3" type="checkbox" style="width:50px;">Backward</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement3" type="checkbox" style="width:50px;">Left</label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input name="StrategySelectionPrefixElement3" type="checkbox" style="width:50px;">Right</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 50px;">
+                                        <label>Delay Time</label>
+                                    </td>
+                                    <td style="padding-left: 20px;">
+                                        <input name="StrategySelectionPrefixElement3" type="text" style="width:100%;" value="0" />
                                     </td>
                                 </tr>
                             </table>
@@ -3471,7 +3559,7 @@
         $("#SetBehaviorButton1").buttonset();
 
         $("#StateAttackModule1").hide();
-        $("#StateTypeUChaseModule1").hide();
+        $("#GoalKeeperModule1").hide();
         $("#StateTypeSAttackModule1").hide();
         $("#StateSideSpeedUPModule1").hide();
         $("#StateZoneAttackModule1").hide();
@@ -3482,7 +3570,7 @@
         $("#StateChase1").click(function() {
             $("#StateChaseModule1").show();
             $("#StateAttackModule1").hide();
-            $("#StateTypeUChaseModule1").hide();
+            $("#GoalKeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
@@ -3493,7 +3581,7 @@
         $("#StateAttack1").click(function() {
             $("#StateAttackModule1").show();
             $("#StateChaseModule1").hide();
-            $("#StateTypeUChaseModule1").hide();
+            $("#GoalKeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule11").hide();
@@ -3501,8 +3589,8 @@
             $("#StrategySelectionModule1").hide();
             $("#SupportStrategyModule1").hide();
         });
-        $("#StateTypeUChase1").click(function() {
-            $("#StateTypeUChaseModule1").show();
+        $("#GoalKeeper1").click(function() {
+            $("#GoalKeeperModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
             $("#StateTypeSAttackModule1").hide();
@@ -3516,7 +3604,7 @@
             $("#StateTypeSAttackModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#StateTypeUChaseModule1").hide();
+            $("#GoalKeeperModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
@@ -3527,7 +3615,7 @@
             $("#StateSideSpeedUPModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#StateTypeUChaseModule1").hide();
+            $("#GoalKeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
@@ -3538,7 +3626,7 @@
             $("#StateZoneAttackModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#StateTypeUChaseModule1").hide();
+            $("#GoalKeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateCornerKickModule1").hide();
@@ -3549,7 +3637,7 @@
             $("#StateCornerKickModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#StateTypeUChaseModule1").hide();
+            $("#GoalKeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
@@ -3560,7 +3648,7 @@
             $("#StrategySelectionModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#StateTypeUChaseModule1").hide();
+            $("#GoalKeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
@@ -3571,7 +3659,7 @@
             $("#SupportStrategyModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#StateTypeUChaseModule1").hide();
+            $("#GoalKeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
@@ -3862,6 +3950,8 @@
     <script src="js/SliderControl.js"></script>
     <script src="js/Joystick.js"></script>
     <script src="js/show.js"></script>
+    <script src="js/video.js"></script>
+
 </body>
 
 </html>

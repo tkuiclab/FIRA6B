@@ -147,14 +147,14 @@
     color: #1A1A65;
 }
 
-#StateTypeUChase1 {
+#GoalKeeper1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateTypeUChase1.ui-state-active {
+#GoalKeeper1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -495,7 +495,7 @@
     width: 50%;
 }
 
-#StateTypeUChaseModule1 td {
+#GoalKeeperModule1 td {
     width: 50%;
 }
 
@@ -624,7 +624,7 @@
     overflow: scroll;
 }
 
-#StateTypeUChaseModule1 {
+#GoalKeeperModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
@@ -835,7 +835,7 @@
     background-color: #b0c4de;
 }
 
-#StateTypeUChaseModule1.form-group {
+#GoalKeeperModule1.form-group {
     background-color: #ffb6c1;
 }
 

@@ -48,7 +48,7 @@ function keysdown(e) {
                 z: 0
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         } else if (keys[87] && keys[65]) {
             vec3 = new ROSLIB.Message({
                 x: -parseFloat(speed / Math.pow(2, 0.5)),
@@ -56,7 +56,7 @@ function keysdown(e) {
                 z: 0
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         } else if (keys[83] && keys[68]) {
             vec3 = new ROSLIB.Message({
                 x: parseFloat(speed / Math.pow(2, 0.5)),
@@ -64,7 +64,7 @@ function keysdown(e) {
                 z: 0
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         } else if (keys[83] && keys[65]) {
             vec3 = new ROSLIB.Message({
                 x: -parseFloat(speed / Math.pow(2, 0.5)),
@@ -72,7 +72,7 @@ function keysdown(e) {
                 z: 0
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         } else if (keys[87]) {
             vec3 = new ROSLIB.Message({
                 x: 0,
@@ -80,7 +80,7 @@ function keysdown(e) {
                 z: 0
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+           // PublishTopicCmdVel(vec3);
         } else if (keys[68]) {
             vec3 = new ROSLIB.Message({
                 x: parseFloat(speed),
@@ -88,7 +88,7 @@ function keysdown(e) {
                 z: 0
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         } else if (keys[83]) {
             vec3 = new ROSLIB.Message({
                 x: 0,
@@ -96,7 +96,7 @@ function keysdown(e) {
                 z: 0
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         } else if (keys[65]) {
             vec3 = new ROSLIB.Message({
                 x: -parseFloat(speed),
@@ -104,7 +104,7 @@ function keysdown(e) {
                 z: 0
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         } else if (keys[69]) {
             if (speed > 30)
                 speed = speed * 0.5;
@@ -114,7 +114,7 @@ function keysdown(e) {
                 z: -parseFloat(speed)
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         } else if (keys[81]) {
             if (speed > 30)
                 speed = speed * 0.5;
@@ -124,7 +124,7 @@ function keysdown(e) {
                 z: parseFloat(speed)
             });
             PublishTopicCmdVel(vec3);
-            PublishTopicCmdVel(vec3);
+            //PublishTopicCmdVel(vec3);
         }
         //SwitchRobot
         if (keys[80]) {
@@ -144,7 +144,7 @@ function releasebutton() {
         z: 0
     });
     PublishTopicCmdVel(vec3);
-    PublishTopicCmdVel(vec3);
+    //PublishTopicCmdVel(vec3);
 }
 
 function keyuped(e) {
