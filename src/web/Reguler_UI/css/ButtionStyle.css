@@ -5,10 +5,10 @@
 /*==========================================================*/
 /*click me*/
 #CliekMe{
-    width:40px;
-    height:55px;
+    width:52px;
+    height:52px;
     position:absolute;
-    top:0.5%;
+    top:1%;
     left:20%;
     background-image:url(../img/click_me.png);
     background-color:rgba(255,255,255,0.1);
@@ -155,6 +155,25 @@
 
 
 /*==========================================================*/
+#CameraSwitch {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 17px;
+    color: #663D00;
+}
+
+#CameraSwitch.ui-state-hover {
+    background-image: none;
+    /*background-color: #99CCFF;*/
+    font-size: 17px;
+    background-color: #FFF;
+}
+
+#CameraSwitch.ui-state-active {
+    background-color: #FFCC00;
+    font-size: 17px;
+    color: #1A1A65;
+}
 
 /*==========================================================*/
 

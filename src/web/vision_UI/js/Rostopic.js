@@ -260,7 +260,6 @@ var Monitor = new ROSLIB.Topic({
     name: '/vision/object',
     messageType: '/vision/Object'
 });
-var c=0;
 Monitor.subscribe(function(msg) {
     var MBox = [];
     MBox.push(msg.fps);
@@ -282,10 +281,7 @@ Monitor.subscribe(function(msg) {
     MBox.push(msg.yellow_dis);
     MBox.push(msg.yellow_ang);
     //console.log(MBox);
-    var a = new Date().getTime();
-    var n = Math.floor(a/200)%10;
-    if(c!=n){
-      c=n;
+
       document.getElementsByName('MonitorElement')[0].innerText = MBox[0];
       document.getElementsByName('MonitorElement')[1].innerText = '( '+MBox[1]+','+MBox[2]+' )';
       document.getElementsByName('MonitorElement')[2].innerText = MBox[3];
@@ -301,7 +297,7 @@ Monitor.subscribe(function(msg) {
       document.getElementsByName('MonitorElement')[10].innerText = MBox[13];
       document.getElementsByName('MonitorElement')[11].innerText = MBox[14];
       document.getElementsByName('MonitorElement')[12].innerText = MBox[15];
-    }
+    
 });
 //====================================================================
 //(X,Y)

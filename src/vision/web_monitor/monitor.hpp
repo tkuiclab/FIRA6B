@@ -76,8 +76,8 @@ private:
   cv::Mat Main_frame;
   cv::Mat Findmap;
 
-  int b_end_gap=0; 
-  int y_end_gap=0;
+  int b_end_gap; 
+  int y_end_gap;
   int hmax,hmin,smax,smin,vmax,vmin;
   object_Item FIND_Item,Red_Item,Yellow_Item,Blue_Item;
   object_Item *Obstacle_Item;

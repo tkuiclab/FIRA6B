@@ -31,7 +31,7 @@
 
 </head>
 
-<body onload="joystick_main();PublishTopicSaveParam()">
+<body onload="joystick_main();PublishTopicSaveParam();MonitorSwitch(false);">
     <div>
         <div class="modal-dialog">
             <div class="modal-content">
@@ -93,6 +93,12 @@
                                     <label id="KeyboardControlButton" for="KeyboardControlButton">KeyboardControl</label>
                                 </div>
                             </td>
+                            <td>
+                                <div>
+                                    <input autocomplete="off" id="CameraSwitch" type="checkbox" onclick="MonitorSwitch(this.checked);">
+                                    <label id = "CameraSwitch" for="CameraSwitch">Camera</label>
+                                </div>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -117,9 +123,7 @@
                     <div id="StrategyParameter" class="form-group">
                         <!-- Map -->
                         <div id="MapArea">
-                            <canvas id="MapCanvas">
-                                Your browser does not support the HTML5 canvas tag.
-                            </canvas>
+                            <img id="MapCanvas" ></img>
                         </div>
                         <!-- RightButttonDiv -->
                         <div id="RobotStateDiv">
@@ -138,7 +142,7 @@
                                 <tr>
                                     <td>
                                         <div style="width: 120px">
-                                            <input id="RobotTwoButton" type="radio" checked="checked" name="RobotStateButton" onclick="GetChooseRobot(2)" />
+                                            <input id="RobotTwoButton" type="radio" name="RobotStateButton" onclick="GetChooseRobot(2)" />
                                             <label id="RobotTwoButton" for="RobotTwoButton">Robot 2</label>
                                         </div>
                                     </td>
@@ -259,87 +263,75 @@
                             <table class="RobotInformationTable">
                                 <thead>
                                     <tr>
-                                        <th>
+                                        <th class="info1">
                                             <label>Robot</label>
                                         </th>
-                                        <th>
-                                            <label>Position</label>
-                                        </th>
-                                        <th>
+                                        <th class="info2">
                                             <label>fps</label>
                                         </th>
-                                        <th>
+                                        <th class="info3">
                                             <label>Ball</label>
                                         </th>
-                                        <th>
+                                        <th class="info3">
                                             <label>Blue</label>
                                         </th>
-                                        <th>
+                                        <th class="info3">
                                             <label>Yellow</label>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="RobotInformationTbody1">
-                                            <label>Robot 1</label>
+                                        <td class="RobotInformationTbody1 info1">
+                                            <label>R1</label>
                                         </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label>(-999,-999)</label>
+                                        <td class="RobotInformationTbody1 info2">
+                                            <label name="RobotVision1">0</label>
                                         </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label name="RobotVision1">-999</label>
+                                        <td class="RobotInformationTbody1 info3">
+                                            <label name="RobotVision1">0 , 0°</label>
                                         </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label name="RobotVision1">(-999,-999)</label>
+                                        <td class="RobotInformationTbody1 info3">
+                                            <label name="RobotVision1">0 , 0°</label>
                                         </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label name="RobotVision1">(-999,-999)</label>
-                                        </td>
-                                        <td class="RobotInformationTbody1">
-                                            <label name="RobotVision1">(-999,-999)</label>
+                                        <td class="RobotInformationTbody1 info3">
+                                            <label name="RobotVision1">0 , 0°</label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="RobotInformationTbody2">
-                                            <label>Robot 2</label>
+                                        <td class="RobotInformationTbody2 info1">
+                                            <label>R2</label>
                                         </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label>(-999,-999)</label>
+                                        <td class="RobotInformationTbody2 info2">
+                                            <label name="RobotVision2">0</label>
                                         </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label name="RobotVision2">-999</label>
+                                        <td class="RobotInformationTbody2 info3">
+                                            <label name="RobotVision2">0 , 0°</label>
                                         </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label name="RobotVision2">(-999,-999)</label>
+                                        <td class="RobotInformationTbody2 info3">
+                                            <label name="RobotVision2">0 , 0°</label>
                                         </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label name="RobotVision2">(-999,-999)</label>
-                                        </td>
-                                        <td class="RobotInformationTbody2">
-                                            <label name="RobotVision2">(-999,-999)</label>
+                                        <td class="RobotInformationTbody2 info3">
+                                            <label name="RobotVision2">0 , 0°</label>
                                         </td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td>
-                                            <label>Robot 3</label>
+                                        <td class="info1">
+                                            <label>R3</label>
                                         </td>
-                                        <td>
-                                            <label>(-999,-999)</label>
+                                        <td class="info2">
+                                            <label name="RobotVision3">0</label>
                                         </td>
-                                        <td>
-                                            <label name="RobotVision3">-999</label>
+                                        <td class="info3">
+                                            <label name="RobotVision3">0 , 0°</label>
                                         </td>
-                                        <td>
-                                            <label name="RobotVision3">(-999,-999)</label>
+                                        <td class="info3">
+                                            <label name="RobotVision3">0 , 0°</label>
                                         </td>
-                                        <td>
-                                            <label name="RobotVision3">(-999,-999)</label>
-                                        </td>
-                                        <td>
-                                            <label name="RobotVision3">(-999,-999)</label>
+                                        <td class="info3">
+                                            <label name="RobotVision3">0 , 0°</label>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -3862,6 +3854,8 @@
     <script src="js/SliderControl.js"></script>
     <script src="js/Joystick.js"></script>
     <script src="js/show.js"></script>
+    <script src="js/video.js"></script>
+
 </body>
 
 </html>

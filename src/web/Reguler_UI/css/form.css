@@ -145,15 +145,18 @@ body {
     width: 700px;
     height: 550px;
     z-index: 1;
-    border: 1px solid black;
-    position: relative;
+/*    border: 1px solid black;
+*/    position: relative;
     top: 3%;
     left: 27%;
+    text-align: center;
 }
 
 #MapCanvas {
-    width: 100%;
-    height: 100%;
+    position: relative;
+    top:5%;
+    width: 659px;
+    height: 493px;
 }
 
 
@@ -295,7 +298,7 @@ body {
     bottom: 180%;
     left: 1%;
     background-color: #FFF;
-    overflow: scroll;
+    /*overflow: scroll;*/
 }
 #RobotInformationDiv table {
     width: 100%;
@@ -318,24 +321,32 @@ table.RobotInformationTable thead th {
     text-align: center;
 }
 table.RobotInformationTable tfoot td {
-    font-size: 12px;
+    font-size: 15px;
     padding: 25px 0px;
     text-align: center;
     background-color: #b0c4de;
 }
 .RobotInformationTbody1 {
-    font-size: 12px;
-    padding: 10px 0px;
+    font-size: 15px;
+    padding: 10px 8px;
     text-align: center;
     background-color: #ffb6c1;
 }
 .RobotInformationTbody2 {
-    font-size: 12px;
-    padding: 10px 0px;
+    font-size: 15px;
+    padding: 10px 8px;
     text-align: center;
     background-color: #90ee90;
 }
-
+.info1{
+    width:50px;
+}
+.info2{
+    width:41px;
+}
+.info3{
+    width:83px;
+}
 /*==========================================================*/
 
 /*RobotInformation*/
@@ -349,13 +360,14 @@ table.RobotInformationTable tfoot td {
     left: 1%;
     background-color: #FFF;
 }
-#RobotStrategyDiv table {
-    border: 1px solid black;
-}
+/*#RobotStrategyDiv table {
+    border-bottom: 1px solid black;
+}*/
 #RobotStrategyTable1 {
     width: 100%;
     height: 20%;
     text-align: center;
+    border-bottom: 1px solid black;
 }
 #RobotStrategyTable1 td{
     width: 50%;
