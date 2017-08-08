@@ -790,7 +790,7 @@ var StrategySelectBox1 = new ROSLIB.Param({
 });
 var StrategySelectPrefixBox1 = new ROSLIB.Param({
     ros: ros,
-    name: '/StrategySelection/Prefix',
+    name: '/StrategySelection/PrefixSetting',
 });
 var SupportStrategyBox1 = new ROSLIB.Param({
     ros: ros,
@@ -832,7 +832,7 @@ var StrategySelectBox2 = new ROSLIB.Param({
 });
 var StrategySelectPrefixBox2 = new ROSLIB.Param({
     ros: ros2,
-    name: '/StrategySelection/Prefix',
+    name: '/StrategySelection/PrefixSetting',
 });
 var SupportStrategyBox2 = new ROSLIB.Param({
     ros: ros2,
@@ -874,7 +874,7 @@ var StrategySelectBox3 = new ROSLIB.Param({
 });
 var StrategySelectPrefixBox3 = new ROSLIB.Param({
     ros: ros3,
-    name: '/StrategySelection/Prefix',
+    name: '/StrategySelection/PrefixSetting',
 });
 var SupportStrategyBox3 = new ROSLIB.Param({
     ros: ros3,
