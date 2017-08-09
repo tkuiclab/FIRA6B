@@ -238,6 +238,7 @@ void FIRA_teamStrategy_class::role_Halt(){
     roleAry[0] = Role_Halt;
     roleAry[1] = Role_Halt;
     roleAry[2] = Role_Halt;
+
     Begin_time = ros::Time::now().toSec();
     Current_time = ros::Time::now().toSec();
     // counter = 0;

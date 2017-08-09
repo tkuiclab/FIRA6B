@@ -115,7 +115,7 @@ public:
             left_right=2;
         }
         //printf("test_angle = %f\n",test_angle);
-//        printf("angle_dr=%f\n",angle_dr);
+        //printf("angle_dr=%f\n",angle_dr);
 //        printf("op_angle_dr=%f\n",op_angle_dr);
 //        printf("XXXX=%f\n",global_env->home[global_env->RobotNumber].goal_edge.angle_1);
 //        printf("XXXX=%f\n",global_env->home[global_env->RobotNumber].goal_edge.angle_2);
@@ -124,7 +124,9 @@ public:
 
         std_msgs::Float32MultiArray pubMsg;
         pubMsg.data.push_back(rolearray);
+
         pubMsg.data.push_back(global_env->home[rolearray].ball.distance);
+
         //Chase_Strategy[3]=angle, [4]=dis
         if((fabs(Chase_Strategy[3])>=fabs(global_env->home[rolearray].ball.angle))&&(Chase_Strategy[4]>=global_env->home[rolearray].ball.distance)){
           pubMsg.data.push_back(1);
@@ -140,6 +142,7 @@ public:
 //        printf("ball.distance=%lf\n",global_env->home[rolearray].ball.distance);
 
         this_robot_info_pub.publish(pubMsg);
+
 
 
     }

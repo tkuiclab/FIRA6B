@@ -251,7 +251,8 @@ InterfaceProc::InterfaceProc()
   : it_(nh)
 {
   ros::NodeHandle n("~");
-  Parameter_getting(1);
+  //Parameter_getting(1);
+
   init_data();
   image_sub_ = it_.subscribe("/camera/image_raw", 1, &InterfaceProc::imageCb, this);
   //image_sub_ = it_.subscribe("usb_cam/image_raw", 1, &InterfaceProc::imageCb, this);
@@ -310,7 +311,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     ROS_ERROR("cv_bridge exception: %s", e.what());
     return;
   }
-
+  
 //////////////////////Clone///////////////////////////////////
   cv::flip(cv_ptr->image, cv_ptr->image, 1);
   Main_frame = cv_ptr->image.clone();
