@@ -282,4 +282,5 @@ function MonitorSwitch(value) {
         else
             video.src = "img/offline.png";
     }
+    if(value==false)video.src = "img/offline.png";
 }

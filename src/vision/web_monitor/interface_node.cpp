@@ -5,9 +5,7 @@
 int main(int argc, char** argv)
 {
 
-ros::init(argc, argv, "monitor");//initial
-
-  
+  ros::init(argc, argv, "monitor");//initial
   InterfaceProc ip;//class:InterfaceProc(interface.hpp)
   //ip.Parameter_getting(1);
   ros::spin();//listen topic value
