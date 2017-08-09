@@ -1374,9 +1374,10 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
 
     int effective_dis=125;
     double f_total[3]={0,0,0};
-
     double total_f_apf_goal=0;
     double total_f_apf=0;
+    // double error_f[3]={0,0,0};
+    // static double f_last_total[3]={0,0,0};//{goal_f_x,image_f_x,apf_f_x}
     //double total_f_image=0;
 
     double f_g[3]={0,0,0};//x y z
@@ -1401,6 +1402,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     double check_obstacle_dis=0;
     double v_yaw_angle=0;
     ////////////////////////////////
+
     //printf("===========f_g_cal=======\t%d\n\n",env.global_angle_end.size());
     ////////////////// f_g to unit vector//////////
     f_g[0]=goal_dis*-sin(goal_angle*deg2rad);
@@ -1466,7 +1468,6 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
             Velocity_angle=atan2(f_total[0],f_total[1])*rad2deg;
             f_r_angle=atan2(apf_f[0],apf_f[1])*rad2deg;
 
-
             if(f_r_angle<0){f_r_angle=f_r_angle+360;}
             if(Velocity_angle<0){Velocity_angle=Velocity_angle+360;}
             if(goal_angle<0){f_g_angle=goal_angle+360;}
@@ -1520,39 +1521,45 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         f_apf_total[0]=f_apf_total[0]/total_f_apf;
         f_apf_total[1]=f_apf_total[1]/total_f_apf;
     }
-
+    /////////////////fix_for_ Harmonic///////
+//    f_last_total[0] = f_g[0];
+//    f_last_total[1] = f_image_total[0];
+//    f_last_total[2] = f_apf_total[0];
     if(number_obstacle==0){
-        v_yaw_angle=0;
+        v_yaw_angle=goal_angle;
+    }else if(number_obstacle>=2){
+//        error_f[0] = f_g[0]-f_last_total[0];
+//        error_f[1] = f_image_total[0]-f_last_total[1];
+//        error_f[2] = f_apf_total[0]-f_last_total[2];
+        k_g[0]=1.5;k_g[1]=1.5;
+        k_r[0]=0.75;k_r[1]=0.75;
+        k_image_r[0]=0.75;k_image_r[1]=0.75;
     }
 
+    //////////////////////zone condition/////////////////
     if(goal_dis<=2.3){
-        k_g[0]=2;
-        k_g[1]=2;
-        k_r[0]=0;
-        k_r[1]=0;
-        k_image_r[0]=0;
-        k_image_r[1]=0;
+        k_g[0]=2;k_g[1]=2;
+        k_r[0]=0;k_r[1]=0;
+        k_image_r[0]=0;k_image_r[1]=0;
         v_yaw_angle=goal_angle;
     }
-//    /////////////////
+    ////////////////////
     f_total[0]=k_r[0]*f_apf_total[0]+k_g[0]*f_g[0]+k_image_r[0]*f_image_total[0];
     f_total[1]=k_r[1]*f_apf_total[1]+k_g[1]*f_g[1]+k_image_r[1]*f_image_total[1];
+
+    //
     f_r_angle=atan2(f_apf_total[1],f_apf_total[0])*rad2deg;
-    printf("f_r_angle:%f\n",f_r_angle);
-    printf("k_r-x:%f,k_r-y:%f\tk_g-x:%f,k_g-y:%f\n",k_r[0],k_r[1],k_g[0],k_g[1]);
-    printf("ft_x:%f\tft_y:%f\n\n",f_total[0],f_total[1]);
+//    printf("f_r_angle:%f\n",f_r_angle);
+//    printf("k_r-x:%f,k_r-y:%f\tk_g-x:%f,k_g-y:%f\n",k_r[0],k_r[1],k_g[0],k_g[1]);
+//    printf("ft_x:%f\tft_y:%f\n\n",f_total[0],f_total[1]);
 
 //    ////////////real_state/////
     env.home[r_number].v_x = f_total[0];
     env.home[r_number].v_y = f_total[1];
     env.home[r_number].v_yaw = v_yaw_angle;
 //    printf("v_yaw=%f\n",env.home[r_number].v_yaw);
-    printf("=============end_f=======\n");
+//    printf("=============end_f=======\n");
 
-//    ////////////////////test_mode_end////////////
-//    angle_avg.clear();
-//    std::vector<double>().swap(angle_avg);
-//    number_obstacle=0;
 }
 
 double FIRA_pathplan_class::vecAngle(Vector2d a,Vector2d b){
