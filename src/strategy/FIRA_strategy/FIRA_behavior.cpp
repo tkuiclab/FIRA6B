@@ -1,10 +1,12 @@
 #include "FIRA_behavior.h"
 #include "math.h"
+static double Begin_time = 0;
+static double Current_time = 0;
 static double NewSupport_Begin_time = 0;
 static double NewSupport_Current_time = 0;
 static double Movement_Begin_time = 0;
 static double Movement_Current_time = 0;
-
+static int Special_Movement_Flag = 0;
 
 FIRA_behavior_class::FIRA_behavior_class(){
    opponent = false;
@@ -397,14 +399,21 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
             }
         double op_distance_dr = env.home[robotIndex].op_goal.distance;
         double distance_dr = env.home[robotIndex].goal.distance;
-        //printf("op_distance_dr=%f\n",op_distance_dr);
         double Forward = PrefixSetting[0];
         double Backward = PrefixSetting[1];
         double Left = PrefixSetting[2];
         double Right = PrefixSetting[3];
         double Continue_Time = PrefixSetting[4];
-        Movement_Current_time = ros::Time::now().toSec();
-        if(fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time){// da su time delay
+
+        Current_time = ros::Time::now().toSec();// main time
+
+        if(fabs(Current_time-Begin_time)<=3&&state_attack==state_Attack){// if enter attack state in 3 sec, can use special movement
+            Special_Movement_Flag = 1;
+        }
+        if(Special_Movement_Flag == 1){// if special movement open, start counting time from 0 to Continue_Time, even you lost ball to chase
+            Movement_Current_time = ros::Time::now().toSec();
+        }
+        if(((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time)&&state_attack==state_Attack)&&Special_Movement_Flag == 1){
             printf("special movement time left : %f\n",Continue_Time-fabs(Movement_Current_time-Movement_Begin_time));
             if(Left&&Forward){
                 actionAry[robotIndex] = action_LeftForward;
@@ -522,10 +531,13 @@ void FIRA_behavior_class::behavior_Halt(int robotIndex){
     actionAry[robotIndex] = action_Halt;
     state_cornerkick = state_CornerKick;
     state_attack = state_Init;
+    Begin_time = ros::Time::now().toSec();
+    Current_time = ros::Time::now().toSec();
     NewSupport_Begin_time = ros::Time::now().toSec();
     NewSupport_Current_time = ros::Time::now().toSec();
     Movement_Begin_time = ros::Time::now().toSec();
     Movement_Current_time = ros::Time::now().toSec();
+    Special_Movement_Flag = 0;
 //    printf("Begin_time=%f\n",Begin_time);
 //    printf("Current_time=%f\n",Current_time);
     ///=========================================
