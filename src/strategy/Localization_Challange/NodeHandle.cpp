@@ -87,15 +87,8 @@ void NodeHandle::pubSpeed(Environment *Env)
 }
 void NodeHandle::Transfer(Environment *Env)
 {
-    double Distance = hypot(Env->Robot.v_x, Env->Robot.v_y);
-    double alpha = atan(-Env->Robot.v_x / Env->Robot.v_y) * RAD2DEG;
-    if (Env->Robot.v_y > 0)
-    {
-        if (Env->Robot.v_x > 0)
-            alpha += 180;
-        else
-            alpha -= 180;
-    }
+c    double Distance = hypot(Env->Robot.v_x, Env->Robot.v_y);
+    double alpha = atan2(Env->Robot.v_y, Env->Robot.v_x) * RAD2DEG;
     double angle = Env->Robot.v_yaw;
     bool IsVectorZero = 0;
     double DistanceMax = _Param->NodeHandle.SPlanning_Velocity[0];
@@ -133,8 +126,8 @@ void NodeHandle::Transfer(Environment *Env)
     }
     else
     {
-        Env->Robot.v_x = VelocityLength * sin(alpha * DEG2RAD);
-        Env->Robot.v_y = -VelocityLength * cos(alpha * DEG2RAD);
+        Env->Robot.v_x = VelocityLength * cos(alpha * DEG2RAD);
+        Env->Robot.v_y = VelocityLength * sin(alpha * DEG2RAD);
     }
     Env->Robot.v_yaw = AngularVelocity;
 }
