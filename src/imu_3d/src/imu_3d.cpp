@@ -564,9 +564,9 @@ int main(int argc,char **argv)
         imuData.linear_acceleration.z = accel.z;
         for (int i = 0; i < 9; i++)
         {
-            imuData.orientation_covariance[i] = 0.01;
-            imuData.angular_velocity_covariance[i] = 0.01;
-            imuData.linear_acceleration_covariance[i] = 0.01;
+            imuData.orientation_covariance[i] = 1e-3;
+            imuData.angular_velocity_covariance[i] = 1e-3;
+            imuData.linear_acceleration_covariance[i] = 1e-3;
         }
         imu_data_pub.publish(imuData);
 

@@ -131,13 +131,13 @@ void Client::odom_tf_pub()
         odom.pose.covariance[14] = 1e9;
         odom.pose.covariance[21] = 1e9;
         odom.pose.covariance[28] = 1e9;
-        odom.pose.covariance[35] = 1;
+        odom.pose.covariance[35] = 1e-3;
         odom.twist.covariance[0] = 1e-3;
         odom.twist.covariance[7] = 1e-3;
         odom.twist.covariance[14] = 1e9;
         odom.twist.covariance[21] = 1e9;
         odom.twist.covariance[28] = 1e9;
-        odom.twist.covariance[35] = 1;
+        odom.twist.covariance[35] = 1e-3;
         odom.twist.twist.linear.x = delta_x / dt;
         odom.twist.twist.linear.y = delta_y / dt;
         odom.twist.twist.angular.z = (-1) * (imu3d - last_imu) / dt;
