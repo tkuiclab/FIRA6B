@@ -413,7 +413,7 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         if(Special_Movement_Flag == 1){// if special movement open, start counting time from 0 to Continue_Time, even you lost ball to chase
             Movement_Current_time = ros::Time::now().toSec();
         }
-        if(((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time)&&state_attack==state_Attack)&&Special_Movement_Flag == 1){
+        if((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time&&fabs(Movement_Current_time-Movement_Begin_time)>0.3)&&(state_attack==state_Attack&&Special_Movement_Flag == 1)){
             printf("special movement time left : %f\n",Continue_Time-fabs(Movement_Current_time-Movement_Begin_time));
             if(Left&&Forward){
                 actionAry[robotIndex] = action_LeftForward;
@@ -586,50 +586,51 @@ void FIRA_behavior_class::behavior_Test1(int robotIndex){
 
 }
 void FIRA_behavior_class::behavior_Test2(int robotIndex){
-    double distance_br = env.home[robotIndex].ball.distance;
-    double distance_dr = env.home[robotIndex].goal.distance;
-    double op_distance_dr = env.home[robotIndex].op_goal.distance;
-    double angle_br = env.home[robotIndex].ball.angle;
-    double angle_dr = env.home[robotIndex].goal.angle;
-    double op_angle_dr = env.home[robotIndex].op_goal.angle;
-    double v_rotation=0;
-    //printf("distance_br=%f\n",distance_br);
+//    double distance_br = env.home[robotIndex].ball.distance;
+//    double distance_dr = env.home[robotIndex].goal.distance;
+//    double op_distance_dr = env.home[robotIndex].op_goal.distance;
+//    double angle_br = env.home[robotIndex].ball.angle;
+//    double angle_dr = env.home[robotIndex].goal.angle;
+//    double op_angle_dr = env.home[robotIndex].op_goal.angle;
+//    double v_rotation=0;
+//    //printf("distance_br=%f\n",distance_br);
 
 
-    if(mTeam == Team_Yellow){
-        if(op_distance_dr<1.5){// in limit area
-            actionAry[robotIndex] = action_LeaveLimitArea;
-            printf("action_LeaveLimitArea\n");
-        }else if(angle_br>120||angle_br<-120){
-            actionAry[robotIndex] = action_Chase;
-            printf("action_Chase\n");
-        }else if(op_distance_dr>3.5){// too far from defend gate
-            actionAry[robotIndex] = action_MovetoYellowGate;
-            printf("action_MovetoYellowGate\n");
-        }else{//all good above, left right defend ball state
-            actionAry[robotIndex] = action_Support_LostInternet;
-            printf("left right defend ball state\n");
-        }
-    }else if(mTeam == Team_Blue){
-        if(op_distance_dr<1.5){// in limit area
-            actionAry[robotIndex] = action_LeaveLimitArea;
-            printf("action_LeaveLimitArea\n");
-        }else if(angle_br>120||angle_br<-120){
-            actionAry[robotIndex] = action_Chase;
-            printf("action_Chase\n");
-        }else if(op_distance_dr>3.5){// too far from defend gate
-            actionAry[robotIndex] = action_MovetoBlueGate;
-            printf("action_MovetoBlueGate\n");
-        }else{//all good above, left right defend ball state
-            actionAry[robotIndex] = action_Support_LostInternet;
-            printf("left right defend ball state\n");
-        }
-    }
+//    if(mTeam == Team_Yellow){
+//        if(op_distance_dr<1.5){// in limit area
+//            actionAry[robotIndex] = action_LeaveLimitArea;
+//            printf("action_LeaveLimitArea\n");
+//        }else if(angle_br>120||angle_br<-120){
+//            actionAry[robotIndex] = action_Chase;
+//            printf("action_Chase\n");
+//        }else if(op_distance_dr>3.5){// too far from defend gate
+//            actionAry[robotIndex] = action_MovetoYellowGate;
+//            printf("action_MovetoYellowGate\n");
+//        }else{//all good above, left right defend ball state
+//            actionAry[robotIndex] = action_Support_LostInternet;
+//            printf("left right defend ball state\n");
+//        }
+//    }else if(mTeam == Team_Blue){
+//        if(op_distance_dr<1.5){// in limit area
+//            actionAry[robotIndex] = action_LeaveLimitArea;
+//            printf("action_LeaveLimitArea\n");
+//        }else if(angle_br>120||angle_br<-120){
+//            actionAry[robotIndex] = action_Chase;
+//            printf("action_Chase\n");
+//        }else if(op_distance_dr>3.5){// too far from defend gate
+//            actionAry[robotIndex] = action_MovetoBlueGate;
+//            printf("action_MovetoBlueGate\n");
+//        }else{//all good above, left right defend ball state
+//            actionAry[robotIndex] = action_Support_LostInternet;
+//            printf("left right defend ball state\n");
+//        }
+//    }
 
-    if(((distance_br>=9.99)||(distance_dr>=9.99))||(op_distance_dr>=9.99)){
-        printf("action_Halt br:%f, dr:%f op_dr:%f\n",distance_br,distance_dr,op_distance_dr);
-        actionAry[robotIndex] = action_Halt;
-    }
+//    if(((distance_br>=9.99)||(distance_dr>=9.99))||(op_distance_dr>=9.99)){
+//        printf("action_Halt br:%f, dr:%f op_dr:%f\n",distance_br,distance_dr,op_distance_dr);
+//        actionAry[robotIndex] = action_Halt;
+//    }
+    actionAry[robotIndex] = action_LeftRightMove;
 }
 void FIRA_behavior_class::behavior_Test3(int robotIndex){
 

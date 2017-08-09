@@ -1,6 +1,6 @@
 FIRA:
   Attack_Strategy: [0]
-  Center: {Camera_high: 650, Center_X: 292, Center_Y: 267, Front: 273, Inner: 44,
+  Center: {Camera_high: 650, Center_X: 292, Center_Y: 263, Front: 270, Inner: 44,
     Outer: 255}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
@@ -21,28 +21,28 @@ FIRA:
     black: {angle: 1, gray: 31}
     white: {angle: 1, gray: 170}
   IsSimulator: 0
-  Parameterbutton: 3
+  Parameterbutton: 4
   Penalty_Kick: [1, 0]
   RobotNumber: 1
   SCAN: {Angle_Near_Gap: 4, Angle_range_1: 1, Angle_range_2_3: 1, Dont_Search_Angle_1: 330,
     Dont_Search_Angle_2: 91, Dont_Search_Angle_3: 210, Magn_Far_End: 252, Magn_Far_Start: 141,
     Magn_Middle_Start: 98, Magn_Near_Gap: 1, Magn_Near_Start: 44}
-  SPlanning_Velocity: [3, 0.3, 100, 80, 15, 5, 144, 5, 1, 0, 0, 0]
+  SPlanning_Velocity: [1, 0.3, 80, 60, 20, 0.5, 90, 5, 40, 3, 70, 47]
   SideSpeedUp: [0.73, 1.2, 0.7, 5, 17.6]
   TypeS_Attack: [1.2, 0.2]
   TypeU_Attack: [0.8, 1, -90, 90, 0.6, 0.3, 10, 20]
   Zone_Attack: [0.85, 1.25]
 FIRA_Behavior:
   Attack_Strategy: [5, 1, 0.4]
-  Chase_Strategy: [5, 0.15, 0.2, 3, 0.32]
+  Chase_Strategy: [5, 0.15, 0.2, 3, 0.34]
   Corner_Kick: [120, 0.45]
-  PrefixSetting: [0, 1, 1, 0, 100]
+  PrefixSetting: [0, 0, 0, 0, 0]
   Side_Speed_UP: [10, 0.45]
   Support_Strategy: [1]
   TypeS_Attack: [20, 1, 1.5]
   TypeU_Chase: [30, 0.3]
   Zone_Attack: [0.6]
-StrategySelection: [0, 1, 1, 0, 0, 0, 0, 0]
+StrategySelection: [0, 1, 0, 0, 0, 0, 0, 1]
 camera:
   image:
     compressed: {format: jpeg, jpeg_quality: 80, png_level: 9}
@@ -68,12 +68,19 @@ rosdistro: 'indigo
 
   '
 roslaunch:
-  uris: {host_iclab__33039: 'http://iclab:33039/', host_iclab__34423: 'http://iclab:34423/',
-    host_iclab__35330: 'http://iclab:35330/', host_iclab__38436: 'http://iclab:38436/',
+  uris: {host_iclab__33039: 'http://iclab:33039/', host_iclab__33491: 'http://iclab:33491/',
+    host_iclab__33673: 'http://iclab:33673/', host_iclab__34423: 'http://iclab:34423/',
+    host_iclab__34637: 'http://iclab:34637/', host_iclab__35330: 'http://iclab:35330/',
+    host_iclab__35885: 'http://iclab:35885/', host_iclab__36038: 'http://iclab:36038/',
+    host_iclab__36354: 'http://iclab:36354/', host_iclab__37689: 'http://iclab:37689/',
+    host_iclab__37836: 'http://iclab:37836/', host_iclab__38436: 'http://iclab:38436/',
     host_iclab__38846: 'http://iclab:38846/', host_iclab__39171: 'http://iclab:39171/',
     host_iclab__39240: 'http://iclab:39240/', host_iclab__39798: 'http://iclab:39798/',
     host_iclab__41177: 'http://iclab:41177/', host_iclab__41389: 'http://iclab:41389/',
-    host_iclab__46252: 'http://iclab:46252/'}
+    host_iclab__41467: 'http://iclab:41467/', host_iclab__42541: 'http://iclab:42541/',
+    host_iclab__42622: 'http://iclab:42622/', host_iclab__43904: 'http://iclab:43904/',
+    host_iclab__46182: 'http://iclab:46182/', host_iclab__46252: 'http://iclab:46252/',
+    host_iclab__46331: 'http://iclab:46331/'}
 rosversion: '1.11.21
 
   '

@@ -2151,14 +2151,20 @@ void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
     double vectorbr_x = -c_distance_br * sin(c_angle_br * deg2rad);
     double vectorbr_y = c_distance_br * cos(c_angle_br * deg2rad);
 
-    if(fabs(angle_br)>5&&distance_br<1){
-        env.home[r_number].v_x = vectorbr_x*(distance_br-Chase_Strategy[4]);
-        env.home[r_number].v_y = vectorbr_y*(distance_br-Chase_Strategy[4]);
+    printf("distance_br-Chase_Strategy[4]=%f\n",distance_br-Chase_Strategy[4]);
+    if(fabs(angle_br)>15&&distance_br<0.7){
+        env.home[r_number].v_x = vectorbr_x*(distance_br-Chase_Strategy[4]-0.2);
+        env.home[r_number].v_y = vectorbr_y*(distance_br-Chase_Strategy[4]-0.2);
+        if(distance_br-Chase_Strategy[4]<0.2){
+            printf("I WANT STOP\n");
+            env.home[r_number].v_x = 0;
+            env.home[r_number].v_y = 0;
+        }
     }else{
         env.home[r_number].v_x = vectorbr_x;
         env.home[r_number].v_y = vectorbr_y;
     }
-    env.home[r_number].v_yaw = angle_br;
+    env.home[r_number].v_yaw = angle_br*2;
     shoot = 0;
 
 
@@ -2867,7 +2873,7 @@ void FIRA_pathplan_class::strategy_LeftRightMove(int r_number){
     yaw_speed = inv_op_angle_dr+transform_angle_dr; // (head to angle_dr) + (tail to op_angle_dr) = face forward
 
     if(fabs(inv_op_angle_dr+transform_angle_dr)<20){// if face forward correct within error interval, give x vector speed
-       x_speed = -cos(transform_angle_br*deg2rad)*distance_br;
+       x_speed = cos(transform_angle_br*deg2rad)*distance_br;
     }else{
        x_speed = 0;// if not face correct, give v_x=0, until you turn to right angle
     }
@@ -3972,10 +3978,11 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 //            }
 //            env.home[r_number].v_yaw = transform_obstacle_angle;
 //        }
-        if(distance_dr<4&&Straight_Attack_Flag==1){
+        if(distance_dr<3.2&&Straight_Attack_Flag==1){
             Straight_Attack_Flag=0;
         }
-        if(Straight_Attack_Flag=0){
+
+        if(Straight_Attack_Flag==0){
             if(goal_angle>60){
                 env.home[r_number].v_x =sin(transform_angle_br*deg2rad)*0.4;
                 env.home[r_number].v_y =cos(transform_angle_br*deg2rad)*0.4;
@@ -4100,42 +4107,42 @@ void FIRA_pathplan_class::Movement_Backward(int Robot_index){
 }
 void FIRA_pathplan_class::Movement_Left(int Robot_index){
     printf("Left\n");
-    env.home[Robot_index].v_x = 100;
+    env.home[Robot_index].v_x = -100;
     env.home[Robot_index].v_y = 0;
     env.home[Robot_index].v_yaw = 0;
     shoot = 0;
 }
 void FIRA_pathplan_class::Movement_LeftForward(int Robot_index){
     printf("LeftForward\n");
-    env.home[Robot_index].v_x = 100;
+    env.home[Robot_index].v_x = -100;
     env.home[Robot_index].v_y = 100;
     env.home[Robot_index].v_yaw = 0;
     shoot = 0;
 }
 void FIRA_pathplan_class::Movement_LeftBackward(int Robot_index){
     printf("LeftBackward\n");
-    env.home[Robot_index].v_x = 100;
+    env.home[Robot_index].v_x = -100;
     env.home[Robot_index].v_y = -100;
     env.home[Robot_index].v_yaw = 0;
     shoot = 0;
 }
 void FIRA_pathplan_class::Movement_Right(int Robot_index){
     printf("Right\n");
-    env.home[Robot_index].v_x = -100;
+    env.home[Robot_index].v_x = 100;
     env.home[Robot_index].v_y = 0;
     env.home[Robot_index].v_yaw = 0;
     shoot = 0;
 }
 void FIRA_pathplan_class::Movement_RightForward(int Robot_index){
     printf("RightForward\n");
-    env.home[Robot_index].v_x = -100;
+    env.home[Robot_index].v_x = 100;
     env.home[Robot_index].v_y = 100;
     env.home[Robot_index].v_yaw = 0;
     shoot = 0;
 }
 void FIRA_pathplan_class::Movement_RightBackward(int Robot_index){
     printf("RightBackward\n");
-    env.home[Robot_index].v_x = -100;
+    env.home[Robot_index].v_x = 100;
     env.home[Robot_index].v_y = -100;
     env.home[Robot_index].v_yaw = 0;
     shoot = 0;

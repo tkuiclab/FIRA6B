@@ -172,13 +172,14 @@ void Strategy_nodeHandle::pubSpeed(ros::Publisher *puber,double v_x,double v_y,d
 //###################################################//
 void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     double Vdis = hypot(msg->linear.x,msg->linear.y);
-    double alpha = atan(-msg->linear.x/msg->linear.y)*rad2deg;
-    if(msg->linear.y>0){
-        if(msg->linear.x>0)
-            alpha+=180;
-        else
-            alpha-=180;
-    }
+    double alpha = atan2(msg->linear.y,msg->linear.x)*rad2deg;
+//    double alpha = atan(-msg->linear.x/msg->linear.y)*rad2deg;
+//    if(msg->linear.y>0){
+//        if(msg->linear.x>0)
+//            alpha+=180;
+//        else
+//            alpha-=180;
+//    }
     double angle = msg->angular.z * rad2deg;
     bool IsVectorZero=0;
     double Vdis_max = SPlanning_Velocity[0];//3
@@ -239,14 +240,14 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
 //// [-100,100]
     if(angle<0)
         Tangle = -Tangle;
-        if(IsVectorZero){
-         msg->linear.x = 0;
-         msg->linear.y = 0;
-        }else{
-        msg->linear.x = VTdis*sin(alpha*deg2rad);
-        msg->linear.y = -VTdis*cos(alpha*deg2rad);
-        }
-        msg->angular.z = Tangle;
+    if(IsVectorZero){
+     msg->linear.x = 0;
+     msg->linear.y = 0;
+    }else{
+    msg->linear.x = VTdis*cos(alpha*deg2rad);
+    msg->linear.y = VTdis*sin(alpha*deg2rad);
+    }
+    msg->angular.z = Tangle;
 }
 //###################################################//
 //                                                   //
