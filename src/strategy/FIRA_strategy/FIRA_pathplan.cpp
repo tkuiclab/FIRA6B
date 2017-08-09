@@ -1443,6 +1443,9 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
             if(check_obstacle_dis<=min_obstacle_dis||min_obstacle_dis==0){
                 min_obstacle_dis=check_obstacle_dis;
                 v_yaw_angle=angle_avg[i-1];
+                if(v_yaw_angle>=180){
+                    v_yaw_angle=v_yaw_angle-360;
+                }
             }
              //printf("v_yaw=%f\n",v_yaw_angle);
             ///////////////////////////////
@@ -1539,8 +1542,8 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
 //        error_f[1] = f_image_total[0]-f_last_total[1];
 //        error_f[2] = f_apf_total[0]-f_last_total[2];
         k_g[0]=1.5;k_g[1]=1.5;
-        k_r[0]=0.75;k_r[1]=0.75;
-        k_image_r[0]=0.75;k_image_r[1]=0.75;
+        k_r[0]=0.85;k_r[1]=0.85;
+        k_image_r[0]=0.85;k_image_r[1]=0.85;
     }
 
     //////////////////////zone condition/////////////////
@@ -1563,7 +1566,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
 //    ////////////real_state/////
     env.home[r_number].v_x = f_total[0];
     env.home[r_number].v_y = f_total[1];
-    env.home[r_number].v_yaw = v_yaw_angle;
+    env.home[r_number].v_yaw = goal_angle;
     //printf("v_yaw=%f\n",env.home[r_number].v_yaw);
     //printf("=============end_f=======\n");
 
