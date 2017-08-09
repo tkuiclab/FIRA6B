@@ -11,11 +11,10 @@ class FIRA_behavior_class
 {
 private:
     int action;
-    int state_attack=state_Init;
-    int state_GoalKeeper = state_GoalKeeper_init;
-    int state_cornerkick=state_CornerKick;
-    int gointoGoalKick;
-    int gointoSidespeedup;
+    int state_attack;
+    int state_Goalkeeper;
+    int state_cornerkick;
+    int Sidespeedup_timer_reset;
     // ========== test change roleAry[ i ] to escape from cornerkick and try to reset the state  begin ==========
     bool EscapeCornerKick[3] = {false,false,false};
     std::vector<double> Attack_Strategy;
@@ -27,6 +26,7 @@ private:
     std::vector<double> Zone_Attack;
     std::vector<double> Dorsad_Attack;
     std::vector<int> StrategySelection;
+    std::vector<double> Goalkeeper;
     // ========== test change roleAry[ i ] to escape from cornerkick and try to reset the state  end ==========
     void ActionChase();
     //start---simulator---
@@ -53,10 +53,12 @@ private:
     float error[2];
     bool decide_actionAttack;
 
-    void StateGoalKeeperInit(int);
-    void StateGoalKeeperBlock(int);
-    void StateGoalKeeperPush(int);
-    void StateGoalKeeperGoalKick(int);
+    void StateGoalkeeperInit(int);
+    void StateGoalkeeperBlock(int);
+    void StateGoalkeeperPush(int);
+    void StateGoalkeeperGoalKick(int);
+    void StateGoalkeeperPenaltyKick(int);
+    void StateGoalkeeperShootBlock(int);
 
     float MIN(float i,float j,float k,float l){
         if(i<=j&&i<=k&&i<=l) return i;

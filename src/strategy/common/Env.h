@@ -32,6 +32,7 @@ const long PLAYERS_PER_SIDE = 3;
 #define Role_CornerKick         6
 #define Role_AvoidBarrier       7
 #define Role_GoalKick           8
+#define Role_Goalkeeper_PenaltyKick 9
 
 #define action_Halt             0
 #define action_Goalkeeper       1
@@ -58,6 +59,7 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_Goalkeeper_block 21
 #define action_Goalkeeper_push 22
 #define action_Goalkeeper_goalkick 23
+#define action_Goalkeeper_shootblock 24
 
 #define state_Init              0
 #define state_Chase             1
@@ -68,10 +70,13 @@ const long PLAYERS_PER_SIDE = 3;
 #define state_ZoneAttack        6
 #define state_CornerKick        7
 
-#define state_GoalKeeper_init 8
-#define state_GoalKeeper_block 9
-#define state_GoalKeeper_push 10
-#define state_GoalKeeper_goalkick 11
+#define state_Goalkeeper_init 8
+#define state_Goalkeeper_block 9
+#define state_Goalkeeper_push 10
+#define state_Goalkeeper_goalkick 11
+#define state_Goalkeeper_PenaltyKick 12
+#define state_Goalkeeper_ShootBlock 13
+
 
 #define Team_Blue 1
 #define Team_Yellow 2

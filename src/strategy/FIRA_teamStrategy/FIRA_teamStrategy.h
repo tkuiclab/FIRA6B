@@ -14,7 +14,7 @@ private:
     int roleAry[PLAYERS_PER_SIDE];
     //end  ---simulator---
     double vecAngle(Vector2d a,Vector2d b);
-    int gointoGoalKick;
+    int Goalkeeper_timer_reset;
 public:
     //start---simulator---
     void setOpponent(bool iBool){opponent = iBool;}

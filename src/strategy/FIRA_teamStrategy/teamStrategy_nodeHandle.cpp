@@ -37,6 +37,9 @@ void TeamStrategy_nodeHandle::ros_comms_init(){
     robot_1_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"1"+robot_role_suffix,1000);        
     robot_2_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"2"+robot_role_suffix,1000);
     robot_3_role_pub = n->advertise<std_msgs::Int32>(robot_role_prefix+"3"+robot_role_suffix,1000);    
+    Vision = n->subscribe<vision::Object>(Vision_Topic,1,&TeamStrategy_nodeHandle::subVision,this);
+    Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1,&TeamStrategy_nodeHandle::subVision_Two_point,this);
+
 }
 void TeamStrategy_nodeHandle::Transfer(int r_number){
     /* Transfer the value of the x, y axis of robot, ball and goal into the distance and angle

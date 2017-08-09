@@ -51,8 +51,6 @@ public:
 
 //    void strategy_dontboom();
 
-
-    void strategy_goalkeeper(int);
     void strategy_head2ball(int);
 
 //--------------strategy case-------------------
@@ -61,6 +59,9 @@ public:
     void strategy_Goalkeeper_block(int);
     void strategy_Goalkeeper_push(int);
     void strategy_Goalkeeper_goalkick(int);
+    void strategy_Goalkeeper_shootblock(int);
+
+
     void strategy_Attack(int);
     void strategy_typeS_Attack(int);
     void strategy_Zone_Attack(int);
@@ -108,15 +109,6 @@ public:
     double close_ball_speed_const;
     double far_ball_speed_const;
     double head2ball_speed;
-    double goalkeeper_radius;
-    double goalkeeper_front_dis;
-    double goalkeeper_mid_dis;
-    double goalkeeper_side_dis;
-    double goalkeeper_front_angle;
-    double goalkeeper_mid_angle;
-    double goalkeeper_front_speed;
-    double goalkeeper_mid_speed;
-    double goalkeeper_side_speed;
 
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;

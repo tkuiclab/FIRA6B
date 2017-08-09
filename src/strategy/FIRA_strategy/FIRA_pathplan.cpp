@@ -462,6 +462,34 @@ void FIRA_pathplan_class::strategy_Goalkeeper_goalkick(int r_number){
 //    std::cout << "opgoal = " << opgoal_dis << std::endl;
 }
 
+
+void FIRA_pathplan_class::strategy_Goalkeeper_shootblock(int r_number){
+
+    double ball_dis = env.home[r_number].ball.distance;
+    double ball_angle = env.home[r_number].ball.angle;
+    int opgoal_edge_angle_R = env.home[r_number].opgoal_edge.angle_max;
+    int opgoal_edge_angle_L = env.home[r_number].opgoal_edge.angle_min;
+    double opgoal_left = env.home[r_number].opgoal_edge.left_dis;
+    double opgoal_right = env.home[r_number].opgoal_edge.right_dis;
+    double opgoal_dis = env.home[r_number].op_goal.distance;
+    double opgoal_angle = env.home[r_number].op_goal.angle;
+
+    double ball_to_opgoal_dis;
+    ball_to_opgoal_dis = (opgoal_angle*ball_angle)>0 ? fabs(opgoal_angle-ball_angle) : fabs(opgoal_angle)+fabs(ball_angle);
+    if(ball_to_opgoal_dis > 180){
+        ball_to_opgoal_dis = 360 - ball_to_opgoal_dis;
+    }
+    ball_to_opgoal_dis = sqrt((opgoal_dis*opgoal_dis)+(ball_dis*ball_dis)-(2*opgoal_dis*ball_dis*cos(ball_to_opgoal_dis*deg2rad)));
+    double opgoal_angle_reverse;
+    if(opgoal_angle > 0){
+        opgoal_angle_reverse = opgoal_angle - 180;
+    }else{
+        opgoal_angle_reverse = 180 + opgoal_angle;
+    }
+    std::cout << "shootblock" << std::endl;
+}
+
+
 void FIRA_pathplan_class::strategy_Chase(int r_number){
     double ball_dis = env.home[r_number].ball.distance;
     double ball_angle = /*((fabs(ball_angle)>=0.00001)?0.00001:*/env.home[r_number].ball.angle;
@@ -1549,33 +1577,6 @@ void FIRA_pathplan_class::loadParam(ros::NodeHandle *n){
 //    if(n->getParam(ns + "head2ball_speed",head2ball_speed)){
 //        std::cout << "head2ball_speed=" << head2ball_speed <<std::endl;
 //    }
-//    //------------------------GOALKEEPER_CONST------------------------------------
-//    if(n->getParam(ns + "goalkeeper_radius",goalkeeper_radius)){
-//        std::cout << "goalkeeper_radius=" << goalkeeper_radius <<std::endl;
-//    }
-//    if(n->getParam(ns + "goalkeeper_front_dis",goalkeeper_front_dis)){
-//        std::cout << "goalkeeper_front_dis=" << goalkeeper_front_dis <<std::endl;
-//    }
-//    if(n->getParam(ns + "goalkeeper_mid_dis",goalkeeper_mid_dis)){
-//        std::cout << "goalkeeper_mid_dis=" << goalkeeper_mid_dis <<std::endl;
-//    }
-//    if(n->getParam(ns + "goalkeeper_side_dis",goalkeeper_side_dis)){
-//        std::cout << "goalkeeper_side_dis=" << goalkeeper_side_dis <<std::endl;
-//    }
-//    if(n->getParam(ns + "goalkeeper_front_angle",goalkeeper_front_angle)){
-//        std::cout << "goalkeeper_front_angle=" << goalkeeper_front_angle <<std::endl;
-//    }
-//    if(n->getParam(ns + "goalkeeper_mid_angle",goalkeeper_mid_angle)){
-//        std::cout << "goalkeeper_mid_angle=" << goalkeeper_mid_angle <<std::endl;
-//    }
-//    if(n->getParam(ns + "goalkeeper_front_speed",goalkeeper_front_speed)){
-//        std::cout << "goalkeeper_front_speed=" << goalkeeper_front_speed <<std::endl;
-//    }
-//    if(n->getParam(ns + "goalkeeper_mid_speed",goalkeeper_mid_speed)){
-//        std::cout << "goalkeeper_mid_speed=" << goalkeeper_mid_speed <<std::endl;
-//    }
-//    if(n->getParam(ns + "goalkeeper_side_speed",goalkeeper_side_speed)){
-//        std::cout << "goalkeeper_side_speed=" << goalkeeper_side_speed <<std::endl;
-//    }
+
 
 }

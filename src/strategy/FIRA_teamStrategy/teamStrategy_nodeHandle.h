@@ -26,6 +26,8 @@
 #include "geometry_msgs/Twist.h"
 #include "nav_msgs/Odometry.h"
 #include "gazebo_msgs/ModelStates.h"
+#include "vision/Object.h"
+#include "vision/Two_point.h"
 /*****************************************************************************
  ** Define
  *****************************************************************************/
@@ -46,6 +48,8 @@
 #define Node_Name "TeamStrategy"
 
 #define ModelState_Topic_Name  "/gazebo/model_states"
+#define Vision_Topic "/vision/object"
+#define Vision_Two_point_Topic "/interface/Two_point"
 /*****************************************************************************
  ** Class
  *****************************************************************************/
@@ -110,7 +114,9 @@ private:
     ros::Subscriber robotOpt_1_pos_sub  ;
     ros::Subscriber robotOpt_2_pos_sub  ;
     ros::Subscriber robotOpt_3_pos_sub  ;
-    
+
+    ros::Subscriber Vision;
+    ros::Subscriber Vision_Two_point;
     //robot publisher
     //no robot_1_role_pub, because robot_1 is always goal keeper
     ros::Publisher robot_1_role_pub;
@@ -237,6 +243,49 @@ private:
         double z = msg->pose.pose.orientation.z;
         double yaw = atan2(  2*(w*z+x*y),  1-2*(y*y+z*z)  )*rad2deg;
         global_env->opponent[2].rotation = yaw;
+    }
+
+    void subVision(const vision::Object::ConstPtr &msg){
+        double ball_distance,yellow_distance,blue_distance;
+        yellow_distance = msg->yellow_dis;
+        blue_distance = msg->blue_dis;
+        if(global_env->teamcolor == "Blue"){
+            global_env->home[global_env->RobotNumber].op_goal.distance= blue_distance/100;
+            global_env->home[global_env->RobotNumber].op_goal.angle = msg->blue_ang;
+            global_env->home[global_env->RobotNumber].goal.distance = yellow_distance/100;
+            global_env->home[global_env->RobotNumber].goal.angle = msg->yellow_ang;
+
+        }else if(global_env->teamcolor == "Yellow"){
+            global_env->home[global_env->RobotNumber].op_goal.distance= yellow_distance/100;
+            global_env->home[global_env->RobotNumber].op_goal.angle = msg->yellow_ang;
+            global_env->home[global_env->RobotNumber].goal.distance= blue_distance/100;
+            global_env->home[global_env->RobotNumber].goal.angle = msg->blue_ang;
+        }
+
+       ball_distance = msg->ball_dis;
+       global_env->home[global_env->RobotNumber].ball.distance = ball_distance/100;
+       global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
+    }
+
+    void subVision_Two_point(const vision::Two_point::ConstPtr &msg){
+        if(global_env->teamcolor == "Blue"){
+            int ang_max = msg->blue_ang_max;
+            int ang_min = msg->blue_ang_min;
+
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_max = ang_max;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_min = ang_min;
+            double opgoal_left = msg->blue_left,opgoal_right = msg->blue_right;
+            global_env->home[global_env->RobotNumber].opgoal_edge.left_dis = opgoal_left/100;
+            global_env->home[global_env->RobotNumber].opgoal_edge.right_dis = opgoal_right/100;
+        }else if(global_env->teamcolor == "Yellow"){
+            int ang_max = msg->yellow_ang_max;
+            int ang_min = msg->yellow_ang_min;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_max = ang_max;
+            global_env->home[global_env->RobotNumber].opgoal_edge.angle_min = ang_min;
+            double opgoal_left = msg->yellow_left,opgoal_right = msg->yellow_right;
+            global_env->home[global_env->RobotNumber].opgoal_edge.left_dis = opgoal_left/100;
+            global_env->home[global_env->RobotNumber].opgoal_edge.right_dis = opgoal_right/100;
+        }
     }
     
 };

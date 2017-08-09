@@ -5,7 +5,7 @@
 FIRA_teamStrategy_class::FIRA_teamStrategy_class(){
    opponent = false;
 
-   roleAry[0] = Role_Goalkeeper;
+   //roleAry[0] = Role_Goalkeeper;
 }
 
 //start---simulator---
@@ -133,7 +133,7 @@ void FIRA_teamStrategy_class::role_Halt(){
     roleAry[0] = Role_Halt;
     roleAry[1] = Role_Halt;
     roleAry[2] = Role_Halt;
-    gointoGoalKick = 1;
+    Goalkeeper_timer_reset = 1;
 }
 
 void FIRA_teamStrategy_class::role_FreeKick(){
@@ -141,6 +141,24 @@ void FIRA_teamStrategy_class::role_FreeKick(){
 }
 
 void FIRA_teamStrategy_class::role_PenaltyKick(){
+
+    static ros::Time start = ros::Time::now();
+    ros::Time current = ros::Time::now();
+    double start_time = (double)(start.sec+(double)start.nsec/1000000000);
+    double current_time = (double)(current.sec+(double)current.nsec/1000000000);
+    double const int_calculate_time = 1;
+
+    if(Goalkeeper_timer_reset == 1){
+        start.sec = current.sec;
+        start.nsec = current.nsec;
+        Goalkeeper_timer_reset = 0;
+    }
+
+    if(current_time-start_time > int_calculate_time){ 
+        roleAry[0] = Role_Goalkeeper;
+    }else{
+        roleAry[0] = Role_Goalkeeper_PenaltyKick;
+    }
 
 }
 
@@ -161,18 +179,17 @@ void FIRA_teamStrategy_class::role_CornerKick(){
 }
 
 void FIRA_teamStrategy_class::role_GoalKick(){
-    // roleAry[1] = Role_GoalKick;
-    // roleAry[2] = Role_GoalKick; 
+
     static ros::Time start = ros::Time::now();
     ros::Time current = ros::Time::now();
     double start_time = (double)(start.sec+(double)start.nsec/1000000000);
     double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-    double const int_calculate_time = 0.5;
+    double const int_calculate_time = 1;
 
-    if(gointoGoalKick == 1){
+    if(Goalkeeper_timer_reset == 1){
         start.sec = current.sec;
         start.nsec = current.nsec;
-        gointoGoalKick = 0;
+        Goalkeeper_timer_reset = 0;
     }
 
     if(current_time-start_time > int_calculate_time){ 

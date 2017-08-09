@@ -200,21 +200,21 @@ void FIRA_behavior_class::StateSideSpeedUp(int r_number){
             if( distance_br <= 0.5 ){
                 if( fabs(alpha) < angle_stopsidespeedup ){
                     state_attack=state_Chase;  
-                    gointoSidespeedup = 1; 
+                    Sidespeedup_timer_reset = 1; 
                 }
             }
         }/*else if(SchaseCase){
             //直線追球在追到球前不須減速
         }*/
 
-        if(gointoSidespeedup == 1){
+        if(Sidespeedup_timer_reset == 1){
           start.sec = current.sec;
           start.nsec = current.nsec;
-          gointoSidespeedup = 0;
+          Sidespeedup_timer_reset = 0;
         }
 
         if(current_time-start_time > int_calculate_time){   //1.5sec reset
-            gointoSidespeedup = 1; 
+            Sidespeedup_timer_reset = 1; 
             state_attack = state_Chase;
         }  
 }
@@ -266,10 +266,10 @@ void FIRA_behavior_class::StateCornerKick(int r_number){
 //###################################################//
 //                                                   //
 //        To determine the robot state changes       //
-//        for GoalKeeper
+//        for Goalkeeper
 //                                                   //
 //###################################################//
-void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
+void FIRA_behavior_class::StateGoalkeeperInit(int r_number){
     double ball_angle = env.home[r_number].ball.angle;
     double ball_dis = env.home[r_number].ball.distance;  
     double opgoal_angle = env.home[r_number].op_goal.angle;
@@ -277,13 +277,13 @@ void FIRA_behavior_class::StateGoalKeeperInit(int r_number){
 
 
     if( opgoal_dis !=0 && ball_angle != 999 ){
-        state_GoalKeeper = state_GoalKeeper_block;
+        state_Goalkeeper = state_Goalkeeper_block;
     }else if(opgoal_angle == 0 && opgoal_dis == 0){
         std::cout << "need teamColor" << std::endl;
     }
 }
 
-void FIRA_behavior_class::StateGoalKeeperBlock(int r_number){
+void FIRA_behavior_class::StateGoalkeeperBlock(int r_number){
     double ball_dis = env.home[r_number].ball.distance;
     double ball_angle = env.home[r_number].ball.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
@@ -311,21 +311,22 @@ void FIRA_behavior_class::StateGoalKeeperBlock(int r_number){
         opgoal_angle_reverse = 180 + opgoal_angle;
     }
 
-    if(ball_angle == 999){
-        state_GoalKeeper = state_GoalKeeper_init;
-     }else if(ball_to_opgoal_dis < 2.5 && position_angle < 40 && opgoal_dis < 1.1){
-       state_GoalKeeper = state_GoalKeeper_push;
-    }else if(ball_to_opgoal_dis < 1.2 && position_angle < 40){
-        state_GoalKeeper = state_GoalKeeper_push;
-    }else if(ball_dis < 1.2 && opgoal_dis < 1.25){
-        state_GoalKeeper = state_GoalKeeper_push;
-    }
+    // if(ball_angle == 999){
+    //     state_Goalkeeper = state_Goalkeeper_init;
+    //  }else if(ball_to_opgoal_dis < 2.5 && position_angle < 40 && opgoal_dis < 1.1){
+    //    state_Goalkeeper = state_Goalkeeper_push;
+    // }else if(ball_to_opgoal_dis < 1.2 && position_angle < 40){
+    //     state_Goalkeeper = state_Goalkeeper_push;
+    // }else if(ball_dis < 1.2 && opgoal_dis < 1.25){
+    //     state_Goalkeeper = state_Goalkeeper_push;
+    // }
+
     // std::cout << "opgoal_reverse = " << opgoal_angle_reverse << std::endl;
     // std::cout << "position_angle = " << position_angle << std::endl;
     // std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
 }
 
-void FIRA_behavior_class::StateGoalKeeperPush(int r_number){
+void FIRA_behavior_class::StateGoalkeeperPush(int r_number){
     double ball_dis = env.home[r_number].ball.distance;
     double ball_angle = env.home[r_number].ball.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
@@ -351,17 +352,17 @@ void FIRA_behavior_class::StateGoalKeeperPush(int r_number){
 
     
     if( opgoal_dis > 1.35 && ball_to_opgoal_dis > 1.6){
-        state_GoalKeeper = state_GoalKeeper_block;
+        state_Goalkeeper = state_Goalkeeper_block;
     }else if( ball_angle > opgoal_edge_angle_L-7 && opgoal_left < 0.5 && opgoal_right > 1.15){
-        state_GoalKeeper = state_GoalKeeper_init;
+        state_Goalkeeper = state_Goalkeeper_init;
     }else if( ball_angle < opgoal_edge_angle_R+7 && opgoal_right < 0.5 && opgoal_left > 1.15){
-        state_GoalKeeper = state_GoalKeeper_init;
+        state_Goalkeeper = state_Goalkeeper_init;
     }
     // }else if(position_angle > 40){
     //     if(opgoal_left < 1.2 && ball_angle < opgoal_edge_angle_R - 15){
     //     }else if(opgoal_right < 1.2 && ball_angle > opgoal_edge_angle_L + 15){
     //     }else{
-    //         state_GoalKeeper = state_GoalKeeper_block;
+    //         state_Goalkeeper = state_Goalkeeper_block;
     //     }
     // }
 
@@ -371,43 +372,58 @@ void FIRA_behavior_class::StateGoalKeeperPush(int r_number){
 
 }
 
-void FIRA_behavior_class::StateGoalKeeperGoalKick(int r_number){
-    //std::cout << "goalkick" << std::endl;
+void FIRA_behavior_class::StateGoalkeeperGoalKick(int r_number){
+    double ball_dis = env.home[r_number].ball.distance;
+    
+    if(ball_dis > 1.7){
+        state_Goalkeeper = state_Goalkeeper_block;
+    }else{
+        state_Goalkeeper = state_Goalkeeper_goalkick;
+    }
+}
+
+void FIRA_behavior_class::StateGoalkeeperPenaltyKick(int r_number){
+    std::cout << "goalkeeper penaltyukick    " ;
     double ball_dis = env.home[r_number].ball.distance;
     double ball_angle = env.home[r_number].ball.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
     double opgoal_angle = env.home[r_number].op_goal.angle;
+
     double ball_to_opgoal_dis;
     ball_to_opgoal_dis = (opgoal_angle*ball_angle)>0 ? fabs(opgoal_angle-ball_angle) : fabs(opgoal_angle)+fabs(ball_angle);
     if(ball_to_opgoal_dis > 180){
         ball_to_opgoal_dis = 360 - ball_to_opgoal_dis;
     }
     ball_to_opgoal_dis =sqrt((opgoal_dis*opgoal_dis)+(ball_dis*ball_dis)-(2*opgoal_dis*ball_dis*cos(ball_to_opgoal_dis*deg2rad)));
-
-    static ros::Time start = ros::Time::now();
-    ros::Time current = ros::Time::now();
-    double start_time = (double)(start.sec+(double)start.nsec/1000000000);
-    double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-    double const int_calculate_time = 2;
-
-    if(gointoGoalKick == 1){
-        start.sec = current.sec;
-        start.nsec = current.nsec;
-        gointoGoalKick = 0;
+    
+    if( opgoal_dis > 1 && ball_to_opgoal_dis > 1.2){
+        state_Goalkeeper = state_Goalkeeper_push;
     }
-
-    if(current_time-start_time > int_calculate_time){ 
-        state_GoalKeeper = state_GoalKeeper_block;
-        gointoGoalKick = 1;
-    }else if(ball_to_opgoal_dis > 2.2){
-        state_GoalKeeper = state_GoalKeeper_block;
-        gointoGoalKick = 1;
-    }//else if(ball_to_opgoal_dis > 1.1){
-    //     state_GoalKeeper = state_GoalKeeper_push;
-    // }
 
 }
 
+void FIRA_behavior_class::StateGoalkeeperShootBlock(int r_number){
+    double ball_dis = env.home[r_number].ball.distance;
+    double ball_angle = env.home[r_number].ball.angle;
+    double opgoal_dis = env.home[r_number].op_goal.distance;
+    double opgoal_angle = env.home[r_number].op_goal.angle;
+    double opgoal_left = env.home[r_number].opgoal_edge.left_dis;
+    double opgoal_right = env.home[r_number].opgoal_edge.right_dis;
+
+    double ball_to_opgoal_dis;
+    ball_to_opgoal_dis = (opgoal_angle*ball_angle)>0 ? fabs(opgoal_angle-ball_angle) : fabs(opgoal_angle)+fabs(ball_angle);
+    if(ball_to_opgoal_dis > 180){
+        ball_to_opgoal_dis = 360 - ball_to_opgoal_dis;
+    }
+    ball_to_opgoal_dis =sqrt((opgoal_dis*opgoal_dis)+(ball_dis*ball_dis)-(2*opgoal_dis*ball_dis*cos(ball_to_opgoal_dis*deg2rad)));
+    double opgoal_angle_reverse;
+    if(opgoal_angle > 0){
+        opgoal_angle_reverse = opgoal_angle - 180;
+    }else{
+        opgoal_angle_reverse = 180 + opgoal_angle;
+    }
+
+}
 //###################################################//
 //                                                   //
 //            Read the character array               //
@@ -444,7 +460,11 @@ void FIRA_behavior_class::readroleAry(int robotIndex,int role){
                     break;
                 }
             case Role_GoalKick:
-                state_GoalKeeper = state_GoalKeeper_goalkick;   
+                state_Goalkeeper = state_Goalkeeper_goalkick;   
+                behavior_Goalkeeper(robotIndex);
+                break;
+            case Role_Goalkeeper_PenaltyKick:
+                state_Goalkeeper = state_Goalkeeper_PenaltyKick;   
                 behavior_Goalkeeper(robotIndex);
                 break;
         }
@@ -463,31 +483,41 @@ int* FIRA_behavior_class::getactionAry(){
 //                                                   //
 //###################################################//
 void FIRA_behavior_class::behavior_Goalkeeper(int robotIndex){
-    switch(state_GoalKeeper){
-        case state_GoalKeeper_init:
-            state_GoalKeeper = state_GoalKeeper_init;
-            StateGoalKeeperInit(robotIndex);
-            //ROS_INFO("GoalKeeper init state\n");
+    switch(state_Goalkeeper){
+        case state_Goalkeeper_init:
+            state_Goalkeeper = state_Goalkeeper_init;
+            StateGoalkeeperInit(robotIndex);
+            //ROS_INFO("Goalkeeper init state\n");
             actionAry[robotIndex] = action_Goalkeeper_init;
             break;
 
-        case state_GoalKeeper_block:
-            StateGoalKeeperBlock(robotIndex);
-//            ROS_INFO("GoalKeeper block\n");
+        case state_Goalkeeper_block:
+            StateGoalkeeperBlock(robotIndex);
+//            ROS_INFO("Goalkeeper block\n");
             actionAry[robotIndex] = action_Goalkeeper_block;
         break;
 
-        case state_GoalKeeper_push:
-            StateGoalKeeperPush(robotIndex);
-//            ROS_INFO("GoalKeeper push\n");
+        case state_Goalkeeper_push:
+            StateGoalkeeperPush(robotIndex);
+//            ROS_INFO("Goalkeeper push\n");
             actionAry[robotIndex] = action_Goalkeeper_push;
         break;
 
-        case state_GoalKeeper_goalkick:
-            StateGoalKeeperGoalKick(robotIndex);
-            // ROS_INFO("GoalKeeper GoalKick\n");
+        case state_Goalkeeper_goalkick:
+            StateGoalkeeperGoalKick(robotIndex);
+            // ROS_INFO("Goalkeeper GoalKick\n");
             actionAry[robotIndex] = action_Goalkeeper_goalkick;
         break;
+
+        case state_Goalkeeper_PenaltyKick:
+            StateGoalkeeperPenaltyKick(robotIndex);
+            actionAry[robotIndex] = action_Goalkeeper_push;
+        break;     
+
+        case state_Goalkeeper_ShootBlock:
+            StateGoalkeeperShootBlock(robotIndex);
+            actionAry[robotIndex] = action_Goalkeeper_shootblock;
+        break;                                                                                                                                                                                                                                                                                                                                                                                                                                                        
     }
 }
 
@@ -564,7 +594,7 @@ void FIRA_behavior_class::behavior_Halt(int robotIndex){
     actionAry[robotIndex] = action_Halt;
     state_cornerkick = state_CornerKick;
     state_attack = state_Init;
-    state_GoalKeeper = state_GoalKeeper_init;
+    state_Goalkeeper = state_Goalkeeper_init;
          ///=========================================
 }
 void FIRA_behavior_class::behavior_AvoidBarrier(int robotIndex){
@@ -626,6 +656,9 @@ void FIRA_behavior_class::loadParam(ros::NodeHandle *n){
 //    std::cout << "====================================" << std::endl;
     }
     if(n->getParam("/StrategySelection", StrategySelection)){
+
+    }
+    if(n->getParam("/FIRA_Behavior/Goalkeeper", Goalkeeper)){
 
     }
 }
