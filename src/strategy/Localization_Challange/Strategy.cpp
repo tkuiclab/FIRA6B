@@ -32,8 +32,8 @@ void Strategy::GameState(int int_GameState)
         StrategyHalt();
         break;
     case STATE_LOCALIZATION:
-        StrategyLocalization();
-        // StrategyLocalization2();
+        // StrategyLocalization();
+        StrategyLocalization2();
         break;
     }
 }
