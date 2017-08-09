@@ -1418,8 +1418,8 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
 
     //printf("==========apf_cal&&image_f============\n");
 
-    angle_avg.clear();
-    std::vector<double>().swap(angle_avg);
+//    angle_avg.clear();
+//    std::vector<double>().swap(angle_avg);
 
     //printf("%d\t%d\t%d\n",env.global_angle_end[0],env.global_angle_start[0],env.global_apf_dis[0]);
     if(env.global_angle_end[0]==1&&env.global_angle_start[0]==1&&env.global_apf_dis[0]==1){
@@ -1440,17 +1440,18 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
             }
             //////////////cal_v_yaw///////////////
             check_obstacle_dis=env.global_apf_dis[i];
-            if(check_obstacle_dis<=min_obstacle_dis){
+            if(check_obstacle_dis<=min_obstacle_dis||min_obstacle_dis==0){
                 min_obstacle_dis=check_obstacle_dis;
                 v_yaw_angle=angle_avg[i-1];
             }
+             //printf("v_yaw=%f\n",v_yaw_angle);
             ///////////////////////////////
             //printf("angle_start:%d\tangle_end:%d\tangle_avg:%f\n",env.global_angle_start[i],env.global_angle_end[i],angle_avg[i-1]);
             apf_f[0]=-sin(angle_avg[i-1]*deg2rad);//x
             apf_f[1]=cos(angle_avg[i-1]*deg2rad);//y
             f_apf_total[0]=f_apf_total[0]+(effective_dis-env.global_apf_dis[i])/10*apf_f[0];
             f_apf_total[1]=f_apf_total[1]+(effective_dis-env.global_apf_dis[i])/10*apf_f[1];
-//            printf("angle_start:%d\tangle_end:%d\tangle_avg:%f\tdis:%d\n",env.global_angle_start[i],env.global_angle_end[i],angle_avg[number_obstacle],env.global_apf_dis[i]);
+            //printf("angle_start:%d\tangle_end:%d\tangle_avg:%f\tdis:%d\n",env.global_angle_start[i],env.global_angle_end[i],angle_avg[i-1],env.global_apf_dis[i]);
             //printf("x_apf_total:%f\ty_apf_total:%f\n",f_apf_total[0],f_apf_total[1]);
             //printf("apf_f_x:%f\tapf_f_y:%f\n\n",apf_f[0],apf_f[1]);
             ///////////////////f_total to unit vector for image_f cal//
@@ -1502,6 +1503,12 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
 
         }
     }
+//    printf("angle_size:%d\n",angle_avg.size());
+//    for(int i=0;i<=angle_avg.size()-1;i++){
+//        printf("angle_avg:%f\n",angle_avg[i]);
+
+//    }
+//    printf("\n");
 
 
     env.global_angle_end.clear();
@@ -1557,8 +1564,8 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     env.home[r_number].v_x = f_total[0];
     env.home[r_number].v_y = f_total[1];
     env.home[r_number].v_yaw = v_yaw_angle;
-//    printf("v_yaw=%f\n",env.home[r_number].v_yaw);
-//    printf("=============end_f=======\n");
+    //printf("v_yaw=%f\n",env.home[r_number].v_yaw);
+    //printf("=============end_f=======\n");
 
 }
 
