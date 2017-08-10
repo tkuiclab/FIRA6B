@@ -88,7 +88,7 @@ void Strategy_nodeHandle::loadParam()
 {
 	this->n->getParam("/hold_ball_distance", this->environment.param.hold_ball_distance);
 	this->n->getParam("/hold_ball_angle", this->environment.param.hold_ball_angle);
-    this->environment.param.loss_ball_distance = this->environment.param.hold_ball_distance + 10;
+    this->environment.param.loss_ball_distance = this->environment.param.hold_ball_distance + 0.1;
     this->environment.param.loss_ball_angle = this->environment.param.hold_ball_angle + 10;
 }
 

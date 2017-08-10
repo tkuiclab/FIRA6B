@@ -7,6 +7,7 @@ Behavior::Behavior(int argc, char** argv)
 	init(argc, argv);
 	target = 1;
     gotBall = false;
+	gotPoint = false;
 	ball_1.pos.x = -1.65;
 	ball_1.pos.y = 1.20;
 	ball_2.pos.x = -1.65;
@@ -72,16 +73,18 @@ void Behavior::chase(const Ball target_ball)
 	double distance = sqrt(pow(distance_x, 2)+pow(distance_y, 2));
 	double target_angle = (atan2(distance_y, distance_x)*180/M_PI)-(env->robot.pos.z);
 	angleRegular(target_angle);
-    if(distance > 0.6){
+    if((distance > 0.6) && (gotPoint==false)){
 		double middlePoint_x = (target_ball.pos.x+env->robot.pos.x)/2;
         double middlePoint_y = (target_ball.pos.y+env->robot.pos.y)/2;
 //		double middlePoint_y = (env->robot.pos.y+target_ball.pos.y)/2;
 		std::cout << "Target Ball Position: (" << target_ball.pos.x << ", " << target_ball.pos.y << ", " << target_angle << ")\n";
 		std::cout << "Target Ball Distance: " << distance << std::endl;
 		std::cout << "Target Point: (" << middlePoint_x <<  ", " << middlePoint_y << ")\n";
+		gotPoint = false;
 		gotoPoint(env, middlePoint_x, middlePoint_y, target_angle);
 	}else{
 		std::cout << "Got Ball\nTarget Ball Distance: " << env->robot.ball.distance << "\tTarget Ball Angle: " << env->robot.ball.angle << "\n";
+		gotPoint = true;
 		chaseBall(env);
 	}
 	pub();
@@ -183,17 +186,21 @@ bool Behavior::holdBall()
     if(gotBall == false){
         if((env->robot.ball.distance<=env->param.hold_ball_distance) && (fabs(env->robot.ball.angle)<=env->param.hold_ball_angle)){
             std::cout << "got ball\n";
+			gotBall = true;
             return true;
         }else{
             std::cout << "lose ball\n";
+			gotBall = false;
             return false;
         }
     }else{
         if((env->robot.ball.distance<=env->param.loss_ball_distance) && (fabs(env->robot.ball.angle)<=env->param.loss_ball_angle)){
             std::cout << "got ball\n";
+			gotBall = true;
             return true;
         }else{
             std::cout << "lose ball\n";
+			gotBall = false;
             return false;
         }
     }
@@ -201,6 +208,7 @@ bool Behavior::holdBall()
 
 void Behavior::nextTarget()
 {
+	gotPoint = false;
 	target = target+1;
 }
 
