@@ -57,12 +57,47 @@ void InterfaceProc::Parameter_getting(const int x)
 
   int Angle_Adjustment(int angle);
 
-  dont_angle[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
-  dont_angle[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
-  dont_angle[2] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
-  dont_angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
-  dont_angle[4] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
-  dont_angle[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
+  Unscaned_Angle[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
+  Unscaned_Angle[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
+  Unscaned_Angle[2] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
+  Unscaned_Angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
+  Unscaned_Angle[4] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
+  Unscaned_Angle[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
+  Unscaned_Angle[6] = 999;
+  Unscaned_Angle[7] = 999;
+
+  if((Dont_Search_Angle_1Msg - Angle_range_1Msg)<=0 || (Dont_Search_Angle_1Msg + Angle_range_1Msg)>=360){
+    Unscaned_Angle[0] = 0;
+    Unscaned_Angle[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
+    Unscaned_Angle[2] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
+    Unscaned_Angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
+    Unscaned_Angle[4] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
+    Unscaned_Angle[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
+    Unscaned_Angle[6] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
+    Unscaned_Angle[7] = 360;
+  }
+
+  if((Dont_Search_Angle_2Msg - Angle_range_2_3Msg)<=0 || (Dont_Search_Angle_2Msg + Angle_range_2_3Msg)>=360){
+    Unscaned_Angle[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
+    Unscaned_Angle[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
+    Unscaned_Angle[2] = 0;
+    Unscaned_Angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
+    Unscaned_Angle[4] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
+    Unscaned_Angle[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
+    Unscaned_Angle[6] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
+    Unscaned_Angle[7] = 360;
+  }
+
+  if((Dont_Search_Angle_3Msg - Angle_range_2_3Msg)<=0 || (Dont_Search_Angle_3Msg + Angle_range_2_3Msg)>=360){
+    Unscaned_Angle[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
+    Unscaned_Angle[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
+    Unscaned_Angle[2] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
+    Unscaned_Angle[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
+    Unscaned_Angle[4] = 0;
+    Unscaned_Angle[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
+    Unscaned_Angle[6] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
+    Unscaned_Angle[7] = 360;
+  }
   ///////////////////////////////////////FPS設定////////////////////////////////////////////////
   nh.getParam("/FIRA/FPS", fpsMsg);
   get_campara();
@@ -115,11 +150,6 @@ InterfaceProc::InterfaceProc()
   s2 = nh.subscribe("vision/view", 1000, &InterfaceProc::View, this);
   object_pub = nh.advertise<vision::Object>("/vision/object", 1);
   Two_point_pub = nh.advertise<vision::Two_point>("/interface/Two_point", 1);
-}
-InterfaceProc::~InterfaceProc()
-{
-  delete frame;
-  cv::destroyWindow(OPENCV_WINDOW);
 }
 /////////////////////////////////影像讀進來//////////////////////////////////////////
 void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
@@ -243,6 +273,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   object_msg.fps = FrameRate;
 ///////////////////////////////////////////////
   Findmap.release();
+
   object_pub.publish(object_msg);
   Two_point_pub.publish(Two_point_msg);
 
@@ -250,6 +281,7 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
   if (viewcheck == 64) {
     image_pub_threshold_.publish(thresholdMsg);
   }
+
 }
 //////////////////////處理影像開始//////////////////////////////////////
 //////////////////////////////monitor//////////////////////////////////
@@ -350,9 +382,10 @@ void InterfaceProc::objectdet_change(Mat &frame_, int color, object_Item &obj_it
 
   for (int distance = search_start ; distance <= search_end ; distance += search_distance) {
     for (int angle = 0; angle < 360;) {
-      if (angle >= dont_angle[0] && angle <= dont_angle[1] ||
-          angle >= dont_angle[2] && angle <= dont_angle[3] ||
-          angle >= dont_angle[4] && angle <= dont_angle[5]) {
+      if ((angle >= Unscaned_Angle[0] && angle <= Unscaned_Angle[1]) ||
+          (angle >= Unscaned_Angle[2] && angle <= Unscaned_Angle[3]) ||
+          (angle >= Unscaned_Angle[4] && angle <= Unscaned_Angle[5]) ||
+          (angle >= Unscaned_Angle[6] && angle <= Unscaned_Angle[7])) {
         angle += Angle_Interval(distance);
         continue;
       }
@@ -433,9 +466,10 @@ void InterfaceProc::find_around(Mat &frame_, int distance , int angle, int &size
 
       ang_f = angle + j * Angle_Interval(dis_f);
 
-      while (Angle_Adjustment(ang_f) > dont_angle[0] && Angle_Adjustment(ang_f) < dont_angle[1] ||
-             Angle_Adjustment(ang_f) > dont_angle[2] && Angle_Adjustment(ang_f) < dont_angle[3] ||
-             Angle_Adjustment(ang_f) > dont_angle[4] && Angle_Adjustment(ang_f) < dont_angle[5]) {
+      while ((Angle_Adjustment(ang_f) > Unscaned_Angle[0] && Angle_Adjustment(ang_f) < Unscaned_Angle[1]) ||
+             (Angle_Adjustment(ang_f) > Unscaned_Angle[2] && Angle_Adjustment(ang_f) < Unscaned_Angle[3]) ||
+             (Angle_Adjustment(ang_f) > Unscaned_Angle[4] && Angle_Adjustment(ang_f) < Unscaned_Angle[5]) || 
+             (Angle_Adjustment(ang_f) > Unscaned_Angle[6] && Angle_Adjustment(ang_f) < Unscaned_Angle[7])) {
         ang_f += j * Angle_Interval(dis_f);
       }
 
@@ -476,9 +510,11 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         if (obj_.distance != 0) break; 
         
         find_angle = Angle_Adjustment(angle_ + angle);
-        if ((find_angle >= dont_angle[0] && find_angle <= dont_angle[1]) ||
-            (find_angle >= dont_angle[2] && find_angle <= dont_angle[3]) ||
-            (find_angle >= dont_angle[4] && find_angle <= dont_angle[5])) {
+
+        if ((find_angle >= Unscaned_Angle[0] && find_angle <= Unscaned_Angle[1]) ||
+            (find_angle >= Unscaned_Angle[2] && find_angle <= Unscaned_Angle[3]) ||
+            (find_angle >= Unscaned_Angle[4] && find_angle <= Unscaned_Angle[5]) ||
+            (find_angle >= Unscaned_Angle[6] && find_angle <= Unscaned_Angle[7])) {
         } else {
           x_ = distance * Angle_cos[find_angle];
           y_ = distance * Angle_sin[find_angle];
@@ -499,9 +535,10 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         }
 
         find_angle = Angle_Adjustment(angle_ - angle);
-        if ((find_angle >= dont_angle[0] && find_angle <= dont_angle[1]) ||
-            (find_angle >= dont_angle[2] && find_angle <= dont_angle[3]) ||
-            (find_angle >= dont_angle[4] && find_angle <= dont_angle[5])) {  
+        if ((find_angle >= Unscaned_Angle[0] && find_angle <= Unscaned_Angle[1]) ||
+            (find_angle >= Unscaned_Angle[2] && find_angle <= Unscaned_Angle[3]) ||
+            (find_angle >= Unscaned_Angle[4] && find_angle <= Unscaned_Angle[5]) ||
+            (find_angle >= Unscaned_Angle[6] && find_angle <= Unscaned_Angle[7])) {
         } else {
           x_ = distance * Angle_cos[find_angle];
           y_ = distance * Angle_sin[find_angle];
@@ -607,11 +644,13 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 		for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
 			for (int distance = start ; distance <= (obj_.dis_min + obj_.dis_max) / 2 ; distance++) {
 				find_angle = Angle_Adjustment(angle);
-				if ((find_angle >= dont_angle[0] && find_angle <= dont_angle[1]) ||
-				    (find_angle >= dont_angle[2] && find_angle <= dont_angle[3]) ||
-				    (find_angle >= dont_angle[4] && find_angle <= dont_angle[5])) {
+   
+				if ((find_angle >= Unscaned_Angle[0] && find_angle <= Unscaned_Angle[1]) ||
+				    (find_angle >= Unscaned_Angle[2] && find_angle <= Unscaned_Angle[3]) ||
+				    (find_angle >= Unscaned_Angle[4] && find_angle <= Unscaned_Angle[5]) ||
+				    (find_angle >= Unscaned_Angle[6] && find_angle <= Unscaned_Angle[7])) {
 					if(angle!=obj_.ang_max)break;
-				}    
+				}
 				//中心座標
 				x_ = distance * Angle_cos[find_angle];
 				y_ = distance * Angle_sin[find_angle];
@@ -641,7 +680,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 						if(color == BLUEITEM){
 							if(b_end_gap > 0 && b_end_gap < 720 && 
 							find_gap[1][6] < ((obj_.ang_max - obj_.ang_min) * 0.4) && 
-							((find_gap[1][5] + find_gap[1][2]) / 2 - b_end_gap) > ((obj_.ang_max - obj_.ang_min) * 0.3)){
+							(abs(find_gap[1][5] + find_gap[1][2]) / 2 - b_end_gap) > ((obj_.ang_max - obj_.ang_min) * 0.3)){
 							} else {
 								for(int i=0;i<7;i++){
 									find_gap[0][i] = find_gap[1][i];
@@ -651,7 +690,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 						if(color == YELLOWITEM){
 							if(y_end_gap > 0 && y_end_gap < 720 && 
 							find_gap[1][6] < ((obj_.ang_max - obj_.ang_min) * 0.4) && 
-							((find_gap[1][5] + find_gap[1][2]) / 2 - y_end_gap) > ((obj_.ang_max - obj_.ang_min) * 0.3)){
+							(abs(find_gap[1][5] + find_gap[1][2]) / 2 - y_end_gap) > ((obj_.ang_max - obj_.ang_min) * 0.3)){
 							} else {
 								for(int i=0;i<7;i++){
 									find_gap[0][i] = find_gap[1][i];
@@ -686,9 +725,10 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
       for (int distance = obj_.dis_min ; distance <=  (obj_.dis_min + obj_.dis_max) / 2 ; distance++) {
         if (obj_.fix_distance != 0) break;
         find_angle = Angle_Adjustment(angle_ + angle);
-        if ((find_angle >= dont_angle[0] && find_angle <= dont_angle[1]) ||
-            (find_angle >= dont_angle[2] && find_angle <= dont_angle[3]) ||
-            (find_angle >= dont_angle[4] && find_angle <= dont_angle[5])) {
+        if ((find_angle >= Unscaned_Angle[0] && find_angle <= Unscaned_Angle[1]) ||
+            (find_angle >= Unscaned_Angle[2] && find_angle <= Unscaned_Angle[3]) ||
+            (find_angle >= Unscaned_Angle[4] && find_angle <= Unscaned_Angle[5]) ||
+            (find_angle >= Unscaned_Angle[6] && find_angle <= Unscaned_Angle[7])) {
         } else {
           x_ = distance * Angle_cos[find_angle];
           y_ = distance * Angle_sin[find_angle];
@@ -708,9 +748,10 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
           }
         }
         find_angle = Angle_Adjustment(angle_ - angle);
-        if ((find_angle >= dont_angle[0] && find_angle <= dont_angle[1]) ||
-            (find_angle >= dont_angle[2] && find_angle <= dont_angle[3]) ||
-            (find_angle >= dont_angle[4] && find_angle <= dont_angle[5])) {
+        if ((find_angle >= Unscaned_Angle[0] && find_angle <= Unscaned_Angle[1]) ||
+            (find_angle >= Unscaned_Angle[2] && find_angle <= Unscaned_Angle[3]) ||
+            (find_angle >= Unscaned_Angle[4] && find_angle <= Unscaned_Angle[5]) ||
+            (find_angle >= Unscaned_Angle[6] && find_angle <= Unscaned_Angle[7])) {
         } else {
           x_ = distance * Angle_cos[find_angle];
           y_ = distance * Angle_sin[find_angle];
@@ -749,9 +790,25 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
   draw_Line(frame_, obj_.dis_max, obj_.dis_min, obj_.ang_min);
   circle(frame_, Point(obj_.x, obj_.y), 2, Scalar(0, 0, 0), -1);
 
+
+
+
+  int lengh = 30;
+  int x, y;
+  //cout<<CenterXMsg;
+  if (0 < CenterXMsg < 600) {} else {CenterXMsg = 0; CenterYMsg = 0; InnerMsg = 0; OuterMsg = 0; FrontMsg = 0;} //avoid code dump
+
+  robotCenterX = CenterXMsg; //iframe.cols*(CenterXMsg*1);
+  robotCenterY = CenterYMsg; //iframe.rows*(CenterYMsg*1);
+
+  circle(frame_, Point(robotCenterX, robotCenterY), 1, Scalar(0, 255, 0), 1);
+  circle(frame_, Point(robotCenterX, robotCenterY), InnerMsg , Scalar(0, 0, 255), 1);
+  circle(frame_, Point(robotCenterX, robotCenterY), OuterMsg , Scalar(0, 255, 0), 1);
+  x = robotCenterX + lengh * cos(FrontMsg * PI / 180), y = robotCenterY - lengh * sin(FrontMsg * PI / 180);
+  line(frame_, Point(robotCenterX, robotCenterY), Point(x, y), Scalar(255, 0, 255), 1);
+
   if(color == BLUEITEM || color == YELLOWITEM){
     if(obj_.distance != 0){
-      int x,y;
    
       x = obj_.right_x;
       y = obj_.right_y;
@@ -766,23 +823,23 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
       y = obj_.fix_y;
       line(frame_, Point(x, y), Point(x, y), Scalar(0, 255, 0), 10);
 //////
-/*
 int x_,y_;
 unsigned char B, G, R;
 if( color == BLUEITEM ||YELLOWITEM){
 	int start = obj_.dis_min;
-	if(obj_.dis_min > 130){start=obj_.dis_min-20;}
+	if(obj_.dis_min > 130){start = obj_.dis_min - ((obj_.dis_max - obj_.dis_min) * 0.3);}
 	for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
 		for (int distance = start; distance <= (start + obj_.dis_max)/2; distance++) {
-			int fix_angle=Angle_Adjustment(angle);
-			if ((fix_angle >= dont_angle[0] && angle <= dont_angle[1]) ||
-				(fix_angle >= dont_angle[2] && angle <= dont_angle[3]) ||
-				(fix_angle >= dont_angle[4] && angle <= dont_angle[5])) {
+			int find_angle=Angle_Adjustment(angle);
+			if ((find_angle >= Unscaned_Angle[0] && find_angle <= Unscaned_Angle[1]) ||
+			(find_angle >= Unscaned_Angle[2] && find_angle <= Unscaned_Angle[3]) ||
+			(find_angle >= Unscaned_Angle[4] && find_angle <= Unscaned_Angle[5]) ||
+			(find_angle >= Unscaned_Angle[6] && find_angle <= Unscaned_Angle[7])) {
 				break;
-			}     
+			}    
 			//中心座標
-			x_ = distance * Angle_cos[fix_angle];
-			y_ = distance * Angle_sin[fix_angle];
+			x_ = distance * Angle_cos[find_angle];
+			y_ = distance * Angle_sin[find_angle];
 			//實際座標
 			x = Frame_Area(center_x + x_, Main_frame.cols);
 			y = Frame_Area(center_y - y_, Main_frame.rows);
@@ -791,13 +848,12 @@ if( color == BLUEITEM ||YELLOWITEM){
 			G = Main_frame.data[(y * Main_frame.cols + x) * 3 + 1];
 			R = Main_frame.data[(y * Main_frame.cols + x) * 3 + 2];
 			if(color_map[R + (G << 8) + (B << 16)] & WHITEITEM){
-				 line(frame_, Point(x, y), Point(x, y), Scalar(255, 255, 255), 5);
+				 line(frame_, Point(x, y), Point(x, y), Scalar(255, 255, 255), 3);
                                  break;
 			}
 		}
 	}	
 }
-*/
 //////////////
     }
   }

@@ -81,7 +81,7 @@ private:
   int hmax,hmin,smax,smin,vmax,vmin;
   object_Item FIND_Item,Red_Item,Yellow_Item,Blue_Item;
   object_Item *Obstacle_Item;
-  int dont_angle[6];
+  int Unscaned_Angle[8];
   int frame_counter;
   vector<double> Angle_sin;
   vector<double> Angle_cos;
@@ -105,7 +105,6 @@ private:
 
 public:
   InterfaceProc();
-  ~InterfaceProc();
   int buttonmsg;
   int CenterXMsg;
   int CenterYMsg;
