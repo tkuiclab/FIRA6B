@@ -108,12 +108,6 @@ void InterfaceProc::scancall(const vision::scan msg)
   search_middle   = msg.Magn_Far_Start;
   search_end      = msg.Magn_Far_End;
 
-  dont_angle[0] = msg.Dont_Search_Angle_1;
-  dont_angle[1] = msg.Dont_Search_Angle_2;
-  dont_angle[2] = msg.Dont_Search_Angle_3;
-  dont_angle[3] = msg.Angle_range_1;
-  dont_angle[4] = msg.Angle_range_2_3;
-  dont_angle[5] = msg.Angle_range_2_3;
 }
 void InterfaceProc::positioncall(const vision::position msg)
 {
@@ -676,19 +670,29 @@ cv::Mat InterfaceProc::ScanModel(const cv::Mat iframe)
   int Unscaned_Area[6] = {0};
   int x, y;
 
-  Unscaned_Area[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
-  Unscaned_Area[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
-  Unscaned_Area[2] = Angle_Adjustment(Dont_Search_Angle_2Msg - Angle_range_2_3Msg);
-  Unscaned_Area[3] = Angle_Adjustment(Dont_Search_Angle_2Msg + Angle_range_2_3Msg);
-  Unscaned_Area[4] = Angle_Adjustment(Dont_Search_Angle_3Msg - Angle_range_2_3Msg);
-  Unscaned_Area[5] = Angle_Adjustment(Dont_Search_Angle_3Msg + Angle_range_2_3Msg);
+  if((Dont_Search_Angle_1Msg - Angle_range_1Msg)<0){
+    Unscaned_Area[0] = 0;
+    Unscaned_Area[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
+    Unscaned_Area[2] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
+    Unscaned_Area[3] = 360;
+    Unscaned_Area[4] = 999;
+    Unscaned_Area[5] = 999;
+  }else{
+    Unscaned_Area[0] = Angle_Adjustment(Dont_Search_Angle_1Msg - Angle_range_1Msg);
+    Unscaned_Area[1] = Angle_Adjustment(Dont_Search_Angle_1Msg + Angle_range_1Msg);
+    Unscaned_Area[2] = 999;
+    Unscaned_Area[3] = 999;
+    Unscaned_Area[4] = 999;
+    Unscaned_Area[5] = 999;
+  }
+
 
   for (int radius = Magn_Near_StartMsg ; radius <= Magn_Far_EndMsg ; radius += Magn_Near_GapMsg) {
     for (int angle = 0 ; angle < 360 ;) {
       //略過柱子
-      if (angle >= Unscaned_Area[0] && angle <= Unscaned_Area[1] ||
-          angle >= Unscaned_Area[2] && angle <= Unscaned_Area[3] ||
-          angle >= Unscaned_Area[4] && angle <= Unscaned_Area[5]) {
+      if ((angle >= Unscaned_Area[0] && angle <= Unscaned_Area[1]) ||
+          (angle >= Unscaned_Area[2] && angle <= Unscaned_Area[3]) ||
+          (angle >= Unscaned_Area[4] && angle <= Unscaned_Area[5])) {
         angle += Angle_Interval(radius);
         continue;
       }

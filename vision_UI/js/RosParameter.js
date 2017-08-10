@@ -8,7 +8,7 @@ ParameterCamera.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("CameraElement");
         obj[0].value = value;
-        document.getElementsByName("CameraLabel")[0].innerText = value;
+        document.getElementsByName("CameraLabel")[0].value = value;
     }
 });
 
@@ -16,7 +16,6 @@ function ParameterCameraValue() {
     var value = parseInt(document.getElementsByName('CameraElement')[0].value);
     console.log(value);
     ParameterCamera.set(value);
-    console.log(value);
 }
 //ParameterCenter_X
 var ParameterCenter_X = new ROSLIB.Param({
@@ -520,7 +519,7 @@ ParameterWhite_gray.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("WhiteElement");
         obj[0].value = value;
-        document.getElementsByName("WhiteLabel")[0].innerText = value; 
+        document.getElementsByName("WhiteLabel")[0].value = value; 
     }
 });
 
@@ -544,7 +543,7 @@ ParameterWhite_angle.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("WhiteElement");
         obj[1].value = value;
-        document.getElementsByName("WhiteLabel")[1].innerText = value; 
+        document.getElementsByName("WhiteLabel")[1].value = value; 
     }
 });
 
@@ -563,7 +562,7 @@ ParameterBlack_angle.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("BlackElement");
         obj[1].value = value;
-        document.getElementsByName("BlackLabel")[1].innerText = value; 
+        document.getElementsByName("BlackLabel")[1].value = value; 
     }
 });
 
@@ -581,7 +580,7 @@ ParameterBlack_gray.get(function(value) {
     if (value != null) {
         var obj = document.getElementsByName("BlackElement");
         obj[0].value = value;
-        document.getElementsByName("BlackLabel")[0].innerText = value; 
+        document.getElementsByName("BlackLabel")[0].value = value; 
     }
 });
 

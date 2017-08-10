@@ -4,4 +4,3 @@ prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: fal
   gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
   trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
   whitebalance_red: 100, width: 640, x_offset: 0, y_offset: 0}
-

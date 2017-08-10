@@ -26,12 +26,12 @@ FIRA:
     black: {angle: 4, gray: 50}
     white: {angle: 1, gray: 140}
   IsSimulator: 0
-  Parameterbutton: 2
+  Parameterbutton: 3
   Penalty_Kick: [-45, 2]
   RobotNumber: 1
-  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 1, Angle_range_2_3: 1, Dont_Search_Angle_1: 331,
-    Dont_Search_Angle_2: 91, Dont_Search_Angle_3: 210, Magn_Far_End: 240, Magn_Far_Start: 141,
-    Magn_Middle_Start: 98, Magn_Near_Gap: 4, Magn_Near_Start: 40}
+  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 95, Angle_range_2_3: 1, Dont_Search_Angle_1: 93,
+    Dont_Search_Angle_2: 0, Dont_Search_Angle_3: 180, Magn_Far_End: 240, Magn_Far_Start: 141,
+    Magn_Middle_Start: 168, Magn_Near_Gap: 1, Magn_Near_Start: 78}
   SPlanning_Velocity: [1, 0.3, 70, 50, 10, 1, 80, 1]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
