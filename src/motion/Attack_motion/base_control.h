@@ -60,9 +60,7 @@ private:
 	serial_tx *base_TX;
 	static serial_rx* base_RX;
 
-//	double w1_speed, w1_speed_percent;
-//	double w2_speed, w2_speed_percent;
-//	double w3_speed, w3_speed_percent;
+	double x_CMD, y_CMD, yaw_CMD;
 	unsigned char en1,en2,en3,stop1,stop2,stop3;
 //	unsigned char w1_dir,w2_dir,w3_dir;
 	//static	unsigned char cssl_buffer[50];
