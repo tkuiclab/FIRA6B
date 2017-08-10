@@ -42,7 +42,7 @@ class object_Item{
   int angle;          //pix
   double distance;    //pix
   int size;
-///////////////////
+
   int left_dis;       //pix
   int right_dis;      //pix
   int left_x;         //pix
@@ -61,6 +61,7 @@ class object_Item{
 class InterfaceProc
 {
 private:
+
   ros::NodeHandle nh;
   image_transport::ImageTransport it_;
   image_transport::Subscriber image_sub_;
@@ -74,15 +75,13 @@ private:
   cv::Mat *outputframe;
   cv::Mat Main_frame;
   cv::Mat Findmap;
-  cv::Mat FIRA_map;
-  cv::Mat Obstaclemap;
-  cv::Mat Erodemap;
-  cv::Mat Dilatemap;
 
- int hmax,hmin,smax,smin,vmax,vmin;
+  int b_end_gap; 
+  int y_end_gap;
+  int hmax,hmin,smax,smin,vmax,vmin;
   object_Item FIND_Item,Red_Item,Yellow_Item,Blue_Item;
   object_Item *Obstacle_Item;
-  int dont_angle[6];
+  int Unscaned_Angle[8];
   int frame_counter;
   vector<double> Angle_sin;
   vector<double> Angle_cos;
@@ -106,7 +105,6 @@ private:
 
 public:
   InterfaceProc();
-  ~InterfaceProc();
   int buttonmsg;
   int CenterXMsg;
   int CenterYMsg;
@@ -143,27 +141,14 @@ public:
   int SaveButton;
   int viewcheck;
   int image_fps;
-  int   ball_x, ball_y, ball_ang, ball_dis;
-  int   blue_x, blue_y,blue_ang, blue_dis;
-  int   yellow_x, yellow_y, yellow_ang, yellow_dis;
-  std::string  ball_LR,blue_LR,yellow_LR;
+
   //vector<BYTE> ColorFile();
   void imageCb(const sensor_msgs::ImageConstPtr&);
   void Parameter_getting(const int x);
   void SaveButton_setting(const vision::bin msg);
   void View(const vision::view msg);
   int mosue_x,mosue_y;
-  int distance_space[100];
-  int distance_pixel[100];
-/////////////////init_data///////////////////////////////////////////////////
-  void init_data(){
-    ball_LR = "NULL";blue_LR = "NULL";yellow_LR = "NULL";
-    image_fps = 999;
-    ball_x = 999; ball_y = 999; ball_ang = 999; ball_dis = 999;
-    blue_x = 999; blue_y = 999; blue_ang = 999; blue_dis = 999;
-    yellow_x = 999; yellow_y = 999; yellow_ang = 999; yellow_dis = 999;
-  }
-/////////////////////////////////////////////////////////////////////
+
   void object_compare(int distance ,int angle){
     if(FIND_Item.dis_max < distance){
       FIND_Item.dis_max = distance;
@@ -179,7 +164,6 @@ public:
       FIND_Item.ang_min = angle;
     }
   }
-/////////////////////////////////////////////////////////////
 //////////////////////////色彩空間////////////////////////////
   vector<BYTE> ColorFile()
   {
@@ -197,72 +181,32 @@ public:
     file.read((char*) &fileData[0], fileSize);
     return fileData;
   }
-///////////////////////////////////////////////////////////
 ///////////////////////FPS/////////////////////////////////
-  //int frame_counter=0;
-  //int topic_counter=0;
-
-  // long int EndTime;
   double dt;
-  double Exposure_mm;
-  void set_campara(int value_ex){
-    dynamic_reconfigure::ReconfigureRequest srv_req;
-    dynamic_reconfigure::ReconfigureResponse srv_resp;
-    dynamic_reconfigure::DoubleParameter double_param;
-    dynamic_reconfigure::Config conf;
-    double exposure = (double)value_ex/1000;
-    double_param.name = "exposure";
-    double_param.value = exposure;
-    conf.doubles.push_back(double_param);
-
-    srv_req.config = conf;
-    ros::service::call("/prosilica_driver/set_parameters", srv_req, srv_resp);
-  }
   double camera_exposure;
   void get_campara(){
     camera_exposure = 0.025;
     nh.getParam("/prosilica_driver/exposure",camera_exposure);
   }
-
-//////////////////////SCAN/////////////////////
-  std::vector<int>scan_para;
-  std::vector<int>scan_near;
-  std::vector<int>scan_middle;
-  std::vector<int>scan_far;
-
-  std::vector<int>dis_space;
-  std::vector<int>dis_pixel;
 /////////////////////HSV///////////////////////
-  int HSV_Ball[6];
-  int HSV_Yellow[6];
-  int HSV_Green[6];
-  int HSV_Blue[6];
   vector<int> HSV_red;
   vector<int> HSV_green;
   vector<int> HSV_blue;
   vector<int> HSV_yellow;
   vector<int> HSV_white;
 
-
-  //int angle_for_distance(int dis);
   void objectdet_change(Mat &, int, object_Item &);
-  void creat_Obstclemap(Mat &, int);
-  void creat_FIRA_map(Mat &, Mat &);
-  int Strategy_Angle(int angle);
-  void objectdet_Obstacle(Mat &, int, object_Item *);
   void Mark_point(Mat &, int, int, int, int, int &, int);
   void object_Item_reset(object_Item &);
   void find_around(Mat &, int, int, int &, int);
-  //void object_compare(int, int);
   void draw_ellipse(Mat &, object_Item &,int );
   void draw_Line(Mat &, int, int, int);
   void Draw_cross(cv::Mat &,char);
   void find_object_point(object_Item &, int);
-
   void HSVmap();
-  int Angle_Interval(int);
 
+  int Angle_Interval(int);
+  int Strategy_Angle(int angle);
   double camera_f(double Omni_pixel);
   double Omni_distance(double dis_pixel);
-
 };
