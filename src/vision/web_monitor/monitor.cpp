@@ -680,7 +680,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 						if(color == BLUEITEM){
 							if(b_end_gap > 0 && b_end_gap < 720 && 
 							find_gap[1][6] < ((obj_.ang_max - obj_.ang_min) * 0.4) && 
-							((find_gap[1][5] + find_gap[1][2]) / 2 - b_end_gap) > ((obj_.ang_max - obj_.ang_min) * 0.3)){
+							(abs(find_gap[1][5] + find_gap[1][2]) / 2 - b_end_gap) > ((obj_.ang_max - obj_.ang_min) * 0.3)){
 							} else {
 								for(int i=0;i<7;i++){
 									find_gap[0][i] = find_gap[1][i];
@@ -690,7 +690,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 						if(color == YELLOWITEM){
 							if(y_end_gap > 0 && y_end_gap < 720 && 
 							find_gap[1][6] < ((obj_.ang_max - obj_.ang_min) * 0.4) && 
-							((find_gap[1][5] + find_gap[1][2]) / 2 - y_end_gap) > ((obj_.ang_max - obj_.ang_min) * 0.3)){
+							(abs(find_gap[1][5] + find_gap[1][2]) / 2 - y_end_gap) > ((obj_.ang_max - obj_.ang_min) * 0.3)){
 							} else {
 								for(int i=0;i<7;i++){
 									find_gap[0][i] = find_gap[1][i];
