@@ -629,9 +629,9 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
     printf("goal_angle=%f\n",goal_angle);
     printf("goal_max=%f\n",goal_max);
     printf("goal_min=%f\n",goal_min);
+    printf("gla_angle =%f\n",gla_angle);
     printf("gla_distance=%f\n",gla_distance);
     printf("left_right_angle=%f\n",left_right_angle);
-    printf("op_goal_dis =%f\n",gla_distance);
     printf("fabs(Shoot_Current_time-Shoot_Begin_time)=%f\n",fabs(Shoot_Current_time-Shoot_Begin_time));
 
 }
@@ -3978,7 +3978,7 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 //            }
 //            env.home[r_number].v_yaw = transform_obstacle_angle;
 //        }
-        if(distance_dr<3.2&&Straight_Attack_Flag==1){
+        if(distance_dr<5&&Straight_Attack_Flag==1){
             Straight_Attack_Flag=0;
         }
 
@@ -4008,16 +4008,16 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 
             if(goal_angle>-40&&goal_angle<40){
                 if(goal_min<=0&&goal_max>=0){
-                    Shoot_Current_time = ros::Time::now().toSec();
+                    //Shoot_Current_time = ros::Time::now().toSec();
 //                    if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.2){
 //                        printf("shoot\n");
 //                        shoot = SPlanning_Velocity[10];
 //                    }
-                    if(fabs(gla_angle)<=10){
+                    if(fabs(gla_angle)<=3){
                         printf("target\n");
                         env.home[r_number].v_yaw = gla_angle*3;
                         Shoot_Current_time = ros::Time::now().toSec();
-                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.1){
+                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.15){
                             printf("shoot\n");
 //                            printf("goal_angle=%f\n",goal_angle);
 //                            printf("goal_max=%f\n",goal_max);
@@ -4034,9 +4034,9 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
                                 left_right_angle = left_right_angle + 360;
                             }
                             env.home[r_number].v_yaw = left_right_angle*3;
-                            if(fabs(left_right_angle)<10){
+                            if(fabs(left_right_angle)<3){
                                 Shoot_Current_time = ros::Time::now().toSec();
-                                if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.1){
+                                if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.15){
                                     printf("shoot\n");
                                     shoot = SPlanning_Velocity[10];
                                 }
@@ -4050,9 +4050,9 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
                                 left_right_angle = left_right_angle + 360;
                             }
                             env.home[r_number].v_yaw = left_right_angle*3;
-                            if(fabs(left_right_angle)<10){
+                            if(fabs(left_right_angle)<3){
                                 Shoot_Current_time = ros::Time::now().toSec();
-                                if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.1){
+                                if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.15){
                                     printf("shoot\n");
                                     shoot = SPlanning_Velocity[10];
                                 }
@@ -4080,14 +4080,14 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 
 
 
-//        printf("goal_angle=%f\n",goal_angle);
-//        printf("goal_max=%f\n",goal_max);
-//        printf("goal_min=%f\n",goal_min);
-//        printf("gla_angle=%f\n",gla_angle);
-//        printf("gla_distance=%f\n",gla_distance);
-//        printf("left_right_angle=%f\n",left_right_angle);
-//        printf("goal_dis =%f\n",distance_dr);
-//        printf("fabs(Shoot_Current_time-Shoot_Begin_time)=%f\n",fabs(Shoot_Current_time-Shoot_Begin_time));
+        printf("goal_angle=%f\n",goal_angle);
+        printf("goal_max=%f\n",goal_max);
+        printf("goal_min=%f\n",goal_min);
+        printf("gla_angle=%f\n",gla_angle);
+        printf("gla_distance=%f\n",gla_distance);
+        printf("left_right_angle=%f\n",left_right_angle);
+        printf("goal_dis =%f\n",distance_dr);
+        printf("fabs(Shoot_Current_time-Shoot_Begin_time)=%f\n",fabs(Shoot_Current_time-Shoot_Begin_time));
 
 
 }
