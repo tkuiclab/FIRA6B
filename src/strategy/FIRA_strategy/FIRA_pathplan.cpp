@@ -1400,7 +1400,8 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     ///////////////////////////cal_yaw///////////////
     double min_obstacle_dis=0;
     double check_obstacle_dis=0;
-    double v_yaw_angle=0;
+    double obstacle_angle=0;
+    double v_yaw=
     ////////////////////////////////
 
     //printf("===========f_g_cal=======\t%d\n\n",env.global_angle_end.size());
@@ -1442,9 +1443,9 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
             check_obstacle_dis=env.global_apf_dis[i];
             if(check_obstacle_dis<=min_obstacle_dis||min_obstacle_dis==0){
                 min_obstacle_dis=check_obstacle_dis;
-                v_yaw_angle=angle_avg[i-1];
-                if(v_yaw_angle>=180){
-                    v_yaw_angle=v_yaw_angle-360;
+                obstacle_angle=angle_avg[i-1];
+                if(obstacle_angle>=180){
+                    obstacle_angle=obstacle_angle-360;
                 }
             }
              //printf("v_yaw=%f\n",v_yaw_angle);
@@ -1536,7 +1537,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
 //    f_last_total[1] = f_image_total[0];
 //    f_last_total[2] = f_apf_total[0];
     if(number_obstacle==0){
-        v_yaw_angle=goal_angle;
+        obstacle_angle=goal_angle;
     }else if(number_obstacle>=2){
 //        error_f[0] = f_g[0]-f_last_total[0];
 //        error_f[1] = f_image_total[0]-f_last_total[1];
@@ -1551,7 +1552,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         k_g[0]=2;k_g[1]=2;
         k_r[0]=0;k_r[1]=0;
         k_image_r[0]=0;k_image_r[1]=0;
-        v_yaw_angle=goal_angle;
+        obstacle_angle=goal_angle;
     }
     ////////////////////
     f_total[0]=k_r[0]*f_apf_total[0]+k_g[0]*f_g[0]+k_image_r[0]*f_image_total[0];
@@ -1566,7 +1567,34 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
 //    ////////////real_state/////
     env.home[r_number].v_x = f_total[0];
     env.home[r_number].v_y = f_total[1];
-    env.home[r_number].v_yaw = goal_angle;
+    env.home[r_number].v_yaw = obstacle_angle;
+//    if(obstacle_angle==goal_angle){
+
+//    }else {
+//        if(obstacle_angle>=0&&goal_angle>0){
+//           if(obstacle_angle>goal_angle){
+//               v_yaw=goal_angle-obstacle_angle;
+//               if(goal_angle==v_yaw){
+//                   env.home[r_number].v_yaw = 0;
+//               }else if(goal_angle<v_yaw){
+//                   env.home[r_number].v_yaw = -10;
+//               }else if(goal_angle>v_yaw){
+//                   env.home[r_number].v_yaw = 10;
+//               }
+//           }else{
+//               v_yaw=goal_angle-obstacle_angle;
+//               if(goal_angle==v_yaw){
+//                   env.home[r_number].v_yaw = 0;
+//               }else if(goal_angle<v_yaw){
+//                   env.home[r_number].v_yaw = 10;
+//               }else if(goal_angle>v_yaw){
+//                   env.home[r_number].v_yaw = -10;
+//               }
+//           }
+//        }else if(){
+
+//        }
+//   }
     //printf("v_yaw=%f\n",env.home[r_number].v_yaw);
     //printf("=============end_f=======\n");
 
