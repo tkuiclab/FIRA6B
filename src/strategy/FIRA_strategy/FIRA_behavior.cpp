@@ -274,7 +274,9 @@ void FIRA_behavior_class::StateGoalkeeperInit(int r_number){
     double ball_dis = env.home[r_number].ball.distance;  
     double opgoal_angle = env.home[r_number].op_goal.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
-
+    std::cout << "opgoal_angle = " << opgoal_angle << std::endl;
+    std::cout << "opgoal_dis = " << opgoal_dis << std::endl;
+    
 
     if( opgoal_dis !=0 && ball_angle != 999 ){
         state_Goalkeeper = state_Goalkeeper_block;
@@ -311,17 +313,17 @@ void FIRA_behavior_class::StateGoalkeeperBlock(int r_number){
         opgoal_angle_reverse = 180 + opgoal_angle;
     }
 
-    // if(ball_angle == 999){
-    //     state_Goalkeeper = state_Goalkeeper_init;
-    //  }else if(ball_to_opgoal_dis < 2.5 && position_angle < 40 && opgoal_dis < 1.1){
-    //    state_Goalkeeper = state_Goalkeeper_push;
-    // }else if(ball_to_opgoal_dis < 1.2 && position_angle < 40){
-    //     state_Goalkeeper = state_Goalkeeper_push;
-    // }else if(ball_dis < 1.2 && opgoal_dis < 1.25){
-    //     state_Goalkeeper = state_Goalkeeper_push;
-    // }
+    if(ball_angle == 999){
+        state_Goalkeeper = state_Goalkeeper_init;
+     }else if(ball_to_opgoal_dis < 2.2 && position_angle < 40 && opgoal_dis < 1.1){
+       state_Goalkeeper = state_Goalkeeper_push;
+    }else if(ball_to_opgoal_dis < 1.2 && position_angle < 40){
+        state_Goalkeeper = state_Goalkeeper_push;
+    }else if(ball_dis < 1.2 && opgoal_dis < 1.25){
+        state_Goalkeeper = state_Goalkeeper_push;
+    } 
 
-    // std::cout << "opgoal_reverse = " << opgoal_angle_reverse << std::endl;
+    std::cout << "opgoal_reverse = " << opgoal_angle_reverse << std::endl;
     // std::cout << "position_angle = " << position_angle << std::endl;
     // std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
 }
@@ -351,12 +353,14 @@ void FIRA_behavior_class::StateGoalkeeperPush(int r_number){
     double position_angle = rad2deg * acos(-((r_opgoal_dis*r_opgoal_dis)-(opgoal_dis*opgoal_dis)-0.25)/opgoal_dis);
 
     
-    if( opgoal_dis > 1.35 && ball_to_opgoal_dis > 1.6){
+    if( opgoal_dis > 1.25 && ball_to_opgoal_dis > 1.5){
         state_Goalkeeper = state_Goalkeeper_block;
-    }else if( ball_angle > opgoal_edge_angle_L-7 && opgoal_left < 0.5 && opgoal_right > 1.15){
+    }else if( ball_angle > opgoal_edge_angle_L-10 && opgoal_left < 0.5 && opgoal_right > 1.15){
         state_Goalkeeper = state_Goalkeeper_init;
-    }else if( ball_angle < opgoal_edge_angle_R+7 && opgoal_right < 0.5 && opgoal_left > 1.15){
+    }else if( ball_angle < opgoal_edge_angle_R+10 && opgoal_right < 0.5 && opgoal_left > 1.15){
         state_Goalkeeper = state_Goalkeeper_init;
+    }else if(opgoal_dis > 2){
+        state_Goalkeeper = state_Goalkeeper_block;
     }
     // }else if(position_angle > 40){
     //     if(opgoal_left < 1.2 && ball_angle < opgoal_edge_angle_R - 15){

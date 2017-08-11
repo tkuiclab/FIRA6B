@@ -215,31 +215,29 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
     
     double x;
     double y;
-    int rotAngle;
-    double speed = 0.8;
+    double rotAngle;
+    double speed;
     double max_speed = 2.3;	//min = 0.3
 
-    if(ball_dis < 2){
-        speed = 1.5;
-    }else if(ball_to_opgoal_dis < 1.7){
-        speed = 1.5;
-    }else if(ball_to_opgoal_dis < 1.35){
-        speed = 2;
-    }else if(opgoal_dis > 1.2){
+    speed = 2.7 - ball_dis;
+    if(speed < 0.5){
+        speed = 0.5;
+    }
+    
+    if(opgoal_dis > 1.2){
         rotAngle = -25;
     }else{
-        speed = 0.75;
         rotAngle = 15;
     }
 
-    if(fabs(opgoal_right-opgoal_left)< 0.35){ //on middle
+    if(fabs(opgoal_right-opgoal_left)< 0.28){ //on middle
         position = M;
         if(opgoal_dis > 1.25 && ball_to_opgoal_dis > 2.5){
             direction = max_M;
-        }else if(ball_angle > opgoal_angle_reverse +5 ){ // +15
+        }else if(ball_angle > opgoal_angle_reverse + 13 ){ // +15
             rotAngle = -rotAngle;
             direction = L;
-        }else if(ball_angle < opgoal_angle_reverse -5 ){ // -15
+        }else if(ball_angle < opgoal_angle_reverse - 13 ){ // -15
             direction = R;
         }else{
             direction = stop;
@@ -252,17 +250,14 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
             }else{
                 direction = max_M;
             }
-        }else if(position_angle > 40 && opgoal_left >0.5 && ball_angle < 10 +(opgoal_edge_angle_R>0 ? opgoal_edge_angle_R - 180:opgoal_edge_angle_R + 180)){
-            direction = L;
-            rotAngle = 25;
-        }else if(ball_angle > opgoal_angle_reverse +30){ // +30
+        }else if(ball_angle > opgoal_angle_reverse + 30){ // +30
             rotAngle = -rotAngle;
-            if(position_angle > 40){
+            if(position_angle > 37 || opgoal_left < 0.65){
                 direction = stop;
             }else{
                 direction = L;
             }
-        }else if(ball_angle < opgoal_angle_reverse +5 ){ // +10
+        }else if(ball_angle < opgoal_angle_reverse + 10 ){ // +10
             direction = R;
         }else{
             direction = stop;
@@ -275,14 +270,11 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
             }else{
                 direction = max_M;
             }
-        }else if(position_angle > 40 && opgoal_right >0.5 && ball_angle < (-10)+(opgoal_edge_angle_L>0 ? opgoal_edge_angle_L - 180:opgoal_edge_angle_L + 180)){
-            direction = R;
-            rotAngle = -25;
-        }else if(ball_angle > opgoal_angle_reverse -5){ // -10
+        }else if(ball_angle > opgoal_angle_reverse - 10){ // -10
             rotAngle = -rotAngle;
             direction = L;
         }else if(ball_angle < opgoal_angle_reverse - 30){ // -30
-            if(position_angle > 40){
+            if(position_angle > 37 || opgoal_right < 0.65){
                 direction = stop;
             }else{
                 direction = R;
@@ -332,6 +324,9 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
         env.home[r_number].v_yaw = 0;
     }
     std::cout << "block " << position << " -> " << direction << std::endl;
+    
+    // std::cout << "ball_angle = " << ball_angle << std::endl;
+    // std::cout << "opgoal_angle_reverse = " << opgoal_angle_reverse << std::endl;
     // std::cout << "opgoal_edge_angle_L = " << opgoal_edge_angle_L << std::endl;
     // std::cout << "opgoal_edge_angle_R = " << opgoal_edge_angle_R << std::endl;
     //std::cout << "speed = " << speed << std::endl;
