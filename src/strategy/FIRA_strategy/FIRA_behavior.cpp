@@ -737,7 +737,7 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
 //    printf("Begin_time=%f\n",Begin_time);
 //    printf("Current_time=%f\n",Current_time);
     NewSupport_Current_time = ros::Time::now().toSec();
-
+    Current_time = ros::Time::now().toSec();
     switch(Support_Strategy[0]){
         case 1:     //AutoCase
             printf("AutoCase\n");
@@ -752,6 +752,9 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
             }else{//all good above, left right defend ball state
                 actionAry[robotIndex] = action_LeftRightMove;
                 printf("left right defend ball state\n");
+            }
+            if(fabs(Current_time-Begin_time)<=1){
+                actionAry[robotIndex] = action_Stop;
             }
             break;
         case 2:     //BlockCase
