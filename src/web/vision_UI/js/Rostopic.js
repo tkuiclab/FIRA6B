@@ -260,7 +260,6 @@ var Monitor = new ROSLIB.Topic({
     name: '/vision/object',
     messageType: '/vision/Object'
 });
-
 Monitor.subscribe(function(msg) {
     var MBox = [];
     MBox.push(msg.fps);
@@ -282,21 +281,23 @@ Monitor.subscribe(function(msg) {
     MBox.push(msg.yellow_dis);
     MBox.push(msg.yellow_ang);
     //console.log(MBox);
-    document.getElementsByName('MonitorElement')[0].innerText = MBox[0];
-    document.getElementsByName('MonitorElement')[1].innerText = '( '+MBox[1]+','+MBox[2]+' )';
-    document.getElementsByName('MonitorElement')[2].innerText = MBox[3];
-    document.getElementsByName('MonitorElement')[3].innerText = MBox[4];
-    document.getElementsByName('MonitorElement')[4].innerText = MBox[5];
 
-    document.getElementsByName('MonitorElement')[5].innerText = '( '+MBox[6]+','+MBox[7]+' )';
-    document.getElementsByName('MonitorElement')[6].innerText = MBox[8];
-    document.getElementsByName('MonitorElement')[7].innerText = MBox[9];
-    document.getElementsByName('MonitorElement')[8].innerText = MBox[10];
+      document.getElementsByName('MonitorElement')[0].innerText = MBox[0];
+      document.getElementsByName('MonitorElement')[1].innerText = '( '+MBox[1]+','+MBox[2]+' )';
+      document.getElementsByName('MonitorElement')[2].innerText = MBox[3];
+      document.getElementsByName('MonitorElement')[3].innerText = MBox[4];
+      document.getElementsByName('MonitorElement')[4].innerText = MBox[5];
 
-    document.getElementsByName('MonitorElement')[9].innerText = '( '+MBox[11]+','+MBox[12]+' )';
-    document.getElementsByName('MonitorElement')[10].innerText = MBox[13];
-    document.getElementsByName('MonitorElement')[11].innerText = MBox[14];
-    document.getElementsByName('MonitorElement')[12].innerText = MBox[15];
+      document.getElementsByName('MonitorElement')[5].innerText = '( '+MBox[6]+','+MBox[7]+' )';
+      document.getElementsByName('MonitorElement')[6].innerText = MBox[8];
+      document.getElementsByName('MonitorElement')[7].innerText = MBox[9];
+      document.getElementsByName('MonitorElement')[8].innerText = MBox[10];
+
+      document.getElementsByName('MonitorElement')[9].innerText = '( '+MBox[11]+','+MBox[12]+' )';
+      document.getElementsByName('MonitorElement')[10].innerText = MBox[13];
+      document.getElementsByName('MonitorElement')[11].innerText = MBox[14];
+      document.getElementsByName('MonitorElement')[12].innerText = MBox[15];
+    
 });
 //====================================================================
 //(X,Y)
