@@ -87,7 +87,7 @@ void NodeHandle::pubSpeed(Environment *Env)
 }
 void NodeHandle::Transfer(Environment *Env)
 {
-c    double Distance = hypot(Env->Robot.v_x, Env->Robot.v_y);
+    double Distance = hypot(Env->Robot.v_x, Env->Robot.v_y);
     double alpha = atan2(Env->Robot.v_y, Env->Robot.v_x) * RAD2DEG;
     double angle = Env->Robot.v_yaw;
     bool IsVectorZero = 0;
