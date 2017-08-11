@@ -1,7 +1,6 @@
-prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
-  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.02,
-  exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
-  gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
-  trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
-  whitebalance_red: 100, width: 640, x_offset: 0, y_offset: 0}
-
+{auto_adjust_stream_bytes_per_second: true, auto_exposure: false, auto_gain: false,
+  auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.025, exposure_auto_max: 0.5,
+  exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '', gain: 0, gain_auto_max: 19,
+  gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000, trig_rate: 15.0,
+  trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100, whitebalance_red: 100,
+  width: 640, x_offset: 0, y_offset: 0}
