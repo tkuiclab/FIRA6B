@@ -55,6 +55,7 @@ private:
 	robot_command *base_robotFB;
 	serial_tx *base_TX;
 	static serial_rx* base_RX;
+	double x_CMD, y_CMD, yaw_CMD;
 	unsigned char en1,en2,en3,stop1,stop2,stop3;
 public:
 	void send(robot_command*);
