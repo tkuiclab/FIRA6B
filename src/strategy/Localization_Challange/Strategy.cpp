@@ -137,7 +137,6 @@ void Strategy::StrategyLocalization()
         printf("UNDEFINE STATE\n");
         exit(FAULTEXECUTING);
     }
-    showInfo(Robot,imu);
     Normalization(v_yaw);
     if (imu > 5)
         IMU_state = 1;
@@ -153,7 +152,7 @@ void Strategy::StrategyLocalization()
         v_yaw = 0;
         break;
     case 1:
-        v_yaw = imu;
+        v_yaw = -imu;
         break;
     case 2:
         v_yaw = -imu;
@@ -164,6 +163,7 @@ void Strategy::StrategyLocalization()
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
     _Env->Robot.v_yaw = v_yaw;
+    showInfo(Robot,imu);
 }
 void Strategy::Forward(RobotData &Robot, double &v_x, double &v_y, double &v_yaw, double imu, int &flag, double absolute_front, double compensation_x, double compensation_y)
 {
@@ -468,9 +468,9 @@ void Strategy::showInfo(std::vector<int> order, double imu, double compensation_
         Sv_y = "↓ ";
     else
         Sv_y = "";
-    if (_Env->Robot.v_yaw > 2)
+    if (_Env->Robot.v_yaw > 0.001)
         Sv_yaw = "↶";
-    else if (_Env->Robot.v_yaw < -2)
+    else if (_Env->Robot.v_yaw < -0.001)
         Sv_yaw = "↷";
     else
         Sv_yaw = "";
@@ -540,9 +540,9 @@ void Strategy::showInfo(RobotData Robot,double imu)
         Sv_y = "↓ ";
     else
         Sv_y = "";
-    if (_Env->Robot.v_yaw > 2)
+    if (_Env->Robot.v_yaw > 0.001)
         Sv_yaw = "↶";
-    else if (_Env->Robot.v_yaw < -2)
+    else if (_Env->Robot.v_yaw < -0.001)
         Sv_yaw = "↷";
     else
         Sv_yaw = "";

@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     strategy.setEnv(&Env); // Set strategy environment datad
     strategy.setParam(&Global_Param);
     strategy.setLocationPoint(&Location);
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(100);
     ros::Duration(0.25).sleep();
     while (ros::ok())
     {
