@@ -187,6 +187,9 @@ void Strategy::StrategyLocalization2()
     double absolute_front = imu + 90;
     static int flag = TRUE;
     static int flag_chase = TRUE;
+    double ball_distance = 0.28;
+    Robot.pos.x += ball_distance * cos(absolute_front * DEG2RAD);
+    Robot.pos.y += ball_distance * sin(absolute_front * DEG2RAD);
     double lost_ball_dis = _Param->Strategy.HoldBall_Condition[3];
     double lost_ball_angle = _Param->Strategy.HoldBall_Condition[2];
     double hold_ball_dis = _Param->Strategy.HoldBall_Condition[1];
@@ -221,7 +224,6 @@ void Strategy::StrategyLocalization2()
     //    }
     //   ================================   Enable chase mode end   ==================================
     Normalization(absolute_front);
-    static int counter = 0;
     switch (_LocationState)
     {
     case forward: // Move to target poitn
@@ -250,11 +252,7 @@ void Strategy::StrategyLocalization2()
         printf("UNDEFINE STATE\n");
         //exit(FAULTEXECUTING);
     }
-    if (counter++ > 5)
-    {
-        showInfo(order, imu, compensation_x, compensation_y);
-        counter = 0;
-    }
+    showInfo(Robot.pos.x,Robot.pos.y,order, imu, compensation_x, compensation_y);
     Normalization(v_yaw);
     _Env->Robot.v_x = v_x;
     _Env->Robot.v_y = v_y;
@@ -334,7 +332,7 @@ void Strategy::Turn(RobotData &Robot, double &v_x, double &v_y, double &v_yaw, d
     //    <<<<<<<  END    origin code in 2017.8.8
 
     //    <<<<<<<  HEAD   temp code in 2017.8.8
-    double v_strike = 1.0;
+    double v_strike = 0.01;
     v_y = fabs(vector_tr.yaw/180.0)*v_strike;   
     v_x = 0;
     v_yaw = vector_tr.yaw; // turn to target
@@ -376,7 +374,6 @@ std::vector<int> Strategy::OptimatePath()
         enable_point.push_back(i);
     std::vector<int>::iterator it;
     printf("\n");
-    int order_counter = 0;
     int horizon_point = -1;
     int hotizon_location = -1;
     int temp = -1;
@@ -544,7 +541,7 @@ std::vector<int> Strategy::OptimatePath()
     // printf("\n");
     return order;
 }
-void Strategy::showInfo(std::vector<int> order, double imu, double compensation_x, double compensation_y)
+void Strategy::showInfo(double pos_x,double pos_y,std::vector<int> order, double imu, double compensation_x, double compensation_y)
 {
     std::string Sv_x = "→";
     std::string Sv_y = "↑";
@@ -598,8 +595,8 @@ void Strategy::showInfo(std::vector<int> order, double imu, double compensation_
         std::cout << "Target position : (" << _Target.TargetPoint[_CurrentTarget].x + compensation_x
                   << "," << _Target.TargetPoint[_CurrentTarget].y + compensation_y << ")\n";
     else if (_LocationState == chase)
-        std::cout << "Target position : (" << _Env->Robot.pos.x + _Env->Robot.ball.distance * cos((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
-                  << "," << _Env->Robot.pos.y + _Env->Robot.ball.distance * sin((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
+        std::cout << "Target position : (" << pos_x + _Env->Robot.ball.distance * cos((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
+                  << "," << pos_y + _Env->Robot.ball.distance * sin((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
                   << ")" << std::endl;
     else if (_LocationState == turn)
         if (_Last_state == forward)
@@ -610,7 +607,7 @@ void Strategy::showInfo(std::vector<int> order, double imu, double compensation_
                       << "," << _Target.TargetPoint[_CurrentTarget].y + compensation_y << ")\n";
 
     std::cout << "Imu = " << imu << std::endl;
-    std::cout << "Robot position : (" << _Env->Robot.pos.x << "," << _Env->Robot.pos.y << ")\n";
+    std::cout << "Ball position : (" << pos_x << "," << pos_y << ")\n";
     std::string haha = Sv_x + Sv_y + Sv_yaw;
     std::cout << "Direction : " << Sv_x + Sv_y + Sv_yaw << std::endl;
     printf("Speed : (%3f,%3f,%3f)\n", _Env->Robot.v_x, _Env->Robot.v_y, _Env->Robot.v_yaw);

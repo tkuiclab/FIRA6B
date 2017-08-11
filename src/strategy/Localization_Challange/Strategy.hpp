@@ -58,7 +58,7 @@ class Strategy
     Environment *_Env;
     Parameter *_Param;
     void showInfo(double, double, double);
-    void showInfo(std::vector<int>,double, double, double);
+    void showInfo(double, double, std::vector<int>, double, double, double);
     enum state_location
     {
         forward,
