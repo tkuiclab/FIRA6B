@@ -182,6 +182,7 @@ private:
     /// load param begin
     std::vector<double> SPlanning_Velocity;
     std::vector<double> Distance_Settings;
+    std::vector<int> Scan;
     int IsSimulator;
     /// load param end
 
@@ -358,24 +359,61 @@ private:
         int All_Line_distance[360];
         int angle[360];
         int place;
-
-        for(int i=0; i<360/Blackangle-23; i++){
-            All_Line_distance[i] = msg -> data[i];
+        Range Unscan[3];
+        Unscan[0].begin = Scan[0] - (Scan[3]-1);
+        Unscan[0].end   = Scan[0] + (Scan[3]-1);
+        Unscan[1].begin = Scan[1] - (Scan[4]-1);
+        Unscan[1].end   = Scan[1] + (Scan[4]-1);
+        Unscan[2].begin = Scan[2] - (Scan[4]-1);
+        Unscan[2].end   = Scan[2] + (Scan[4]-1);
+        for(int i=0;i<360/Blackangle;i++){
+//            if((i*Blackangle >= Unscan[0].begin && i*Blackangle <= Unscan[0].end )||\
+//            (i*Blackangle >= Unscan[1].begin && i*Blackangle >= Unscan[1].end) ||\
+//            (i*Blackangle >= Unscan[2].begin && i*Blackangle >= Unscan[2].end))
+//                All_Line_distance[i] = -1;
+//            else{
+//            printf("0.begin=%d\t0.end=%d\n",Unscan[0].begin,Unscan[0].end);
+//            printf("1.begin=%d\t1.end=%d\n",Unscan[1].begin,Unscan[1].end);
+//            printf("2.begin=%d\t2.end=%d\n",Unscan[2].begin,Unscan[2].end);
+//              printf("All_Line_distance[%d]=%d\n",All_Line_distance[i],i);
+                All_Line_distance[i] = msg -> data[i];
+//        }
         }
+
         global_env->mindis[0] = All_Line_distance[0];
-        for(int i=1; i<360/Blackangle-23; i++){
+        for(int i=1;i<360/Blackangle;i++){
+//            printf("%d\t%d\n",i,All_Line_distance[i]);
             if(All_Line_distance[i] < global_env->mindis[0]){
-				if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
-					global_env->mindis[0] = All_Line_distance[i];
-					place = i;
-				}
-			}
+                if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
+                    global_env->mindis[0] = All_Line_distance[i];
+                    place = i*Blackangle;
+                }
+            }
         }
+        global_env->blackangle[0] = place*Blackangle;
+        if(global_env->blackangle[0] > 180){
+            global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
+        }
+//        printf("global_env->mindis[0]=%d\nangle=%d\n",global_env->mindis[0],place);
+        // for(int i=0; i<360/Blackangle; i++){
+        //     All_Line_distance[i] = msg -> data[i];
+        // }
+        // global_env->mindis[0] = All_Line_distance[0];
+        // for(int i=1; i<360/Blackangle-23; i++){
+        //     if(All_Line_distance[i] < global_env->mindis[0]){
+		// 		if(All_Line_distance[i]>25 &&All_Line_distance[i]<1000){						
+		// 			global_env->mindis[0] = All_Line_distance[i];
+		// 			place = i;
+		// 		}
+		// 	}
+        // }
 
-     global_env->blackangle[0] = place*3;
-     if(global_env->blackangle[0] > 180){
-        global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
-     }
+        // global_env->blackangle[0] = place*Blackangle;
+        // if(global_env->blackangle[0] > 180){
+        //     global_env->blackangle[0] = -(360 - global_env->blackangle[0]);
+        // }
+
+
 //ROS_INFO("blackangle[0]=%d,mindis[0]=%d\n",global_env->blackangle[0],global_env->mindis[0]);
         /*}else counter++;*/
    //        std_msgs::Int32MultiArray blackdis;
@@ -539,10 +577,6 @@ private:
 //                  ROS_INFO("New.distance[%d]=%d\t New.location[%d]=%d\t New_Save[%d].counter=%d\n",i,New_Save[i].distance,i,New_Save[i].location,i,New_Save[i].counter);
 //                   ROS_INFO("global_env->mindis[%d]=%d\t global_env->blackangle[%d]=%d\n \n",i,global_env->mindis[i],i,global_env->blackangle[i]);
 //              }
-
-
-
-
     }
      void getSaveParam(const std_msgs::Int32::ConstPtr &msg){
          global_env->SaveParam = msg->data;

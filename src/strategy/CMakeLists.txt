@@ -5,6 +5,8 @@
 cmake_minimum_required(VERSION 2.8.0)
 project(strategy)
 find_package(catkin)
+##using c++ 11 standard
+add_definitions(-std=c++11)
 
 ##############################################################################
 # Catkin Configuration

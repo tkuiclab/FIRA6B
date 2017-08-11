@@ -9,23 +9,25 @@ Strategy_nodeHandle(int argc, char** argv):
     global_env = new Environment;
     global_env->SaveParam = 0;
     roleAry[0] = Role_Goalkeeper;
+    Blackangle = 1;
+    Scan.resize(5);
 }
 
 
 void Strategy_nodeHandle::ros_comms_init(){
     n = new ros::NodeHandle();
-    shoot = n->advertise<std_msgs::Int32>("/motion/shoot",1000);
+    shoot = n->advertise<std_msgs::Int32>("/motion/shoot",1);
     std::string robot_prefix = Robot_Topic_Prefix;
     std::string robotOpt_prefix = RobotOpt_Topic_Prefix;
     std::string robotPos_suffix = Robot_Position_Topic_Suffix;
 
     //gazebo_ModelStates subscriber
-    Gazebo_Model_Name_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::find_gazebo_model_name_fun,this);
+    Gazebo_Model_Name_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::find_gazebo_model_name_fun,this);
 
     //Is Gazabo simulation mode?
 
-    GameState = n->subscribe<std_msgs::Int32>(GameState_Topic,1000,&Strategy_nodeHandle::subGameState,this);
-    TeamColor = n->subscribe<std_msgs::String>(TeamColor_Topic,1000,&Strategy_nodeHandle::subTeamColor,this);
+    GameState = n->subscribe<std_msgs::Int32>(GameState_Topic,1,&Strategy_nodeHandle::subGameState,this);
+    TeamColor = n->subscribe<std_msgs::String>(TeamColor_Topic,1,&Strategy_nodeHandle::subTeamColor,this);
 
     //robot_role
     std::cout << "Strategy_nodeHandle::ros_comms_init() say opponent = " << opponent << std::endl;
@@ -33,35 +35,35 @@ void Strategy_nodeHandle::ros_comms_init(){
     std::string robot_role_suffix = Robot_Role_Topic_Suffix;
 
     //role subscriber
-    robot_2_role_sub = n->subscribe<std_msgs::Int32>(robot_role_prefix  +"2"+robot_role_suffix,1000,&Strategy_nodeHandle::robot_2_role_fun,this);
-    robot_3_role_sub = n->subscribe<std_msgs::Int32>(robot_role_prefix  +"3"+robot_role_suffix,1000,&Strategy_nodeHandle::robot_3_role_fun,this);
+    robot_2_role_sub = n->subscribe<std_msgs::Int32>(robot_role_prefix  +"2"+robot_role_suffix,1,&Strategy_nodeHandle::robot_2_role_fun,this);
+    robot_3_role_sub = n->subscribe<std_msgs::Int32>(robot_role_prefix  +"3"+robot_role_suffix,1,&Strategy_nodeHandle::robot_3_role_fun,this);
 
     //speed subscriber
     std::string robotSpeed_suffix = RobotSpeed_Topic_Suffix;
-    robot_1_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"1"+robotSpeed_suffix,1000);
-    robot_2_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"2"+robotSpeed_suffix,1000);
-    robot_3_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"3"+robotSpeed_suffix,1000);
-    robotOpt_1_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"1"+robotSpeed_suffix,1000);
-    robotOpt_2_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"2"+robotSpeed_suffix,1000);
-    robotOpt_3_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"3"+robotSpeed_suffix,1000);
+    robot_1_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"1"+robotSpeed_suffix,1);
+    robot_2_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"2"+robotSpeed_suffix,1);
+    robot_3_speed_pub = n->advertise<geometry_msgs::Twist>(robot_prefix+"3"+robotSpeed_suffix,1);
+    robotOpt_1_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"1"+robotSpeed_suffix,1);
+    robotOpt_2_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"2"+robotSpeed_suffix,1);
+    robotOpt_3_speed_pub = n->advertise<geometry_msgs::Twist>(robotOpt_prefix+"3"+robotSpeed_suffix,1);
 
     //one_Robot speed publish
     std::string robotSpeed= Robot_Topic_Speed;
-    robot_speed_pub = n->advertise<geometry_msgs::Twist>(Robot_Topic_Speed,1000);
+    robot_speed_pub = n->advertise<geometry_msgs::Twist>(Robot_Topic_Speed,1);
 
     //Use_topic_gazebo_msgs_Model_States to get model position
-    ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::ball_sub_fun,this);
+    ball_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::ball_sub_fun,this);
     //robot subscriber
-    robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_1_pos_fun,this);
-    robot_2_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_2_pos_fun,this);
-    robot_3_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robot_3_pos_fun,this);
-    robotOpt_1_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_1_pos_fun,this);
-    robotOpt_2_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_2_pos_fun,this);
-    robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1000,&Strategy_nodeHandle::robotOpt_3_pos_fun,this);
+    robot_1_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::robot_1_pos_fun,this);
+    robot_2_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::robot_2_pos_fun,this);
+    robot_3_pos_sub   = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::robot_3_pos_fun,this);
+    robotOpt_1_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::robotOpt_1_pos_fun,this);
+    robotOpt_2_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::robotOpt_2_pos_fun,this);
+    robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::robotOpt_3_pos_fun,this);
     //contact image
-    Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
-    BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
-    SAVEPARAM = n->subscribe<std_msgs::Int32>(SAVEPARAM_TOPIC,1000,&Strategy_nodeHandle::getSaveParam,this);
+    Vision = n->subscribe<vision::Object>(Vision_Topic,1,&Strategy_nodeHandle::subVision,this);
+    BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1,&Strategy_nodeHandle::subBlackObject,this);
+    SAVEPARAM = n->subscribe<std_msgs::Int32>(SAVEPARAM_TOPIC,1,&Strategy_nodeHandle::getSaveParam,this);
     IsSimulator = false;
 }
 
@@ -166,13 +168,7 @@ void Strategy_nodeHandle::pubSpeed(ros::Publisher *puber,double v_x,double v_y,d
 //###################################################//
 void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     double Vdis = hypot(msg->linear.x,msg->linear.y);
-    double alpha = atan(-msg->linear.x/msg->linear.y)*rad2deg;
-    if(msg->linear.y>0){
-        if(msg->linear.x>0)
-            alpha+=180;
-        else
-            alpha-=180;
-    }
+    double alpha = atan2(msg->linear.y,msg->linear.x)*rad2deg;
     double angle = msg->angular.z * rad2deg;
     bool IsVectorZero=0;
     double Vdis_max = SPlanning_Velocity[0];//3
@@ -210,8 +206,8 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
          msg->linear.x = 0;
          msg->linear.y = 0;
         }else{
-        msg->linear.x = VTdis*sin(alpha*deg2rad);
-        msg->linear.y = -VTdis*cos(alpha*deg2rad);
+        msg->linear.x = VTdis*cos(alpha*deg2rad);
+        msg->linear.y = VTdis*sin(alpha*deg2rad);
         }
         msg->angular.z = Tangle;
 }
@@ -255,7 +251,6 @@ void Strategy_nodeHandle::pubGrpSpeed(){
         }
     }else if(IsSimulator==false){
        pubSpeed(&robot_speed_pub,global_env->home[global_env->RobotNumber].v_x,global_env->home[global_env->RobotNumber].v_y,global_env->home[global_env->RobotNumber].v_yaw,global_env->home[global_env->RobotNumber].rotation);
-       
     }
 }
 //###################################################//
@@ -264,7 +259,7 @@ void Strategy_nodeHandle::pubGrpSpeed(){
 //                                                   //
 //###################################################//
 void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
-     if(n->getParam("/FIRA/blackItem/angle",Blackangle)){
+     if(n->getParam("/FIRA/HSV/black/angle",Blackangle)){
 //     std::cout << "param Blackangle=" << Blackangle <<std::endl;
     }
      if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){
@@ -284,5 +279,9 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
         // global_env->issimulator = IsSimulator;
         // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
+    n->getParam("/FIRA/SCAN/Dont_Search_Angle_1",Scan[0]);
+    n->getParam("/FIRA/SCAN/Dont_Search_Angle_2",Scan[1]);
+    n->getParam("/FIRA/SCAN/Dont_Search_Angle_3",Scan[2]);
+    n->getParam("/FIRA/SCAN/Angle_range_1",Scan[3]);
+    n->getParam("/FIRA/SCAN/Angle_range_2_3",Scan[4]);
 }
-
