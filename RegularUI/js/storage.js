@@ -26,16 +26,21 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[11].value = 0;
         //console.log(document.getElementsByName("SPlanningVelocityElement1")[11].value)
     }
-    if (localStorage.getItem("GeneralDistanceSetStr1") != null) {
-        obj = document.getElementsByName("DistanceSettingsElement1");
+    if (localStorage.getItem("GeneralPathPlanStr1") != null) {
+        obj = document.getElementsByName("PathPlanElement1");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("GeneralDistanceSetStr1"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("GeneralPathPlanStr1"))[i];
         }
     } else {
-        obj = document.getElementsByName("DistanceSettingsElement1");
+        obj = document.getElementsByName("PathPlanElement1");
         obj[0].value = 0;
         obj[1].value = 0;
         obj[2].value = 0;
+        obj[3].value = 0;
+        obj[4].value = 0;
+        obj[5].value = 0;
+        obj[6].value = 0;
+        obj[7].value = 0;
     }
 
     //Robot2
@@ -59,16 +64,21 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[10].value = 0;
         obj[11].value = 0;
     }
-    if (localStorage.getItem("GeneralDistanceSetStr2") != null) {
-        obj = document.getElementsByName("DistanceSettingsElement2");
+    if (localStorage.getItem("GeneralPathPlanStr2") != null) {
+        obj = document.getElementsByName("PathPlanElement2");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("GeneralDistanceSetStr2"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("GeneralPathPlanStr2"))[i];
         }
     } else {
-        obj = document.getElementsByName("DistanceSettingsElement2");
+        obj = document.getElementsByName("PathPlanElement2");
         obj[0].value = 0;
         obj[1].value = 0;
         obj[2].value = 0;
+        obj[3].value = 0;
+        obj[4].value = 0;
+        obj[5].value = 0;
+        obj[6].value = 0;
+        obj[7].value = 0;
     }
 
     //Robot3
@@ -92,16 +102,21 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[10].value = 0;
         obj[11].value = 0;
     }
-    if (localStorage.getItem("GeneralDistanceSetStr3") != null) {
-        obj = document.getElementsByName("DistanceSettingsElement3");
+    if (localStorage.getItem("GeneralPathPlanStr3") != null) {
+        obj = document.getElementsByName("PathPlanElement3");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("GeneralDistanceSetStr3"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("GeneralPathPlanStr3"))[i];
         }
     } else {
-        obj = document.getElementsByName("DistanceSettingsElement3");
+        obj = document.getElementsByName("PathPlanElement3");
         obj[0].value = 0;
         obj[1].value = 0;
         obj[2].value = 0;
+        obj[3].value = 0;
+        obj[4].value = 0;
+        obj[5].value = 0;
+        obj[6].value = 0;
+        obj[7].value = 0;
     }
 
     // PathplanStorage

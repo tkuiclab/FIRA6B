@@ -57,78 +57,79 @@ var SPlanningVelocityBox1 = new ROSLIB.Param({
     ros: ros,
     name: '/FIRA/SPlanning_Velocity'
 });
-var DistanceSettingsBox1 = new ROSLIB.Param({
+var PathPlanBox1 = new ROSLIB.Param({
     ros: ros,
-    name: '/FIRA/Distance_Settings'
+    name: '/FIRA/General_PathPlan'
 });
 
 var SPlanningVelocityBox2 = new ROSLIB.Param({
     ros: ros2,
     name: '/FIRA/SPlanning_Velocity'
 });
-var DistanceSettingsBox2 = new ROSLIB.Param({
+var PathPlanBox2 = new ROSLIB.Param({
     ros: ros2,
-    name: '/FIRA/Distance_Settings'
+    name: '/FIRA/General_PathPlan'
 });
 
 var SPlanningVelocityBox3 = new ROSLIB.Param({
     ros: ros3,
     name: '/FIRA/SPlanning_Velocity'
 });
-var DistanceSettingsBox3 = new ROSLIB.Param({
+var PathPlanBox3 = new ROSLIB.Param({
     ros: ros3,
-    name: '/FIRA/Distance_Settings'
+    name: '/FIRA/General_PathPlan'
 });
 
 function GetGeneralValue() {
 
     var SVBox1 = [];
-    var DSBox1 = [];
+    var PPBox1 = [];
     var SVBox2 = [];
-    var DSBox2 = [];
+    var PPBox2 = [];
     var SVBox3 = [];
-    var DSBox3 = [];
+    var PPBox3 = [];
 
     $("[name=SPlanningVelocityElement1]").each(function() {
         SVBox1.push(parseFloat($(this).val()));
     });
-    $("[name=DistanceSettingsElement1]").each(function() {
-        DSBox1.push(parseFloat($(this).val()));
+    $("[name=PathPlanElement1]").each(function() {
+        PPBox1.push(parseFloat($(this).val()));
     });
     localStorage.setItem("GeneralSPlanStr1", JSON.stringify(SVBox1));
-    localStorage.setItem("GeneralDistanceSetStr1", JSON.stringify(DSBox1));
+    localStorage.setItem("GeneralPathPlanStr1", JSON.stringify(PPBox1));
 
     $("[name=SPlanningVelocityElement2]").each(function() {
         SVBox2.push(parseFloat($(this).val()));
     });
-    $("[name=DistanceSettingsElement2]").each(function() {
-        DSBox2.push(parseFloat($(this).val()));
+    $("[name=PathPlanElement2]").each(function() {
+        PPBox2.push(parseFloat($(this).val()));
     });
     localStorage.setItem("GeneralSPlanStr2", JSON.stringify(SVBox2));
-    localStorage.setItem("GeneralDistanceSetStr2", JSON.stringify(DSBox2));
+    localStorage.setItem("GeneralPathPlanStr2", JSON.stringify(PPBox2));
 
     $("[name=SPlanningVelocityElement3]").each(function() {
         SVBox3.push(parseFloat($(this).val()));
     });
-    $("[name=DistanceSettingsElement3]").each(function() {
-        DSBox3.push(parseFloat($(this).val()));
+    $("[name=PathPlanElement3]").each(function() {
+        PPBox3.push(parseFloat($(this).val()));
     });
     localStorage.setItem("GeneralSPlanStr3", JSON.stringify(SVBox3));
-    localStorage.setItem("GeneralDistanceSetStr3", JSON.stringify(DSBox3));
+    localStorage.setItem("GeneralPathPlanStr3", JSON.stringify(PPBox3));
     //console.log(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3);
-    SetParamGeneral(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3);
+    SetParamGeneral(SVBox1, PPBox1, SVBox2, PPBox2, SVBox3, PPBox3);
 }
 
-function SetParamGeneral(SVBox1, DSBox1, SVBox2, DSBox2, SVBox3, DSBox3) {
+function SetParamGeneral(SVBox1, PPBox1, SVBox2, PPBox2, SVBox3, PPBox3) {
     SPlanningVelocityBox1.set(SVBox1);
-    DistanceSettingsBox1.set(DSBox1);
+    PathPlanBox1.set(PPBox1);
 
     SPlanningVelocityBox2.set(SVBox2);
-    DistanceSettingsBox2.set(DSBox2);
+    PathPlanBox2.set(PPBox2);
 
     SPlanningVelocityBox3.set(SVBox3);
-    DistanceSettingsBox3.set(DSBox3);
-    console.log(SVBox1, SVBox2, SVBox3);
+    PathPlanBox3.set(PPBox3);
+    //console.log(SVBox1, SVBox2, SVBox3);
+    //console.log(PPBox1, PPBox2, PPBox3);
     up();
     PublishTopicSaveParam();
 }
@@ -142,10 +143,10 @@ SPlanningVelocityBox1.get(function(value) {
         }
     }
 });
-DistanceSettingsBox1.get(function(value) {
+PathPlanBox1.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
-        obj = document.getElementsByName("DistanceSettingsElement1");
+        obj = document.getElementsByName("PathPlanElement1");
         for (var i = 0; i < obj.length; i++) {
             obj[i].value = value[i];
         }
@@ -161,10 +162,10 @@ SPlanningVelocityBox2.get(function(value) {
         }
     }
 });
-DistanceSettingsBox2.get(function(value) {
+PathPlanBox2.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
-        obj = document.getElementsByName("DistanceSettingsElement2");
+        obj = document.getElementsByName("PathPlanElement2");
         for (var i = 0; i < obj.length; i++) {
             obj[i].value = value[i];
         }
@@ -180,10 +181,10 @@ SPlanningVelocityBox3.get(function(value) {
         }
     }
 });
-DistanceSettingsBox3.get(function(value) {
+PathPlanBox3.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
-        obj = document.getElementsByName("DistanceSettingsElement3");
+        obj = document.getElementsByName("PathPlanElement3");
         for (var i = 0; i < obj.length; i++) {
             obj[i].value = value[i];
         }
