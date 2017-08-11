@@ -18,13 +18,16 @@ private:
     bool EscapeCornerKick[3] = {false,false,false};
     std::vector<double> Attack_Strategy;
     std::vector<double> Chase_Strategy;
-    std::vector<double> Corner_Kick;
-    std::vector<double> Side_Speed_UP;
-    std::vector<double> TypeS_Attack;
     std::vector<double> TypeU_Chase;
+    std::vector<double> TypeS_Attack;
+    std::vector<double> Side_Speed_Up;
     std::vector<double> Zone_Attack;
+    std::vector<double> Corner_Kick;
+    std::vector<int> Strategy_Selection;
+    std::vector<int> Support_Strategy;
     std::vector<double> Dorsad_Attack;
-    std::vector<int> StrategySelection;
+    std::vector<double>PrefixSetting;
+
     // ========== test change roleAry[ i ] to escape from cornerkick and try to reset the state  end ==========
     void ActionChase();
     //start---simulator---
@@ -82,6 +85,14 @@ public:
     void behavior_ThrowIn(int);
     void behavior_CornerKick(int);
     void behavior_AvoidBarrier(int);
+    void behavior_Test1(int);
+    void behavior_Test2(int);
+    void behavior_Test3(int);
+    void behavior_NewSupport(int);
+    void behavior_Kick(int);
+    void behavior_FreeKick(int);
+//----------------------------------------------
+    void behavior_Escape_Attack(int);
 //--------------------------------------------------
     void readroleAry(int, int);
     int* getactionAry();

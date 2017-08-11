@@ -4,7 +4,7 @@
 
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Geometry>
-
+#include <vector>
 using namespace Eigen;
 
 const long PLAYERS_PER_SIDE = 3;
@@ -32,6 +32,14 @@ const long PLAYERS_PER_SIDE = 3;
 #define Role_CornerKick         6
 #define Role_AvoidBarrier       7
 
+#define Role_Test1              8
+#define Role_Test2              9
+#define Role_Test3             10
+#define Role_NewSupport        11
+#define Role_Kick              12
+#define Role_FreeKick          13
+#define Role_Escape_Attack     14
+
 #define action_Halt             0
 #define action_Goalkeeper       1
 #define action_Attack           2
@@ -52,6 +60,41 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_Dorsad_Attack   17
 #define action_Shoot_Attack    18
 #define action_Straight_Chase  19
+#define action_PenaltyKick     20
+#define action_ThrowIn         21
+#define action_Support_CatchBallState   22
+#define action_Support_LostBallState    23
+#define action_Support_Test1            24
+#define action_Support_Test2            25
+#define action_Support_Test3            26
+#define action_Support_Positioning      27
+#define action_MovetoBlueGate           28
+#define action_MovetoYellowGate         29
+#define action_LeaveBall                30
+#define action_LeaveLimitArea           31
+#define action_LeftRightMove            32
+#define action_inv_LeftRightMove        33
+#define action_Support_LostInternet     34
+#define action_MovetoGoal               35
+#define action_MovetoOpGoal             36
+#define action_MovetoGoalEdge1          37
+#define action_MovetoGoalEdge2          38
+#define action_MovetoOpGoalEdge1        39
+#define action_MovetoOpGoalEdge2        40
+#define action_Stop                     41
+#define action_Block                    42
+#define action_Kick                     43
+#define action_FreeKick                 44
+#define action_Escape_Attack            45
+#define action_Straight_Attack          46
+#define action_Forward                  47
+#define action_Backward                 48
+#define action_Left                     49
+#define action_LeftForward              50
+#define action_LeftBackward             51
+#define action_Right                    52
+#define action_RightForward             53
+#define action_RightBackward            54
 
 #define state_Init              0
 #define state_Chase             1
@@ -76,12 +119,19 @@ typedef struct{
 }Vector3D;
 
 typedef struct{
+    double max, min;
+}Two_point;
+
+typedef struct{
     Vector3D pos;
     Vector3D ball;
     Vector3D goal;
+    Vector3D goal_large_area;
     Vector3D op_goal;
+    Vector3D op_goal_large_area;
     double rotation;
     double v_x,v_y,v_yaw;
+    Two_point goal_edge, op_goal_edge;
     //double velocityLeft, velocityRight;
 }Robot;
 
@@ -106,10 +156,26 @@ typedef struct
     //BlackObject
     int blackangle[20];
     int mindis[20];
+    //apf
+    std::vector<int> global_angle_end;
+    std::vector<int> global_angle_start;
+    std::vector<int> global_apf_dis;
+
+    int blue_side_goal_data[3];//blue_dis,blue_ang1,blue_ang2;
+    int yellow_side_goal_data[3];//yellow_dis,yellow_ang1,yellow_ang2;
     //long whosBall;
     //void *userData;
     Goal yellow, blue;
     int SaveParam;
+    int AnotherGetBall;
+    double AnotherBallDistance;
+    int AnotherRobotNumber;
+    double AnotherGoalDistance;
+    int R1OrderR2;
+    double Support_Obstacle_angle;
+    double Support_Obstacle_distance;
+    double Support_WhiteLine_distance;
+    int isteamstrategy;
 } Environment;
 //static Environment global_env;
 
@@ -118,7 +184,6 @@ typedef struct
     int begin;
     int end;
 }Range;
-
 
 
 #define pi 3.14159
@@ -130,6 +195,8 @@ typedef struct
 #define half_robot 0.12
 
 #define SIGN(A) ( (A)>=0?1:-1)
-
+#define speed_constant 2
+#define speed_limit 0.01
+#define yaw_speed_limit 1
 
 #endif

@@ -19,7 +19,6 @@ private:
     int mTeam;
     //end  ---simulator---
 
-
     //start---utility---
     double head2Obj(Vector3D robot,Vector3D dst,double robotRot);
     double vecAngle(Vector2d a,Vector2d b);
@@ -69,6 +68,42 @@ public:
     void strategy_KO5_Chase(int);
     void strategy_KO5_Attack(int);
     void strategy_SideSpeedUp(int);
+    void strategy_Support_CatchBallState(int);
+    void strategy_Support_LostBallState(int);
+    void strategy_Support_Positioning(int);
+    void strategy_Support_Test1(int);
+    void strategy_Support_Test2(int);
+    void strategy_Support_Test3(int);
+    void strategy_MovetoYellowGate(int);
+    void strategy_MovetoBlueGate(int);
+    void strategy_LeaveBall(int);
+    void strategy_LeaveLimitArea(int);
+    void strategy_LeftRightMove(int);
+    void strategy_invLeftRightMove(int);
+    void strategy_Support_LostInternet(int);
+    void strategy_MovetoGoal(int);
+    void strategy_MovetoOpGoal(int);
+    void strategy_MovetoGoalEdge1(int);
+    void strategy_MovetoGoalEdge2(int);
+    void strategy_MovetoOpGoalEdge1(int);
+    void strategy_MovetoOpGoalEdge2(int);
+    void strategy_Stop(int);
+    void strategy_Block(int);
+    void strategy_Kick(int);
+    void strategy_FreeKick(int);
+    void strategy_Escape_Attack(int);
+    void strategy_Straight_Attack(int);
+    void Movement_Forward(int);
+    void Movement_Backward(int);
+    void Movement_Left(int);
+    void Movement_LeftForward(int);
+    void Movement_LeftBackward(int);
+    void Movement_Right(int);
+    void Movement_RightForward(int);
+    void Movement_RightBackward(int);
+
+
+
 //--------------------------------------------------
 
 //--------------role case-------------------
@@ -116,9 +151,11 @@ public:
     std::vector<double> Zone_Attack;
     std::vector<double> TypeS_Attack;
     std::vector<double> TypeU_Attack;
+    std::vector<double> Side_Speed_Up;
     std::vector<double> Dorsad_Attack;
     std::vector<double> Corner_Kick;
-    std::vector<double> SideSpeedUp;
+    std::vector<double> Penalty_Kick;
+    std::vector<int> Strategy_Selection;
 
 
     // Robot shoot signal publisher

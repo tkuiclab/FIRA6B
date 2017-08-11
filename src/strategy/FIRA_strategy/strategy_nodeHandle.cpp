@@ -28,6 +28,8 @@ void Strategy_nodeHandle::ros_comms_init(){
 
     GameState = n->subscribe<std_msgs::Int32>(GameState_Topic,1,&Strategy_nodeHandle::subGameState,this);
     TeamColor = n->subscribe<std_msgs::String>(TeamColor_Topic,1,&Strategy_nodeHandle::subTeamColor,this);
+    IsTeamStrategy = n->subscribe<std_msgs::Int32>(IsTeamStrategy_Topic,1000,&Strategy_nodeHandle::subIsTeamStrategy,this);
+
 
     //robot_role
     std::cout << "Strategy_nodeHandle::ros_comms_init() say opponent = " << opponent << std::endl;
@@ -61,9 +63,11 @@ void Strategy_nodeHandle::ros_comms_init(){
     robotOpt_2_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::robotOpt_2_pos_fun,this);
     robotOpt_3_pos_sub = n->subscribe<gazebo_msgs::ModelStates>(ModelState_Topic_Name,1,&Strategy_nodeHandle::robotOpt_3_pos_fun,this);
     //contact image
-    Vision = n->subscribe<vision::Object>(Vision_Topic,1,&Strategy_nodeHandle::subVision,this);
-    BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1,&Strategy_nodeHandle::subBlackObject,this);
-    SAVEPARAM = n->subscribe<std_msgs::Int32>(SAVEPARAM_TOPIC,1,&Strategy_nodeHandle::getSaveParam,this);
+    Vision = n->subscribe<vision::Object>(Vision_Topic,1000,&Strategy_nodeHandle::subVision,this);
+    BlackObject = n->subscribe<std_msgs::Int32MultiArray>(BlackObject_Topic,1000,&Strategy_nodeHandle::subBlackObject,this);
+    WhiteObject = n->subscribe<std_msgs::Int32MultiArray>(WhiteObject_Topic,1000,&Strategy_nodeHandle::subWhiteObject,this);
+    Vision_Two_point = n->subscribe<vision::Two_point>(Vision_Two_point_Topic,1000,&Strategy_nodeHandle::subVision_Two_point,this);
+    SAVEPARAM = n->subscribe<std_msgs::Int32>(SAVEPARAM_TOPIC,1000,&Strategy_nodeHandle::getSaveParam,this);
     IsSimulator = false;
 }
 
@@ -181,6 +185,33 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
     double Tangle_min = SPlanning_Velocity[5];//3
     double angle_min = SPlanning_Velocity[7];
     double Tangle;
+    if(roleAry[global_env->RobotNumber]==11||roleAry[global_env->RobotNumber]==3){// if robot is support or Newsupport, v_min= SupportVTmin;
+        VTdis_min = SPlanning_Velocity[8];
+        Tangle_min = SPlanning_Velocity[9];
+        if(VTdis_min>VTdis_max){
+            VTdis_min=0;
+        }
+        if(Tangle_min>Tangle_max){
+            Tangle_min=0;
+        }
+    }
+//    printf("roleAry[global_env->RobotNumber]=%d\n",roleAry[global_env->RobotNumber]);
+//    printf("global_env->isteamstrategy=%d\n",global_env->isteamstrategy);
+//    printf("global_env->AnotherBallDistance=%f\n",global_env->AnotherBallDistance);
+//    printf("global_env->home[global_env->RobotNumber].ball.distance=%f\n",global_env->home[global_env->RobotNumber].ball.distance);
+    if(roleAry[global_env->RobotNumber]==Role_Attack && global_env->isteamstrategy==1){//if is attacker and teamstrategy
+        if((global_env->AnotherBallDistance<global_env->home[global_env->RobotNumber].ball.distance)&&(global_env->AnotherBallDistance!=0)){
+            VTdis_max = SPlanning_Velocity[2]/2;
+            VTdis_min = SPlanning_Velocity[3]/2;
+            printf("slow down=%f\n",global_env->AnotherBallDistance);
+        }else{
+            VTdis_max = SPlanning_Velocity[2];
+            VTdis_min = SPlanning_Velocity[3];
+        }
+    }else{
+        VTdis_max = SPlanning_Velocity[2];
+        VTdis_min = SPlanning_Velocity[3];
+    }
 ////Transfer vector to [0,100]
     if(Vdis==0)
         IsVectorZero=1;
@@ -202,14 +233,14 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
 //// [-100,100]
     if(angle<0)
         Tangle = -Tangle;
-        if(IsVectorZero){
-         msg->linear.x = 0;
-         msg->linear.y = 0;
-        }else{
-        msg->linear.x = VTdis*cos(alpha*deg2rad);
-        msg->linear.y = VTdis*sin(alpha*deg2rad);
-        }
-        msg->angular.z = Tangle;
+    if(IsVectorZero){
+     msg->linear.x = 0;
+     msg->linear.y = 0;
+    }else{
+    msg->linear.x = VTdis*cos(alpha*deg2rad);
+    msg->linear.y = VTdis*sin(alpha*deg2rad);
+    }
+    msg->angular.z = Tangle;
 }
 //###################################################//
 //                                                   //
@@ -217,7 +248,7 @@ void Strategy_nodeHandle::velocity_S_planning(geometry_msgs::Twist *msg){
 //                                                   //
 //###################################################//
 void Strategy_nodeHandle::pubGrpSpeed(){
-    
+
     
     if(IsSimulator==true){
         ////--------------------speed test----------------
@@ -259,11 +290,22 @@ void Strategy_nodeHandle::pubGrpSpeed(){
 //                                                   //
 //###################################################//
 void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
-     if(n->getParam("/FIRA/HSV/black/angle",Blackangle)){
+    if(n->getParam("/FIRA/HSV/black/angle",Blackangle)){
 //     std::cout << "param Blackangle=" << Blackangle <<std::endl;
+    }
+    if(n->getParam("/FIRA/HSV/white/angle",Whiteangle)){
+//     std::cout << "param Whiteangle=" << Whiteangle <<std::endl;
     }
      if(n->getParam("/FIRA/RobotNumber",global_env->RobotNumber)){
 //     std::cout << "param RobotNumber=" << global_env->RobotNumber<<std::endl;
+         std::string another_robot_info_topic_name;
+         if(global_env->RobotNumber==1){
+             another_robot_info_topic_name="r3_info";
+         }else if(global_env->RobotNumber==2){
+             another_robot_info_topic_name="r2_info";
+         }
+         another_robot_info_sub = n->subscribe<std_msgs::Float32MultiArray>(another_robot_info_topic_name,1000,&Strategy_nodeHandle::another_robot_info,this);
+
     }
      if(n->getParam("/FIRA/SPlanning_Velocity", SPlanning_Velocity)){
     //     for(int i=0;i<8;i++)
@@ -277,7 +319,43 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
     }
     if(n->getParam("/FIRA/IsSimulator",IsSimulator)){
         // global_env->issimulator = IsSimulator;
-        // std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
+//         std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
+    }
+    if(n->getParam("/StrategySelection", Strategy_Selection)){
+        int chaseCase = Strategy_Selection[0];
+        int SchaseCase = Strategy_Selection[1];
+        int attackCase = Strategy_Selection[2];
+        int SattackCase = Strategy_Selection[3];
+        int DattackCase = Strategy_Selection[4];
+        int ShootCase = Strategy_Selection[5];
+        int EscapeCase = Strategy_Selection[6];
+        if(chaseCase){
+            printf("Attacker chaseCase\n");
+        }else if(SchaseCase){
+            printf("Attacker SchaseCase\n");
+        }
+
+        if(attackCase){
+            printf("Attacker attackCase\n");
+        }else if(SattackCase){
+            printf("Attacker SattackCase\n");
+        }else if(DattackCase){
+            printf("Attacker DattackCase\n");
+        }else if(ShootCase){
+            printf("Attacker ShootCase\n");
+        }else if(EscapeCase){
+            printf("Attacker EscapeCase\n");
+        }
+    }
+    if(n->getParam("/FIRA_Behavior/Support_Strategy", Support_Strategy)){
+        switch(Support_Strategy[0]){
+            case 1:
+                printf("Support AutoCase\n");
+            break;
+            case 2:
+                printf("Support BlockCase\n");
+            break;
+        }
     }
     n->getParam("/FIRA/SCAN/Dont_Search_Angle_1",Scan[0]);
     n->getParam("/FIRA/SCAN/Dont_Search_Angle_2",Scan[1]);
