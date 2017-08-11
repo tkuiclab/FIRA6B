@@ -442,6 +442,10 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
             printf("op_distance_dr=%f\n",op_distance_dr);
             actionAry[robotIndex] = action_LeaveLimitArea;
         }
+        double distance_br = env.home[robotIndex].ball.distance;
+        if(distance_br>=9.99){
+            actionAry[robotIndex] = action_Stop;
+        }
 }
 void FIRA_behavior_class::behavior_Support(int robotIndex){
     int r_number=robotIndex;
@@ -803,6 +807,9 @@ void FIRA_behavior_class::behavior_NewSupport(int robotIndex){
                 printf("left right defend ball state\n");
             }
             break;
+    }
+    if(distance_br>=9.99){
+        actionAry[robotIndex] = action_Stop;
     }
     //printf("XXXXXXCurrent_time-Begin_time=%f\n",fabs(Current_time-Begin_time));
 
