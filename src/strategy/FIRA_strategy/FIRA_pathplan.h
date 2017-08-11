@@ -156,6 +156,7 @@ public:
     std::vector<double> Corner_Kick;
     std::vector<double> Penalty_Kick;
     std::vector<int> Strategy_Selection;
+    std::vector<double> General_PathPlan;
 
 
     // Robot shoot signal publisher
