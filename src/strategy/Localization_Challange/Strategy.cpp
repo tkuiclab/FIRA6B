@@ -197,7 +197,7 @@ void Strategy::StrategyLocalization2()
     double accelerate = 1;
     double slow_factor = 1;
     static int IMU_state = 0;
-    double compensation_distance = 0.1;
+    double compensation_distance = 0.05;
     double compensation_angle = ((int)absolute_front + 180) % 360;
     double compensation_x = compensation_distance * cos(compensation_angle * DEG2RAD);
     double compensation_y = compensation_distance * sin(compensation_angle * DEG2RAD);
@@ -264,8 +264,8 @@ void Strategy::Forward(RobotData &Robot, double &v_x, double &v_y, double &v_yaw
 {
     _Last_state = _LocationState;
     flag = FALSE;
-    v_x = (_Target.TargetPoint[_CurrentTarget].x + compensation_x) - Robot.pos.x;
-    v_y = (_Target.TargetPoint[_CurrentTarget].y + compensation_y) - Robot.pos.y;
+    v_x = (_Target.TargetPoint[_CurrentTarget].x ) - Robot.pos.x;
+    v_y = (_Target.TargetPoint[_CurrentTarget].y ) - Robot.pos.y;
     double v_x_temp, v_y_temp;
     //    <<<<<<<  HEAD   origin code in 2017.8.8
     // v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
@@ -285,8 +285,6 @@ void Strategy::Forward(RobotData &Robot, double &v_x, double &v_y, double &v_yaw
     v_y = v_y_temp;
     v_yaw = atan2(_Target.TargetPoint[_CurrentTarget].y + compensation_y - Robot.pos.y, _Target.TargetPoint[_CurrentTarget].x + compensation_x - Robot.pos.x) * RAD2DEG - absolute_front;
     Normalization(v_yaw);
-    if (fabs(v_yaw) < 3)
-        v_yaw = 0;
     if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
     {
         if (_CurrentTarget == _Target.size)
