@@ -184,7 +184,7 @@ void FIRA_teamStrategy_class::role_GoalKick(){
     ros::Time current = ros::Time::now();
     double start_time = (double)(start.sec+(double)start.nsec/1000000000);
     double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-    double const int_calculate_time = 1;
+    double const int_calculate_time = 2.5;
 
     if(Goalkeeper_timer_reset == 1){
         start.sec = current.sec;

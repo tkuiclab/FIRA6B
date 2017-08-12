@@ -104,6 +104,10 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
             case action_Goalkeeper_goalkick:
                 strategy_Goalkeeper_goalkick(robotIndex);
                 break;
+            case action_Goalkeeper_shootblock:
+                strategy_Goalkeeper_shootblock(robotIndex);
+            break;
+
             case action_Attack:
                 strategy_Attack(robotIndex);
                 break;
@@ -170,11 +174,11 @@ void FIRA_pathplan_class::strategy_Goalkeeper_init(int r_number){
         opgoal_angle_reverse = 180 + opgoal_angle;
     }    
 
-    if(opgoal_angle == 0 && opgoal_dis == 0){
+    if(opgoal_dis == 0){
         //no teamcolor
         env.home[r_number].v_yaw = 0;
     }else{
-        env.home[r_number].v_yaw = opgoal_angle_reverse;
+        env.home[r_number].v_yaw = 5 * (opgoal_angle_reverse>0 ? 1:-1);
     }
         env.home[r_number].v_x = 0;
         env.home[r_number].v_y = 0;
@@ -429,8 +433,8 @@ void FIRA_pathplan_class::strategy_Goalkeeper_goalkick(int r_number){
     int rotAngle =0;
 
     if(opgoal_dis < 0.8){
-   	x = 0.5 * sin(ball_angle * deg2rad);
-    	y = 0.5 * cos(ball_angle * deg2rad);
+   	    x = 0.8 * sin(ball_angle * deg2rad);
+    	y = 0.8 * cos(ball_angle * deg2rad);
         direction = M;      
     }else if(fabs(opgoal_left - opgoal_right) < 0.45){
     	x = 0;
@@ -1531,47 +1535,10 @@ void FIRA_pathplan_class::loadParam(ros::NodeHandle *n){
 //           std::cout<< "param SideSpeedUp["<< i << "]=" << SideSpeedUp[i] << std::endl;
 //   std::cout << "====================================" << std::endl;
    }
-//    std::string ns = "/FIRA/R1/Strategy/Pathplan/";
 
-//    if(n->getParam("/FIRA/TeamColor",teamColor)){
-//        std::cout << "param teamColor=" << teamColor <<std::endl;
-//    }
-//    if(n->getParam(ns + "beta_const",beta_const)){
-//        std::cout << "beta_const=" << beta_const <<std::endl;
-//    }
-//    if(n->getParam(ns + "long_rush_alpha",long_rush_alpha)){
-//        std::cout << "long_rush_alpha=" << long_rush_alpha <<std::endl;
-//    }
-//    if(n->getParam(ns + "long_rush_speed_const",long_rush_speed_const)){
-//        std::cout << "long_rush_speed_const=" << long_rush_speed_const <<std::endl;
-//    }
-//    if(n->getParam(ns + "long_rush_dis_br",long_rush_dis_br)){
-//        std::cout << "long_rush_dis_br=" << long_rush_dis_br <<std::endl;
-//    }
-//    if(n->getParam(ns + "short_rush_dis_dr",short_rush_dis_dr)){
-//        std::cout << "short_rush_dis_dr=" << short_rush_dis_dr <<std::endl;
-//    }
-//    if(n->getParam(ns + "short_rush_alpha",short_rush_alpha)){
-//        std::cout << "short_rush_alpha=" << short_rush_alpha <<std::endl;
-//    }
-//    if(n->getParam(ns + "short_rush_dis_br",short_rush_dis_br)){
-//        std::cout << "short_rush_dis_br=" << short_rush_dis_br <<std::endl;
-//    }
-//    if(n->getParam(ns + "short_rush_speed_const",short_rush_speed_const)){
-//        std::cout << "short_rush_speed_const=" << short_rush_speed_const <<std::endl;
-//    }
-//    if(n->getParam(ns + "close_ball_speed_const",close_ball_speed_const)){
-//        std::cout << "close_ball_speed_const=" << close_ball_speed_const <<std::endl;
-//    }
-//    if(n->getParam(ns + "close_ball_dis_const",close_ball_dis_const)){
-//        std::cout << "close_ball_dis_const=" << close_ball_dis_const <<std::endl;
-//    }
-//    if(n->getParam(ns + "far_ball_speed_const",far_ball_speed_const)){
-//        std::cout << "far_ball_speed_const=" << far_ball_speed_const <<std::endl;
-//    }
-//    if(n->getParam(ns + "head2ball_speed",head2ball_speed)){
-//        std::cout << "head2ball_speed=" << head2ball_speed <<std::endl;
-//    }
+   if(n->getParam("/FIRA/Goalkeeper", Goalkeeper)){
+    
+   }   
 
 
 }

@@ -120,7 +120,7 @@ public:
     std::vector<double> Dorsad_Attack;
     std::vector<double> Corner_Kick;
     std::vector<double> SideSpeedUp;
-
+    std::vector<double> Goalkeeper;
 
     // Robot shoot signal publisher
     int shoot = 0;
