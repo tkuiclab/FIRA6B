@@ -319,7 +319,7 @@ void FIRA_behavior_class::StateGoalkeeperBlock(int r_number){
 
     if(ball_angle == 999){
         state_Goalkeeper = state_Goalkeeper_init;
-    }else if(goalkeeper_move == 1 && ball_dis > 4){
+    }else if(goalkeeper_move == 1 && ball_dis > 5){
         state_Goalkeeper = state_Goalkeeper_shootblock;
     }else if(ball_to_opgoal_dis < param_ball_to_opgoal_dis && opgoal_dis < param_opgoal_dis){
         state_Goalkeeper = state_Goalkeeper_push;
@@ -360,7 +360,7 @@ void FIRA_behavior_class::StateGoalkeeperPush(int r_number){
     // }
     // double position_angle = rad2deg * acos(-((r_opgoal_dis*r_opgoal_dis)-(opgoal_dis*opgoal_dis)-0.25)/opgoal_dis);
 
-    if(goalkeeper_move == 1 && ball_dis > 4){
+    if(goalkeeper_move == 1 && ball_dis > 5){
         state_Goalkeeper = state_Goalkeeper_shootblock;
     }else if( ball_to_opgoal_dis > param_ball_to_opgoal_dis && opgoal_dis > param_opgoal_dis){
         state_Goalkeeper = state_Goalkeeper_block;
