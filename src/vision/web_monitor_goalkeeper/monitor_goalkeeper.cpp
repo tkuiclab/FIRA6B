@@ -1,5 +1,5 @@
 #define PI 3.14159265
-#include "monitor.hpp"
+#include "monitor_goalkeeper.hpp"
 #define FRAME_COLS 659 //width  x695
 #define FRAME_ROWS 493 //height y493
 #define REDITEM 0x01
@@ -187,7 +187,8 @@ void InterfaceProc::imageCb(const sensor_msgs::ImageConstPtr& msg)
     object_msg.ball_ang = Strategy_Angle(Angle_Adjustment(Red_Item.angle));
     object_msg.ball_dis = Omni_distance(Red_Item.distance);
     object_msg.goalkeeper_move = Red_Item.gkm;
-    object_msg.ball_fly = Red_Item.fly; 
+    object_msg.ball_fly = Red_Item.fly;
+   
   } else {
     object_msg.ball_ang = 999;
     object_msg.ball_dis = 999;
@@ -506,7 +507,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
   int find_angle;
   unsigned char B, G, R;
   //object center point
-  if (color == REDITEM){// || color ==  BLUEITEM || color == YELLOWITEM) {
+  if (color == REDITEM || color ==  BLUEITEM || color == YELLOWITEM) {
     angle_ = Angle_Adjustment((obj_.ang_max + obj_.ang_min) / 2);
     angle_range = 0.7 * Angle_Adjustment((obj_.ang_max - obj_.ang_min) / 2);
     if(color == REDITEM && obj_.ang_max - obj_.ang_min >= 2) angle_range = (obj_.ang_max - obj_.ang_min) / 2;
@@ -566,7 +567,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
         }
       }
     }
-  }
+  }/*
   if (color ==  BLUEITEM || color == YELLOWITEM) {
     if(obj_.ang_max - obj_.ang_min > 4){
       find_angle = Angle_Adjustment((obj_.ang_max + obj_.ang_min) / 2);
@@ -581,13 +582,14 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
       obj_.distance = distance;
       obj_.angle = find_angle;
     }
-  }
+  }*/
   if(color == REDITEM){
+//cout<< obj_.dis_max - obj_.dis_min<<endl;
     if(Omni_distance(obj_.distance) < 300 || obj_.dis_max - obj_.dis_min >= 13) obj_.gkm = 1;
     if(Omni_distance(obj_.distance) > 200 && obj_.dis_max - obj_.dis_min >= 18) obj_.fly = 1;
   }
   if(color == YELLOWITEM || color == BLUEITEM){
-    if(Omni_distance(obj_.distance) < 300  && obj_.dis_max - obj_.dis_min <= 50){
+    if(Omni_distance(obj_.distance) < 300 && obj_.dis_max - obj_.dis_min <= 50){
       obj_.x = 0;
       obj_.y = 0;
       obj_.distance = 0;
@@ -599,6 +601,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
   } else {
     obj_.LR = "Right";
   }
+
 //找球門邊界點
   if (color ==  BLUEITEM || color == YELLOWITEM) {
     int right_angle, left_angle;
@@ -625,7 +628,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
           if(obj_.left_dis-7 > temp){
             obj_.left_x = x;
             obj_.left_y = y;
-            obj_.left_dis = temp; 
+            obj_.left_dis = distance; 
           }     
         }
       }
@@ -716,7 +719,6 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
 					find_gap[1][6] = 0;
 					break;
 				}
-
 				if (color_map[R + (G << 8) + (B << 16)] & color) {
 					if(find_gap[1][0] == 0){
 						find_gap[1][0] = x;
@@ -768,7 +770,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
             obj_.fix_y = y;
             obj_.fix_distance = distance;
             obj_.fix_angle = find_angle;
-            break;
+            
           }
         }
         find_angle = Angle_Adjustment(angle_ - angle);
@@ -792,7 +794,6 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
             obj_.fix_y = y;
             obj_.fix_distance = distance;
             obj_.fix_angle = find_angle;
-            break;
           }
         }
       }
@@ -843,10 +844,11 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
       line(frame_, Point(x, y), Point(x, y), Scalar(0, 0, 255), 3);
 
       //attack point
-      x = obj_.fix_x;
-      y = obj_.fix_y;
-      line(frame_, Point(x, y), Point(x, y), Scalar(0, 255, 0), 10);
+      //x = obj_.fix_x;
+      //y = obj_.fix_y;
+      //line(frame_, Point(x, y), Point(x, y), Scalar(0, 255, 0), 10);
 /////////////////////////////////////////////////////////////
+/*
 	int x_,y_;
 	unsigned char B, G, R;
 	if( color == BLUEITEM ||YELLOWITEM){
@@ -854,7 +856,7 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
 		if(obj_.dis_min > 130){start = obj_.dis_min - ((obj_.dis_max - obj_.dis_min) * 0.3);}
 		for (int angle =  obj_.ang_min ; angle <= obj_.ang_max ; angle++) {
 			for (int distance = start; distance <= (start + obj_.dis_max)/2; distance++) {
-				int find_angle = Angle_Adjustment(angle);
+				int find_angle=Angle_Adjustment(angle);
 				if ((find_angle >= Unscaned_Angle[0] && find_angle <= Unscaned_Angle[1]) ||
 				(find_angle >= Unscaned_Angle[2] && find_angle <= Unscaned_Angle[3]) ||
 				(find_angle >= Unscaned_Angle[4] && find_angle <= Unscaned_Angle[5]) ||
@@ -878,7 +880,8 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
 			}
 		}	
 	}
-//////////////////////////////////////////////////////////
+*/
+////////////////////////////////////////////////////////////
     }
   }
 }

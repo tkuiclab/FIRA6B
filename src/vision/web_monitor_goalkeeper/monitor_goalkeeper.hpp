@@ -102,7 +102,6 @@ private:
   long int EndTime;
   std::string vision_path;
 
-
 public:
   InterfaceProc();
   int buttonmsg;
