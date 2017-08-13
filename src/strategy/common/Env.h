@@ -74,8 +74,8 @@ const long PLAYERS_PER_SIDE = 3;
 #define state_Goalkeeper_block 9
 #define state_Goalkeeper_push 10
 #define state_Goalkeeper_goalkick 11
-#define state_Goalkeeper_PenaltyKick 12
-#define state_Goalkeeper_ShootBlock 13
+#define state_Goalkeeper_penaltykick 12
+#define state_Goalkeeper_shootblock 13
 
 
 #define Team_Blue 1
@@ -104,6 +104,7 @@ typedef struct{
     double rotation;
     double v_x,v_y,v_yaw;
     Two_point goal_edge,opgoal_edge;
+    int goalkeeper_move;
     //double velocityLeft, velocityRight;
 }Robot;
 

@@ -357,9 +357,10 @@ private:
             global_env->home[global_env->RobotNumber].goal.angle = msg->blue_ang;
         }
 
-       ball_distance = msg->ball_dis;
-       global_env->home[global_env->RobotNumber].ball.distance = ball_distance/100;
-       global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
+        ball_distance = msg->ball_dis;
+        global_env->home[global_env->RobotNumber].ball.distance = ball_distance/100;
+        global_env->home[global_env->RobotNumber].ball.angle = msg->ball_ang;
+        global_env->home[global_env->RobotNumber].goalkeeper_move = msg->goalkeeper_move;                
     }
 
 /*****/    //for goalkeeper on 5th robot with ros  //front = 45

@@ -7,13 +7,11 @@
 #define BallRadius 0.1055
 #define CarRadius 0.34
 
-#define stop 0
-#define L 1
+#define L 0
+#define M 1
 #define R 2
-#define M 3
-#define max_L 4
-#define max_R 5
-#define max_M 6
+#define stop 3
+#define pullback_M 4
 
 class FIRA_pathplan_class
 {
@@ -29,6 +27,8 @@ private:
     double head2Obj(Vector3D robot,Vector3D dst,double robotRot);
     double vecAngle(Vector2d a,Vector2d b);
     //end---utility---
+
+    double last_ball_angle;
 
 
 public:
@@ -120,7 +120,7 @@ public:
     std::vector<double> Dorsad_Attack;
     std::vector<double> Corner_Kick;
     std::vector<double> SideSpeedUp;
-
+    std::vector<double> Goalkeeper;
 
     // Robot shoot signal publisher
     int shoot = 0;

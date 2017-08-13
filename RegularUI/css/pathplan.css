@@ -3,11 +3,11 @@
 
 /*form*/
 
-.BehaviorDialog {
+.PathplanDialog {
     width: 500px;
 }
 
-.BehaviorContent {
+.PathplanContent {
     position: relative;
     background-color: #FFF;
     -webkit-background-clip: padding-box;
@@ -29,23 +29,10 @@
 
 /*RobotState*/
 
-#BehaviorSettingRobotDiv {
+#PathplanSettingRobotDiv {
     position: absolute;
     top: 2%;
-    left: 40%;
-    width: 120px;
-    height: 60px;
-}
-
-#BehaviorSettingRobotDiv table {
-    width: 100%;
-    height: 100%;
-}
-
-#BehaviorSettingRobotDiv {
-    position: absolute;
-    top: 2%;
-    left: 40%;
+    left: 27%;
     width: 250px;
     height: 60px;
 }
@@ -55,184 +42,184 @@
     height: 100%;
 }
 
-#SetBehaviorButton1 table {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-}
-
-#SetBehaviorButton2 table {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-}
-
-#SetBehaviorButton3 table {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-}
-
-#BehaviorRobot1Button {
+#PathplanRobot1Button {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#BehaviorRobot1Button.ui-state-active {
+#PathplanRobot1Button.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#BehaviorRobot2Button {
+#PathplanRobot2Button {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#BehaviorRobot2Button.ui-state-active {
+#PathplanRobot2Button.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#BehaviorRobot3Button {
+#PathplanRobot3Button {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#BehaviorRobot3Button.ui-state-active {
+#PathplanRobot3Button.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
+}
+
+#PathplanButton1 table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#PathplanButton2 table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#PathplanButton3 table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
 
 
 /*====================================================*/
 
 
-/*StrategyButton*/
+/*PathplanStrategyButton*/
 
 
 /*Robot1*/
 
-#StateChase1 {
+#AttackStrategy1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateChase1.ui-state-active {
+#AttackStrategy1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateAttack1 {
+#ChaseStrategy1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateAttack1.ui-state-active {
+#ChaseStrategy1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateTypeUChase1 {
+#ZoneAttack1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateTypeUChase1.ui-state-active {
+#ZoneAttack1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateTypeSAttack1 {
+#TypeSAttack1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateTypeSAttack1.ui-state-active {
+#TypeSAttack1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateSideSpeedUP1 {
+#PGoalkeeper1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateSideSpeedUP1.ui-state-active {
+#PGoalkeeper1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateZoneAttack1 {
+#SideSpeedUp1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateZoneAttack1.ui-state-active {
+#SideSpeedUp1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateCornerKick1 {
+#DorsadAttack1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateCornerKick1.ui-state-active {
+#DorsadAttack1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StrategySelection1 {
+#CornerKick1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StrategySelection1.ui-state-active {
+#CornerKick1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#SupportStrategy1 {
+#PenaltyKick1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#SupportStrategy1.ui-state-active {
+#PenaltyKick1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -241,118 +228,118 @@
 
 /*Robot2*/
 
-#StateChase2 {
+#AttackStrategy2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateChase2.ui-state-active {
+#AttackStrategy2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateAttack2 {
+#ChaseStrategy2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateAttack2.ui-state-active {
+#ChaseStrategy2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateTypeUChase2 {
+#ZoneAttack2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateTypeUChase2.ui-state-active {
+#ZoneAttack2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateTypeSAttack2 {
+#TypeSAttack2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateTypeSAttack2.ui-state-active {
+#TypeSAttack2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateSideSpeedUP2 {
+#TypeUAttack2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateSideSpeedUP2.ui-state-active {
+#TypeUAttack2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateZoneAttack2 {
+#SideSpeedUp2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateZoneAttack2.ui-state-active {
+#SideSpeedUp2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateCornerKick2 {
+#DorsadAttack2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateCornerKick2.ui-state-active {
+#DorsadAttack2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StrategySelection2 {
+#CornerKick2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StrategySelection2.ui-state-active {
+#CornerKick2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#SupportStrategy2 {
+#PenaltyKick2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#SupportStrategy2.ui-state-active {
+#PenaltyKick2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -361,118 +348,118 @@
 
 /*Robot3*/
 
-#StateChase3 {
+#AttackStrategy3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateChase3.ui-state-active {
+#AttackStrategy3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateAttack3 {
+#ChaseStrategy3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateAttack3.ui-state-active {
+#ChaseStrategy3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateTypeUChase3 {
+#ZoneAttack3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateTypeUChase3.ui-state-active {
+#ZoneAttack3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateTypeSAttack3 {
+#TypeSAttack3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateTypeSAttack3.ui-state-active {
+#TypeSAttack3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateSideSpeedUP3 {
+#TypeUAttack3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateSideSpeedUP3.ui-state-active {
+#TypeUAttack3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateZoneAttack3 {
+#SideSpeedUp3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateZoneAttack3.ui-state-active {
+#SideSpeedUp3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StateCornerKick3 {
+#DorsadAttack3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StateCornerKick3.ui-state-active {
+#DorsadAttack3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#StrategySelection3 {
+#CornerKick3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#StrategySelection3.ui-state-active {
+#CornerKick3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
 }
 
-#SupportStrategy3 {
+#PenaltyKick3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#SupportStrategy3.ui-state-active {
+#PenaltyKick3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -487,117 +474,117 @@
 
 /*Robot1*/
 
-#StateChaseModule1 td {
+#AttackStrategyModule1 td {
     width: 50%;
 }
 
-#StateAttackModule1 td {
+#ChaseStrategyModule1 td {
     width: 50%;
 }
 
-#StateTypeUChaseModule1 td {
+#ZoneAttackModule1 td {
     width: 50%;
 }
 
-#StateTypeSAttackModule1 td {
+#TypeSAttackModule1 td {
     width: 50%;
 }
 
-#StateSideSpeedUPModule1 td {
+#PGoalkeeperModule1 td {
     width: 50%;
 }
 
-#StateZoneAttackModule1 td {
+#SideSpeedUpModule1 td {
     width: 50%;
 }
 
-#StateCornerKickModule1 td {
+#DorsadAttackModule1 td {
     width: 50%;
 }
 
-#StrategySelectionModule1 td {
+#CornerKickModule1 td {
     width: 50%;
 }
 
-#SupportStrategyModule1 td {
+#PenaltyKickModule1 td {
     width: 50%;
 }
 
 
 /*Robot2*/
 
-#StateChaseModule2 td {
+#AttackStrategyModule2 td {
     width: 50%;
 }
 
-#StateAttackModule2 td {
+#ChaseStrategyModule2 td {
     width: 50%;
 }
 
-#StateTypeUChaseModule2 td {
+#ZoneAttackModule2 td {
     width: 50%;
 }
 
-#StateTypeSAttackModule2 td {
+#TypeSAttackModule2 td {
     width: 50%;
 }
 
-#StateSideSpeedUPModule2 td {
+#TypeUAttackModule2 td {
     width: 50%;
 }
 
-#StateZoneAttackModule2 td {
+#SideSpeedUpModule2 td {
     width: 50%;
 }
 
-#StateCornerKickModule2 td {
+#DorsadAttackModule2 td {
     width: 50%;
 }
 
-#StrategySelectionModule2 td {
+#CornerKickModule2 td {
     width: 50%;
 }
 
-#SupportStrategyModule2 td {
+#PenaltyKickModule2 td {
     width: 50%;
 }
 
 
 /*Robot3*/
 
-#StateChaseModule3 td {
+#AttackStrategyModule3 td {
     width: 50%;
 }
 
-#StateAttackModule3 td {
+#ChaseStrategyModule3 td {
     width: 50%;
 }
 
-#StateTypeUChaseModule3 td {
+#ZoneAttackModule3 td {
     width: 50%;
 }
 
-#StateTypeSAttackModule3 td {
+#TypeSAttackModule3 td {
     width: 50%;
 }
 
-#StateSideSpeedUPModule3 td {
+#TypeUAttackModule3 td {
     width: 50%;
 }
 
-#StateZoneAttackModule3 td {
+#SideSpeedUpModule3 td {
     width: 50%;
 }
 
-#StateCornerKickModule3 td {
+#DorsadAttackModule3 td {
     width: 50%;
 }
 
-#StrategySelectionModule3 td {
+#CornerKickModule3 td {
     width: 50%;
 }
 
-#SupportStrategyModule3 td {
+#PenaltyKickModule3 td {
     width: 50%;
 }
 
@@ -610,63 +597,63 @@
 
 /*Robot1*/
 
-#StateChaseModule1 {
+#AttackStrategyModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateAttackModule1 {
+#ChaseStrategyModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateTypeUChaseModule1 {
+#ZoneAttackModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateTypeSAttackModule1 {
+#TypeSAttackModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateSideSpeedUPModule1 {
+#PGoalkeeperModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateZoneAttackModule1 {
+#SideSpeedUpModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateCornerKickModule1 {
+#DorsadAttackModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StrategySelectionModule1 {
+#CornerKickModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#SupportStrategyModule1 {
+#PenaltyKickModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
@@ -676,63 +663,63 @@
 
 /*Robot2*/
 
-#StateChaseModule2 {
+#AttackStrategyModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateAttackModule2 {
+#ChaseStrategyModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateTypeUChaseModule2 {
+#ZoneAttackModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateTypeSAttackModule2 {
+#TypeSAttackModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateSideSpeedUPModule2 {
+#TypeUAttackModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateZoneAttackModule2 {
+#SideSpeedUpModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateCornerKickModule2 {
+#DorsadAttackModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StrategySelectionModule2 {
+#CornerKickModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#SupportStrategyModule2 {
+#PenaltyKickModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
@@ -742,63 +729,63 @@
 
 /*Robot3*/
 
-#StateChaseModule3 {
+#AttackStrategyModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateAttackModule3 {
+#ChaseStrategyModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateTypeUChaseModule3 {
+#ZoneAttackModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateTypeSAttackModule3 {
+#TypeSAttackModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateSideSpeedUPModule3 {
+#TypeUAttackModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateZoneAttackModule3 {
+#SideSpeedUpModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StateCornerKickModule3 {
+#DorsadAttackModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#StrategySelectionModule3 {
+#CornerKickModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
 
-#SupportStrategyModule3 {
+#PenaltyKickModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
@@ -811,111 +798,123 @@
 
 /*form-group*/
 
-#StateChaseModule1.form-group {
+#AttackStrategyModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#StateChaseModule2.form-group {
+#AttackStrategyModule2.form-group {
     background-color: #90ee90;
 }
 
-#StateChaseModule3.form-group {
+#AttackStrategyModule3.form-group {
     background-color: #b0c4de;
 }
 
-#StateAttackModule1.form-group {
+#ChaseStrategyModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#StateAttackModule2.form-group {
+#ChaseStrategyModule2.form-group {
     background-color: #90ee90;
 }
 
-#StateAttackModule3.form-group {
+#ChaseStrategyModule3.form-group {
     background-color: #b0c4de;
 }
 
-#StateTypeUChaseModule1.form-group {
+#ZoneAttackModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#StateTypeUChaseModule2.form-group {
+#ZoneAttackModule2.form-group {
     background-color: #90ee90;
 }
 
-#StateTypeUChaseModule3.form-group {
+#ZoneAttackModule3.form-group {
     background-color: #b0c4de;
 }
 
-#StateTypeSAttackModule1.form-group {
+#TypeSAttackModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#StateTypeSAttackModule2.form-group {
+#TypeSAttackModule2.form-group {
     background-color: #90ee90;
 }
 
-#StateTypeSAttackModule3.form-group {
+#TypeSAttackModule3.form-group {
     background-color: #b0c4de;
 }
 
-#StateSideSpeedUPModule1.form-group {
+#PGoalkeeperkModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#StateSideSpeedUPModule2.form-group {
+#TypeUAttackModule2.form-group {
     background-color: #90ee90;
 }
 
-#StateSideSpeedUPModule3.form-group {
+#TypeUAttackModule3.form-group {
     background-color: #b0c4de;
 }
 
-#StateZoneAttackModule1.form-group {
+#PGoalkeeperModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#StateZoneAttackModule2.form-group {
+#TypeUAttackModule2.form-group {
     background-color: #90ee90;
 }
 
-#StateZoneAttackModule3.form-group {
+#TypeUAttackModule3.form-group {
     background-color: #b0c4de;
 }
 
-#StateCornerKickModule1.form-group {
+#SideSpeedUpModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#StateCornerKickModule2.form-group {
+#SideSpeedUpModule2.form-group {
     background-color: #90ee90;
 }
 
-#StateCornerKickModule3.form-group {
+#SideSpeedUpModule3.form-group {
     background-color: #b0c4de;
 }
 
-#StrategySelectionModule1.form-group {
+#DorsadAttackModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#StrategySelectionModule2.form-group {
+#DorsadAttackModule2.form-group {
     background-color: #90ee90;
 }
 
-#StrategySelectionModule3.form-group {
+#DorsadAttackModule3.form-group {
     background-color: #b0c4de;
 }
 
-#SupportStrategyModule1.form-group {
+#CornerKickModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#SupportStrategyModule2.form-group {
+#CornerKickModule2.form-group {
     background-color: #90ee90;
 }
 
-#SupportStrategyModule3.form-group {
+#CornerKickModule3.form-group {
+    background-color: #b0c4de;
+}
+
+#PenaltyKickModule1.form-group {
+    background-color: #ffb6c1;
+}
+
+#PenaltyKickModule2.form-group {
+    background-color: #90ee90;
+}
+
+#PenaltyKickModule3.form-group {
     background-color: #b0c4de;
 }
 
@@ -925,6 +924,6 @@
 
 /*Save*/
 
-#SetBehaviorExecute {
+#PathplanExecute {
     text-align: center;
 }

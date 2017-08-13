@@ -145,7 +145,7 @@ function StandBy() {
 }
 
 function PublishTopicCmdVel(vec3) {
-    //console.log(vec3);
+    console.log(vec3);
     var twist = new ROSLIB.Message({
         linear: {
             x: vec3.x,
@@ -158,11 +158,9 @@ function PublishTopicCmdVel(vec3) {
             z: vec3.z
         }
     });
-console.log(RemoteState,ChooseRobot);
     if (RemoteState) {
         if (ChooseRobot == 1) {
             cmdVel1.publish(twist);
-            console.log("fuck");
         } else if (ChooseRobot == 2) {
             cmdVel2.publish(twist);
         } else if (ChooseRobot == 3) {
@@ -273,9 +271,9 @@ function SaveVision(i, VBox) {
         VisionBox[i].yellow_ang = VBox[6];
 
         document.getElementsByName('RobotVision' + (i + 1))[0].innerText = VBox[0];
-        document.getElementsByName('RobotVision' + (i + 1))[1].innerText = '( ' + VBox[1] + ',' + VBox[2] + ' )';
-        document.getElementsByName('RobotVision' + (i + 1))[2].innerText = '( ' + VBox[3] + ',' + VBox[4] + ' )';
-        document.getElementsByName('RobotVision' + (i + 1))[3].innerText = '( ' + VBox[5] + ',' + VBox[6] + ' )';
+        document.getElementsByName('RobotVision' + (i + 1))[1].innerText = VBox[1] + ',' + VBox[2] + '°';
+        document.getElementsByName('RobotVision' + (i + 1))[2].innerText = VBox[3] + ',' + VBox[4] + '°';
+        document.getElementsByName('RobotVision' + (i + 1))[3].innerText = VBox[5] + ',' + VBox[6] + '°';
     }
 }
 /*========================================================*/
@@ -410,7 +408,7 @@ function PublishTopicSaveParam() {
         SaveParam2.publish(SaveParam);
     if (CheckIP[2] == 1)
         SaveParam3.publish(SaveParam);
-    console.log(213);
+    console.log("call save");
 }
 /*========================================================*/
 // IsTeamStrategy
@@ -441,5 +439,36 @@ function IsTeamStrategy(check) {
         TeamStrategy2.publish(TeamStrategy);
     if (CheckIP[2] == 1)
         TeamStrategy3.publish(TeamStrategy);
+
+}
+//////////////////////////video/////////////
+var View1 = new ROSLIB.Topic({
+    ros: ros,
+    name: '/vision/view',
+    messageType: '/vision/view'
+});
+var View2 = new ROSLIB.Topic({
+    ros: ros2,
+    name: '/vision/view',
+    messageType: '/vision/view'
+});
+var View3 = new ROSLIB.Topic({
+    ros: ros3,
+    name: '/vision/view',
+    messageType: '/vision/view'
+});
+
+function ViewButton(value) {
+    console.log(value);
+    var ViewCheck = new ROSLIB.Message({
+        checkpoint: parseInt(value)
+    });
+    if (ChooseRobot == 1) {
+        View1.publish(ViewCheck);
+    } else if (ChooseRobot == 2) {
+        View2.publish(ViewCheck);
+    } else if (ChooseRobot == 3) {
+        View3.publish(ViewCheck);
+    }
 
 }

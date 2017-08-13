@@ -118,14 +118,14 @@
     color: #1A1A65;
 }
 
-#DistanceSettings1 {
+#PathPlan1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#DistanceSettings1.ui-state-active {
+#PathPlan1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -147,14 +147,14 @@
     color: #1A1A65;
 }
 
-#DistanceSettings2 {
+#PathPlan2 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#DistanceSettings2.ui-state-active {
+#PathPlan2.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -176,14 +176,14 @@
     color: #1A1A65;
 }
 
-#DistanceSettings3 {
+#PathPlan3 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#DistanceSettings3.ui-state-active {
+#PathPlan3.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -202,7 +202,7 @@
     width: 50%;
 }
 
-#DistanceSettingsModule1 td {
+#PathPlanModule1 td {
     width: 50%;
 }
 
@@ -213,7 +213,7 @@
     width: 50%;
 }
 
-#DistanceSettingsModule2 td {
+#PathPlanModule2 td {
     width: 50%;
 }
 
@@ -224,13 +224,16 @@
     width: 50%;
 }
 
-#DistanceSettingsModule3 td {
+#PathPlanModule3 td {
     width: 50%;
 }
 
 
 /*=====================================================*/
+
+
 /*Module*/
+
 
 /*Robot1*/
 
@@ -241,12 +244,13 @@
     overflow: scroll;
 }
 
-#DistanceSettingsModule1 {
+#PathPlanModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 
 /*Robot2*/
 
@@ -257,12 +261,13 @@
     overflow: scroll;
 }
 
-#DistanceSettingsModule2 {
+#PathPlanModule2 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
 
 /*Robot3*/
 
@@ -273,14 +278,19 @@
     overflow: scroll;
 }
 
-#DistanceSettingsModule3 {
+#PathPlanModule3 {
     height: 200px;
     text-align: left;
     border-style: solid;
     overflow: scroll;
 }
+
+
 /*=====================================================*/
+
+
 /*form-group*/
+
 #SPlanningVelocityModule1.form-group {
     background-color: #ffb6c1;
 }
@@ -293,19 +303,24 @@
     background-color: #b0c4de;
 }
 
-#DistanceSettingsModule1.form-group {
+#PathPlanModule1.form-group {
     background-color: #ffb6c1;
 }
 
-#DistanceSettingsModule2.form-group {
+#PathPlanModule2.form-group {
     background-color: #90ee90;
 }
 
-#DistanceSettingsModule3.form-group {
+#PathPlanModule3.form-group {
     background-color: #b0c4de;
 }
+
+
 /*=====================================================*/
+
+
 /*Save*/
-#SetGeneralExecute{
-  text-align:center;
+
+#SetGeneralExecute {
+    text-align: center;
 }

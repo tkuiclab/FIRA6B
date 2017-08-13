@@ -7,11 +7,11 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj = document.getElementsByName("SPlanningVelocityElement1");
         for (var i = 0; i < obj.length; i++) {
             obj[i].value = JSON.parse(localStorage.getItem("GeneralSPlanStr1"))[i];
-            console.log(213);
+            //console.log(213);
         }
     } else {
         obj = document.getElementsByName("SPlanningVelocityElement1");
-        console.log(obj.length);
+        //console.log(obj.length);
         obj[0].value = 2.2;
         obj[1].value = 0.3;
         obj[2].value = 50.0;
@@ -24,18 +24,23 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[9].value = 1;
         obj[10].value = 0;
         obj[11].value = 0;
-        console.log(document.getElementsByName("SPlanningVelocityElement1")[11].value)
+        //console.log(document.getElementsByName("SPlanningVelocityElement1")[11].value)
     }
-    if (localStorage.getItem("GeneralDistanceSetStr1") != null) {
-        obj = document.getElementsByName("DistanceSettingsElement1");
+    if (localStorage.getItem("GeneralPathPlanStr1") != null) {
+        obj = document.getElementsByName("PathPlanElement1");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("GeneralDistanceSetStr1"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("GeneralPathPlanStr1"))[i];
         }
     } else {
-        obj = document.getElementsByName("DistanceSettingsElement1");
+        obj = document.getElementsByName("PathPlanElement1");
         obj[0].value = 0;
         obj[1].value = 0;
         obj[2].value = 0;
+        obj[3].value = 0;
+        obj[4].value = 0;
+        obj[5].value = 0;
+        obj[6].value = 0;
+        obj[7].value = 0;
     }
 
     //Robot2
@@ -59,16 +64,21 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[10].value = 0;
         obj[11].value = 0;
     }
-    if (localStorage.getItem("GeneralDistanceSetStr2") != null) {
-        obj = document.getElementsByName("DistanceSettingsElement2");
+    if (localStorage.getItem("GeneralPathPlanStr2") != null) {
+        obj = document.getElementsByName("PathPlanElement2");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("GeneralDistanceSetStr2"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("GeneralPathPlanStr2"))[i];
         }
     } else {
-        obj = document.getElementsByName("DistanceSettingsElement2");
+        obj = document.getElementsByName("PathPlanElement2");
         obj[0].value = 0;
         obj[1].value = 0;
         obj[2].value = 0;
+        obj[3].value = 0;
+        obj[4].value = 0;
+        obj[5].value = 0;
+        obj[6].value = 0;
+        obj[7].value = 0;
     }
 
     //Robot3
@@ -92,16 +102,21 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[10].value = 0;
         obj[11].value = 0;
     }
-    if (localStorage.getItem("GeneralDistanceSetStr3") != null) {
-        obj = document.getElementsByName("DistanceSettingsElement3");
+    if (localStorage.getItem("GeneralPathPlanStr3") != null) {
+        obj = document.getElementsByName("PathPlanElement3");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("GeneralDistanceSetStr3"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("GeneralPathPlanStr3"))[i];
         }
     } else {
-        obj = document.getElementsByName("DistanceSettingsElement3");
+        obj = document.getElementsByName("PathPlanElement3");
         obj[0].value = 0;
         obj[1].value = 0;
         obj[2].value = 0;
+        obj[3].value = 0;
+        obj[4].value = 0;
+        obj[5].value = 0;
+        obj[6].value = 0;
+        obj[7].value = 0;
     }
 
     // PathplanStorage
@@ -145,21 +160,17 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[0].value = 2.0;
         obj[1].value = 0.2;
     }
-    if (localStorage.getItem("PathplanTypeUAtkStr1") != null) {
-        obj = document.getElementsByName("TypeUAttackElement1");
+    if (localStorage.getItem("PathplanGoalkeeperStr1") != null) {
+        obj = document.getElementsByName("PGoalkeeperElement1");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("PathplanTypeUAtkStr1"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("PathplanGoalkeeperStr1"))[i];
         }
     } else {
-        obj = document.getElementsByName("TypeUAttackElement1");
-        obj[0].value = 0.8;
-        obj[1].value = 1.0;
-        obj[2].value = -90.0;
-        obj[3].value = 90.0;
-        obj[4].value = 0.6;
-        obj[5].value = 0.3;
-        obj[6].value = 10.0;
-        obj[7].value = 20.0;
+        obj = document.getElementsByName("PGoalkeeperElement1");
+        obj[0].value = 0;
+        obj[1].value = 0;
+        obj[2].value = 0;
+        obj[3].value = 0;
     }
     if (localStorage.getItem("PathplanSideSpeedUpStr1") != null) {
         obj = document.getElementsByName("SideSpeedUpElement1");
@@ -457,15 +468,17 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[1].value = 1.0;
         obj[2].value = 1.0;
     }
-    if (localStorage.getItem("BehaviorStateTypeUChaseStr1") != null) {
-        obj = document.getElementsByName("StateTypeUChaseElement1");
+    if (localStorage.getItem("BehaviorStateGoalkeeperStr1") != null) {
+        obj = document.getElementsByName("GoalkeeperElement1");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("BehaviorStateTypeUChaseStr1"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("BehaviorStateGoalkeeperStr1"))[i];
         }
     } else {
-        obj = document.getElementsByName("StateTypeUChaseElement1");
-        obj[0].value = 30.0;
-        obj[1].value = 0.3;
+        obj = document.getElementsByName("GoalkeeperElement1");
+        obj[0].value = 0;
+        obj[1].value = 0;
+        obj[2].value = 0;
+        obj[3].value = 0;
     }
     if (localStorage.getItem("BehaviorStateTypeSAtkStr1") != null) {
         obj = document.getElementsByName("StateTypeSAttackElement1");
@@ -526,6 +539,24 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[5].checked = false;
         obj[6].checked = false;
         obj[7].checked = false;
+    }
+    if (localStorage.getItem("BehaviorStrategySelectionPrefixStr1") != null) {
+        obj = document.getElementsByName("StrategySelectionPrefixElement1");
+        for (var i = 0; i < 4; i++) {
+            if (JSON.parse(localStorage.getItem("BehaviorStrategySelectionPrefixStr1"))[i] == 1) {
+                obj[i].checked = true;
+            } else {
+                obj[i].checked = false;
+            }
+        }
+        obj[4].value = JSON.parse(localStorage.getItem("BehaviorStrategySelectionPrefixStr1"))[4];
+    } else {
+        obj = document.getElementsByName("StrategySelectionPrefixElement1");
+        obj[0].checked = true;
+        obj[1].checked = false;
+        obj[2].checked = true;
+        obj[3].checked = false;
+        obj[4].checked = 0;
     }
     if (localStorage.getItem("BehaviorSupportStrategyStr1") != null) {
         obj = document.getElementsByName("SupportStrategyElement1");
@@ -630,7 +661,24 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[6].checked = false;
         obj[7].checked = false;
     }
-
+    if (localStorage.getItem("BehaviorStrategySelectionPrefixStr2") != null) {
+        obj = document.getElementsByName("StrategySelectionPrefixElement2");
+        for (var i = 0; i < 4; i++) {
+            if (JSON.parse(localStorage.getItem("BehaviorStrategySelectionPrefixStr2"))[i] == 1) {
+                obj[i].checked = true;
+            } else {
+                obj[i].checked = false;
+            }
+        }
+        obj[4].value = JSON.parse(localStorage.getItem("BehaviorStrategySelectionPrefixStr2"))[4];
+    } else {
+        obj = document.getElementsByName("StrategySelectionPrefixElement2");
+        obj[0].checked = true;
+        obj[1].checked = false;
+        obj[2].checked = true;
+        obj[3].checked = false;
+        obj[4].checked = 0;
+    }
     if (localStorage.getItem("BehaviorSupportStrategyStr2") != null) {
         obj = document.getElementsByName("SupportStrategyElement2");
         obj[parseInt(JSON.parse(localStorage.getItem("BehaviorSupportStrategyStr2"))[0]) - 1].checked = true;
@@ -734,6 +782,24 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[5].checked = false;
         obj[6].checked = false;
         obj[7].checked = false;
+    }
+    if (localStorage.getItem("BehaviorStrategySelectionPrefixStr3") != null) {
+        obj = document.getElementsByName("StrategySelectionPrefixElement3");
+        for (var i = 0; i < 4; i++) {
+            if (JSON.parse(localStorage.getItem("BehaviorStrategySelectionPrefixStr3"))[i] == 1) {
+                obj[i].checked = true;
+            } else {
+                obj[i].checked = false;
+            }
+        }
+        obj[4].value = JSON.parse(localStorage.getItem("BehaviorStrategySelectionPrefixStr3"))[4];
+    } else {
+        obj = document.getElementsByName("StrategySelectionPrefixElement3");
+        obj[0].checked = true;
+        obj[1].checked = false;
+        obj[2].checked = true;
+        obj[3].checked = false;
+        obj[4].checked = 0;
     }
     if (localStorage.getItem("BehaviorSupportStrategyStr3") != null) {
         obj = document.getElementsByName("SupportStrategyElement3");
