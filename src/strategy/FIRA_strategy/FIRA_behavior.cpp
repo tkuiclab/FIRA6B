@@ -391,7 +391,8 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 ROS_INFO("SideSpeedUp state\n");
                 break;
             case state_ZoneAttack:
-                actionAry[robotIndex] = action_Zone_Attack;
+                //actionAry[robotIndex] = action_Zone_Attack;
+                actionAry[robotIndex] = action_Escape_Attack;
 //                state_attack[robotIndex] = state_Init;
                 StateZoneAttack(robotIndex);
                 ROS_INFO("Zone_Attack\n");

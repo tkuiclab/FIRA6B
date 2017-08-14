@@ -1795,7 +1795,7 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     }
 
     //////////////////////zone condition/////////////////
-    if(goal_dis<=2.3){
+    if(goal_dis<=2){
         k_g[0]=2;k_g[1]=2;
         k_r[0]=0;k_r[1]=0;
         k_image_r[0]=0;k_image_r[1]=0;
@@ -4032,7 +4032,7 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 //            }
 //            env.home[r_number].v_yaw = transform_obstacle_angle;
 //        }
-        if(distance_dr<5&&Straight_Attack_Flag==1){
+        if(distance_dr<4&&Straight_Attack_Flag==1){
             Straight_Attack_Flag=0;
         }
 

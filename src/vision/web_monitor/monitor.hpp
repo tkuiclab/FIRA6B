@@ -56,6 +56,8 @@ class object_Item{
   int fix_ang_max;    //pix
   int fix_ang_min;    //pix
   string LR;
+  int gkm;
+  int fly;
 };
 
 class InterfaceProc
@@ -100,8 +102,6 @@ private:
   long int EndTime;
   std::string vision_path;
 
-  int dis_gap;
-  int white_gray,white_angle;
 
 public:
   InterfaceProc();

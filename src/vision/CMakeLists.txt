@@ -140,6 +140,7 @@ foreach(subdir
 	web_interface
 	web_line
 	web_monitor
+        web_monitor_goalkeeper
 )
 add_subdirectory(${subdir})
 endforeach()
