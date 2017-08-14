@@ -323,8 +323,6 @@ void FIRA_behavior_class::StateGoalkeeperBlock(int r_number){
         state_Goalkeeper = state_Goalkeeper_shootblock;
     }else if(ball_to_opgoal_dis < param_ball_to_opgoal_dis && opgoal_dis < param_opgoal_dis){
         state_Goalkeeper = state_Goalkeeper_push;
-    }else if(ball_dis < 1 && opgoal_dis < 1.2){
-        state_Goalkeeper = state_Goalkeeper_push;        
     } 
 
     // std::cout << "opgoal_reverse = " << opgoal_angle_reverse << std::endl;
@@ -412,7 +410,7 @@ void FIRA_behavior_class::StateGoalkeeperShootBlock(int r_number){
     //     opgoal_angle_reverse = 180 + opgoal_angle;
     // }
 
-    if(ball_dis < 1.5){
+    if(ball_dis < 2){
         state_Goalkeeper = state_Goalkeeper_push;
     }
 }

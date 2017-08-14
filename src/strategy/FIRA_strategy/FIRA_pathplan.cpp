@@ -378,19 +378,20 @@ void FIRA_pathplan_class::strategy_Goalkeeper_push(int r_number){
     }else{
         rotAngle = 0.5 *(opgoal_edge_angle_R - ball_angle) * (1-cos(deg2rad*(ball_angle-opgoal_angle_reverse)));
     }
-    // if(opgoal_dis < 0.5){
-    //     speed = 1.3;
-    //     if(opgoal_left > opgoal_right){
-    //         x = -speed * sin( opgoal_edge_angle_L * deg2rad);
-    //         y = speed * cos( opgoal_edge_angle_L * deg2rad);
-    //         rotAngle = -25;
-    //     }else{
-    //         x = -speed * sin( opgoal_edge_angle_R * deg2rad);
-    //         y = speed * cos( opgoal_edge_angle_R * deg2rad);
-    //         rotAngle = 25;
-    //     }
-    //     std::cout << "go out    ";
-    // }
+
+    if(opgoal_dis < 0.5){
+        speed = 1.8;
+        if(opgoal_left > opgoal_right){
+            x = -speed * sin( opgoal_edge_angle_L * deg2rad);
+            y = speed * cos( opgoal_edge_angle_L * deg2rad);
+            rotAngle = -60;
+        }else{
+            x = -speed * sin( opgoal_edge_angle_R * deg2rad);
+            y = speed * cos( opgoal_edge_angle_R * deg2rad);
+            rotAngle = 60;
+        }
+        std::cout << "go out    ";
+    }
 
     Vector2d vectorbr(x, y);
     Rotation2Dd rot( rotAngle * deg2rad);
@@ -499,49 +500,23 @@ void FIRA_pathplan_class::strategy_Goalkeeper_shootblock(int r_number){
 
     speed = 2; 
     
-
-
     rotAngle = 16;
 
-
-    if(fabs(opgoal_right-opgoal_left)< 0.28){ //on middle
-        position = M;
-        if(ball_angle > opgoal_angle_reverse + (angle_range*0.66) ){ // +15
-            rotAngle = -rotAngle;
+    if(ball_angle > opgoal_angle_reverse + (angle_range*0.66) ){ // +15
+        rotAngle = -rotAngle;
+        if(position_angle > 37 || opgoal_left < 0.65){
+            direction = stop;
+        }else{
             direction = L;
-        }else if(ball_angle < opgoal_angle_reverse - (angle_range*0.66) ){ // -15
+        }
+    }else if(ball_angle < opgoal_angle_reverse - (angle_range*0.66) ){ // -15
+        if(position_angle > 37 || opgoal_right < 0.65){
+            direction = stop;
+        }else{
             direction = R;
-        }else{
-            direction = stop;
         }
-    }else if(opgoal_right > opgoal_left){ //on left
-        position = L;
-        if(ball_angle > opgoal_angle_reverse + 10 + angle_range){ // +30
-            rotAngle = -rotAngle;
-            if(position_angle > 37 || opgoal_left < 0.65){
-                direction = stop;
-            }else{
-                direction = L;
-            }
-        }else if(ball_angle < opgoal_angle_reverse + 10 ){ // +10
-            direction = R;
-        }else{
-            direction = stop;
-        }
-    }else{  //on right
-        position = R;
-        if(ball_angle > opgoal_angle_reverse - 10){ // -10
-            rotAngle = -rotAngle;
-            direction = L;
-        }else if(ball_angle < opgoal_angle_reverse - 10 - angle_range){ // -30
-            if(position_angle > 37 || opgoal_right < 0.65){
-                direction = stop;
-            }else{
-                direction = R;
-            }
-        }else{
-            direction = stop;
-        }
+    }else{
+        direction = stop;
     }
 
     switch(direction){
