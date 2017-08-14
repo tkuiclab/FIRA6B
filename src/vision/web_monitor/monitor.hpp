@@ -56,6 +56,8 @@ class object_Item{
   int fix_ang_max;    //pix
   int fix_ang_min;    //pix
   string LR;
+  int gkm;
+  int fly;
 };
 
 class InterfaceProc
@@ -81,7 +83,7 @@ private:
   int hmax,hmin,smax,smin,vmax,vmin;
   object_Item FIND_Item,Red_Item,Yellow_Item,Blue_Item;
   object_Item *Obstacle_Item;
-  int dont_angle[6];
+  int Unscaned_Angle[8];
   int frame_counter;
   vector<double> Angle_sin;
   vector<double> Angle_cos;
@@ -100,8 +102,6 @@ private:
   long int EndTime;
   std::string vision_path;
 
-  int dis_gap;
-  int white_gray,white_angle;
 
 public:
   InterfaceProc();
