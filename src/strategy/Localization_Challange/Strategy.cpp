@@ -52,6 +52,10 @@ void Strategy::StrategyLocalization()
     double absolute_front = imu + 90;
     static int flag = TRUE;
     static int flag_chase = TRUE;
+    double ball_dis = 0.28;          // if you don't want to get information by vision
+    double ball_angle = 0.0;          // if you don't want to get information by vision
+    // double ball_dis = _Env->Robot.ball.distance;     //get ball information by vision
+    // double ball_angle = _Env->Robot.ball.angle;      //get ball information by vision
     double lost_ball_dis = _Param->Strategy.HoldBall_Condition[3];
     double lost_ball_angle = _Param->Strategy.HoldBall_Condition[2];
     double hold_ball_dis = _Param->Strategy.HoldBall_Condition[1];
@@ -61,8 +65,8 @@ void Strategy::StrategyLocalization()
     double v_x, v_y, v_yaw;
     static int IMU_state = 0;
     double v_x_temp, v_y_temp;
-    Robot.ball.x = Robot.pos.x + _Env->Robot.ball.distance * cos((absolute_front + _Env->Robot.ball.angle) * DEG2RAD);
-    Robot.ball.y = Robot.pos.y + _Env->Robot.ball.distance * sin((absolute_front + _Env->Robot.ball.angle) * DEG2RAD);
+    Robot.ball.x = Robot.pos.x + ball_dis * cos((absolute_front + ball_angle) * DEG2RAD);
+    Robot.ball.y = Robot.pos.y + ball_dis * sin((absolute_front + ball_angle) * DEG2RAD);
     Vector3D vector_turn, vector_tr;
     double turn_yaw;
     //    if(_Env->Robot.ball.distance > lost_ball_dis || fabs(_Env->Robot.ball.angle) > lost_ball_angle){
@@ -125,9 +129,9 @@ void Strategy::StrategyLocalization()
         v_yaw = 0;
         break;
     case chase: // When robot lost the ball
-        v_x = _Env->Robot.ball.distance * cos(_Env->Robot.ball.angle * DEG2RAD);
-        v_y = _Env->Robot.ball.distance * cos(_Env->Robot.ball.angle * DEG2RAD);
-        v_yaw = _Env->Robot.ball.angle;
+        v_x = ball_dis * cos(ball_angle * DEG2RAD);
+        v_y = ball_dis * sin(ball_angle * DEG2RAD);
+        v_yaw = ball_angle;
         break;
     case error:
         printf("ERROR STATE\n");
@@ -525,6 +529,10 @@ void Strategy::showInfo(std::vector<int> order, double imu, double compensation_
 }
 void Strategy::showInfo(RobotData Robot,double imu)
 {
+    double ball_dis = 0.28;          // if you don't want to get information by vision
+    double ball_angle = 0.0;          // if you don't want to get information by vision
+    // double ball_dis = _Env->Robot.ball.distance;     //get ball information by vision
+    // double ball_angle = _Env->Robot.ball.angle;      //get ball information by vision
     std::string Sv_x = "→";
     std::string Sv_y = "↑";
     std::string Sv_yaw = "↶";
@@ -582,8 +590,8 @@ void Strategy::showInfo(RobotData Robot,double imu)
         std::cout << "Target position : (" << _Location->MiddlePoint[_CurrentTarget].x
                   << "," << _Location->MiddlePoint[_CurrentTarget].y << ")\n";
     else if (_LocationState == chase)
-        std::cout << "Target position : (" << _Env->Robot.pos.x + _Env->Robot.ball.distance * cos((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
-                  << "," << _Env->Robot.pos.y + _Env->Robot.ball.distance * sin((_Env->Robot.pos.angle + _Env->Robot.ball.angle + 90) * DEG2RAD)
+        std::cout << "Target position : (" << _Env->Robot.pos.x + ball_dis * cos((_Env->Robot.pos.angle + ball_angle + 90) * DEG2RAD)
+                  << "," << _Env->Robot.pos.y + ball_dis * sin((_Env->Robot.pos.angle + ball_angle + 90) * DEG2RAD)
                   << ")" << std::endl;
     else if (_LocationState == turn)
         if (_Last_state == forward)
