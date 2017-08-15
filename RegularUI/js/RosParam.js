@@ -129,7 +129,7 @@ function SetParamGeneral(SVBox1, PPBox1, SVBox2, PPBox2, SVBox3, PPBox3) {
     SPlanningVelocityBox3.set(SVBox3);
     PathPlanBox3.set(PPBox3);
     //console.log(SVBox1, SVBox2, SVBox3);
-    //console.log(PPBox1, PPBox2, PPBox3);
+    console.log(PPBox1, PPBox2, PPBox3);
     up();
     PublishTopicSaveParam();
 }
@@ -944,7 +944,7 @@ function GetBehaviorValue() {
     });
     obj = document.getElementsByName("StrategySelectionElement1");
     flag = 0;
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 3; i++) {
         if (obj[i].checked && flag == 0) {
             SSBox1.push(parseInt(1));
             flag = 1;
@@ -953,7 +953,7 @@ function GetBehaviorValue() {
         }
     }
     flag = 0;
-    for (var i = 2; i < obj.length; i++) {
+    for (var i = 3; i < obj.length; i++) {
         if (obj[i].checked && flag == 0) {
             SSBox1.push(parseInt(1));
             flag = 1;
@@ -1033,7 +1033,7 @@ function GetBehaviorValue() {
     });
     obj = document.getElementsByName("StrategySelectionElement2");
     flag = 0;
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 3; i++) {
         if (obj[i].checked && flag == 0) {
             SSBox2.push(parseInt(1));
             flag = 1;
@@ -1042,7 +1042,7 @@ function GetBehaviorValue() {
         }
     }
     flag = 0;
-    for (var i = 2; i < obj.length; i++) {
+    for (var i = 3; i < obj.length; i++) {
         if (obj[i].checked && flag == 0) {
             SSBox2.push(parseInt(1));
             flag = 1;
@@ -1122,7 +1122,7 @@ function GetBehaviorValue() {
     });
     obj = document.getElementsByName("StrategySelectionElement3");
     flag = 0;
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 3; i++) {
         if (obj[i].checked && flag == 0) {
             SSBox3.push(parseInt(1));
             flag = 1;
@@ -1131,7 +1131,7 @@ function GetBehaviorValue() {
         }
     }
     flag = 0;
-    for (var i = 2; i < obj.length; i++) {
+    for (var i = 3; i < obj.length; i++) {
         if (obj[i].checked && flag == 0) {
             SSBox3.push(parseInt(1));
             flag = 1;
@@ -1195,7 +1195,7 @@ function GetBehaviorValue() {
 function SetParamBehavior(SCBox1, SABox1, GKBox1, STSABox1, SSSUBox1, SZABox1, SCKBox1, SSBox1, SSPBox1, SupSBox1,
     SCBox2, SABox2, STUCBox2, STSABox2, SSSUBox2, SZABox2, SCKBox2, SSBox2, SSPBox2, SupSBox2,
     SCBox3, SABox3, STUCBox3, STSABox3, SSSUBox3, SZABox3, SCKBox3, SSBox3, SSPBox3, SupSBox3) {
-    console.log(GKBox1);
+    console.log(SSBox1, SSBox2, SSBox3);
     StateChaseBox1.set(SCBox1);
     StateAttackBox1.set(SABox1);
     GoalkeeperBox1.set(GKBox1);
