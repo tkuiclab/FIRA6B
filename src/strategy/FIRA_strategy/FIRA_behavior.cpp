@@ -340,6 +340,7 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         int ShootCase = Strategy_Selection[5];
         int EscapeCase = Strategy_Selection[6];
         int StraigtAttackCase = Strategy_Selection[7];
+        int SlowchaseCase = 0;
         double rushDistance = TypeS_Attack[2];
 
         switch(state_attack){
@@ -355,6 +356,9 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 }else if(SchaseCase){
                     actionAry[robotIndex] = action_Straight_Chase;
                     ROS_INFO("Straight chase state\n");
+                }else if(SlowchaseCase){
+                    actionAry[robotIndex] = action_Slow_Chase;
+                    ROS_INFO("Slow chase state\n");
                 }
                 StateChase(robotIndex);
                 break;

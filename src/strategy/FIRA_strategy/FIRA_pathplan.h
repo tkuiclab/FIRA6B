@@ -65,6 +65,7 @@ public:
     void strategy_AvoidBarrier(int);
     void strategy_Chase(int);
     void strategy_Straight_Chase(int);
+    void strategy_Slow_Chase(int);
     void strategy_KO5_Chase(int);
     void strategy_KO5_Attack(int);
     void strategy_SideSpeedUp(int);
