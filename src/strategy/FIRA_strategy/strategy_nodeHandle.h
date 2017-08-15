@@ -335,6 +335,7 @@ private:
     std::vector<int> Strategy_Selection;
     std::vector<int> Support_Strategy;
     std::vector<int> Scan;
+    std::vector<double> PrefixSetting;
     int IsSimulator;
     /// load param end
 

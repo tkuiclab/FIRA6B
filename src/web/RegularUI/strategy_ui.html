@@ -525,6 +525,30 @@
                                         <input type="text" name="PathPlanElement1" value="0" />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>(double)Dorsad-Attack shoot delay</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement1" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Dorsad-Attack shoot angle</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement1" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Escape-Attack shoot delay</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement1" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Escape-Attack shoot angle</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement1" value="0" />
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -674,6 +698,30 @@
                                 </tr>
                                 <tr>
                                     <td>(double)block delay</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement2" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Dorsad-Attack shoot delay</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement2" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Dorsad-Attack shoot angle</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement2" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Escape-Attack shoot delay</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement2" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Escape-Attack shoot angle</td>
                                     <td>
                                         <input type="text" name="PathPlanElement2" value="0" />
                                     </td>
@@ -831,6 +879,30 @@
                                         <input type="text" name="PathPlanElement3" value="0" />
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>(double)Dorsad-Attack shoot delay</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement3" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Dorsad-Attack shoot angle</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement3" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Escape-Attack shoot delay</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement3" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>(double)Escape-Attack shoot angle</td>
+                                    <td>
+                                        <input type="text" name="PathPlanElement3" value="0" />
+                                    </td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -900,8 +972,8 @@
                                         <label id="TypeSAttack1" for="TypeSAttack1">Type-S Attack</label>
                                     </td>
                                     <td>
-                                        <input type="radio" id="TypeUAttack1" name="PathplanStrategy1" />
-                                        <label id="TypeUAttack1" for="TypeUAttack1">Type-U Attack</label>
+                                        <input type="radio" id="PGoalkeeper1" name="PathplanStrategy1" />
+                                        <label id="PGoalkeeper1" for="PGoalkeeper1">Goalkeeper</label>
                                     </td>
                                     <td>
                                         <input type="radio" id="SideSpeedUp1" name="PathplanStrategy1" />
@@ -997,58 +1069,34 @@
                             </table>
                         </div>
                         <!-- Type-U Attack Module -->
-                        <div class="form-group" id="TypeUAttackModule1">
+                        <div class="form-group" id="PGoalkeeperModule1">
                             <table>
                                 <tr>
                                     <th>ConfigName</th>
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)cycle</td>
+                                    <td>(double)block_max_speed </td>
                                     <td>
-                                        <input type="text" name="TypeUAttackElement1" value="0.8" />
+                                        <input type="text" name="PGoalkeeperElement1" value="0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)circle_y_speed</td>
+                                    <td>(double)block_pullback_ball2opgoal_dis</td>
                                     <td>
-                                        <input type="text" name="TypeUAttackElement1" value="1.0" />
+                                        <input type="text" name="PGoalkeeperElement1" value="0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)circle_size_right</td>
+                                    <td>(double)block_pullback_opgoal_dis</td>
                                     <td>
-                                        <input type="text" name="TypeUAttackElement1" value="-90.0" />
+                                        <input type="text" name="PGoalkeeperElement1" value="0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)circle_size_left</td>
+                                    <td>(double)block_angle_range</td>
                                     <td>
-                                        <input type="text" name="TypeUAttackElement1" value="90.0" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>(double)distance_br_min</td>
-                                    <td>
-                                        <input type="text" name="TypeUAttackElement1" value="0.6" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>(double)distance_dr_min</td>
-                                    <td>
-                                        <input type="text" name="TypeUAttackElement1" value="0.3" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>(double)angle_br_min</td>
-                                    <td>
-                                        <input type="text" name="TypeUAttackElement1" value="10.0" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>(double)angle_dr_min</td>
-                                    <td>
-                                        <input type="text" name="TypeUAttackElement1" value="20.0" />
+                                        <input type="text" name="PGoalkeeperElement1" value="0" />
                                     </td>
                                 </tr>
                             </table>
@@ -1930,8 +1978,8 @@
                                         <label id="StateAttack1" for="StateAttack1">State Attack</label>
                                     </td>
                                     <td>
-                                        <input type="radio" id="GoalKeeper1" name="BehaviorStrategy1" />
-                                        <label id="GoalKeeper1" for="GoalKeeper1">Goal Keeper</label>
+                                        <input type="radio" id="Goalkeeper1" name="BehaviorStrategy1" />
+                                        <label id="Goalkeeper1" for="Goalkeeper1">Goalkeeper</label>
                                     </td>
                                 </tr>
                                 <tr>
@@ -2028,34 +2076,34 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="form-group" id="GoalKeeperModule1">
+                        <div class="form-group" id="GoalkeeperModule1">
                             <table>
                                 <tr>
                                     <th>ConfigName</th>
                                     <th>Value</th>
                                 </tr>
                                 <tr>
-                                    <td>(double)push_ball2opgoal_dis</td>
+                                    <td>(double)b2p_ball2opgoal_dis</td>
                                     <td>
-                                        <input type="text" name="GoalKeeperElement1" value="0" />
+                                        <input type="text" name="GoalkeeperElement1" value="0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)push_opgoal_dis</td>
+                                    <td>(double)b2p_opgoal_dis</td>
                                     <td>
-                                        <input type="text" name="GoalKeeperElement1" value="0" />
+                                        <input type="text" name="GoalkeeperElement1" value="0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)push_opgoal_dis</td>
+                                    <td>(double)p2b_ball2opgoal_dis</td>
                                     <td>
-                                        <input type="text" name="GoalKeeperElement1" value="0" />
+                                        <input type="text" name="GoalkeeperElement1" value="0" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>(double)push_opgoal_dis</td>
+                                    <td>(double)p2b_opgoal_dis</td>
                                     <td>
-                                        <input type="text" name="GoalKeeperElement1" value="0" />
+                                        <input type="text" name="GoalkeeperElement1" value="0" />
                                     </td>
                                 </tr>
                             </table>
@@ -2150,6 +2198,14 @@
                                     <th>
                                         <label>
                                             <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Straight-chase</label>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input name="StrategySelectionElement1" type="checkbox" style="width:50px;">Slow Chase</label>
+                                    </th>
+                                    <th>
                                     </th>
                                 </tr>
                                 <tr>
@@ -2472,6 +2528,14 @@
                                     </th>
                                 </tr>
                                 <tr>
+                                    <th>
+                                        <label>
+                                            <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Slow Chase</label>
+                                    </th>
+                                    <th>
+                                    </th>
+                                </tr>
+                                <tr>
                                     <td>
                                         <label>
                                             <input name="StrategySelectionElement2" type="checkbox" style="width:50px;">Attack</label>
@@ -2788,6 +2852,14 @@
                                     <th>
                                         <label>
                                             <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Straight-chase</label>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label>
+                                            <input name="StrategySelectionElement3" type="checkbox" style="width:50px;">Slow Chase</label>
+                                    </th>
+                                    <th>
                                     </th>
                                 </tr>
                                 <tr>
@@ -3228,7 +3300,7 @@
 
         $("#SPlanningVelocity1").click(function() {
             $("#SPlanningVelocityModule1").show();
-            $("#PathPlanModule1").hide();
+            $("#PathPlansModule1").hide();
         });
         $("#PathPlan1").click(function() {
             $("#PathPlanModule1").show();
@@ -3291,7 +3363,7 @@
         $("#ChaseStrategyModule1").hide();
         $("#ZoneAttackModule1").hide();
         $("#TypeSAttackModule1").hide();
-        $("#TypeUAttackModule1").hide();
+        $("#PGoalkeeperModule1").hide();
         $("#SideSpeedUpModule1").hide();
         $("#DorsadAttackModule1").hide();
         $("#CornerKickModule1").hide();
@@ -3302,7 +3374,7 @@
             $("#ChaseStrategyModule1").hide();
             $("#ZoneAttackModule1").hide();
             $("#TypeSAttackModule1").hide();
-            $("#TypeUAttackModule1").hide();
+            $("#PGoalkeeperModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
@@ -3313,7 +3385,7 @@
             $("#AttackStrategyModule1").hide();
             $("#ZoneAttackModule1").hide();
             $("#TypeSAttackModule1").hide();
-            $("#TypeUAttackModule1").hide();
+            $("#PGoalkeeperModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
@@ -3324,7 +3396,7 @@
             $("#AttackStrategyModule1").hide();
             $("#ChaseStrategyModule1").hide();
             $("#TypeSAttackModule1").hide();
-            $("#TypeUAttackModule1").hide();
+            $("#PGoalkeeperModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
@@ -3335,14 +3407,14 @@
             $("#AttackStrategyModule1").hide();
             $("#ChaseStrategyModule1").hide();
             $("#ZoneAttackModule1").hide();
-            $("#TypeUAttackModule1").hide();
+            $("#PGoalkeeperModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
             $("#PenaltyKickModule1").hide();
         });
-        $("#TypeUAttack1").click(function() {
-            $("#TypeUAttackModule1").show();
+        $("#PGoalkeeper1").click(function() {
+            $("#PGoalkeeperModule1").show();
             $("#AttackStrategyModule1").hide();
             $("#ChaseStrategyModule1").hide();
             $("#ZoneAttackModule1").hide();
@@ -3358,7 +3430,7 @@
             $("#ChaseStrategyModule1").hide();
             $("#ZoneAttackModule1").hide();
             $("#TypeSAttackModule1").hide();
-            $("#TypeUAttackModule1").hide();
+            $("#PGoalkeeperModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
             $("#PenaltyKickModule1").hide();
@@ -3369,7 +3441,7 @@
             $("#ChaseStrategyModule1").hide();
             $("#ZoneAttackModule1").hide();
             $("#TypeSAttackModule1").hide();
-            $("#TypeUAttackModule1").hide();
+            $("#PGoalkeeperModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#CornerKickModule1").hide();
             $("#PenaltyKickModule1").hide();
@@ -3380,7 +3452,7 @@
             $("#ChaseStrategyModule1").hide();
             $("#ZoneAttackModule1").hide();
             $("#TypeSAttackModule1").hide();
-            $("#TypeUAttackModule1").hide();
+            $("#PGoalkeeperModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#PenaltyKickModule1").hide();
@@ -3391,7 +3463,7 @@
             $("#ChaseStrategyModule1").hide();
             $("#ZoneAttackModule1").hide();
             $("#TypeSAttackModule1").hide();
-            $("#TypeUAttackModule1").hide();
+            $("#PGoalkeeperModule1").hide();
             $("#SideSpeedUpModule1").hide();
             $("#DorsadAttackModule1").hide();
             $("#CornerKickModule1").hide();
@@ -3649,7 +3721,7 @@
         $("#SetBehaviorButton1").buttonset();
 
         $("#StateAttackModule1").hide();
-        $("#GoalKeeperModule1").hide();
+        $("#GoalkeeperModule1").hide();
         $("#StateTypeSAttackModule1").hide();
         $("#StateSideSpeedUPModule1").hide();
         $("#StateZoneAttackModule1").hide();
@@ -3660,7 +3732,7 @@
         $("#StateChase1").click(function() {
             $("#StateChaseModule1").show();
             $("#StateAttackModule1").hide();
-            $("#GoalKeeperModule1").hide();
+            $("#GoalkeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
@@ -3671,7 +3743,7 @@
         $("#StateAttack1").click(function() {
             $("#StateAttackModule1").show();
             $("#StateChaseModule1").hide();
-            $("#GoalKeeperModule1").hide();
+            $("#GoalkeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule11").hide();
@@ -3679,8 +3751,8 @@
             $("#StrategySelectionModule1").hide();
             $("#SupportStrategyModule1").hide();
         });
-        $("#GoalKeeper1").click(function() {
-            $("#GoalKeeperModule1").show();
+        $("#Goalkeeper1").click(function() {
+            $("#GoalkeeperModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
             $("#StateTypeSAttackModule1").hide();
@@ -3694,7 +3766,7 @@
             $("#StateTypeSAttackModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#GoalKeeperModule1").hide();
+            $("#GoalkeeperModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
@@ -3705,7 +3777,7 @@
             $("#StateSideSpeedUPModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#GoalKeeperModule1").hide();
+            $("#GoalkeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateZoneAttackModule1").hide();
             $("#StateCornerKickModule1").hide();
@@ -3716,7 +3788,7 @@
             $("#StateZoneAttackModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#GoalKeeperModule1").hide();
+            $("#GoalkeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateCornerKickModule1").hide();
@@ -3727,7 +3799,7 @@
             $("#StateCornerKickModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#GoalKeeperModule1").hide();
+            $("#GoalkeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
@@ -3738,7 +3810,7 @@
             $("#StrategySelectionModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#GoalKeeperModule1").hide();
+            $("#GoalkeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();
@@ -3749,7 +3821,7 @@
             $("#SupportStrategyModule1").show();
             $("#StateChaseModule1").hide();
             $("#StateAttackModule1").hide();
-            $("#GoalKeeperModule1").hide();
+            $("#GoalkeeperModule1").hide();
             $("#StateTypeSAttackModule1").hide();
             $("#StateSideSpeedUPModule1").hide();
             $("#StateZoneAttackModule1").hide();

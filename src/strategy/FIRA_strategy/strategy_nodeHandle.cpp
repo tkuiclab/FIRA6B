@@ -329,17 +329,22 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
 //         std::cout << "global_env->issimulator=" << IsSimulator  <<std::endl;
     }
     if(n->getParam("/StrategySelection", Strategy_Selection)){
+        printf("=================Strategy_Selection=================\n");
         int chaseCase = Strategy_Selection[0];
         int SchaseCase = Strategy_Selection[1];
-        int attackCase = Strategy_Selection[2];
-        int SattackCase = Strategy_Selection[3];
-        int DattackCase = Strategy_Selection[4];
-        int ShootCase = Strategy_Selection[5];
-        int EscapeCase = Strategy_Selection[6];
+        int SlowchaseCase = Strategy_Selection[2];
+        int attackCase = Strategy_Selection[3];
+        int SattackCase = Strategy_Selection[4];
+        int DattackCase = Strategy_Selection[5];
+        int ShootCase = Strategy_Selection[6];
+        int EscapeCase = Strategy_Selection[7];
+        int Straight_attackCase = Strategy_Selection[8];
         if(chaseCase){
             printf("Attacker chaseCase\n");
         }else if(SchaseCase){
-            printf("Attacker SchaseCase\n");
+            printf("Attacker Straight-chaseCase\n");
+        }else if(SlowchaseCase){
+            printf("Attacker SlowchaseCase\n");
         }
 
         if(attackCase){
@@ -352,6 +357,8 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
             printf("Attacker ShootCase\n");
         }else if(EscapeCase){
             printf("Attacker EscapeCase\n");
+        }else if(Straight_attackCase){
+            printf("Attacker Straight-attackCase\n");
         }
     }
     if(n->getParam("/FIRA_Behavior/Support_Strategy", Support_Strategy)){
@@ -362,6 +369,33 @@ void Strategy_nodeHandle::loadParam(ros::NodeHandle *n){
             case 2:
                 printf("Support BlockCase\n");
             break;
+        }
+    }
+    if(n->getParam("/FIRA_Behavior/PrefixSetting", PrefixSetting)){
+        printf("=================Movement_Selection=================\n");
+        double Forward = PrefixSetting[0];
+        double Backward = PrefixSetting[1];
+        double Left = PrefixSetting[2];
+        double Right = PrefixSetting[3];
+        double Continue_Time = PrefixSetting[4];
+        if(Left&&Forward){
+            printf("LeftForward %f sec\n",Continue_Time);
+        }else if(Right&&Forward){
+            printf("RightForward %f sec\n",Continue_Time);
+        }else if(Left&&Backward){
+            printf("LeftBackward %f sec\n",Continue_Time);
+        }else if(Right&&Backward){
+            printf("RightBackward %f sec\n",Continue_Time);
+        }else if(Forward){
+            printf("Forward %f sec\n",Continue_Time);
+        }else if(Backward){
+            printf("Backward %f sec\n",Continue_Time);
+        }else if(Left){
+            printf("Left %f sec\n",Continue_Time);
+        }else if(Right){
+            printf("Right %f sec\n",Continue_Time);
+        }else{
+            printf("NO Movement\n");
         }
     }
     n->getParam("/FIRA/SCAN/Dont_Search_Angle_1",Scan[0]);

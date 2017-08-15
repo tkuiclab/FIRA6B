@@ -334,13 +334,13 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         run_onetime = 1;
         int chaseCase = Strategy_Selection[0];
         int SchaseCase = Strategy_Selection[1];
-        int attackCase = Strategy_Selection[2];
-        int SattackCase = Strategy_Selection[3];
-        int DattackCase = Strategy_Selection[4];
-        int ShootCase = Strategy_Selection[5];
-        int EscapeCase = Strategy_Selection[6];
-        int StraigtAttackCase = Strategy_Selection[7];
-        int SlowchaseCase = 0;
+        int SlowchaseCase = Strategy_Selection[2];
+        int attackCase = Strategy_Selection[3];
+        int SattackCase = Strategy_Selection[4];
+        int DattackCase = Strategy_Selection[5];
+        int ShootCase = Strategy_Selection[6];
+        int EscapeCase = Strategy_Selection[7];
+        int StraigtAttackCase = Strategy_Selection[8];
         double rushDistance = TypeS_Attack[2];
 
         switch(state_attack){
