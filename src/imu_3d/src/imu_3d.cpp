@@ -377,7 +377,7 @@ int main(int argc,char **argv)
     ros::Publisher imu_data_pub = n.advertise<sensor_msgs::Imu>("base_footprint",1000);
     ros::Subscriber speed_sub = n.subscribe("/FIRA/R1/Strategy/PathPlan/RobotSpeed",100,speed_stationary);
 
-    ros::Rate loop_rate(20);
+    ros::Rate loop_rate(100);
 
     struct InputLoopState inputLoop;
     struct freespace_MotionEngineOutput meOut;

@@ -57,35 +57,6 @@ void Client::odom_tf_pub()
     static ros::Time last_time = ros::Time::now();
     ros::Time current_time = ros::Time::now();
     double dt = (current_time - last_time).toSec();
-    // geometry_msgs::TransformStamped odom_trans;
-    // odom_trans.header.stamp = current_time;
-    // odom_trans.header.frame_id = "odom";
-    // odom_trans.child_frame_id = "base_link";
-    // static double last_FB_x = FB_x;
-    // static double last_FB_y = FB_y;
-    // static double map_x = FB_x;
-    // static double map_y = FB_y;
-    // double delta_x,delta_y;
-    // if(fabs(FB_x - last_FB_x)>0.1)
-    //     FB_x = last_FB_x;
-    // if(fabs(FB_y - last_FB_y)>0.1)
-    //     FB_y = last_FB_y;
-    // delta_x = FB_x - last_FB_x;
-    // delta_y = FB_y - last_FB_y;
-    // last_FB_x = FB_x;
-    // last_FB_y = FB_y;
-    // map_x += (delta_x * cos(-imu3d) - delta_y * sin(-imu3d));
-    // map_y += (delta_x * sin(-imu3d) + delta_y * cos(-imu3d));
-    // // imu direction is nagitive for quaternion
-    // odom_trans.transform.translation.x = map_x;
-    // odom_trans.transform.translation.y = map_y;
-    // odom_trans.transform.translation.z = 0;
-    // odom_trans.transform.rotation.w = cos(0)*cos(0)*cos(-imu3d/2)+sin(0)*sin(0)*sin(-imu3d/2);
-    // odom_trans.transform.rotation.x = sin(0)*cos(0)*cos(-imu3d/2)-cos(0)*sin(0)*sin(-imu3d/2);
-    // odom_trans.transform.rotation.y = cos(0)*sin(0)*cos(-imu3d/2)+sin(0)*cos(0)*sin(-imu3d/2);
-    // odom_trans.transform.rotation.z = cos(0)*cos(0)*sin(-imu3d/2)-sin(0)*sin(0)*cos(-imu3d/2);
-    // odom_broadcaster.sendTransform(odom_trans);
-
     if (dt<0.0005)
         ;
     else
@@ -116,40 +87,33 @@ void Client::odom_tf_pub()
         map_x += (delta_x * cos(-imu3d) - delta_y * sin(-imu3d));
         map_y += (delta_x * sin(-imu3d) + delta_y * cos(-imu3d));
         //  (-) imu   imu's angular is not fit in normal axis
-        // odom.header.stamp = current_time;
-        // odom.header.frame_id = "odom";
-        // odom.child_frame_id = "base_link";
-        // odom.pose.pose.position.x = map_x;
-        // odom.pose.pose.position.y = map_y;
-        // odom.pose.pose.position.z = 0.0;
-        // odom.pose.pose.orientation.w = cos(0) * cos(0) * cos(-imu3d / 2) + sin(0) * sin(0) * sin(-imu3d / 2);
-        // odom.pose.pose.orientation.x = sin(0) * cos(0) * cos(-imu3d / 2) - cos(0) * sin(0) * sin(-imu3d / 2);
-        // odom.pose.pose.orientation.y = cos(0) * sin(0) * cos(-imu3d / 2) + sin(0) * cos(0) * sin(-imu3d / 2);
-        // odom.pose.pose.orientation.z = cos(0) * cos(0) * sin(-imu3d / 2) - sin(0) * sin(0) * cos(-imu3d / 2);
-        // odom.pose.covariance[0] = 1e-3;
-        // odom.pose.covariance[7] = 1e-3;
-        // odom.pose.covariance[14] = 1e-3;
-        // odom.pose.covariance[21] = 1e-2;
-        // odom.pose.covariance[28] = 1e-2;
-        // odom.pose.covariance[35] = 1e-2;
-        // odom.twist.twist.linear.x = delta_x / dt;
-        // odom.twist.twist.linear.y = delta_y / dt;
-        // odom.twist.twist.angular.z = (-1) * (imu3d - last_imu) / dt;
-        // last_imu = imu3d;
-        // Odom_pub.publish(odom);
-
-        geometry_msgs::TransformStamped odom_trans;
-        odom_trans.header.stamp = current_time;
-        odom_trans.header.frame_id = "odom";
-        odom_trans.child_frame_id = "base_footprint";
-        odom_trans.transform.translation.x = map_x;
-        odom_trans.transform.translation.y = map_y;
-        odom_trans.transform.translation.z = 0;
-        odom_trans.transform.rotation.w = cos(0) * cos(0) * cos(-imu3d / 2) + sin(0) * sin(0) * sin(-imu3d / 2);
-        odom_trans.transform.rotation.x = sin(0) * cos(0) * cos(-imu3d / 2) - cos(0) * sin(0) * sin(-imu3d / 2);
-        odom_trans.transform.rotation.y = cos(0) * sin(0) * cos(-imu3d / 2) + sin(0) * cos(0) * sin(-imu3d / 2);
-        odom_trans.transform.rotation.z = cos(0) * cos(0) * sin(-imu3d / 2) - sin(0) * sin(0) * cos(-imu3d / 2);
-        odom_broadcaster.sendTransform(odom_trans);
+        odom.header.stamp = current_time;
+        odom.header.frame_id = "odom";
+        odom.child_frame_id = "base_footprint";
+        odom.pose.pose.position.x = map_x;
+        odom.pose.pose.position.y = map_y;
+        odom.pose.pose.position.z = 0.0;
+        odom.pose.pose.orientation.w = cos(0) * cos(0) * cos(-imu3d / 2) + sin(0) * sin(0) * sin(-imu3d / 2);
+        odom.pose.pose.orientation.x = sin(0) * cos(0) * cos(-imu3d / 2) - cos(0) * sin(0) * sin(-imu3d / 2);
+        odom.pose.pose.orientation.y = cos(0) * sin(0) * cos(-imu3d / 2) + sin(0) * cos(0) * sin(-imu3d / 2);
+        odom.pose.pose.orientation.z = cos(0) * cos(0) * sin(-imu3d / 2) - sin(0) * sin(0) * cos(-imu3d / 2);
+        odom.pose.covariance[0] = 5e-1;
+        odom.pose.covariance[7] = 5e-1;
+        odom.pose.covariance[14] = 1e6;
+        odom.pose.covariance[21] = 1e6;
+        odom.pose.covariance[28] = 1e6;
+        odom.pose.covariance[35] = 1e-1;
+        odom.twist.covariance[0] = 5e-1;
+        odom.twist.covariance[7] = 5e-1;
+        odom.twist.covariance[14] = 1e6;
+        odom.twist.covariance[21] = 1e6;
+        odom.twist.covariance[28] = 1e6;
+        odom.twist.covariance[35] = 1e-1;
+        odom.twist.twist.linear.x = delta_x / dt;
+        odom.twist.twist.linear.y = delta_y / dt;
+        odom.twist.twist.angular.z = (-1) * (imu3d - last_imu) / dt;
+        last_imu = imu3d;
+        Odom_pub.publish(odom);
     }
     last_time = current_time;
 }

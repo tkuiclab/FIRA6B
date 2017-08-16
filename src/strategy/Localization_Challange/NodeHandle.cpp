@@ -25,7 +25,7 @@ void NodeHandle::ros_comms_init()
     SAVEPARAM = node->subscribe<std_msgs::Int32>(SAVE_PARAM_TOPIC, 1000, &NodeHandle::subSaveParam, this);
     VISION = node->subscribe<vision::Object>(VISION_TOPIC, 1, &NodeHandle::subVision, this);
     SPEED = node->advertise<geometry_msgs::Twist>(SPEED_TOPIC, 1000);
-    ROBOTPOSE = node->subscribe<geometry_msgs::PoseWithCovarianceStamped>(ROBOTPOSE_TOPIC, 1, &NodeHandle::subRobotPose, this);
+    ROBOTPOSE = node->subscribe<geometry_msgs::PoseWithCovarianceStamped>(ROBOTPOSE_TOPIC, 1000, &NodeHandle::subRobotPose, this);
     LOCATIONPOINT = node->subscribe<std_msgs::Float32MultiArray>(LOCATIONPOINT_TOPIC, 1000, &NodeHandle::subLocationPoint, this);
     IMU = node->subscribe<imu_3d::inertia>("/imu_3d", 1, &NodeHandle::subIMU, this);
 }
