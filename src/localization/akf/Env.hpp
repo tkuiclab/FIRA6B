@@ -18,12 +18,13 @@ typedef struct{
     double x;
     double y;
 } pose;
-typedef struct{
-    double w[2];        // kalman parameter
-    double a[2];        // kalman parameter
-    double mea_p[2];    // last measure data
-    double mea[2];      // measure data
-    double kg[2];       // kalman gain
-    double est[2];      // estimate value
+typedef struct{             // attention!![i][j]  i is num of sensors , j is axis of x or y  
+    double w[2];            // kalman parameter w
+    double a[2];            // kalman parameter a 
+    double mea_p[2][2];     // last measure data   
+    double mea[2][2];       // measure data
+    double kg[2][2];        // kalman gain
+    double est[2];          // estimate value
+    double fp[2][2];        //filter performance parameter
 } Kalman;
 #endif

@@ -7,7 +7,7 @@ int main(int argc, char **argv){
     NodeHandle nodehandle(argc, argv);
     AKF kalmanfilter(argc, argv);
     pose amcl,ekf;
-    ros::Rate loop_rate(100);
+    ros::Rate loop_rate(10);
     while(ros::ok()){
         amcl = nodehandle.get_amcl_pose();
         ekf = nodehandle.get_ekf_pose();
