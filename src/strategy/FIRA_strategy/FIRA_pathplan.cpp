@@ -1129,9 +1129,10 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     if(op_angle_dr>-60&&op_angle_dr<60){
         shoot = 0;
     }else{
-        if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=10){
+        if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=3){
             Shoot_Current_time = ros::Time::now().toSec();
-            if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.1){
+            if(fabs(Shoot_Current_time-Shoot_Begin_time)>0){
+                printf("shoot\n");
                 shoot = SPlanning_Velocity[10];
             }else{
                 shoot = 0;
@@ -1838,16 +1839,20 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     double goal_min = env.home[r_number].goal_edge.min;
     double gla_angle = env.home[r_number].goal_large_area.angle;
     if(op_angle_dr>-60&&op_angle_dr<60){
+        printf("cant shoot\n");
         shoot = 0;
     }else{
-        if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=10){
+        if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=3){
             Shoot_Current_time = ros::Time::now().toSec();
-            if(fabs(Shoot_Current_time-Shoot_Begin_time)>0.1){
+            if(fabs(Shoot_Current_time-Shoot_Begin_time)>0){
+                printf("shoot\n");
                 shoot = SPlanning_Velocity[10];
             }else{
+                printf("cant shoot\n");
                 shoot = 0;
             }
         }else{
+            printf("cant shoot\n");
             shoot = 0;
         }
     }

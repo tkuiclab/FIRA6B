@@ -1,7 +1,7 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Camera_high: 650, Center_X: 303, Center_Y: 268, Front: 270, Inner: 44,
+  Center: {Camera_high: 650, Center_X: 303, Center_Y: 271, Front: 272, Inner: 44,
     Outer: 256, X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
@@ -11,29 +11,29 @@ FIRA:
     Space: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]
   Distance_Settings: [0, 0, 0]
   Dorsad_Attack: [6, 90, 180, 2, 1, 2]
-  FPS: 20
+  FPS: 47
   General_PathPlan: [0.1, 0.3, 5, 0.1, 2, 0.15, 5, 1.5]
   HSV:
-    Ball: [0, 55, 35, 100, 42, 100]
+    Ball: [0, 51, 44, 95, 21, 100]
     Blue: [222, 237, 73, 100, 0, 100]
     Bluerange: [245, 204, 255, 179, 255, 72]
-    Green: [0, 195, 59, 100, 18, 100]
+    Green: [95, 195, 55, 100, 15, 100]
     Greenrange: [188, 114, 255, 130, 255, 0]
     Redrange: [36, 0, 255, 118, 255, 0]
     White: [0, 359, 29, 59, 0, 28]
     Whiterange: [227, 146, 166, 13, 255, 134]
     Yellow: [33, 147, 25, 85, 9, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-    black: {angle: 6, gray: 31}
-    white: {angle: 6, gray: 170}
+    black: {angle: 11, gray: 28}
+    white: {angle: 5, gray: 170}
   IsSimulator: 0
-  Parameterbutton: 4
+  Parameterbutton: 6
   Penalty_Kick: [-45, 2]
   RobotNumber: 1
-  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 2, Angle_range_2_3: 2, Dont_Search_Angle_1: 329,
-    Dont_Search_Angle_2: 90, Dont_Search_Angle_3: 210, Magn_Far_End: 240, Magn_Far_Start: 141,
+  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 3, Angle_range_2_3: 3, Dont_Search_Angle_1: 329,
+    Dont_Search_Angle_2: 89, Dont_Search_Angle_3: 210, Magn_Far_End: 240, Magn_Far_Start: 141,
     Magn_Middle_Start: 98, Magn_Near_Gap: 2, Magn_Near_Start: 40}
-  SPlanning_Velocity: [1, 0.3, 80, 60, 20, 0.5, 90, 2, 40, 0, 100, 45]
+  SPlanning_Velocity: [1, 0.3, 100, 80, 15, 0.5, 90, 2, 40, 0, 100, 47]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,
@@ -1448,7 +1448,7 @@ FIRA:
   whiteline: {angle: 4, gray: 100}
 FIRA_Behavior:
   Attack_Strategy: [5, 3, 0.4]
-  Chase_Strategy: [5, 0.15, 0.2, 3, 0.32]
+  Chase_Strategy: [5, 0.15, 0.2, 2, 0.33]
   Corner_Kick: [120, 0.45]
   PrefixSetting: [0, 0, 0, 0, 2]
   Side_Speed_UP: [10, 0.45]
@@ -1483,7 +1483,7 @@ camera:
     compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
     theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
 prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
-  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.02,
+  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.047,
   exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
   gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
   trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
@@ -1504,42 +1504,46 @@ roslaunch:
     host_iclab2_to_be_filled_by_o_e_m__45767: 'http://iclab2-To-be-filled-by-O-E-M:45767/',
     host_iclab2_to_be_filled_by_o_e_m__46113: 'http://iclab2-To-be-filled-by-O-E-M:46113/',
     host_iclab3_to_be_filled_by_o_e_m__34274: 'http://iclab3-To-be-filled-by-O-E-M:34274/',
-    host_iclab__33059: 'http://iclab:33059/', host_iclab__33179: 'http://iclab:33179/',
-    host_iclab__33207: 'http://iclab:33207/', host_iclab__33261: 'http://iclab:33261/',
-    host_iclab__33392: 'http://iclab:33392/', host_iclab__33493: 'http://iclab:33493/',
-    host_iclab__33793: 'http://iclab:33793/', host_iclab__33802: 'http://iclab:33802/',
-    host_iclab__33811: 'http://iclab:33811/', host_iclab__33871: 'http://iclab:33871/',
-    host_iclab__33889: 'http://iclab:33889/', host_iclab__33969: 'http://iclab:33969/',
-    host_iclab__33994: 'http://iclab:33994/', host_iclab__34271: 'http://iclab:34271/',
-    host_iclab__34290: 'http://iclab:34290/', host_iclab__34302: 'http://iclab:34302/',
-    host_iclab__34359: 'http://iclab:34359/', host_iclab__34362: 'http://iclab:34362/',
-    host_iclab__34380: 'http://iclab:34380/', host_iclab__34388: 'http://iclab:34388/',
-    host_iclab__34491: 'http://iclab:34491/', host_iclab__34535: 'http://iclab:34535/',
-    host_iclab__34542: 'http://iclab:34542/', host_iclab__34551: 'http://iclab:34551/',
-    host_iclab__34597: 'http://iclab:34597/', host_iclab__34730: 'http://iclab:34730/',
-    host_iclab__34794: 'http://iclab:34794/', host_iclab__34845: 'http://iclab:34845/',
-    host_iclab__34856: 'http://iclab:34856/', host_iclab__34867: 'http://iclab:34867/',
-    host_iclab__34946: 'http://iclab:34946/', host_iclab__34974: 'http://iclab:34974/',
-    host_iclab__35055: 'http://iclab:35055/', host_iclab__35170: 'http://iclab:35170/',
-    host_iclab__35207: 'http://iclab:35207/', host_iclab__35244: 'http://iclab:35244/',
+    host_iclab__32859: 'http://iclab:32859/', host_iclab__33059: 'http://iclab:33059/',
+    host_iclab__33179: 'http://iclab:33179/', host_iclab__33207: 'http://iclab:33207/',
+    host_iclab__33261: 'http://iclab:33261/', host_iclab__33392: 'http://iclab:33392/',
+    host_iclab__33493: 'http://iclab:33493/', host_iclab__33793: 'http://iclab:33793/',
+    host_iclab__33802: 'http://iclab:33802/', host_iclab__33811: 'http://iclab:33811/',
+    host_iclab__33871: 'http://iclab:33871/', host_iclab__33889: 'http://iclab:33889/',
+    host_iclab__33969: 'http://iclab:33969/', host_iclab__33994: 'http://iclab:33994/',
+    host_iclab__34271: 'http://iclab:34271/', host_iclab__34290: 'http://iclab:34290/',
+    host_iclab__34302: 'http://iclab:34302/', host_iclab__34359: 'http://iclab:34359/',
+    host_iclab__34362: 'http://iclab:34362/', host_iclab__34380: 'http://iclab:34380/',
+    host_iclab__34388: 'http://iclab:34388/', host_iclab__34491: 'http://iclab:34491/',
+    host_iclab__34535: 'http://iclab:34535/', host_iclab__34542: 'http://iclab:34542/',
+    host_iclab__34551: 'http://iclab:34551/', host_iclab__34597: 'http://iclab:34597/',
+    host_iclab__34730: 'http://iclab:34730/', host_iclab__34794: 'http://iclab:34794/',
+    host_iclab__34845: 'http://iclab:34845/', host_iclab__34856: 'http://iclab:34856/',
+    host_iclab__34867: 'http://iclab:34867/', host_iclab__34946: 'http://iclab:34946/',
+    host_iclab__34974: 'http://iclab:34974/', host_iclab__35055: 'http://iclab:35055/',
+    host_iclab__35170: 'http://iclab:35170/', host_iclab__35207: 'http://iclab:35207/',
+    host_iclab__35244: 'http://iclab:35244/', host_iclab__35447: 'http://iclab:35447/',
     host_iclab__35567: 'http://iclab:35567/', host_iclab__35614: 'http://iclab:35614/',
     host_iclab__35704: 'http://iclab:35704/', host_iclab__35719: 'http://iclab:35719/',
     host_iclab__35745: 'http://iclab:35745/', host_iclab__35848: 'http://iclab:35848/',
     host_iclab__35872: 'http://iclab:35872/', host_iclab__35881: 'http://iclab:35881/',
     host_iclab__35916: 'http://iclab:35916/', host_iclab__35975: 'http://iclab:35975/',
-    host_iclab__36049: 'http://iclab:36049/', host_iclab__36187: 'http://iclab:36187/',
-    host_iclab__36334: 'http://iclab:36334/', host_iclab__36355: 'http://iclab:36355/',
-    host_iclab__36371: 'http://iclab:36371/', host_iclab__36379: 'http://iclab:36379/',
-    host_iclab__36409: 'http://iclab:36409/', host_iclab__36566: 'http://iclab:36566/',
-    host_iclab__36721: 'http://iclab:36721/', host_iclab__36763: 'http://iclab:36763/',
+    host_iclab__36049: 'http://iclab:36049/', host_iclab__36116: 'http://iclab:36116/',
+    host_iclab__36144: 'http://iclab:36144/', host_iclab__36145: 'http://iclab:36145/',
+    host_iclab__36187: 'http://iclab:36187/', host_iclab__36334: 'http://iclab:36334/',
+    host_iclab__36355: 'http://iclab:36355/', host_iclab__36371: 'http://iclab:36371/',
+    host_iclab__36379: 'http://iclab:36379/', host_iclab__36409: 'http://iclab:36409/',
+    host_iclab__36566: 'http://iclab:36566/', host_iclab__36721: 'http://iclab:36721/',
+    host_iclab__36733: 'http://iclab:36733/', host_iclab__36763: 'http://iclab:36763/',
     host_iclab__36840: 'http://iclab:36840/', host_iclab__36858: 'http://iclab:36858/',
     host_iclab__36897: 'http://iclab:36897/', host_iclab__36899: 'http://iclab:36899/',
     host_iclab__36905: 'http://iclab:36905/', host_iclab__37275: 'http://iclab:37275/',
     host_iclab__37295: 'http://iclab:37295/', host_iclab__37466: 'http://iclab:37466/',
     host_iclab__37634: 'http://iclab:37634/', host_iclab__37661: 'http://iclab:37661/',
     host_iclab__37680: 'http://iclab:37680/', host_iclab__37743: 'http://iclab:37743/',
-    host_iclab__37750: 'http://iclab:37750/', host_iclab__37836: 'http://iclab:37836/',
-    host_iclab__37948: 'http://iclab:37948/', host_iclab__38052: 'http://iclab:38052/',
+    host_iclab__37750: 'http://iclab:37750/', host_iclab__37815: 'http://iclab:37815/',
+    host_iclab__37836: 'http://iclab:37836/', host_iclab__37948: 'http://iclab:37948/',
+    host_iclab__38008: 'http://iclab:38008/', host_iclab__38052: 'http://iclab:38052/',
     host_iclab__38089: 'http://iclab:38089/', host_iclab__38166: 'http://iclab:38166/',
     host_iclab__38229: 'http://iclab:38229/', host_iclab__38253: 'http://iclab:38253/',
     host_iclab__38306: 'http://iclab:38306/', host_iclab__38396: 'http://iclab:38396/',
@@ -1573,6 +1577,7 @@ roslaunch:
     host_iclab__43027: 'http://iclab:43027/', host_iclab__43121: 'http://iclab:43121/',
     host_iclab__43237: 'http://iclab:43237/', host_iclab__43334: 'http://iclab:43334/',
     host_iclab__43368: 'http://iclab:43368/', host_iclab__43371: 'http://iclab:43371/',
+    host_iclab__43409: 'http://iclab:43409/', host_iclab__43523: 'http://iclab:43523/',
     host_iclab__43629: 'http://iclab:43629/', host_iclab__43644: 'http://iclab:43644/',
     host_iclab__43675: 'http://iclab:43675/', host_iclab__43874: 'http://iclab:43874/',
     host_iclab__43949: 'http://iclab:43949/', host_iclab__43958: 'http://iclab:43958/',
@@ -1590,13 +1595,15 @@ roslaunch:
     host_iclab__45412: 'http://iclab:45412/', host_iclab__45458: 'http://iclab:45458/',
     host_iclab__45477: 'http://iclab:45477/', host_iclab__45490: 'http://iclab:45490/',
     host_iclab__45533: 'http://iclab:45533/', host_iclab__45589: 'http://iclab:45589/',
-    host_iclab__45609: 'http://iclab:45609/', host_iclab__45729: 'http://iclab:45729/',
-    host_iclab__45937: 'http://iclab:45937/', host_iclab__45938: 'http://iclab:45938/',
-    host_iclab__46041: 'http://iclab:46041/', host_iclab__46067: 'http://iclab:46067/',
-    host_iclab__46151: 'http://iclab:46151/', host_iclab__46261: 'http://iclab:46261/',
-    host_iclab__46264: 'http://iclab:46264/', host_iclab__46298: 'http://iclab:46298/',
-    host_iclab__46688: 'http://iclab:46688/', host_iclab__46732: 'http://iclab:46732/',
-    host_iclab__46788: 'http://iclab:46788/', host_iclab_desktop__32798: 'http://iclab-desktop:32798/',
+    host_iclab__45607: 'http://iclab:45607/', host_iclab__45609: 'http://iclab:45609/',
+    host_iclab__45729: 'http://iclab:45729/', host_iclab__45937: 'http://iclab:45937/',
+    host_iclab__45938: 'http://iclab:45938/', host_iclab__46041: 'http://iclab:46041/',
+    host_iclab__46067: 'http://iclab:46067/', host_iclab__46151: 'http://iclab:46151/',
+    host_iclab__46261: 'http://iclab:46261/', host_iclab__46264: 'http://iclab:46264/',
+    host_iclab__46298: 'http://iclab:46298/', host_iclab__46389: 'http://iclab:46389/',
+    host_iclab__46688: 'http://iclab:46688/', host_iclab__46718: 'http://iclab:46718/',
+    host_iclab__46732: 'http://iclab:46732/', host_iclab__46788: 'http://iclab:46788/',
+    host_iclab__46827: 'http://iclab:46827/', host_iclab_desktop__32798: 'http://iclab-desktop:32798/',
     host_iclab_desktop__32839: 'http://iclab-desktop:32839/', host_iclab_desktop__32879: 'http://iclab-desktop:32879/',
     host_iclab_desktop__32931: 'http://iclab-desktop:32931/', host_iclab_desktop__33020: 'http://iclab-desktop:33020/',
     host_iclab_desktop__33100: 'http://iclab-desktop:33100/', host_iclab_desktop__33315: 'http://iclab-desktop:33315/',
