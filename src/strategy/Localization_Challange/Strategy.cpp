@@ -82,7 +82,6 @@ void Strategy::StrategyLocalization()
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         v_x = v_x_temp;
         v_y = v_y_temp;
-        Normalization(v_yaw);
         if(fabs(v_x) <= 0.05)
             v_x = 0;
         else if(v_y <= 0 && v_y >= -0.05)
