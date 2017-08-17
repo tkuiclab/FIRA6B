@@ -84,9 +84,9 @@ void Strategy::StrategyLocalization()
         v_y = v_y_temp;
         if(fabs(v_x) <= 0.05)
             v_x = 0;
-        else if(v_y <= 0 && v_y >= -0.05)
+        else if(fabs(v_y) <= 0.05)
             v_y = 0;
-        if (fabs(v_x) <= 0.05 && v_y <= 0 && v_y >= -0.05)
+        if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
         {
             _LocationState = reset_timer;
             flag = TRUE;
@@ -103,9 +103,9 @@ void Strategy::StrategyLocalization()
         v_y = v_y_temp;
         if(fabs(v_x) <= 0.05)                   // if x is near the target x of velocity will be zero
             v_x = 0;
-        else if(v_y <= 0 && v_y >= -0.05)       // if y is near the target y of velocity will be zero
+        else if(fabs(v_y) <= 0.05)       // if y is near the target y of velocity will be zero
             v_y = 0;
-        if (fabs(v_x) <= 0.05 && v_y <= 0 && v_y >= -0.05)
+        if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
         {
             if (_CurrentTarget == 4)
                 _LocationState = finish;

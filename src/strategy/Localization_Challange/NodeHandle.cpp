@@ -54,7 +54,7 @@ void NodeHandle::subRobotPose(const geometry_msgs::PoseWithCovarianceStamped::Co
 }
 void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &msg)
 {
-    double _radius = 0.05;
+    double _radius = 0.3;
     for (int i = 0; i < 5; i++)
     {
         _Location->LocationPoint[i].y = -msg->data[i * 2] / 100;
@@ -67,8 +67,8 @@ void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &m
             _Location->MiddlePoint[i].angle = atan2(_Location->LocationPoint[i].y + _Location->LocationPoint[i + 1].y, _Location->LocationPoint[i].x + _Location->LocationPoint[i + 1].x) * RAD2DEG;
         else
             _Location->MiddlePoint[i].angle = _Location->LocationPoint[i].angle;
-        _Location->MiddlePoint[i].x = 0.5 * cos(_Location->MiddlePoint[i].angle * DEG2RAD);
-        _Location->MiddlePoint[i].y = 0.5 * sin(_Location->MiddlePoint[i].angle * DEG2RAD);
+        _Location->MiddlePoint[i].x = _radius * cos(_Location->MiddlePoint[i].angle * DEG2RAD);
+        _Location->MiddlePoint[i].y = _radius * sin(_Location->MiddlePoint[i].angle * DEG2RAD);
     }
 }
 void NodeHandle::subIMU(const imu_3d::inertia::ConstPtr &msg)
@@ -78,7 +78,6 @@ void NodeHandle::subIMU(const imu_3d::inertia::ConstPtr &msg)
 void NodeHandle::pubSpeed(Environment *Env)
 {
     Transfer(Env);
-    // VelocityPlanning(Env);
     geometry_msgs::Twist SpeedMsg;
     SpeedMsg.linear.x = Env->Robot.v_x;
     SpeedMsg.linear.y = Env->Robot.v_y;
