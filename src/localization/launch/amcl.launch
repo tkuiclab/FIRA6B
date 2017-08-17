@@ -13,7 +13,7 @@
     <param name="tf_broadcast" value="true"/>
 
     <param name="min_particles" value ="100"/>
-    <param name="max_particles" value ="5000"/>
+    <param name="max_particles" value ="1000"/>
     <param name="update_min_d" value="0.03"/>
     <param name="update_min_a" value="π/6.0"/>
     <param name="save_pose_rate" value="90"/>
@@ -26,11 +26,11 @@
     <param name="initial_cov_yy" value="0.5 * 0.5"/>
     <param name="initial_cov_aa" value="（π/ 12）*（π/ 12）"/>
     <param name="odom_model_type" value="omni"/>	//tu , nimbro
-    <param name="odom_alpha1" value="3"/>
-    <param name="odom_alpha2" value="3"/>
-    <param name="odom_alpha3" value="3"/>
-    <param name="odom_alpha4" value="3"/>
-    <param name="odom_alpha5" value="3"/>
+    <param name="odom_alpha1" value="0.2"/>
+    <param name="odom_alpha2" value="0.2"/>
+    <param name="odom_alpha3" value="0.8"/>
+    <param name="odom_alpha4" value="0.8"/>
+    <param name="odom_alpha5" value="0.2"/>
     <!--Laser model parameters-->
     <!--likelihood_field model uses only 2: z_hit and z_rand.-->
     <param name="laser_z_hit" value="0.9"/>
@@ -39,7 +39,7 @@
     <param name="laser_likelihood_max_dist" value="1.0"/>
     <param name="resample_interval" value="1"/>
     <param name="transform_tolerance" value="0.1"/>
-    <param name="recovery_alpha_slow" value="0.001"/>
-    <param name="recovery_alpha_fast" value="0.1"/>
+    <param name="recovery_alpha_slow" value="0.0"/>
+    <param name="recovery_alpha_fast" value="0.0"/>
   </node>
 </launch>

@@ -87,15 +87,11 @@ void Strategy::StrategyLocalization()
         flag = FALSE;
         v_x = (_Location->LocationPoint[_CurrentTarget].x) - Robot.ball.x;
         v_y = (_Location->LocationPoint[_CurrentTarget].y) - Robot.ball.y;
-        printf("vx=%lf\tvy=%lf\n",v_x,v_y);
-        v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
-        v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
-        v_x = v_x_temp;
-        v_y = v_y_temp;
-        printf("vx'=%lf\tvy'=%lf\n",v_x,v_y);
+//        v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
+//        v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
+//        v_x = v_x_temp;
+//        v_y = v_y_temp;
         Normalization(v_yaw);
-        if (fabs(v_yaw) < 3)
-            v_yaw = 0;
         if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
         {
             _LocationState = back;
@@ -107,10 +103,10 @@ void Strategy::StrategyLocalization()
         flag = FALSE;
         v_x = (_Location->MiddlePoint[_CurrentTarget].x) - Robot.ball.x;
         v_y = (_Location->MiddlePoint[_CurrentTarget].y) - Robot.ball.y;
-        v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
-        v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
-        v_x = v_x_temp;
-        v_y = v_y_temp;
+//        v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
+//        v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
+//        v_x = v_x_temp;
+//        v_y = v_y_temp;
         if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
         {
             if (_CurrentTarget == 4)
