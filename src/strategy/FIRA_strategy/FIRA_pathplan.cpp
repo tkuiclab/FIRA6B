@@ -1129,16 +1129,9 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     if(op_angle_dr>-60&&op_angle_dr<60){
         shoot = 0;
     }else{
-<<<<<<< HEAD
-        if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=3){
-            Shoot_Current_time = ros::Time::now().toSec();
-            if(fabs(Shoot_Current_time-Shoot_Begin_time)>0){
-                printf("shoot\n");
-=======
         if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=General_PathPlan[9]){
             Shoot_Current_time = ros::Time::now().toSec();
             if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[8]){
->>>>>>> afee69bb5fbad875b2f303b55066050d223c4ff6
                 shoot = SPlanning_Velocity[10];
             }else{
                 shoot = 0;
@@ -1845,26 +1838,16 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
     double goal_min = env.home[r_number].goal_edge.min;
     double gla_angle = env.home[r_number].goal_large_area.angle;
     if(op_angle_dr>-60&&op_angle_dr<60){
-        printf("cant shoot\n");
         shoot = 0;
     }else{
-<<<<<<< HEAD
-        if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=3){
-            Shoot_Current_time = ros::Time::now().toSec();
-            if(fabs(Shoot_Current_time-Shoot_Begin_time)>0){
-                printf("shoot\n");
-=======
         if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=General_PathPlan[11]){
             Shoot_Current_time = ros::Time::now().toSec();
             if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[10]){
->>>>>>> afee69bb5fbad875b2f303b55066050d223c4ff6
                 shoot = SPlanning_Velocity[10];
             }else{
-                printf("cant shoot\n");
                 shoot = 0;
             }
         }else{
-            printf("cant shoot\n");
             shoot = 0;
         }
     }
@@ -4057,7 +4040,7 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 //            }
 //            env.home[r_number].v_yaw = transform_obstacle_angle;
 //        }
-        if(distance_dr<4&&Straight_Attack_Flag==1){
+        if(distance_dr<5&&Straight_Attack_Flag==1){
             Straight_Attack_Flag=0;
         }
 

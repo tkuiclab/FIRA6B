@@ -412,11 +412,14 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
 
         Current_time = ros::Time::now().toSec();// main time
 
-        if(fabs(Current_time-Begin_time)<=3&&state_attack==state_Attack){// if enter attack state in 3 sec, can use special movement
+        if(fabs(Current_time-Begin_time)<=3.5&&state_attack==state_Attack){// if enter attack state in 3 sec, can use special movement
             Special_Movement_Flag = 1;
         }
         if(Special_Movement_Flag == 1){// if special movement open, start counting time from 0 to Continue_Time, even you lost ball to chase
             Movement_Current_time = ros::Time::now().toSec();
+            if(fabs(Movement_Current_time-Movement_Begin_time)<0.3&&(state_attack==state_Attack)){
+                actionAry[robotIndex] = action_Forward;
+            }
         }else{
             Movement_Current_time = ros::Time::now().toSec();
             Movement_Begin_time = ros::Time::now().toSec();
