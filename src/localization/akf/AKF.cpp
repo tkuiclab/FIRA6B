@@ -20,7 +20,8 @@ AKF::AKF(int argc,char** argv){
 }
 void AKF::AKF_function(pose amcl_pose, pose ekf_pose){
     _kalman.mea[0][0] = ekf_pose.x;           
-    _kalman.mea[0][1] = ekf_pose.y-0.26;          
+    _kalman.mea[0][1] = ekf_pose.y;   
+    // _kalman.mea[0][1] = ekf_pose.y-0.26;       
     _kalman.mea[1][0] = amcl_pose.x;              
     _kalman.mea[1][1] = amcl_pose.y;            
     for(int i=0; i<2; i++)
@@ -32,16 +33,16 @@ void AKF::AKF_function(pose amcl_pose, pose ekf_pose){
     _kalman.mea_p[1][1] = _kalman.mea[1][1];
     for(int i=0; i<2; i++)
         for(int j=0; j<2; j++){
-            _kalman.kg[i][j] = (_kalman.a[i]*_kalman.kg[i][j]+pow(_kalman.fp[i][j],2.0))/
-            (_kalman.a[i]*(1+_kalman.kg[i][j])+pow(_kalman.fp[i][j],2.0));
+            _kalman.kg[i][j] = (_kalman.a[i]*_kalman.kg[i][j]+pow(_kalman.fp[i][j],2))/
+            (_kalman.a[i]*(1+_kalman.kg[i][j])+pow(_kalman.fp[i][j],2));
             _kalman.est[j] = _kalman.est[j]+(_kalman.a[i]*_kalman.kg[i][j]+_kalman.fp[i][j])*
             (_kalman.mea[i][j]-_kalman.est[j])/(_kalman.a[i]*(1+_kalman.kg[i][j])+_kalman.fp[i][j]);
         }
-    printf("amcl.x=%d amcl_y=%d\n",(int)(_kalman.mea[1][0]*100),(int)(_kalman.mea[1][1]*100));
-    printf("ekf.x=%d ekf_y=%d\n",(int)(_kalman.mea[0][0]*100),(int)(_kalman.mea[0][1]*100));
-    printf("akf.x=%d akf_y=%d\n",(int)(_kalman.est[0]*100),(int)(_kalman.est[1]*100));
+    printf("amcl.x=%dcm\tamcl_y=%dcm\n",(int)(_kalman.mea[1][0]*100),(int)(_kalman.mea[1][1]*100));
+    printf("ekf.x=%dcm\tekf_y=%dcm\n",(int)(_kalman.mea[0][0]*100),(int)(_kalman.mea[0][1]*100));
+    printf("akf.x=%dcm\takf_y=%dcm\n",(int)(_kalman.est[0]*100),(int)(_kalman.est[1]*100));
     // static int counter = 0;
-    // printf("%d : _kalman.mea[0][0]=%lf\t_kalman.est[0]=%lf\n",++counter,_kalman.mea[0][0],_kalman.est[0]);               
+    // printf("%d\n",++counter);               
 }
 pose AKF::getAKF_pose(){
     pose msg;
@@ -54,10 +55,10 @@ pose AKF::getAKF_pose(){
 *******************************************************/
 void AKF::_InitParam(){
     printf("Param initialize!!\n");
-    double kp = 8;      // kalman parameter
-    _kalman.w[0] = 1 / pow(4.0,kp);       // kalman parameter w for ekf
+    double kp = 4;                        // kalman parameter
+    _kalman.w[0] = 1 / pow(2.0,kp);       // kalman parameter w for ekf
     _kalman.w[1] = 1 / pow(2.0,kp);       // kalman parameter w for amcl
-    _kalman.a[0] = pow(4.0,kp);           // kalman parameter a for ekf 
+    _kalman.a[0] = pow(2.0,kp);           // kalman parameter a for ekf 
     _kalman.a[1] = pow(2.0,kp);           // kalman parameter a for amcl
     for(int i=0; i<2; i++)
         for(int j=0; j<2; j++){

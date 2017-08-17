@@ -7,7 +7,7 @@ int main(int argc, char **argv){
     NodeHandle nodehandle(argc, argv);
     AKF kalmanfilter(argc, argv);
     pose amcl,ekf,akf;
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(100);
     while(ros::ok()){
         amcl = nodehandle.GetAmclPose();
         ekf = nodehandle.GetEkfPose();

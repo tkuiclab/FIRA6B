@@ -62,6 +62,8 @@ class Strategy
     {
         forward,
         back,
+        wait,
+        reset_timer,
         finish,
         chase,
         turn,
