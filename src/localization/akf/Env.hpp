@@ -13,7 +13,7 @@
 #define _ENV_HPP_
 #define AMCL_ROBOTPOSE_TOPIC "/amcl_pose"
 #define EKF_ROBOTPOSE_TOPIC "/robot_pose_ekf/odom_combined"
-
+#define AKF_ROBOTPOSE_TOPIC "/akf_pose"
 typedef struct{
     double x;
     double y;

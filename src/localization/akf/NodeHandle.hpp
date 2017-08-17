@@ -22,8 +22,9 @@ class NodeHandle{
 public:
 NodeHandle(int argc,char** argv);
 ~NodeHandle(){};
-pose get_amcl_pose();
-pose get_ekf_pose();
+pose GetAmclPose();
+pose GetEkfPose();
+void PubAkfPose(pose);
 private:
 pose _amcl_pose;
 pose _ekf_pose;
@@ -31,10 +32,10 @@ pose _final_pose;
 ros::NodeHandle *node;
 ros::Subscriber EKF_ROBOTPOSE;
 ros::Subscriber AMCL_ROBOTPOSE;
-void ros_comms_init();
-void InitParam();
-void subAmclRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
-void subEkfRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
-
+ros::Publisher AKF_ROBOTPOSE;
+void _ros_comms_init();
+void _InitParam();
+void _SubAmclRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
+void _SubEkfRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
 };
 #endif

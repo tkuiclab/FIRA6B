@@ -23,10 +23,10 @@ public:
     AKF(int argc, char** argv);
     ~AKF(){};
     void AKF_function(pose, pose);
+    pose getAKF_pose();
 private:
-    void InitParam();
+    void _InitParam();
     Kalman _kalman;
-    pose _final_pose;
 };
 
 #endif

@@ -6,12 +6,15 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "AKF_node");
     NodeHandle nodehandle(argc, argv);
     AKF kalmanfilter(argc, argv);
-    pose amcl,ekf;
-    ros::Rate loop_rate(10);
+    pose amcl,ekf,akf;
+    ros::Rate loop_rate(50);
     while(ros::ok()){
-        amcl = nodehandle.get_amcl_pose();
-        ekf = nodehandle.get_ekf_pose();
+        amcl = nodehandle.GetAmclPose();
+        ekf = nodehandle.GetEkfPose();
         kalmanfilter.AKF_function(amcl,ekf);
+        akf = kalmanfilter.getAKF_pose();
+        // printf("x=%lf\ty=%lf\n",akf.x,akf.y);
+        nodehandle.PubAkfPose(akf);
         loop_rate.sleep();
         ros::spinOnce();
     }
