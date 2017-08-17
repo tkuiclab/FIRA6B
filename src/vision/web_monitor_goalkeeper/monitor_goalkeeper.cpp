@@ -659,7 +659,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     }
   }
 ////////////////////////////////中心點：被障礙物阻擋時偏移修正///////////////////////////////////////////
-  if(color == BLUEITEM || color == YELLOWITEM){
+  /*if(color == BLUEITEM || color == YELLOWITEM){
 		//找最大範圍
 		int find_gap[2][7]={0};
 		int start = obj_.dis_min;
@@ -807,7 +807,7 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
       obj_.fix_ang_min = obj_.ang_min;
       obj_.fix_ang_max = obj_.ang_max; 
     }
-  }
+  }*/
 }
 void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
   ellipse(frame_, Point(center_x, center_y), Size(obj_.dis_min, obj_.dis_min), 0, 360 - obj_.ang_max, 360 - obj_.ang_min, Scalar(255, 255, 0), 1);
@@ -881,7 +881,7 @@ void InterfaceProc::draw_ellipse(Mat &frame_, object_Item &obj_, int color) {
 		}	
 	}
 */
-////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
     }
   }
 }

@@ -15,6 +15,7 @@ private:
     int state_Goalkeeper;
     int state_cornerkick;
     int Sidespeedup_timer_reset;
+    int shootblock_timer_reset;
     // ========== test change roleAry[ i ] to escape from cornerkick and try to reset the state  begin ==========
     bool EscapeCornerKick[3] = {false,false,false};
     std::vector<double> Attack_Strategy;

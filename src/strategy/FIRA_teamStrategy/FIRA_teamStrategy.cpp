@@ -144,15 +144,13 @@ void FIRA_teamStrategy_class::role_PenaltyKick(){
 
     static ros::Time start = ros::Time::now();
     ros::Time current = ros::Time::now();
+    if(Goalkeeper_timer_reset == 1){
+        start = ros::Time::now();   
+        Goalkeeper_timer_reset = 0;
+    }
     double start_time = (double)(start.sec+(double)start.nsec/1000000000);
     double current_time = (double)(current.sec+(double)current.nsec/1000000000);
     double const int_calculate_time = 1;
-
-    if(Goalkeeper_timer_reset == 1){
-        start.sec = current.sec;
-        start.nsec = current.nsec;
-        Goalkeeper_timer_reset = 0;
-    }
 
     if(current_time-start_time > int_calculate_time){ 
         roleAry[0] = Role_Goalkeeper;
@@ -182,15 +180,15 @@ void FIRA_teamStrategy_class::role_GoalKick(){
 
     static ros::Time start = ros::Time::now();
     ros::Time current = ros::Time::now();
+    if(Goalkeeper_timer_reset == 1){
+        start = ros::Time::now();
+        Goalkeeper_timer_reset = 0;
+    }
     double start_time = (double)(start.sec+(double)start.nsec/1000000000);
     double current_time = (double)(current.sec+(double)current.nsec/1000000000);
     double const int_calculate_time = 2.5;
 
-    if(Goalkeeper_timer_reset == 1){
-        start.sec = current.sec;
-        start.nsec = current.nsec;
-        Goalkeeper_timer_reset = 0;
-    }
+
 
     if(current_time-start_time > int_calculate_time){ 
         roleAry[0] = Role_Goalkeeper;

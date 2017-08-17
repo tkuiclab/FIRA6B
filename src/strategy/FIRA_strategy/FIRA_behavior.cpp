@@ -186,37 +186,36 @@ void FIRA_behavior_class::StateSideSpeedUp(int r_number){
          ///=========== CHANGE TO CHASE ===========
               ///========== USE TIMER ==========
 
-        static ros::Time start = ros::Time::now();
-        ros::Time current = ros::Time::now();
-        double start_time = (double)(start.sec+(double)start.nsec/1000000000);
-        double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-        double const int_calculate_time = 1.5;
+    static ros::Time start = ros::Time::now();
+    ros::Time current = ros::Time::now();
+    if(Sidespeedup_timer_reset == 1){
+        start = ros::Time::now();
+        Sidespeedup_timer_reset = 0;
+    }
+    double start_time = (double)(start.sec+(double)start.nsec/1000000000);
+    double current_time = (double)(current.sec+(double)current.nsec/1000000000);
+    double const int_calculate_time = 1.5;
 
-        int chaseCase = StrategySelection[0];
-        int SchaseCase = StrategySelection[1];
+    int chaseCase = StrategySelection[0];
+    int SchaseCase = StrategySelection[1];
 
-        double angle_stopsidespeedup =  5;    //Side_Speed_UP[2] ;
-        if(chaseCase){
-            if( distance_br <= 0.5 ){
-                if( fabs(alpha) < angle_stopsidespeedup ){
-                    state_attack=state_Chase;  
-                    Sidespeedup_timer_reset = 1; 
-                }
+    double angle_stopsidespeedup =  5;    //Side_Speed_UP[2] ;
+    if(chaseCase){
+        if( distance_br <= 0.5 ){
+            if( fabs(alpha) < angle_stopsidespeedup ){
+                state_attack=state_Chase;  
+                Sidespeedup_timer_reset = 1; 
             }
-        }/*else if(SchaseCase){
-            //直線追球在追到球前不須減速
-        }*/
-
-        if(Sidespeedup_timer_reset == 1){
-          start.sec = current.sec;
-          start.nsec = current.nsec;
-          Sidespeedup_timer_reset = 0;
         }
+    }/*else if(SchaseCase){
+        //直線追球在追到球前不須減速
+    }*/
 
-        if(current_time-start_time > int_calculate_time){   //1.5sec reset
-            Sidespeedup_timer_reset = 1; 
-            state_attack = state_Chase;
-        }  
+
+    if(current_time-start_time > int_calculate_time){   //1.5sec reset
+        Sidespeedup_timer_reset = 1; 
+        state_attack = state_Chase;
+    }  
 }
 
 void FIRA_behavior_class::StateZoneAttack(int r_number){
@@ -390,28 +389,20 @@ void FIRA_behavior_class::StateGoalkeeperPenaltyKick(int r_number){
 
 void FIRA_behavior_class::StateGoalkeeperShootBlock(int r_number){
     double ball_dis = env.home[r_number].ball.distance;
-    // double ball_angle = env.home[r_number].ball.angle;
-    // double opgoal_dis = env.home[r_number].op_goal.distance;
-    // double opgoal_angle = env.home[r_number].op_goal.angle;
-    // double opgoal_left = env.home[r_number].opgoal_edge.left_dis;
-    // double opgoal_right = env.home[r_number].opgoal_edge.right_dis;
-    // int goalkeeper_move = env.home[r_number].goalkeeper_move;
-    
-    // double ball_to_opgoal_dis;
-    // ball_to_opgoal_dis = (opgoal_angle*ball_angle)>0 ? fabs(opgoal_angle-ball_angle) : fabs(opgoal_angle)+fabs(ball_angle);
-    // if(ball_to_opgoal_dis > 180){
-    //     ball_to_opgoal_dis = 360 - ball_to_opgoal_dis;
-    // }
-    // ball_to_opgoal_dis =sqrt((opgoal_dis*opgoal_dis)+(ball_dis*ball_dis)-(2*opgoal_dis*ball_dis*cos(ball_to_opgoal_dis*deg2rad)));
-    // double opgoal_angle_reverse;
-    // if(opgoal_angle > 0){
-    //     opgoal_angle_reverse = opgoal_angle - 180;
-    // }else{
-    //     opgoal_angle_reverse = 180 + opgoal_angle;
-    // }
 
-    if(ball_dis < 2){
-        state_Goalkeeper = state_Goalkeeper_push;
+    static ros::Time start = ros::Time::now();
+    ros::Time current = ros::Time::now();
+    if(shootblock_timer_reset == 1){
+        start = ros::Time::now();
+        shootblock_timer_reset = 0;
+    }
+    double start_time = (double)(start.sec+(double)start.nsec/1000000000);
+    double current_time = (double)(current.sec+(double)current.nsec/1000000000);
+    double const shootblock_calculate_time = 0.8;
+
+    if(ball_dis < 2 || shootblock_calculate_time < (current_time - start_time) ){
+        state_Goalkeeper = state_Goalkeeper_block;
+        shootblock_timer_reset = 1;
     }
 }
 //###################################################//
@@ -585,6 +576,8 @@ void FIRA_behavior_class::behavior_Halt(int robotIndex){
     state_cornerkick = state_CornerKick;
     state_attack = state_Init;
     state_Goalkeeper = state_Goalkeeper_init;
+    Sidespeedup_timer_reset = 1;
+    shootblock_timer_reset = 1;
          ///=========================================
 }
 void FIRA_behavior_class::behavior_AvoidBarrier(int robotIndex){
