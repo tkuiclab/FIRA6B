@@ -27,7 +27,7 @@
 #define SAVE_PARAM_TOPIC "/FIRA/SaveParam"
 #define VISION_TOPIC "/vision/object"
 #define SPEED_TOPIC "/motion/cmd_vel"
-#define ROBOTPOSE_TOPIC "/amcl_pose"
+#define ROBOTPOSE_TOPIC "/akf_pose"
 #define LOCATIONPOINT_TOPIC "/FIRA/Location"
 // Strategy.cpp
 #define STATE_HALT 0

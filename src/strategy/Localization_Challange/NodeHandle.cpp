@@ -49,6 +49,7 @@ void NodeHandle::subVision(const vision::Object::ConstPtr &msg)
 }
 void NodeHandle::subRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &msg)
 {
+    // printf("X=%lf\ty=%lf\n",_Env->Robot.pos.x,_Env->Robot.pos.y);
     _Env->Robot.pos.x = msg->pose.pose.position.x;
     _Env->Robot.pos.y = msg->pose.pose.position.y;
 }
@@ -130,10 +131,6 @@ void NodeHandle::Transfer(Environment *Env)
         Env->Robot.v_y = VelocityLength * sin(alpha * DEG2RAD);
     }
     Env->Robot.v_yaw = AngularVelocity;
-}
-void NodeHandle::VelocityPlanning(Environment *Env)
-{
-    //
 }
 void NodeHandle::getParameter()
 {
