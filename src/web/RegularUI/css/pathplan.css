@@ -81,21 +81,24 @@
     color: #1A1A65;
 }
 
-#PathplanButton1 table{
+#PathplanButton1 table {
     width: 100%;
     height: 100%;
     text-align: center;
 }
-#PathplanButton2 table{
+
+#PathplanButton2 table {
     width: 100%;
     height: 100%;
     text-align: center;
 }
-#PathplanButton3 table{
+
+#PathplanButton3 table {
     width: 100%;
     height: 100%;
     text-align: center;
 }
+
 
 /*====================================================*/
 
@@ -157,14 +160,14 @@
     color: #1A1A65;
 }
 
-#TypeUAttack1 {
+#PGoalkeeper1 {
     background-image: none;
     /*background-color: #99CCFF;*/
     font-size: 14px;
     color: #663D00;
 }
 
-#TypeUAttack1.ui-state-active {
+#PGoalkeeper1.ui-state-active {
     background-color: #FFCC00;
     font-size: 14px;
     color: #1A1A65;
@@ -222,7 +225,9 @@
     color: #1A1A65;
 }
 
+
 /*Robot2*/
+
 #AttackStrategy2 {
     background-image: none;
     /*background-color: #99CCFF;*/
@@ -340,7 +345,9 @@
     color: #1A1A65;
 }
 
+
 /*Robot3*/
+
 #AttackStrategy3 {
     background-image: none;
     /*background-color: #99CCFF;*/
@@ -457,6 +464,8 @@
     font-size: 14px;
     color: #1A1A65;
 }
+
+
 /*====================================================*/
 
 
@@ -481,7 +490,7 @@
     width: 50%;
 }
 
-#TypeUAttackModule1 td {
+#PGoalkeeperModule1 td {
     width: 50%;
 }
 
@@ -500,6 +509,8 @@
 #PenaltyKickModule1 td {
     width: 50%;
 }
+
+
 /*Robot2*/
 
 #AttackStrategyModule2 td {
@@ -538,6 +549,7 @@
     width: 50%;
 }
 
+
 /*Robot3*/
 
 #AttackStrategyModule3 td {
@@ -575,6 +587,8 @@
 #PenaltyKickModule3 td {
     width: 50%;
 }
+
+
 /*=====================================================*/
 
 
@@ -611,7 +625,7 @@
     overflow: scroll;
 }
 
-#TypeUAttackModule1 {
+#PGoalkeeperModule1 {
     height: 200px;
     text-align: left;
     border-style: solid;
@@ -645,6 +659,8 @@
     border-style: solid;
     overflow: scroll;
 }
+
+
 /*Robot2*/
 
 #AttackStrategyModule2 {
@@ -710,6 +726,7 @@
     overflow: scroll;
 }
 
+
 /*Robot3*/
 
 #AttackStrategyModule3 {
@@ -774,8 +791,13 @@
     border-style: solid;
     overflow: scroll;
 }
+
+
 /*=====================================================*/
+
+
 /*form-group*/
+
 #AttackStrategyModule1.form-group {
     background-color: #ffb6c1;
 }
@@ -787,6 +809,7 @@
 #AttackStrategyModule3.form-group {
     background-color: #b0c4de;
 }
+
 #ChaseStrategyModule1.form-group {
     background-color: #ffb6c1;
 }
@@ -823,7 +846,7 @@
     background-color: #b0c4de;
 }
 
-#TypeUAttackModule1.form-group {
+#PGoalkeeperkModule1.form-group {
     background-color: #ffb6c1;
 }
 
@@ -835,7 +858,7 @@
     background-color: #b0c4de;
 }
 
-#TypeUAttackModule1.form-group {
+#PGoalkeeperModule1.form-group {
     background-color: #ffb6c1;
 }
 
@@ -894,6 +917,7 @@
 #PenaltyKickModule3.form-group {
     background-color: #b0c4de;
 }
+
 
 /*=====================================================*/
 

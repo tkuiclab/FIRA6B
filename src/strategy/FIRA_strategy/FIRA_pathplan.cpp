@@ -1129,10 +1129,16 @@ void FIRA_pathplan_class::strategy_Dorsad_Attack(int Robot_index){
     if(op_angle_dr>-60&&op_angle_dr<60){
         shoot = 0;
     }else{
+<<<<<<< HEAD
         if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=3){
             Shoot_Current_time = ros::Time::now().toSec();
             if(fabs(Shoot_Current_time-Shoot_Begin_time)>0){
                 printf("shoot\n");
+=======
+        if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=General_PathPlan[9]){
+            Shoot_Current_time = ros::Time::now().toSec();
+            if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[8]){
+>>>>>>> afee69bb5fbad875b2f303b55066050d223c4ff6
                 shoot = SPlanning_Velocity[10];
             }else{
                 shoot = 0;
@@ -1842,10 +1848,16 @@ void FIRA_pathplan_class::strategy_Escape_Attack(int r_number){
         printf("cant shoot\n");
         shoot = 0;
     }else{
+<<<<<<< HEAD
         if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=3){
             Shoot_Current_time = ros::Time::now().toSec();
             if(fabs(Shoot_Current_time-Shoot_Begin_time)>0){
                 printf("shoot\n");
+=======
+        if((goal_max>=0&&goal_min<=0)&&fabs(gla_angle)<=General_PathPlan[11]){
+            Shoot_Current_time = ros::Time::now().toSec();
+            if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[10]){
+>>>>>>> afee69bb5fbad875b2f303b55066050d223c4ff6
                 shoot = SPlanning_Velocity[10];
             }else{
                 printf("cant shoot\n");
@@ -2226,34 +2238,6 @@ void FIRA_pathplan_class::strategy_Support_Positioning(int r_number){
 
 void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
 
-    double distance_br = env.home[r_number].ball.distance;
-    double angle_br = env.home[r_number].ball.angle;
-
-    if(fabs(angle_br) <= 0.00001) angle_br=0.00001;
-    double c_distance_br = sqrt((distance_br * distance_br)+(half_robot*half_robot) - (2*distance_br * half_robot*cos(angle_br*deg2rad)));
-    int sign=1;
-    if(angle_br < 0) sign=(-1);
-    double c_angle_br = sign*(180- rad2deg*acos(((c_distance_br * c_distance_br)+(half_robot*half_robot)-(distance_br * distance_br))/(2*c_distance_br * half_robot)));
-    if(angle_br==0.00001) c_angle_br = angle_br;
-
-    double vectorbr_x = -c_distance_br * sin(c_angle_br * deg2rad);
-    double vectorbr_y = c_distance_br * cos(c_angle_br * deg2rad);
-
-    printf("distance_br-Chase_Strategy[4]=%f\n",distance_br-Chase_Strategy[4]);
-    if(fabs(angle_br)>15&&distance_br<0.7){
-        env.home[r_number].v_x = vectorbr_x*(distance_br-Chase_Strategy[4]-0.2);
-        env.home[r_number].v_y = vectorbr_y*(distance_br-Chase_Strategy[4]-0.2);
-        if(distance_br-Chase_Strategy[4]<0.2){
-            printf("I WANT STOP\n");
-            env.home[r_number].v_x = 0;
-            env.home[r_number].v_y = 0;
-        }
-    }else{
-        env.home[r_number].v_x = vectorbr_x;
-        env.home[r_number].v_y = vectorbr_y;
-    }
-    env.home[r_number].v_yaw = angle_br*2;
-    shoot = 0;
 
 
 }

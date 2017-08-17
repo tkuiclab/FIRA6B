@@ -334,13 +334,13 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         run_onetime = 1;
         int chaseCase = Strategy_Selection[0];
         int SchaseCase = Strategy_Selection[1];
-        int attackCase = Strategy_Selection[2];
-        int SattackCase = Strategy_Selection[3];
-        int DattackCase = Strategy_Selection[4];
-        int ShootCase = Strategy_Selection[5];
-        int EscapeCase = Strategy_Selection[6];
-        int StraigtAttackCase = Strategy_Selection[7];
-        int SlowchaseCase = 0;
+        int SlowchaseCase = Strategy_Selection[2];
+        int attackCase = Strategy_Selection[3];
+        int SattackCase = Strategy_Selection[4];
+        int DattackCase = Strategy_Selection[5];
+        int ShootCase = Strategy_Selection[6];
+        int EscapeCase = Strategy_Selection[7];
+        int StraigtAttackCase = Strategy_Selection[8];
         double rushDistance = TypeS_Attack[2];
 
         switch(state_attack){
@@ -417,9 +417,12 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         }
         if(Special_Movement_Flag == 1){// if special movement open, start counting time from 0 to Continue_Time, even you lost ball to chase
             Movement_Current_time = ros::Time::now().toSec();
+        }else{
+            Movement_Current_time = ros::Time::now().toSec();
+            Movement_Begin_time = ros::Time::now().toSec();
         }
-        if((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time&&fabs(Movement_Current_time-Movement_Begin_time)>0.3)&&(state_attack==state_Attack&&Special_Movement_Flag == 1)){
-            printf("special movement time left : %f\n",Continue_Time-fabs(Movement_Current_time-Movement_Begin_time));
+        if((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time+0.3&&fabs(Movement_Current_time-Movement_Begin_time)>0.3)&&(state_attack==state_Attack&&Special_Movement_Flag == 1)){
+            printf("special movement time left : %f\n",Continue_Time+0.3-fabs(Movement_Current_time-Movement_Begin_time));
             if(Left&&Forward){
                 actionAry[robotIndex] = action_LeftForward;
             }else if(Right&&Forward){

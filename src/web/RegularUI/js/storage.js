@@ -160,21 +160,17 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[0].value = 2.0;
         obj[1].value = 0.2;
     }
-    if (localStorage.getItem("PathplanTypeUAtkStr1") != null) {
-        obj = document.getElementsByName("TypeUAttackElement1");
+    if (localStorage.getItem("PathplanGoalkeeperStr1") != null) {
+        obj = document.getElementsByName("PGoalkeeperElement1");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("PathplanTypeUAtkStr1"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("PathplanGoalkeeperStr1"))[i];
         }
     } else {
-        obj = document.getElementsByName("TypeUAttackElement1");
-        obj[0].value = 0.8;
-        obj[1].value = 1.0;
-        obj[2].value = -90.0;
-        obj[3].value = 90.0;
-        obj[4].value = 0.6;
-        obj[5].value = 0.3;
-        obj[6].value = 10.0;
-        obj[7].value = 20.0;
+        obj = document.getElementsByName("PGoalkeeperElement1");
+        obj[0].value = 0;
+        obj[1].value = 0;
+        obj[2].value = 0;
+        obj[3].value = 0;
     }
     if (localStorage.getItem("PathplanSideSpeedUpStr1") != null) {
         obj = document.getElementsByName("SideSpeedUpElement1");
@@ -472,13 +468,13 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[1].value = 1.0;
         obj[2].value = 1.0;
     }
-    if (localStorage.getItem("BehaviorStateGoalKeeperStr1") != null) {
-        obj = document.getElementsByName("GoalKeeperElement1");
+    if (localStorage.getItem("BehaviorStateGoalkeeperStr1") != null) {
+        obj = document.getElementsByName("GoalkeeperElement1");
         for (var i = 0; i < obj.length; i++) {
-            obj[i].value = JSON.parse(localStorage.getItem("BehaviorStateGoalKeeperStr1"))[i];
+            obj[i].value = JSON.parse(localStorage.getItem("BehaviorStateGoalkeeperStr1"))[i];
         }
     } else {
-        obj = document.getElementsByName("GoalKeeperElement1");
+        obj = document.getElementsByName("GoalkeeperElement1");
         obj[0].value = 0;
         obj[1].value = 0;
         obj[2].value = 0;
