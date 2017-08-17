@@ -52,7 +52,7 @@ void Strategy::StrategyLocalization()
     double absolute_front = imu + 90;
     static int flag = TRUE;
     static int flag_chase = TRUE;
-    double ball_dis = 0.3;            // if you don't want to get information by vision
+    double ball_dis = 0.28;            // if you don't want to get information by vision
     double ball_angle = 0.0;          // if you don't want to get information by vision
     // double ball_dis = _Env->Robot.ball.distance;     //get ball information by vision
     // double ball_angle = _Env->Robot.ball.angle;      //get ball information by vision
