@@ -417,9 +417,12 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         }
         if(Special_Movement_Flag == 1){// if special movement open, start counting time from 0 to Continue_Time, even you lost ball to chase
             Movement_Current_time = ros::Time::now().toSec();
+        }else{
+            Movement_Current_time = ros::Time::now().toSec();
+            Movement_Begin_time = ros::Time::now().toSec();
         }
-        if((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time&&fabs(Movement_Current_time-Movement_Begin_time)>0.3)&&(state_attack==state_Attack&&Special_Movement_Flag == 1)){
-            printf("special movement time left : %f\n",Continue_Time-fabs(Movement_Current_time-Movement_Begin_time));
+        if((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time+0.3&&fabs(Movement_Current_time-Movement_Begin_time)>0.3)&&(state_attack==state_Attack&&Special_Movement_Flag == 1)){
+            printf("special movement time left : %f\n",Continue_Time+0.3-fabs(Movement_Current_time-Movement_Begin_time));
             if(Left&&Forward){
                 actionAry[robotIndex] = action_LeftForward;
             }else if(Right&&Forward){
