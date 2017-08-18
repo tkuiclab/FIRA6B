@@ -52,7 +52,7 @@ void Strategy::StrategyLocalization()
     double absolute_front = imu + 90;
     static int flag = TRUE;
     static int flag_chase = TRUE;
-    double ball_dis = 0.28;            // if you don't want to get information by vision
+    double ball_dis = 0.2;            // if you don't want to get information by vision
     double ball_angle = 0.0;          // if you don't want to get information by vision
     // double ball_dis = _Env->Robot.ball.distance;     //get ball information by vision
     // double ball_angle = _Env->Robot.ball.angle;      //get ball information by vision
@@ -65,6 +65,7 @@ void Strategy::StrategyLocalization()
     double v_x, v_y, v_yaw;
     static int IMU_state = 0;
     double v_x_temp, v_y_temp;
+    double fector;
     Robot.ball.x = Robot.pos.x + ball_dis * cos((absolute_front + ball_angle) * DEG2RAD);
     Robot.ball.y = Robot.pos.y + ball_dis * sin((absolute_front + ball_angle) * DEG2RAD);
     Vector3D vector_turn, vector_tr;
@@ -80,16 +81,21 @@ void Strategy::StrategyLocalization()
         v_y = (_Location->LocationPoint[_CurrentTarget].y) - Robot.ball.y;
         v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
+        Current_time = ros::Time::now().toSec();
+        fector = (Current_time - Begin_time);
         v_x = v_x_temp;
         v_y = v_y_temp;
-        if(fabs(v_x) <= 0.05)
-            v_x = 0;
-        else if(fabs(v_y) <= 0.05)
-            v_y = 0;
-        if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
-        {
-            _LocationState = reset_timer;
-            flag = TRUE;
+        if(fector >= 1){
+            fector = 1;
+            if(fabs(v_x) <= 0.1)
+                v_x = 0;
+            else if(fabs(v_y) <= 0.1)
+                v_y = 0;
+            if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
+            {
+                _LocationState = reset_timer;
+                flag = TRUE;
+            }
         }
         break;
     case back: // Back to middle circle
@@ -101,11 +107,11 @@ void Strategy::StrategyLocalization()
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         v_x = v_x_temp;
         v_y = v_y_temp;
-        if(fabs(v_x) <= 0.05)                   // if x is near the target x of velocity will be zero
+        if(fabs(v_x) <= 0.1)                   // if x is near the target x of velocity will be zero
             v_x = 0;
-        else if(fabs(v_y) <= 0.05)       // if y is near the target y of velocity will be zero
+        else if(fabs(v_y) <= 0.1)       // if y is near the target y of velocity will be zero
             v_y = 0;
-        if (fabs(v_x) <= 0.05 && fabs(v_y) <= 0.05)
+        if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
         {
             if (_CurrentTarget == 4)
                 _LocationState = finish;
@@ -127,7 +133,7 @@ void Strategy::StrategyLocalization()
         Current_time = ros::Time::now().toSec();
         v_x = 0;
         v_y = 0;
-        if(Current_time - Begin_time >= 0.25)
+        if(Current_time - Begin_time >= 0.5)
             if(_Last_state == forward)
                 _LocationState = back;
             else
@@ -152,11 +158,11 @@ void Strategy::StrategyLocalization()
         exit(FAULTEXECUTING);
     }
     Normalization(v_yaw);
-    if (imu > 5)
+    if (imu > 1)
         IMU_state = 1;
-    else if (imu < -5)
+    else if (imu < -1)
         IMU_state = 2;
-    else if (fabs(imu) < 3)
+    else if (fabs(imu) < 0.5)
         IMU_state = 0;
     else
         ; //do nothing
