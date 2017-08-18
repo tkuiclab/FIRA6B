@@ -40,6 +40,7 @@ class Strategy
     ///         private member          ///
     void StrategyHalt();
     void StrategyLocalization();
+    void StrategyLocalization2();
     void Forward(RobotData &, double &, double &, double &, double, int &, double, double, double);
     void Turn(RobotData &, double &, double &, double &, double, int &, double);
     void Chase();
@@ -48,8 +49,6 @@ class Strategy
     void MinAngle(std::vector<int> &, std::vector<int> &, int);
     int ThroughPath(int, int);
     void Normalization(double &);
-    void showInfo(RobotData, double);
-    void showInfo(std::vector<int>, double, double, double);
     int _LocationState;
     int _CurrentTarget;
     int _Last_state;
@@ -58,12 +57,12 @@ class Strategy
     LocationStruct *_Location;
     Environment *_Env;
     Parameter *_Param;
+    void showInfo(double, double, double);
+    void showInfo(double, double, std::vector<int>, double, double, double);
     enum state_location
     {
         forward,
         back,
-        wait,
-        reset_timer,
         finish,
         chase,
         turn,

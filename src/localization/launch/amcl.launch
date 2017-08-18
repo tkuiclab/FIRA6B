@@ -12,8 +12,8 @@
     <param name="base_frame_id" value="/base_link"/>
     <param name="tf_broadcast" value="true"/>
 
-    <param name="min_particles" value ="500"/>
-    <param name="max_particles" value ="3000"/>
+    <param name="min_particles" value ="100"/>
+    <param name="max_particles" value ="500"/>
     <param name="update_min_d" value="0.03"/>
     <param name="update_min_a" value="π/6.0"/>
     <param name="save_pose_rate" value="90"/>

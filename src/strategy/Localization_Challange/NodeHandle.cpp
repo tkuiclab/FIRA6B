@@ -25,7 +25,7 @@ void NodeHandle::ros_comms_init()
     SAVEPARAM = node->subscribe<std_msgs::Int32>(SAVE_PARAM_TOPIC, 1000, &NodeHandle::subSaveParam, this);
     VISION = node->subscribe<vision::Object>(VISION_TOPIC, 1, &NodeHandle::subVision, this);
     SPEED = node->advertise<geometry_msgs::Twist>(SPEED_TOPIC, 1000);
-    ROBOTPOSE = node->subscribe<geometry_msgs::PoseWithCovarianceStamped>(ROBOTPOSE_TOPIC, 1000, &NodeHandle::subRobotPose, this);
+    ROBOTPOSE = node->subscribe<geometry_msgs::PoseWithCovarianceStamped>(ROBOTPOSE_TOPIC, 1, &NodeHandle::subRobotPose, this);
     LOCATIONPOINT = node->subscribe<std_msgs::Float32MultiArray>(LOCATIONPOINT_TOPIC, 1000, &NodeHandle::subLocationPoint, this);
     IMU = node->subscribe<imu_3d::inertia>("/imu_3d", 1, &NodeHandle::subIMU, this);
 }
@@ -49,12 +49,13 @@ void NodeHandle::subVision(const vision::Object::ConstPtr &msg)
 }
 void NodeHandle::subRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &msg)
 {
+    printf("x=%lf\ty=%lf\n",msg->pose.pose.position.x,msg->pose.pose.position.y);
     _Env->Robot.pos.x = msg->pose.pose.position.x;
     _Env->Robot.pos.y = msg->pose.pose.position.y;
 }
 void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &msg)
 {
-    double _radius = 0.4;
+    double _radius = 0.2;
     for (int i = 0; i < 5; i++)
     {
         _Location->LocationPoint[i].y = -msg->data[i * 2] / 100;
@@ -67,8 +68,8 @@ void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &m
             _Location->MiddlePoint[i].angle = atan2(_Location->LocationPoint[i].y + _Location->LocationPoint[i + 1].y, _Location->LocationPoint[i].x + _Location->LocationPoint[i + 1].x) * RAD2DEG;
         else
             _Location->MiddlePoint[i].angle = _Location->LocationPoint[i].angle;
-        _Location->MiddlePoint[i].x = _radius * cos(_Location->MiddlePoint[i].angle * DEG2RAD);
-        _Location->MiddlePoint[i].y = _radius * sin(_Location->MiddlePoint[i].angle * DEG2RAD);
+        _Location->MiddlePoint[i].x = 0.5 * cos(_Location->MiddlePoint[i].angle * DEG2RAD);
+        _Location->MiddlePoint[i].y = 0.5 * sin(_Location->MiddlePoint[i].angle * DEG2RAD);
     }
 }
 void NodeHandle::subIMU(const imu_3d::inertia::ConstPtr &msg)
@@ -78,6 +79,7 @@ void NodeHandle::subIMU(const imu_3d::inertia::ConstPtr &msg)
 void NodeHandle::pubSpeed(Environment *Env)
 {
     Transfer(Env);
+    // VelocityPlanning(Env);
     geometry_msgs::Twist SpeedMsg;
     SpeedMsg.linear.x = Env->Robot.v_x;
     SpeedMsg.linear.y = Env->Robot.v_y;
@@ -105,7 +107,7 @@ void NodeHandle::Transfer(Environment *Env)
     else if (Distance > DistanceMax)
         VelocityLength = VelocityMax;
     else if (Distance < DistanceMin)
-        VelocityLength = 8;
+        VelocityLength = VelocityMin;
     else
         VelocityLength = (VelocityMax - VelocityMin) * (cos(pi * ((Distance - DistanceMin) / (DistanceMax - DistanceMin) - 1)) + 1) / 2 + VelocityMin;
     if (fabs(angle) < 0.1)
@@ -129,6 +131,10 @@ void NodeHandle::Transfer(Environment *Env)
         Env->Robot.v_y = VelocityLength * sin(alpha * DEG2RAD);
     }
     Env->Robot.v_yaw = AngularVelocity;
+}
+void NodeHandle::VelocityPlanning(Environment *Env)
+{
+    //
 }
 void NodeHandle::getParameter()
 {

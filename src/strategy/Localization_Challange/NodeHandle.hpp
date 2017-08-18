@@ -66,5 +66,6 @@ class NodeHandle : public BaseNode
     void subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &);
     void subIMU(const imu_3d::inertia::ConstPtr &);
     void Transfer(Environment *);
+    void VelocityPlanning(Environment *);
 };
 #endif
