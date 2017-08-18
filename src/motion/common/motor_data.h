@@ -6,6 +6,7 @@ typedef struct{
 	double* y_speed;
 	double* yaw_speed;
 	int* shoot_power;
+    unsigned char* hold_ball;
 }robot_command;
 
 typedef struct{
@@ -25,7 +26,7 @@ typedef struct{
 	unsigned char* head2;
 	int* w1;
 	int* w2;
-	int* w3;
+    int* w3;
 	unsigned char* shoot;
 	unsigned char* batery;
 }serial_rx;

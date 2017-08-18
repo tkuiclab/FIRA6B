@@ -369,7 +369,9 @@ void Base_Control::speed_regularization(double w1, double w2, double w3)
 	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*0.85*w1_speed_percent/100) + 12.7 + w1_dir) : 0x80;
 	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*0.85*w2_speed_percent/100) + 12.7 + w2_dir) : 0x80;
 	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*0.85*w3_speed_percent/100) + 12.7 + w3_dir) : 0x80;
-	*(this->base_TX->enable_and_stop) = (this->en1<<7)+(this->en2<<6)+(this->en3<<5)+(this->stop1<<4)+(this->stop2<<3)+(this->stop3<<2)+1; 
+    *(this->base_TX->enable_and_stop) = (this->en1<<7)+(this->en2<<6)+(this->en3<<5)+
+                                        (this->stop1<<4)+(this->stop2<<3)+(this->stop3<<2)+
+                                        0x02+*(this->base_robotCMD->hold_ball);
 #ifdef DEBUG
 	std::cout << "speed_regularization(DEBUG)\n";
 	std::cout << std::hex;
