@@ -336,7 +336,7 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         int SchaseCase = Strategy_Selection[1];
         int SlowchaseCase = Strategy_Selection[2];
         int attackCase = Strategy_Selection[3];
-        int SattackCase = Strategy_Selection[4];
+//        int SattackCase = Strategy_Selection[4];
         int DattackCase = Strategy_Selection[5];
         int ShootCase = Strategy_Selection[6];
         int EscapeCase = Strategy_Selection[7];
@@ -366,7 +366,7 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                 if(attackCase){
                     actionAry[robotIndex] = action_Attack;
                     ROS_INFO("Attack state\n");
-                }else if(SattackCase){
+                }/*else if(SattackCase){
                     if(env.home[robotIndex].goal.distance > rushDistance){ // if it is close enough to rush
                         actionAry[robotIndex] = action_typeS_attack;
                         ROS_INFO("S attack\n");
@@ -374,7 +374,7 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
                         actionAry[robotIndex] = action_Attack;
                         ROS_INFO("Attack state\n");
                     }
-                }else if(DattackCase){
+                }*/else if(DattackCase){
                     actionAry[robotIndex] = action_Dorsad_Attack;
                     ROS_INFO("D attack\n");
                 }else if(ShootCase){
@@ -417,15 +417,20 @@ void FIRA_behavior_class::behavior_Attack(int robotIndex){
         }
         if(Special_Movement_Flag == 1){// if special movement open, start counting time from 0 to Continue_Time, even you lost ball to chase
             Movement_Current_time = ros::Time::now().toSec();
-            if(fabs(Movement_Current_time-Movement_Begin_time)<0.3&&(state_attack==state_Attack)){
-                actionAry[robotIndex] = action_Forward;
+            if(fabs(Movement_Current_time-Movement_Begin_time)<General_PathPlan[0]&&(state_attack==state_Attack)){
+                if(((Left==0&&Right==0)&&(Forward==0&&Backward==0))||Continue_Time==0){
+                    //nothing here
+                }else{
+                    printf("forward time left: %f\n",General_PathPlan[0]-fabs(Movement_Current_time-Movement_Begin_time));
+                    actionAry[robotIndex] = action_Forward;
+                }
             }
         }else{
-            Movement_Current_time = ros::Time::now().toSec();
             Movement_Begin_time = ros::Time::now().toSec();
+            Movement_Current_time = ros::Time::now().toSec();
         }
-        if((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time+0.3&&fabs(Movement_Current_time-Movement_Begin_time)>0.3)&&(state_attack==state_Attack&&Special_Movement_Flag == 1)){
-            printf("special movement time left : %f\n",Continue_Time+0.3-fabs(Movement_Current_time-Movement_Begin_time));
+        if((fabs(Movement_Current_time-Movement_Begin_time)<Continue_Time+General_PathPlan[0]&&fabs(Movement_Current_time-Movement_Begin_time)>General_PathPlan[0])&&(state_attack==state_Attack&&Special_Movement_Flag == 1)){
+            printf("special movement time left : %f\n",Continue_Time+General_PathPlan[0]-fabs(Movement_Current_time-Movement_Begin_time));
             if(Left&&Forward){
                 actionAry[robotIndex] = action_LeftForward;
             }else if(Right&&Forward){
@@ -889,5 +894,16 @@ void FIRA_behavior_class::loadParam(ros::NodeHandle *n){
 //        for(int i=0;i<5;i++)
 //            std::cout<< "param Support_Strategy["<< i << "]=" << Support_Strategy[i] << std::endl;
 //    std::cout << "====================================" << std::endl;
+    }
+    if(n->getParam("/FIRA/General_PathPlan", General_PathPlan)){
+        //General_PathPlan[0]= Catch ball delay
+        //General_PathPlan[1]= Attack shoot delay
+        //General_PathPlan[2]= Attack shoot angle
+        //General_PathPlan[3]= Shoot-Attack shoot delay
+        //General_PathPlan[4]= Shoot-Attack shoot angle
+        //General_PathPlan[5]= Straight-Attack shoot delay
+        //General_PathPlan[6]= Straight-Attack shoot angle
+        //General_PathPlan[7]= Block to position delay
+
     }
 }

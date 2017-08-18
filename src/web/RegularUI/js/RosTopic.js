@@ -472,3 +472,41 @@ function ViewButton(value) {
     }
 
 }
+//=====================================================================================
+// hold ball
+var HoldBall1 = new ROSLIB.Topic({
+    ros: ros,
+    name: '/motion/hold_ball',
+    messageType: 'std_msgs/Bool'
+});
+var HoldBall2 = new ROSLIB.Topic({
+    ros: ros2,
+    name: '/motion/hold_ball',
+    messageType: 'std_msgs/Bool'
+});
+var HoldBall3 = new ROSLIB.Topic({
+    ros: ros3,
+    name: '/motion/hold_ball',
+    messageType: 'std_msgs/Bool'
+});
+
+function HoldBallSwitch(state,robot) {
+    var check;
+    if (state) {
+        console.log(robot,"hold ball :",state);
+        check = new ROSLIB.Message({
+            data: true
+        });
+    } else {
+        console.log(robot,"hold ball :",state);
+        check = new ROSLIB.Message({
+            data: false
+        });
+    }
+    if (CheckIP[0] == 1 && robot == 1)
+        HoldBall1.publish(check);
+    if (CheckIP[1] == 1 && robot == 2)
+        HoldBall2.publish(check);
+    if (CheckIP[2] == 1 && robot == 3)
+        HoldBall3.publish(check);
+}

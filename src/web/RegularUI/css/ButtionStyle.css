@@ -176,6 +176,10 @@
 }
 
 /*==========================================================*/
+#HoldBallDiv {
+    text-align: center;
+    width: 50px;
+} 
 
 
 /*RobotState*/

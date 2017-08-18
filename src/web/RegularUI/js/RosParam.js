@@ -942,24 +942,35 @@ function GetBehaviorValue() {
     $("[name=StateCornerKickElement1]").each(function() {
         SCKBox1.push(parseFloat($(this).val()));
     });
-    obj = document.getElementsByName("StrategySelectionElement1");
-    flag = 0;
-    for (var i = 0; i < 3; i++) {
-        if (obj[i].checked && flag == 0) {
-            SSBox1.push(parseInt(1));
-            flag = 1;
-        } else {
-            SSBox1.push(parseInt(0));
+    if (document.getElementById("StrategySelectionProtect1").checked) {
+        obj = document.getElementsByName("StrategySelectionElement1");
+        flag = 0;
+        for (var i = 0; i < 3; i++) {
+            if (obj[i].checked && flag == 0) {
+                SSBox1.push(parseInt(1));
+                flag = 1;
+            } else {
+                SSBox1.push(parseInt(0));
+            }
         }
-    }
-    flag = 0;
-    for (var i = 3; i < obj.length; i++) {
-        if (obj[i].checked && flag == 0) {
-            SSBox1.push(parseInt(1));
-            flag = 1;
-        } else {
-            SSBox1.push(parseInt(0));
+        flag = 0;
+        for (var i = 3; i < obj.length; i++) {
+            if (obj[i].checked && flag == 0) {
+                SSBox1.push(parseInt(1));
+                flag = 1;
+            } else {
+                SSBox1.push(parseInt(0));
 
+            }
+        }
+    } else {
+        obj = document.getElementsByName("StrategySelectionElement1");
+        for (var i = 0; i < obj.length; i++) {
+            if (obj[i].checked) {
+                SSBox1.push(parseInt(1));
+            } else {
+                SSBox1.push(parseInt(0));
+            }
         }
     }
     obj = document.getElementsByName("StrategySelectionPrefixElement1");
@@ -1031,24 +1042,35 @@ function GetBehaviorValue() {
     $("[name=StateCornerKickElement2]").each(function() {
         SCKBox2.push(parseFloat($(this).val()));
     });
-    obj = document.getElementsByName("StrategySelectionElement2");
-    flag = 0;
-    for (var i = 0; i < 3; i++) {
-        if (obj[i].checked && flag == 0) {
-            SSBox2.push(parseInt(1));
-            flag = 1;
-        } else {
-            SSBox2.push(parseInt(0));
+    if (document.getElementById("StrategySelectionProtect2").checked) {
+        obj = document.getElementsByName("StrategySelectionElement2");
+        flag = 0;
+        for (var i = 0; i < 3; i++) {
+            if (obj[i].checked && flag == 0) {
+                SSBox2.push(parseInt(1));
+                flag = 1;
+            } else {
+                SSBox2.push(parseInt(0));
+            }
         }
-    }
-    flag = 0;
-    for (var i = 3; i < obj.length; i++) {
-        if (obj[i].checked && flag == 0) {
-            SSBox2.push(parseInt(1));
-            flag = 1;
-        } else {
-            SSBox2.push(parseInt(0));
+        flag = 0;
+        for (var i = 3; i < obj.length; i++) {
+            if (obj[i].checked && flag == 0) {
+                SSBox2.push(parseInt(1));
+                flag = 1;
+            } else {
+                SSBox2.push(parseInt(0));
 
+            }
+        }
+    } else {
+        obj = document.getElementsByName("StrategySelectionElement2");
+        for (var i = 0; i < obj.length; i++) {
+            if (obj[i].checked) {
+                SSBox2.push(parseInt(1));
+            } else {
+                SSBox2.push(parseInt(0));
+            }
         }
     }
     obj = document.getElementsByName("StrategySelectionPrefixElement2");
@@ -1120,24 +1142,35 @@ function GetBehaviorValue() {
     $("[name=StateCornerKickElement3]").each(function() {
         SCKBox3.push(parseFloat($(this).val()));
     });
-    obj = document.getElementsByName("StrategySelectionElement3");
-    flag = 0;
-    for (var i = 0; i < 3; i++) {
-        if (obj[i].checked && flag == 0) {
-            SSBox3.push(parseInt(1));
-            flag = 1;
-        } else {
-            SSBox3.push(parseInt(0));
+    if (document.getElementById("StrategySelectionProtect3").checked) {
+        obj = document.getElementsByName("StrategySelectionElement3");
+        flag = 0;
+        for (var i = 0; i < 3; i++) {
+            if (obj[i].checked && flag == 0) {
+                SSBox3.push(parseInt(1));
+                flag = 1;
+            } else {
+                SSBox3.push(parseInt(0));
+            }
         }
-    }
-    flag = 0;
-    for (var i = 3; i < obj.length; i++) {
-        if (obj[i].checked && flag == 0) {
-            SSBox3.push(parseInt(1));
-            flag = 1;
-        } else {
-            SSBox3.push(parseInt(0));
+        flag = 0;
+        for (var i = 3; i < obj.length; i++) {
+            if (obj[i].checked && flag == 0) {
+                SSBox3.push(parseInt(1));
+                flag = 1;
+            } else {
+                SSBox3.push(parseInt(0));
 
+            }
+        }
+    } else {
+        obj = document.getElementsByName("StrategySelectionElement3");
+        for (var i = 0; i < obj.length; i++) {
+            if (obj[i].checked) {
+                SSBox3.push(parseInt(1));
+            } else {
+                SSBox3.push(parseInt(0));
+            }
         }
     }
     obj = document.getElementsByName("StrategySelectionPrefixElement3");

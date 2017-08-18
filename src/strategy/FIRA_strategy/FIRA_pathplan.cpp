@@ -434,62 +434,110 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
 
     if(goal_angle>-90&&goal_angle<90){
         if((goal_min<0&&goal_max>=0)/*&&((goal_angle<=goal_max-4)&&(goal_angle>=goal_min+8))*/){
-            if(fabs(gla_angle)<=General_PathPlan[2]){
-                printf("target\n");
-                env.home[r_number].v_yaw = gla_angle*3;
-                Shoot_Current_time = ros::Time::now().toSec();
-                if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
-                    printf("shoot\n");
-                    printf("goal_angle=%f\n",goal_angle);
-                    printf("goal_max=%f\n",goal_max);
-                    printf("goal_min=%f\n",goal_min);
-                    shoot = SPlanning_Velocity[10];
+            if(Strategy_Selection[4]!=1){
+                if(fabs(gla_angle)<=General_PathPlan[2]){
+                    printf("target\n");
+                    env.home[r_number].v_yaw = gla_angle*3;
+                    Shoot_Current_time = ros::Time::now().toSec();
+                    if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
+                        printf("shoot\n");
+                        printf("goal_angle=%f\n",goal_angle);
+                        printf("goal_max=%f\n",goal_max);
+                        printf("goal_min=%f\n",goal_min);
+                        shoot = SPlanning_Velocity[10];
+                    }else{
+                        shoot = 0;
+                    }
+                }else if(gla_distance==0){
+                    if(left_right==1){
+                        printf("shoot right\n");
+                        left_right_angle = goal_min + 10;
+                        if(left_right_angle>180){
+                            left_right_angle = left_right_angle - 360;
+                        }else if(left_right_angle<-180){
+                            left_right_angle = left_right_angle + 360;
+                        }
+                        env.home[r_number].v_yaw = left_right_angle*3;
+                        if(fabs(left_right_angle)<General_PathPlan[2]){
+                            Shoot_Current_time = ros::Time::now().toSec();
+                            if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
+                                printf("shoot\n");
+                                shoot = SPlanning_Velocity[10];
+                            }else{
+                                shoot = 0;
+                            }
+                        }
+                    }else if (left_right==2){
+                        printf("shoot left\n");
+                        left_right_angle = goal_max - 10;
+                        if(left_right_angle>180){
+                            left_right_angle = left_right_angle - 360;
+                        }else if(left_right_angle<-180){
+                            left_right_angle = left_right_angle + 360;
+                        }
+                        env.home[r_number].v_yaw = left_right_angle*3;
+                        if(fabs(left_right_angle)<General_PathPlan[2]){
+                            Shoot_Current_time = ros::Time::now().toSec();
+                            if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
+                                printf("shoot\n");
+                                shoot = SPlanning_Velocity[10];
+                            }else{
+                                shoot = 0;
+                            }
+                        }
+                    }
                 }else{
-                    shoot = 0;
-                }
-            }else if(gla_distance==0){
-                if(left_right==1){
-                    printf("shoot right\n");
-                    left_right_angle = goal_min + 10;
-                    if(left_right_angle>180){
-                        left_right_angle = left_right_angle - 360;
-                    }else if(left_right_angle<-180){
-                        left_right_angle = left_right_angle + 360;
-                    }
-                    env.home[r_number].v_yaw = left_right_angle*3;
-                    if(fabs(left_right_angle)<General_PathPlan[2]){
-                        Shoot_Current_time = ros::Time::now().toSec();
-                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
-                            printf("shoot\n");
-                            shoot = SPlanning_Velocity[10];
-                        }else{
-                            shoot = 0;
-                        }
-                    }
-                }else if (left_right==2){
-                    printf("shoot left\n");
-                    left_right_angle = goal_max - 10;
-                    if(left_right_angle>180){
-                        left_right_angle = left_right_angle - 360;
-                    }else if(left_right_angle<-180){
-                        left_right_angle = left_right_angle + 360;
-                    }
-                    env.home[r_number].v_yaw = left_right_angle*3;
-                    if(fabs(left_right_angle)<General_PathPlan[2]){
-                        Shoot_Current_time = ros::Time::now().toSec();
-                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
-                            printf("shoot\n");
-                            shoot = SPlanning_Velocity[10];
-                        }else{
-                            shoot = 0;
-                        }
-                    }
-                }
-            }else{
                 //printf("fabs(gla_angle)>2\n");
                 env.home[r_number].v_yaw = gla_angle*3;
                 Shoot_Current_time = ros::Time::now().toSec();
                 Shoot_Begin_time = ros::Time::now().toSec();
+                }
+            }else{
+                if(fabs(gla_angle-goal_max)>=fabs(gla_angle-goal_min)){//shoot right
+                    printf("shoot right!!!!\n");
+                    left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.25;
+                    if(left_right_angle>180){
+                        left_right_angle = left_right_angle - 360;
+                    }else if(left_right_angle<-180){
+                        left_right_angle = left_right_angle + 360;
+                    }
+                    env.home[r_number].v_yaw = left_right_angle*3;
+                    if(fabs(left_right_angle)<General_PathPlan[2]){
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
+                            printf("shoot\n");
+                            shoot = SPlanning_Velocity[10];
+                        }else{
+                            shoot = 0;
+                        }
+                    }else{
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        Shoot_Begin_time = ros::Time::now().toSec();
+                    }
+                }else if(fabs(gla_angle-goal_max)<fabs(gla_angle-goal_min)){//shoot left
+                    printf("shoot left!!!!\n");
+                    left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.25;
+                    if(left_right_angle>180){
+                        left_right_angle = left_right_angle - 360;
+                    }else if(left_right_angle<-180){
+                        left_right_angle = left_right_angle + 360;
+                    }
+                    env.home[r_number].v_yaw = left_right_angle*3;
+                    if(fabs(left_right_angle)<General_PathPlan[2]){
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
+                            printf("shoot\n");
+                            shoot = SPlanning_Velocity[10];
+                        }else{
+                            shoot = 0;
+                        }
+                    }else{
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        Shoot_Begin_time = ros::Time::now().toSec();
+                    }
+
+                }
+
             }
         }else{
             //printf("head not aim goal\n");
@@ -573,62 +621,116 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
     //General_PathPlan[4]= Shoot-Attack shoot angle
     if(goal_angle>-90&&goal_angle<90){
         if((goal_min<0&&goal_max>=0)/*&&((goal_angle<=goal_max-4)&&(goal_angle>=goal_min+8))*/){
-            if(fabs(gla_angle)<=General_PathPlan[4]){
-                printf("target\n");
-                env.home[r_number].v_yaw = gla_angle*3;
-                Shoot_Current_time = ros::Time::now().toSec();
-                if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
-                    printf("shoot\n");
-                    printf("goal_angle=%f\n",goal_angle);
-                    printf("goal_max=%f\n",goal_max);
-                    printf("goal_min=%f\n",goal_min);
-                    shoot = SPlanning_Velocity[10];
+            if(Strategy_Selection[4]!=1){
+                if(fabs(gla_angle)<=General_PathPlan[4]){
+                    printf("target\n");
+                    env.home[r_number].v_yaw = gla_angle*3;
+                    Shoot_Current_time = ros::Time::now().toSec();
+                    if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
+                        printf("shoot\n");
+                        printf("goal_angle=%f\n",goal_angle);
+                        printf("goal_max=%f\n",goal_max);
+                        printf("goal_min=%f\n",goal_min);
+                        shoot = SPlanning_Velocity[10];
+                    }else{
+                        shoot = 0;
+                    }
+                }else if(gla_distance==0){
+                    if(left_right==1){
+                        printf("shoot right\n");
+                        left_right_angle = goal_min + 10;
+                        if(left_right_angle>180){
+                            left_right_angle = left_right_angle - 360;
+                        }else if(left_right_angle<-180){
+                            left_right_angle = left_right_angle + 360;
+                        }
+                        env.home[r_number].v_yaw = left_right_angle*3;
+                        if(fabs(left_right_angle)<General_PathPlan[4]){
+                            Shoot_Current_time = ros::Time::now().toSec();
+                            if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
+                                printf("shoot\n");
+                                shoot = SPlanning_Velocity[10];
+                            }else{
+                                shoot = 0;
+                            }
+                        }else{
+                            Shoot_Current_time = ros::Time::now().toSec();
+                            Shoot_Begin_time = ros::Time::now().toSec();
+                        }
+                    }else if (left_right==2){
+                        printf("shoot left\n");
+                        left_right_angle = goal_max - 10;
+                        if(left_right_angle>180){
+                            left_right_angle = left_right_angle - 360;
+                        }else if(left_right_angle<-180){
+                            left_right_angle = left_right_angle + 360;
+                        }
+                        env.home[r_number].v_yaw = left_right_angle*3;
+                        if(fabs(left_right_angle)<General_PathPlan[4]){
+                            Shoot_Current_time = ros::Time::now().toSec();
+                            if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
+                                printf("shoot\n");
+                                shoot = SPlanning_Velocity[10];
+                            }else{
+                                shoot = 0;
+                            }
+                        }else{
+                            Shoot_Current_time = ros::Time::now().toSec();
+                            Shoot_Begin_time = ros::Time::now().toSec();
+                        }
+                    }
                 }else{
-                    shoot = 0;
-                }
-            }else if(gla_distance==0){
-                if(left_right==1){
-                    printf("shoot right\n");
-                    left_right_angle = goal_min + 10;
-                    if(left_right_angle>180){
-                        left_right_angle = left_right_angle - 360;
-                    }else if(left_right_angle<-180){
-                        left_right_angle = left_right_angle + 360;
-                    }
-                    env.home[r_number].v_yaw = left_right_angle*3;
-                    if(fabs(left_right_angle)<General_PathPlan[4]){
-                        Shoot_Current_time = ros::Time::now().toSec();
-                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
-                            printf("shoot\n");
-                            shoot = SPlanning_Velocity[10];
-                        }else{
-                            shoot = 0;
-                        }
-                    }
-                }else if (left_right==2){
-                    printf("shoot left\n");
-                    left_right_angle = goal_max - 10;
-                    if(left_right_angle>180){
-                        left_right_angle = left_right_angle - 360;
-                    }else if(left_right_angle<-180){
-                        left_right_angle = left_right_angle + 360;
-                    }
-                    env.home[r_number].v_yaw = left_right_angle*3;
-                    if(fabs(left_right_angle)<General_PathPlan[4]){
-                        Shoot_Current_time = ros::Time::now().toSec();
-                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
-                            printf("shoot\n");
-                            shoot = SPlanning_Velocity[10];
-                        }else{
-                            shoot = 0;
-                        }
-                    }
+                    //printf("fabs(gla_angle)>2\n");
+                    env.home[r_number].v_yaw = gla_angle*3;
+                    Shoot_Current_time = ros::Time::now().toSec();
+                    Shoot_Begin_time = ros::Time::now().toSec();
                 }
             }else{
-                //printf("fabs(gla_angle)>2\n");
-                env.home[r_number].v_yaw = gla_angle*3;
-                Shoot_Current_time = ros::Time::now().toSec();
-                Shoot_Begin_time = ros::Time::now().toSec();
+                if(fabs(gla_angle-goal_max)>=fabs(gla_angle-goal_min)){//shoot right
+                    printf("shoot right!!!!\n");
+                    left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.25;
+                    if(left_right_angle>180){
+                        left_right_angle = left_right_angle - 360;
+                    }else if(left_right_angle<-180){
+                        left_right_angle = left_right_angle + 360;
+                    }
+                    env.home[r_number].v_yaw = left_right_angle*3;
+                    if(fabs(left_right_angle)<General_PathPlan[4]){
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
+                            printf("shoot\n");
+                            shoot = SPlanning_Velocity[10];
+                        }else{
+                            shoot = 0;
+                        }
+                    }else{
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        Shoot_Begin_time = ros::Time::now().toSec();
+                    }
+                }else if(fabs(gla_angle-goal_max)<fabs(gla_angle-goal_min)){//shoot left
+                    printf("shoot left!!!!\n");
+                    left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.25;
+                    if(left_right_angle>180){
+                        left_right_angle = left_right_angle - 360;
+                    }else if(left_right_angle<-180){
+                        left_right_angle = left_right_angle + 360;
+                    }
+                    env.home[r_number].v_yaw = left_right_angle*3;
+                    if(fabs(left_right_angle)<General_PathPlan[4]){
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
+                            printf("shoot\n");
+                            shoot = SPlanning_Velocity[10];
+                        }else{
+                            shoot = 0;
+                        }
+                    }else{
+                        Shoot_Current_time = ros::Time::now().toSec();
+                        Shoot_Begin_time = ros::Time::now().toSec();
+                    }
+
+                }
+
             }
         }else{
             //printf("head not aim goal\n");
@@ -644,12 +746,13 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
     env.home[r_number].v_x =0;
     env.home[r_number].v_y =0;
     printf("goal_angle=%f\n",goal_angle);
-    printf("goal_max=%f\n",goal_max);
-    printf("goal_min=%f\n",goal_min);
+//    printf("goal_max=%f\n",goal_max);
+//    printf("goal_min=%f\n",goal_min);
     printf("gla_angle =%f\n",gla_angle);
-    printf("gla_distance=%f\n",gla_distance);
-    printf("left_right_angle=%f\n",left_right_angle);
-    printf("fabs(Shoot_Current_time-Shoot_Begin_time)=%f\n",fabs(Shoot_Current_time-Shoot_Begin_time));
+    printf("fabs(Shoot_Current_time-Shoot_Begin_time)=%f, General_PathPlan[3]=%f\n",fabs(Shoot_Current_time-Shoot_Begin_time),General_PathPlan[3]);
+//    printf("gla_distance=%f\n",gla_distance);
+//    printf("left_right_angle=%f\n",left_right_angle);
+//    printf("fabs(Shoot_Current_time-Shoot_Begin_time)=%f\n",fabs(Shoot_Current_time-Shoot_Begin_time));
 
 }
 // useless play
@@ -775,7 +878,7 @@ void FIRA_pathplan_class::strategy_Zone_Attack(int Robot_index){
         env.home[r_number].v_y = vectordr_y;
         env.home[r_number].v_yaw = angle_dr * 2/3/*5*/;
     }
-    if(Strategy_Selection[4]||Strategy_Selection[6]){
+    if(Strategy_Selection[5]||Strategy_Selection[7]){
         shoot = 0;
     }else{
         shoot = SPlanning_Velocity[10];
@@ -2220,6 +2323,11 @@ void FIRA_pathplan_class::strategy_Support_Positioning(int r_number){
 }
 
 void FIRA_pathplan_class::strategy_Support_Test1(int r_number){
+    double angle_dr = env.home[r_number].goal.angle;
+    env.home[r_number].v_yaw = angle_dr;
+    env.home[r_number].v_x = 0;
+    env.home[r_number].v_y = 0;
+    printf("FUCK\n");
 
 
 
@@ -2440,14 +2548,17 @@ void FIRA_pathplan_class::strategy_Support_Test2(int r_number){
 
 }
 void FIRA_pathplan_class::strategy_Support_Test3(int r_number){
-    printf("General_pathplan 0 =%f\n",General_PathPlan[0]);
-    printf("General_pathplan 1 =%f\n",General_PathPlan[1]);
-    printf("General_pathplan 2 =%f\n",General_PathPlan[2]);
-    printf("General_pathplan 3 =%f\n",General_PathPlan[3]);
-    printf("General_pathplan 4 =%f\n",General_PathPlan[4]);
-    printf("General_pathplan 5 =%f\n",General_PathPlan[5]);
-    printf("General_pathplan 6 =%f\n",General_PathPlan[6]);
-    printf("General_pathplan 7 =%f\n",General_PathPlan[7]);
+
+    double angle_br = env.home[r_number].ball.angle;
+    angle_br=angle_br+90;
+    if(angle_br>180){
+        angle_br=angle_br-360;
+    }
+    printf("FUCK TEST 3\n");
+    env.home[r_number].v_x = cos(angle_br*deg2rad);
+    env.home[r_number].v_y = sin(angle_br*deg2rad);
+    env.home[r_number].v_yaw = 0;
+    shoot = 0;
 
 }
 void FIRA_pathplan_class::strategy_MovetoYellowGate(int r_number){
@@ -4076,23 +4187,69 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 //                        printf("shoot\n");
 //                        shoot = SPlanning_Velocity[10];
 //                    }
-                    if(fabs(gla_angle)<=General_PathPlan[6]){
-                        printf("target\n");
-                        env.home[r_number].v_yaw = gla_angle*3;
-                        Shoot_Current_time = ros::Time::now().toSec();
-                        if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
-                            printf("shoot\n");
-//                            printf("goal_angle=%f\n",goal_angle);
-//                            printf("goal_max=%f\n",goal_max);
-//                            printf("goal_min=%f\n",goal_min);
-                            shoot = SPlanning_Velocity[10];
+                    if(Strategy_Selection[4]!=1){
+                        if(fabs(gla_angle)<=General_PathPlan[6]){
+                            printf("target\n");
+                            env.home[r_number].v_yaw = gla_angle*3;
+                            Shoot_Current_time = ros::Time::now().toSec();
+                            if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
+                                printf("shoot\n");
+    //                            printf("goal_angle=%f\n",goal_angle);
+    //                            printf("goal_max=%f\n",goal_max);
+    //                            printf("goal_min=%f\n",goal_min);
+                                shoot = SPlanning_Velocity[10];
+                            }else{
+                                shoot = 0;
+                            }
+                        }else if(gla_distance==0){
+                            if(left_right==1){
+                                printf("shoot right\n");
+                                left_right_angle = goal_min + 10;
+                                if(left_right_angle>180){
+                                    left_right_angle = left_right_angle - 360;
+                                }else if(left_right_angle<-180){
+                                    left_right_angle = left_right_angle + 360;
+                                }
+                                env.home[r_number].v_yaw = left_right_angle*3;
+                                if(fabs(left_right_angle)<General_PathPlan[6]){
+                                    Shoot_Current_time = ros::Time::now().toSec();
+                                    if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
+                                        printf("shoot\n");
+                                        shoot = SPlanning_Velocity[10];
+                                    }else{
+                                        shoot = 0;
+                                    }
+                                }
+                            }else if (left_right==2){
+                                printf("shoot left\n");
+                                left_right_angle = goal_max - 10;
+                                if(left_right_angle>180){
+                                    left_right_angle = left_right_angle - 360;
+                                }else if(left_right_angle<-180){
+                                    left_right_angle = left_right_angle + 360;
+                                }
+                                env.home[r_number].v_yaw = left_right_angle*3;
+                                if(fabs(left_right_angle)<General_PathPlan[6]){
+                                    Shoot_Current_time = ros::Time::now().toSec();
+                                    if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
+                                        printf("shoot\n");
+                                        shoot = SPlanning_Velocity[10];
+                                    }else{
+                                        shoot = 0;
+                                    }
+                                }
+                            }
+
                         }else{
-                            shoot = 0;
+//                        printf("fabs(gla_angle)>2\n");
+                            env.home[r_number].v_yaw = gla_angle*3;
+                            Shoot_Current_time = ros::Time::now().toSec();
+                            Shoot_Begin_time = ros::Time::now().toSec();
                         }
-                    }else if(gla_distance==0){
-                        if(left_right==1){
-                            printf("shoot right\n");
-                            left_right_angle = goal_min + 10;
+                    }else{
+                        if(fabs(gla_angle-goal_max)>=fabs(gla_angle-goal_min)){//shoot right
+                            printf("shoot right!!!!\n");
+                            left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.25;
                             if(left_right_angle>180){
                                 left_right_angle = left_right_angle - 360;
                             }else if(left_right_angle<-180){
@@ -4107,10 +4264,13 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
                                 }else{
                                     shoot = 0;
                                 }
+                            }else{
+                                Shoot_Current_time = ros::Time::now().toSec();
+                                Shoot_Begin_time = ros::Time::now().toSec();
                             }
-                        }else if (left_right==2){
-                            printf("shoot left\n");
-                            left_right_angle = goal_max - 10;
+                        }else if(fabs(gla_angle-goal_max)<fabs(gla_angle-goal_min)){//shoot left
+                            printf("shoot left!!!!\n");
+                            left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.25;
                             if(left_right_angle>180){
                                 left_right_angle = left_right_angle - 360;
                             }else if(left_right_angle<-180){
@@ -4125,15 +4285,15 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
                                 }else{
                                     shoot = 0;
                                 }
+                            }else{
+                                Shoot_Current_time = ros::Time::now().toSec();
+                                Shoot_Begin_time = ros::Time::now().toSec();
                             }
+
                         }
 
-                    }else{
-//                        printf("fabs(gla_angle)>2\n");
-                        env.home[r_number].v_yaw = gla_angle*3;
-                        Shoot_Current_time = ros::Time::now().toSec();
-                        Shoot_Begin_time = ros::Time::now().toSec();
                     }
+
                 }else{
 //                    printf("head not aim goal\n");
                     env.home[r_number].v_yaw = gla_angle*3;
