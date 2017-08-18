@@ -116,7 +116,7 @@ function world_Vision() {
     // worldmap_ctx.fillStyle = "rgb(255,255,0)";
     // worldmap_ctx.fillText("Yellow_dis : " + VisionBox[2].yellow_dis + " Yellow_ang : " + VisionBox[2].yellow_ang, x + 425* window_scale, y + 40 * window_scale);
 
-    worldmap_ctx.fillText("Robot_1 fps : " + VisionBox[0].fps + " Ball : " + VisionBox[0].ball_ang + " " + VisionBox[0].ball_dis + " Blue : " + VisionBox[0].blue_ang + " " + VisionBox[0].blue_dis + " Yellow : " + VisionBox[0].yellow_ang + " " + VisionBox[0].yellow_dis, x, y-5);
+    worldmap_ctx.fillText("Robot_1 fps : " + VisionBox[0].fps + " Ball : " + VisionBox[0].ball_ang + " " + VisionBox[0].ball_dis + " Blue : " + VisionBox[0].blue_ang + " " + VisionBox[0].blue_dis + " Yellow : " + VisionBox[0].yellow_ang + " " + VisionBox[0].yellow_dis, x, y - 5);
     worldmap_ctx.fillStyle = "rgb(204,0,0)";
     worldmap_ctx.fillText("Robot_2 fps : " + VisionBox[1].fps + " Ball : " + VisionBox[1].ball_ang + " " + VisionBox[1].ball_dis + " Blue : " + VisionBox[1].blue_ang + " " + VisionBox[1].blue_dis + " Yellow : " + VisionBox[1].yellow_ang + " " + VisionBox[1].yellow_dis, x, y + 15 * window_scale);
     worldmap_ctx.fillStyle = "rgb(255,255,0)";
