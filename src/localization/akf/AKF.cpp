@@ -33,8 +33,8 @@ void AKF::AKF_function(pose amcl_pose, pose ekf_pose){
     _kalman.mea_p[1][1] = _kalman.mea[1][1];
     for(int i=0; i<2; i++)
         for(int j=0; j<2; j++){
-            _kalman.kg[i][j] = (_kalman.a[i]*_kalman.kg[i][j]+pow(_kalman.fp[i][j],2))/
-            (_kalman.a[i]*(1+_kalman.kg[i][j])+pow(_kalman.fp[i][j],2));
+            _kalman.kg[i][j] = (_kalman.a[i]*_kalman.kg[i][j]+_kalman.fp[i][j])/
+            (_kalman.a[i]*(1+_kalman.kg[i][j])+_kalman.fp[i][j]);
             _kalman.est[j] = _kalman.est[j]+(_kalman.a[i]*_kalman.kg[i][j]+_kalman.fp[i][j])*
             (_kalman.mea[i][j]-_kalman.est[j])/(_kalman.a[i]*(1+_kalman.kg[i][j])+_kalman.fp[i][j]);
         }
@@ -55,9 +55,9 @@ pose AKF::getAKF_pose(){
 void AKF::_InitParam(){
     printf("Param initialize!!\n");
     double kp = 7;                        // kalman parameter
-    _kalman.w[0] = 1 / pow(8.0,kp);       // kalman parameter w for ekf    value ∝ trust
+    _kalman.w[0] = 1 / pow(4.0,kp);       // kalman parameter w for ekf    value ∝ trust
     _kalman.w[1] = 1 / pow(2.0,kp);       // kalman parameter w for amcl    value ∝ trust
-    _kalman.a[0] = pow(8.0,kp);           // kalman parameter a for ekf    value ∝ 1/trust
+    _kalman.a[0] = pow(4.0,kp);           // kalman parameter a for ekf    value ∝ 1/trust
     _kalman.a[1] = pow(2.0,kp);           // kalman parameter a for amcl    value ∝ 1/trust
     for(int i=0; i<2; i++)
         for(int j=0; j<2; j++){
