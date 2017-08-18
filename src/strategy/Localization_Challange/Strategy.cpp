@@ -52,7 +52,7 @@ void Strategy::StrategyLocalization()
     double absolute_front = imu + 90;
     static int flag = TRUE;
     static int flag_chase = TRUE;
-    double ball_dis = 0.30;            // if you don't want to get information by vision
+    double ball_dis = 0.22;            // if you don't want to get information by vision
     double ball_angle = 0.0;          // if you don't want to get information by vision
     // double ball_dis = _Env->Robot.ball.distance;     //get ball information by vision
     // double ball_angle = _Env->Robot.ball.angle;      //get ball information by vision
@@ -140,11 +140,13 @@ void Strategy::StrategyLocalization()
         Current_time = ros::Time::now().toSec();
         v_x = 0;
         v_y = 0;
-        if(Current_time - Begin_time >= 0.5)
+        if(Current_time - Begin_time >= 0.3){
             if(_Last_state == forward)
                 _LocationState = back;
             else
                 _LocationState = forward;
+            Begin_time = ros::Time::now().toSec();
+        }
         break;
     case finish: // Finish localization challange
         v_x = 0;

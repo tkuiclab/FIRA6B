@@ -45,14 +45,14 @@ void NodeHandle::_InitParam(){
 void NodeHandle::_ros_comms_init(){
     node = new ros::NodeHandle();
     AMCL_ROBOTPOSE = node->subscribe<geometry_msgs::PoseWithCovarianceStamped>(AMCL_ROBOTPOSE_TOPIC, 1000, &NodeHandle::_SubAmclRobotPose, this);
-    EKF_ROBOTPOSE = node->subscribe<geometry_msgs::PoseWithCovarianceStamped>(EKF_ROBOTPOSE_TOPIC, 1000, &NodeHandle::_SubEkfRobotPose, this);
+    EKF_ROBOTPOSE = node->subscribe<nav_msgs::Odometry>(EKF_ROBOTPOSE_TOPIC, 1000, &NodeHandle::_SubEkfRobotPose, this);
     AKF_ROBOTPOSE = node->advertise<geometry_msgs::PoseWithCovarianceStamped>(AKF_ROBOTPOSE_TOPIC, 1000);
 }
 void NodeHandle::_SubAmclRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &msg){
     _amcl_pose.x = msg->pose.pose.position.x;
     _amcl_pose.y = msg->pose.pose.position.y;
 }
-void NodeHandle::_SubEkfRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &msg){
+void NodeHandle::_SubEkfRobotPose(const nav_msgs::Odometry::ConstPtr &msg){
     _ekf_pose.x = msg->pose.pose.position.x;
     _ekf_pose.y = msg->pose.pose.position.y;
 }

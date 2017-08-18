@@ -17,6 +17,7 @@
 #include <ros/ros.h>
 #include "Env.hpp"
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <nav_msgs/Odometry.h>
 
 class NodeHandle{
 public:
@@ -36,6 +37,6 @@ ros::Publisher AKF_ROBOTPOSE;
 void _ros_comms_init();
 void _InitParam();
 void _SubAmclRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
-void _SubEkfRobotPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &);
+void _SubEkfRobotPose(const nav_msgs::Odometry::ConstPtr &);
 };
 #endif
