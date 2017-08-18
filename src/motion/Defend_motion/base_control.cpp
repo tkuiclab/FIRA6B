@@ -54,7 +54,10 @@ Base_Control::Base_Control()
 	memset(this->base_TX->enable_and_stop, 0, sizeof(unsigned char));
 	memset(this->base_TX->shoot, 0, sizeof(unsigned char));
 	memset(this->base_TX->checksum, 0, sizeof(unsigned char));
-
+	
+	this->x_CMD = 0;
+	this->y_CMD = 0;
+	this->yaw_CMD = 0;
 	this->serial = NULL;
 #ifdef DEBUG
 	std::cout << "Base_Control(DEBUG)\n";
@@ -269,11 +272,20 @@ void Base_Control::forwardKinematics()
 void Base_Control::inverseKinematics()
 {
 	double w1_speed, w2_speed, w3_speed, w4_speed;
+	double x_error = *(this->base_robotCMD->x_speed) - x_CMD;
+	double y_error = *(this->base_robotCMD->y_speed) - y_CMD;
+	double yaw_error = *(this->base_robotCMD->yaw_speed) - yaw_CMD;
+	if(x_error >= 0) x_CMD = (x_error>4)? x_CMD+4 :  *(this->base_robotCMD->x_speed);
+	else x_CMD = (x_error<(-4))? x_CMD-4 :  *(this->base_robotCMD->x_speed);
+	if(y_error >= 0) y_CMD = (y_error>4)? y_CMD+4 :  *(this->base_robotCMD->y_speed);
+	else y_CMD = (y_error<(-4))? y_CMD-4 :  *(this->base_robotCMD->y_speed);
+	if(yaw_error >= 0) yaw_CMD = (yaw_error>4)? yaw_CMD+4 :  *(this->base_robotCMD->yaw_speed);
+	else yaw_CMD = (yaw_error<(-4))? yaw_CMD-4 :  *(this->base_robotCMD->yaw_speed);
 
-	w1_speed = *(this->base_robotCMD->x_speed)*cos(m1_Angle)+*(this->base_robotCMD->y_speed)*sin(m1_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
-	w2_speed = *(this->base_robotCMD->x_speed)*cos(m2_Angle)+*(this->base_robotCMD->y_speed)*sin(m2_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
-	w3_speed = *(this->base_robotCMD->x_speed)*cos(m3_Angle)+*(this->base_robotCMD->y_speed)*sin(m3_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
-	w4_speed = *(this->base_robotCMD->x_speed)*cos(m4_Angle)+*(this->base_robotCMD->y_speed)*sin(m4_Angle)+*(this->base_robotCMD->yaw_speed)*robot_radius*(-1);
+	w1_speed = x_CMD*cos(m1_Angle)+y_CMD*sin(m1_Angle)+yaw_CMD*robot_radius*(-1);
+	w2_speed = x_CMD*cos(m2_Angle)+y_CMD*sin(m2_Angle)+yaw_CMD*robot_radius*(-1);
+	w3_speed = x_CMD*cos(m3_Angle)+y_CMD*sin(m3_Angle)+yaw_CMD*robot_radius*(-1);
+	w4_speed = x_CMD*cos(m4_Angle)+y_CMD*sin(m4_Angle)+yaw_CMD*robot_radius*(-1);
 
 	for(int i=0;i<10;i++){
 		if(fabs(w1_speed)>100||fabs(w2_speed)>100||fabs(w3_speed>100)||fabs(w4_speed)>100){

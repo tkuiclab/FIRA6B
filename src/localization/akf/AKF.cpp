@@ -50,7 +50,7 @@ pose AKF::getAKF_pose(){
 void AKF::_InitParam(){
     printf("Param initialize!!\n");
     double kp = 7;                        // kalman parameter
-    _kalman.w[0] = 1 / pow(4.0,kp);       // kalman parameter w for ekf    value ∝ trust
+    _kalman.w[0] = 1 / pow(3.0,kp);       // kalman parameter w for ekf    value ∝ trust
     _kalman.w[1] = 1 / pow(2.0,kp);       // kalman parameter w for amcl    value ∝ trust
     _kalman.a[0] = pow(4.0,kp);           // kalman parameter a for ekf    value ∝ 1/trust
     _kalman.a[1] = pow(2.0,kp);           // kalman parameter a for amcl    value ∝ 1/trust
