@@ -104,7 +104,7 @@ typedef struct{
     double rotation;
     double v_x,v_y,v_yaw;
     Two_point goal_edge,opgoal_edge;
-    int goalkeeper_move;
+    int ball_fly;
     //double velocityLeft, velocityRight;
 }Robot;
 

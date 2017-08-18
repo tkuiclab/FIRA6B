@@ -482,6 +482,7 @@ void InterfaceProc::find_around(Mat &frame_, int distance , int angle, int &size
       angle_f = Angle_Adjustment(ang_f);
 
       x_ = dis_f * Angle_cos[angle_f];
+
       y_ = dis_f * Angle_sin[angle_f];
 
       x = Frame_Area(center_x + x_, frame_.cols);
@@ -495,9 +496,10 @@ void InterfaceProc::find_around(Mat &frame_, int distance , int angle, int &size
         if (color_map[R + (G << 8) + (B << 16)] & color && frame_.data[(y * frame_.cols + x) * 3 + 0] == 0) {
           Mark_point(frame_, dis_f, ang_f , x , y, size, color);
         }
-      } 
+      }
     }
   }
+
 }
 void InterfaceProc::find_object_point(object_Item &obj_, int color) {
   int x=0, y=0;

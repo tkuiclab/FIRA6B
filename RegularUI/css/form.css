@@ -163,7 +163,7 @@ body {
 /*==========================================================*/
 
 #RobotStateDiv {
-    width: 140px;
+    width: 180px;
     height: 200px;
     z-index: 1;
     position: relative;
@@ -176,7 +176,31 @@ body {
     height: 100%;
 }
 
-#RobotOneButton {
+#HoldBallDiv1 {
+    text-align: center;
+    width: 50px;
+} 
+#HoldBallButton1 {
+    width: 50px;
+}
+
+#HoldBallDiv2 {
+    text-align: center;
+    width: 50px;
+} 
+#HoldBallButton2 {
+    width: 50px;
+}
+
+#HoldBallDiv3 {
+    text-align: center;
+    width: 50px;
+} 
+#HoldBallButton3 {
+    width: 50px;
+}
+
+ #RobotOneButton {
     width: 110px;
 }
 
@@ -190,7 +214,7 @@ body {
 
 #StandByButton {
     width: 110px;
-}
+} 
 
 #Light {
     width: 25px;

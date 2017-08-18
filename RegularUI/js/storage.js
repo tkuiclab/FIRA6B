@@ -479,6 +479,7 @@ if ((typeof(Storage) !== "undefined") && (CheckGetParm == 0)) {
         obj[1].value = 0;
         obj[2].value = 0;
         obj[3].value = 0;
+        obj[4].value = 0;
     }
     if (localStorage.getItem("BehaviorStateTypeSAtkStr1") != null) {
         obj = document.getElementsByName("StateTypeSAttackElement1");

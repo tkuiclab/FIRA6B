@@ -28,7 +28,7 @@ private:
     double vecAngle(Vector2d a,Vector2d b);
     //end---utility---
 
-    double last_ball_angle;
+    int shootblock_reset;
 
 
 public:
