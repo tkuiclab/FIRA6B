@@ -82,11 +82,12 @@ void Strategy::StrategyLocalization()
         v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         Current_time = ros::Time::now().toSec();
-        fector = (Current_time - Begin_time);
+        fector = (Current_time - Begin_time)*2/3;
+        if(fector>=1)
+            fector = 1;
         v_x = v_x_temp*fector;
         v_y = v_y_temp*fector;
         if(fector >= 1){
-            fector = 1;
             if(fabs(v_x) <= 0.1)
                 v_x = 0;
             else if(fabs(v_y) <= 0.1)
@@ -106,23 +107,27 @@ void Strategy::StrategyLocalization()
         v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         Current_time = ros::Time::now().toSec();
-        fector = (Current_time - Begin_time);
+        fector = (Current_time - Begin_time)*2/3;
+        if(fector>=1)
+            fector = 1;
         v_x = v_x_temp*fector;
         v_y = v_y_temp*fector;
-        if(fabs(v_x) <= 0.1)                   // if x is near the target x of velocity will be zero
-            v_x = 0;
-        else if(fabs(v_y) <= 0.1)       // if y is near the target y of velocity will be zero
-            v_y = 0;
-        if (fabs(v_x) <= 0.2 && fabs(v_y) <= 0.2)
-        {
-            if (_CurrentTarget == 4)
-                _LocationState = finish;
-            else
+        if(fector >= 1){
+            if(fabs(v_x) <= 0.1)                   // if x is near the target x of velocity will be zero
+                v_x = 0;
+            else if(fabs(v_y) <= 0.1)       // if y is near the target y of velocity will be zero
+                v_y = 0;
+            if (fabs(v_x) <= 0.2 && fabs(v_y) <= 0.2)
             {
-                _LocationState = reset_timer;
-                flag = TRUE;
+                if (_CurrentTarget == 4)
+                    _LocationState = finish;
+                else
+                {
+                    _LocationState = reset_timer;
+                    flag = TRUE;
+                }
+                _CurrentTarget++;
             }
-            _CurrentTarget++;
         }
         break;
     case reset_timer:
