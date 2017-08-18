@@ -20,7 +20,7 @@
     <param name="gui_publish_rate " value="60"/>
     <!--Initial pose parameters-->
     <param name="initial_pose_x" value="0"/>
-    <param name="initial_pose_y" value="-0.2"/>
+    <param name="initial_pose_y" value="-0.30"/>
     <param name="initial_pose_a" value="0"/>
     <param name="initial_cov_xx" value="0.5 * 0.5"/>
     <param name="initial_cov_yy" value="0.5 * 0.5"/>

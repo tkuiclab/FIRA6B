@@ -52,7 +52,7 @@ void Strategy::StrategyLocalization()
     double absolute_front = imu + 90;
     static int flag = TRUE;
     static int flag_chase = TRUE;
-    double ball_dis = 0.2;            // if you don't want to get information by vision
+    double ball_dis = 0.30;            // if you don't want to get information by vision
     double ball_angle = 0.0;          // if you don't want to get information by vision
     // double ball_dis = _Env->Robot.ball.distance;     //get ball information by vision
     // double ball_angle = _Env->Robot.ball.angle;      //get ball information by vision
@@ -83,8 +83,8 @@ void Strategy::StrategyLocalization()
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
         Current_time = ros::Time::now().toSec();
         fector = (Current_time - Begin_time);
-        v_x = v_x_temp;
-        v_y = v_y_temp;
+        v_x = v_x_temp*fector;
+        v_y = v_y_temp*fector;
         if(fector >= 1){
             fector = 1;
             if(fabs(v_x) <= 0.1)
@@ -105,13 +105,15 @@ void Strategy::StrategyLocalization()
         v_y = (_Location->MiddlePoint[_CurrentTarget].y) - Robot.ball.y;
         v_x_temp = v_x * cos((-imu) * DEG2RAD) - v_y * sin((-imu) * DEG2RAD);
         v_y_temp = v_x * sin((-imu) * DEG2RAD) + v_y * cos((-imu) * DEG2RAD);
-        v_x = v_x_temp;
-        v_y = v_y_temp;
+        Current_time = ros::Time::now().toSec();
+        fector = (Current_time - Begin_time);
+        v_x = v_x_temp*fector;
+        v_y = v_y_temp*fector;
         if(fabs(v_x) <= 0.1)                   // if x is near the target x of velocity will be zero
             v_x = 0;
         else if(fabs(v_y) <= 0.1)       // if y is near the target y of velocity will be zero
             v_y = 0;
-        if (fabs(v_x) <= 0.1 && fabs(v_y) <= 0.1)
+        if (fabs(v_x) <= 0.2 && fabs(v_y) <= 0.2)
         {
             if (_CurrentTarget == 4)
                 _LocationState = finish;

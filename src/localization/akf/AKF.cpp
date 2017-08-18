@@ -21,7 +21,7 @@ AKF::AKF(int argc,char** argv){
 void AKF::AKF_function(pose amcl_pose, pose ekf_pose){
     _kalman.mea[0][0] = ekf_pose.x;           
     // _kalman.mea[0][1] = ekf_pose.y;   
-    _kalman.mea[0][1] = ekf_pose.y-0.2;   // for localization     
+    _kalman.mea[0][1] = ekf_pose.y-0.30;   // for localization     
     _kalman.mea[1][0] = amcl_pose.x;              
     _kalman.mea[1][1] = amcl_pose.y;            
     for(int i=0; i<2; i++)

@@ -54,7 +54,7 @@ void NodeHandle::subRobotPose(const geometry_msgs::PoseWithCovarianceStamped::Co
 }
 void NodeHandle::subLocationPoint(const std_msgs::Float32MultiArray::ConstPtr &msg)
 {
-    double _radius = 0.3;
+    double _radius = 0.15;
     for (int i = 0; i < 5; i++)
     {
         _Location->LocationPoint[i].y = -msg->data[i * 2] / 100;
@@ -105,7 +105,7 @@ void NodeHandle::Transfer(Environment *Env)
     else if (Distance > DistanceMax)
         VelocityLength = VelocityMax;
     else if (Distance < DistanceMin)
-        VelocityLength = VelocityMin;
+        VelocityLength = 15;
     else
         VelocityLength = (VelocityMax - VelocityMin) * (cos(pi * ((Distance - DistanceMin) / (DistanceMax - DistanceMin) - 1)) + 1) / 2 + VelocityMin;
     if (fabs(angle) < 0.1)
