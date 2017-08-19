@@ -163,9 +163,6 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
 //                                                   //
 //###################################################//
 void FIRA_pathplan_class::strategy_Goalkeeper_init(int r_number){
-    // find the ball
-    double yaw;
-
     double ball_angle = env.home[r_number].ball.angle;
     double opgoal_angle = env.home[r_number].op_goal.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
@@ -180,10 +177,11 @@ void FIRA_pathplan_class::strategy_Goalkeeper_init(int r_number){
         //no teamcolor
         env.home[r_number].v_yaw = 0;
     }else{
+        // find the ball
         env.home[r_number].v_yaw = 5 * (opgoal_angle_reverse>0 ? 1:-1);
     }
-        env.home[r_number].v_x = 0;
-        env.home[r_number].v_y = 0;
+    env.home[r_number].v_x = 0;
+    env.home[r_number].v_y = 0;
     std::cout << "init" << std::endl;
 }
 
@@ -221,13 +219,13 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
 
     double x;
     double y;
-    double rotAngle;//was 15
+    double rotAngle;
     double speed;   //max = 2.3 //min = 0.3
     double pullback_speed;	
-    double max_speed = Goalkeeper[0];//was 0.75
-    double pullback_ball_to_opgoal_dis = Goalkeeper[1];//was 1.25
-    double pullback_opgoal_dis = Goalkeeper[2];//was 2
-    double angle_range = Goalkeeper[3];// was 20
+    double max_speed = Goalkeeper[0];
+    double pullback_ball_to_opgoal_dis = Goalkeeper[1];
+    double pullback_opgoal_dis = Goalkeeper[2];
+    double angle_range = Goalkeeper[3];
 
     speed = tan( deg2rad * (16 + (3.5-ball_to_opgoal_dis)*10) );  
     if(speed > max_speed){
@@ -499,7 +497,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_shootblock(int r_number){
     double angle_range = Goalkeeper[3];// was 20
     static double start_ball_angle;
     static double ball_direction;
-    double ball_direction_move = 0;
+    double ball_direction_count = Goalkeeper[4];
     speed = 2.3;
     rotAngle = 16;
 
@@ -508,28 +506,25 @@ void FIRA_pathplan_class::strategy_Goalkeeper_shootblock(int r_number){
         ball_direction = 0;
         shootblock_reset ++;    
         direction = stop;
-    }else if(shootblock_reset==2){
-        if(ball_direction == 0){
-            ball_direction += ball_angle - start_ball_angle;
-        }else{
-            shootblock_reset = 0;
-        }
+    }else if(shootblock_reset !=0){
+        ball_direction += ball_angle - start_ball_angle;
     }
 
-
-    if(ball_direction > ball_direction_move){ 
+    if(ball_direction > ball_direction_count){ 
         rotAngle = -rotAngle;
         if(opgoal_left < 0.6){
             direction = stop;
         }else{
             direction = L;
         }
-    }else if(ball_direction < -ball_direction_move){
+        shootblock_reset = 0;
+    }else if(ball_direction < -ball_direction_count){
         if(opgoal_right < 0.6){
             direction = stop;
         }else{
             direction = R;
         }
+        shootblock_reset = 0;
     }else{
         direction = stop;
     }

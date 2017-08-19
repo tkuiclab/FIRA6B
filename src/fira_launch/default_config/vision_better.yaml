@@ -13,7 +13,7 @@ FIRA:
   Dorsad_Attack: [6, 90, 180, 2, 1, 2]
   FPS: 16
   General_PathPlan: [0, 0, 0, 0, 0, 0, 0, 0]
-  Goalkeeper: [2, 2, 1.5, 0]
+  Goalkeeper: [2, 2, 1.3, 0, 10]
   HSV:
     Ball: [0, 45, 64, 100, 0, 100]
     Blue: [197, 262, 81, 100, 22, 100]
@@ -1487,7 +1487,8 @@ roslaunch:
   uris: {host_iclab_desktop__33674: 'http://iclab-desktop:33674/', host_iclab_desktop__34718: 'http://iclab-desktop:34718/',
     host_iclab_desktop__36728: 'http://iclab-desktop:36728/', host_iclab_desktop__37572: 'http://iclab-desktop:37572/',
     host_iclab_desktop__37970: 'http://iclab-desktop:37970/', host_iclab_desktop__38717: 'http://iclab-desktop:38717/',
-    host_iclab_desktop__46108: 'http://iclab-desktop:46108/', host_iclab_desktop__46681: 'http://iclab-desktop:46681/'}
+    host_iclab_desktop__39039: 'http://iclab-desktop:39039/', host_iclab_desktop__46108: 'http://iclab-desktop:46108/',
+    host_iclab_desktop__46681: 'http://iclab-desktop:46681/'}
 rosversion: '1.11.21
 
   '

@@ -335,10 +335,10 @@ void FIRA_behavior_class::StateGoalkeeperPush(int r_number){
     double ball_angle = env.home[r_number].ball.angle;
     double opgoal_dis = env.home[r_number].op_goal.distance;
     double opgoal_angle = env.home[r_number].op_goal.angle;
-    double opgoal_left = env.home[r_number].opgoal_edge.left_dis;
-    double opgoal_right = env.home[r_number].opgoal_edge.right_dis;
-    int opgoal_edge_angle_R = env.home[r_number].opgoal_edge.angle_max;
-    int opgoal_edge_angle_L = env.home[r_number].opgoal_edge.angle_min;
+    // double opgoal_left = env.home[r_number].opgoal_edge.left_dis;
+    // double opgoal_right = env.home[r_number].opgoal_edge.right_dis;
+    // int opgoal_edge_angle_R = env.home[r_number].opgoal_edge.angle_max;
+    // int opgoal_edge_angle_L = env.home[r_number].opgoal_edge.angle_min;
     int ball_fly = env.home[r_number].ball_fly;
     
     double param_ball_to_opgoal_dis = Goalkeeper[2];
