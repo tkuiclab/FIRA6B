@@ -15,7 +15,7 @@
 
 int main(int argc, char **argv)
 {
-    printf("Localization 1 : circle pathplan !!\n");
+    printf("Localization 2 : straight through pathplan !!\n");
     Environment Env = InitData(Env); // Initial new environment data
     Environment OutSpeed;
     LocationStruct Location;
@@ -30,6 +30,7 @@ int main(int argc, char **argv)
     strategy.setParam(&Global_Param);
     strategy.setLocationPoint(&Location);
     ros::Rate loop_rate(50);
+    ros::Duration(0.25).sleep();
     while (ros::ok())
     {
         if (Env.SaveParam)
