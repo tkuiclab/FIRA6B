@@ -452,6 +452,27 @@ MotorController MotorD (
 //assign GPIO_0_D[] = oMotor5_PWM;
 //assign oMotor5_DIR	=	2'b01;
 //assign oMotor5_PWM	=	wBrush ? 1'b1 : 1'b0;
+
+//持球----------------------------------------------------------------------------------------------------------
+
+/*wire 			oRH;
+wire			oLH;
+
+assign GPIO_0_D[4] = oRH;
+assign GPIO_0_D[6] = oLH;*/
+
+holdBall(.iC(CLOCK_50),
+			.oL(GPIO_0_D[4]),
+			.oR(GPIO_0_D[6]),
+			.iCMD1(wCMD_Motor1),
+			.iCMD2(wCMD_Motor2),
+			.iCMD3(wCMD_Motor3),
+			.iS(wSignal[0]),
+			.oLED(LED[1])
+			);
+//------------------------------------------------------------------------------------------------------------
+//=======================================================
+
 ShootControl (
 			.iClk(CLOCK_50),
 			.iRst_n(iReset_n),
@@ -484,8 +505,8 @@ UART_if RS_232 (
 //assign GPIO_0_D[] = oLight;
 assign GPIO_0_D[29] = okick;
 //assign LED[0] = okick;
-assign LED = {wSignal[7:2], 1'b0, okick};
-
+assign LED[7:2] = wSignal[7:2];
+assign LED[0] = okick;
 //assign LED = wkick;
 // Sperate package to command
 Serial2CMD (

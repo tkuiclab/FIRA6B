@@ -12,6 +12,10 @@
 //   Ver  :| Author            :| Mod. Date  :|  Changes Made:
 //   0.1  :| Chih-en Wu        :| 2012/07/19 :|  Initial Version
 // --------------------------------------------------------------------
+// --------------------------------------------------------------------
+//   Ver  :| Author            :| Mod. Date  :|  Changes Made:
+//   1.8  :| Chun-Jui Huang    :| 2017/07/07 :|  Add Checksum and Shoot Control
+// --------------------------------------------------------------------
 
 module Serial2CMD (
 //===========================================================================
@@ -28,7 +32,8 @@ output	reg	[7:0]	oSignal,			// Command of EN&STOP
 output	reg	[7:0]	oAX_12,
 output	reg	[7:0]	okick,			// shoot a ball at the goal
 output	reg			oBrush,
-output	reg			oRx_done
+output	reg			oRx_done,
+output	reg			rError
 );
 
 //===========================================================================
@@ -50,12 +55,14 @@ parameter END	=	8'b10000000;
 //=============================================================================
 //	divide information to 6 part and 8 bits per part
 reg		[7:0]	rData_0, rData_1, rData_2, rData_3, rData_4, rData_5,rData_6,rData_7;
+reg		[7:0]	rTmpData_0, rTmpData_1, rTmpData_2, rTmpData_3, rTmpData_4, rTmpData_5, rTmpData_6, rTmpData_7;
+
+
 
 reg		[SIZE-1:0]	state;
 
 reg				rRx_ready;
 reg				rCheck;
-reg				rError;
 reg		[7:0]	rChecksum;
 reg		[7:0]	null = 8'h0;
 //=============================================================================
@@ -79,10 +86,21 @@ always @(posedge iCLK) begin
 		oCMD_Motor3	<=	0;
 		oSignal		<=	0;
 		okick		<=	0;
+		rError		<=	1;
+		rChecksum	<=	0;
+		rTmpData_0	<=	0;
+		rTmpData_1	<=	0;
+		rTmpData_2	<=	0;
+		rTmpData_3	<=	0;
+		rTmpData_4	<=	0;
+		rTmpData_5	<=	0;
+		rTmpData_6	<=	0;
+		rTmpData_7	<=	0;
 	end
 	// Take apart Data
 	else begin
 		
+		rChecksum <= rData_2 + rData_3 + rData_4 + rData_5 + rData_6;
 
 		if(~rRx_ready & iRx_ready) begin
 			case(state)
@@ -146,14 +164,38 @@ always @(posedge iCLK) begin
 //			oSignal 	<= rData_5;
 //			okick 		<= rData_6;
 //			
-			rChecksum <= (rData_2 + rData_3) + (rData_4 + rData_5) + rData_6;
-			if((rChecksum == rData_7) && (rData_0 == 8'hFF) && (rData_1 == 8'hFA))begin
+			rData_0 <= rData_0;
+			rData_1 <= rData_1;
+			rData_2 <= rData_2;
+			rData_3 <= rData_3;
+			rData_4 <= rData_4;
+			rData_5 <= rData_5;
+			rData_6 <= rData_6;
+			rData_7 <= rData_7;
+			rTmpData_0	<=	rData_0;
+			rTmpData_1	<=	rData_1;
+			rTmpData_2	<=	rData_2;
+			rTmpData_3	<=	rData_3;
+			rTmpData_4	<=	rData_4;
+			rTmpData_5	<=	rData_5;
+			if (rData_6 == 1)begin
+				rTmpData_6	<=	0;
+			end
+			else begin
+				rTmpData_6	<=	rData_6;
+			end
+			rTmpData_7 	<=	rData_7;
+			state <= state;
+			
+			
+			if(((rChecksum == rTmpData_7) && (rTmpData_0 == 8'hFF)) && 
+				((rTmpData_1 == 8'hFA) && (rTmpData_5[1] == 1'b1)))begin
 				rError <= 0;
-				oCMD_Motor1 <= rData_2;
-				oCMD_Motor2 <= rData_3;
-				oCMD_Motor3 <= rData_4;
-				oSignal 	<= rData_5;
-				okick 		<= rData_6;
+				oCMD_Motor1 <= rTmpData_2;
+				oCMD_Motor2 <= rTmpData_3;
+				oCMD_Motor3 <= rTmpData_4;
+				oSignal 	<= rTmpData_5;
+				okick 		<= rTmpData_6;
 			end
 			else begin
 				rError <= 1;
@@ -163,15 +205,7 @@ always @(posedge iCLK) begin
 				oSignal 		<= 	oSignal;
 				okick			<= 	okick;
 			end
-			rData_0 <= rData_0;
-			rData_1 <= rData_1;
-			rData_2 <= rData_2;
-			rData_3 <= rData_3;
-			rData_4 <= rData_4;
-			rData_5 <= rData_5;
-			rData_6 <= rData_6;
-			rData_7 <= rData_7;
-			state <= state;
+			
 			oRx_done	<=	0;
 		end
 		
