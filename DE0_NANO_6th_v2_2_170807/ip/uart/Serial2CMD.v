@@ -189,7 +189,7 @@ always @(posedge iCLK) begin
 			
 			
 			if(((rChecksum == rTmpData_7) && (rTmpData_0 == 8'hFF)) && 
-				((rTmpData_1 == 8'hFA) && (rTmpData_5[1:0] == 2'b01)))begin
+				((rTmpData_1 == 8'hFA) && (rTmpData_5[1] == 1'b1)))begin
 				rError <= 0;
 				oCMD_Motor1 <= rTmpData_2;
 				oCMD_Motor2 <= rTmpData_3;

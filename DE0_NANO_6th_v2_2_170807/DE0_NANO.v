@@ -465,9 +465,10 @@ holdBall(.iC(CLOCK_50),
 			.oL(GPIO_0_D[4]),
 			.oR(GPIO_0_D[6]),
 			.iCMD1(wCMD_Motor1),
-			.iCMD2(wCMD_Motor2)
-			/*.oL1(LED[7]),
-			.oR1(LED[6])*/
+			.iCMD2(wCMD_Motor2),
+			.iCMD3(wCMD_Motor3),
+			.iS(wSignal[0]),
+			.oLED(LED[1])
 			);
 //------------------------------------------------------------------------------------------------------------
 //=======================================================
@@ -504,8 +505,8 @@ UART_if RS_232 (
 //assign GPIO_0_D[] = oLight;
 assign GPIO_0_D[29] = okick;
 //assign LED[0] = okick;
-assign LED = {wSignal[7:2], 1'b0, okick};
-
+assign LED[7:2] = wSignal[7:2];
+assign LED[0] = okick;
 //assign LED = wkick;
 // Sperate package to command
 Serial2CMD (
