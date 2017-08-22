@@ -52,6 +52,7 @@ foreach(subdir
     FIRA_teamStrategy
     Localization_Challange
     LC_method2
+    LC_method3
     )
   add_subdirectory(${subdir})
 endforeach()
