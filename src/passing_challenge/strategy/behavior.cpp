@@ -8,6 +8,7 @@ Behavior::Behavior(int argc, char** argv)
 	target = 1;
     gotBall = false;
 	gotPoint = false;
+	holdBall_count = 0;
 	ball_1.pos.x = -1.65;
 	ball_1.pos.y = 1.20;
 	ball_2.pos.x = -1.65;
@@ -73,7 +74,7 @@ void Behavior::chase(const Ball target_ball)
 	double distance = sqrt(pow(distance_x, 2)+pow(distance_y, 2));
 	double target_angle = (atan2(distance_y, distance_x)*180/M_PI)-(env->robot.pos.z);
 	angleRegular(target_angle);
-    if((distance > 0.6) && (gotPoint==false)){
+    if((distance > env->param.target_ball_distance) && (gotPoint==false)){
 		double middlePoint_x = (target_ball.pos.x+env->robot.pos.x)/2;
         double middlePoint_y = (target_ball.pos.y+env->robot.pos.y)/2;
 //		double middlePoint_y = (env->robot.pos.y+target_ball.pos.y)/2;
@@ -99,7 +100,7 @@ void Behavior::aim(const Goal target_goal)
 	angleRegular(target_angle);
 	std::cout << "Target Goal: (" << target_goal.pos.x << ", " << target_goal.pos.y << ", " << target_angle << " )\n";
 	std::cout << "Target Goal Distace: " << distance << std::endl;	
-    if(distance > 2.0){
+    if(distance > env->param.target_goal_distance){
         double middlePoint_x = 0.0;
         double middlePoint_y = target_goal.pos.y;
         gotoPoint(env, middlePoint_x, middlePoint_y, target_angle);
@@ -126,7 +127,7 @@ void Behavior::shoot()
 	env->robot.v_x = 0;
 	env->robot.v_y = 0;
 	env->robot.v_yaw = 0;
-	env->robot.shoot = 50;
+	env->robot.shoot = env->param.shoot_const;
 	pub();	
 	sleep(1);
 	nextTarget();
@@ -185,15 +186,22 @@ bool Behavior::holdBall()
 {
     if(gotBall == false){
         if((env->robot.ball.distance<=env->param.hold_ball_distance) && (fabs(env->robot.ball.angle)<=env->param.hold_ball_angle)){
-            std::cout << "got ball\n";
-			gotBall = true;
-            return true;
+	  	    if(holdBall_count>20){
+	            std::cout << "got ball\n";
+				gotBall = true;
+	           	return true;
+		    }else{
+				holdBall_count++;
+				return false;
+	    	}
         }else{
-            std::cout << "lose ball\n";
+			holdBall_count = 0;
+           	std::cout << "lose ball\n";
 			gotBall = false;
-            return false;
+	        return false;
         }
     }else{
+		holdBall_count = 0;
         if((env->robot.ball.distance<=env->param.loss_ball_distance) && (fabs(env->robot.ball.angle)<=env->param.loss_ball_angle)){
             std::cout << "got ball\n";
 			gotBall = true;
@@ -321,10 +329,10 @@ Goal Behavior::getTargetGoal()
 		case Level4:
 			switch(target){
 				case Target1:
-					return goal_4;
+					return goal_3;
 					break;
 				case Target2:
-					return goal_3;
+					return goal_4;
 					break;
 				case Target3:
 					return goal_2;

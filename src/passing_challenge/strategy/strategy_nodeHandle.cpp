@@ -88,8 +88,19 @@ void Strategy_nodeHandle::loadParam()
 {
 	this->n->getParam("/hold_ball_distance", this->environment.param.hold_ball_distance);
 	this->n->getParam("/hold_ball_angle", this->environment.param.hold_ball_angle);
-    this->environment.param.loss_ball_distance = this->environment.param.hold_ball_distance + 0.1;
-    this->environment.param.loss_ball_angle = this->environment.param.hold_ball_angle + 10;
+   	this->environment.param.loss_ball_distance = this->environment.param.hold_ball_distance + 0.1;
+	this->environment.param.loss_ball_angle = this->environment.param.hold_ball_angle + 10;
+	this->n->getParam("/speed_const", this->environment.param.speed_const);
+	this->n->getParam("/yaw_const", this->environment.param.yaw_const);
+	this->n->getParam("/shoot_const", this->environment.param.shoot_const);
+	this->n->getParam("/target_ball_distance", this->environment.param.target_ball_distance);
+	this->n->getParam("/target_goal_distance", this->environment.param.target_goal_distance);
+	printf("speeed const: %f\n",this->environment.param.speed_const);
+	printf("yaw const: %f\n",this->environment.param.yaw_const);
+	printf("shoot const: %f\n",this->environment.param.shoot_const);
+	printf("target ball distance: %f\n",this->environment.param.target_ball_distance);
+	printf("target goal distance: %f\n",this->environment.param.target_goal_distance);
+	sleep(2);
 }
 
 void Strategy_nodeHandle::pub(int speed)

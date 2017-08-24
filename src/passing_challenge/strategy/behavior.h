@@ -24,6 +24,7 @@ public:
 private:
 	int gameStatus;
 	int target;
+	int holdBall_count;
     bool gotBall;
 	bool gotPoint;
 	Environment *env;

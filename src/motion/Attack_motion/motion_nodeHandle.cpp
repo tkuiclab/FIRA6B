@@ -6,12 +6,15 @@ Motion_nodeHandle::Motion_nodeHandle(int argc, char **argv)
 	this->node_robotCMD->y_speed = new double;
 	this->node_robotCMD->yaw_speed = new double;
 	this->node_robotCMD->shoot_power = new int;
-	this->node_RX = new serial_rx;
+    this->node_robotCMD->hold_ball = new unsigned char;
+    this->node_RX = new serial_rx;
 	std::memset(this->node_robotCMD->x_speed, 0, sizeof(double));
 	std::memset(this->node_robotCMD->y_speed, 0, sizeof(double));
 	std::memset(this->node_robotCMD->yaw_speed, 0, sizeof(double));
 	std::memset(this->node_robotCMD->shoot_power, 0, sizeof(int));
+    std::memset(this->node_robotCMD->hold_ball, 0, sizeof(unsigned char));
 	this->remote = false;
+    this->holdBall = false;
 #ifdef DEBUG
 	std::cout << "Motion_nodeHandle(DEBUG)\n";
 	std::cout << "x_speed: " << *this->node_robotCMD->x_speed << std::endl;
@@ -42,6 +45,7 @@ void Motion_nodeHandle::init(int argc, char **argv)
 	motion_sub = n->subscribe<geometry_msgs::Twist>(motion_topic_name, 1000, &Motion_nodeHandle::motionCallback, this);
 	shoot_sub = n->subscribe<std_msgs::Int32>(shoot_topic_name, 1000, &Motion_nodeHandle::shootCallback, this);
 	remote_sub = n->subscribe<std_msgs::Bool>(remote_topic_name, 1000, &Motion_nodeHandle::remoteCallback, this);
+    holdBall_sub = n->subscribe<std_msgs::Bool>(holdBall_topic_name, 1000, &Motion_nodeHandle::holdBallCallback, this);
 }
 
 void Motion_nodeHandle::motionCallback(const geometry_msgs::Twist::ConstPtr &motion_msg)
@@ -84,6 +88,12 @@ void Motion_nodeHandle::remoteCallback(const std_msgs::Bool::ConstPtr &remote_ms
 	std::cout << std::endl;
 
 #endif
+}
+
+void Motion_nodeHandle::holdBallCallback(const std_msgs::Bool::ConstPtr &holdBall_msg)
+{
+    this->holdBall = holdBall_msg->data;
+    *this->node_robotCMD->hold_ball = this->holdBall;
 }
 
 void Motion_nodeHandle::pub(const geometry_msgs::Twist &pub_msgs)
