@@ -3,6 +3,7 @@
 #include <freespace/freespace_util.h>
 #include "appControlHandler.h"
 #include "std_msgs/String.h"
+#include "std_msgs/Int32.h"
 #include "math.h"
 #include "math/quaternion.h"
 #include "math/vec3.h"
@@ -51,6 +52,7 @@ double accel_y_filter;
 double direct_tmp;
 double degree;
 double haha;
+int reset_command;
 bool flag = true;
 bool flag2 = true;
 bool flag_move = true;
@@ -369,6 +371,10 @@ void speed_stationary(const geometry_msgs::Twist::ConstPtr& speed)
     haha = sqrt(gaga(0)*gaga(0) + gaga(1)*gaga(1));
 }
 
+void ResetCommand(const std_msgs::Int32::ConstPtr& msg){
+    reset_command = msg->data;
+}
+
 int main(int argc,char **argv)
 {
     ros::init(argc, argv, "imu_3d");
@@ -376,6 +382,7 @@ int main(int argc,char **argv)
     ros::Publisher imu_pub = n.advertise<imu_3d::inertia>("imu_3d",1000);
     ros::Publisher imu_data_pub = n.advertise<sensor_msgs::Imu>("base_footprint",1000);
     ros::Subscriber speed_sub = n.subscribe("/FIRA/R1/Strategy/PathPlan/RobotSpeed",100,speed_stationary);
+    ros::Subscriber reset_command_sub = n.subscribe("/ResetImuData",100,ResetCommand);
 
     ros::Rate loop_rate(100);
 
@@ -500,7 +507,10 @@ int main(int argc,char **argv)
             //Calculate shift
             rotate(-(accel.x-0.0048),-(accel.y-0.0051),DEGREES_TO_RADIANS(degree));     //原訊號
             //rotate(accel_x,accel_y,DEGREES_TO_RADIANS(degree));
-
+            if(reset_command){          // reset rotation data to zero
+                degree = 0;
+                printf("Get reset command, reset yaw data ! ! ! \n");
+            }
             if(stationary)
             {
                 vel(0) = 0;
@@ -567,7 +577,7 @@ int main(int argc,char **argv)
         //printf("%f\t%f\n",position(0),position(1));
 
         inertia.yaw = DEGREES_TO_RADIANS(degree);
-
+        
         imu_pub.publish(inertia);
 
         ros::spinOnce();

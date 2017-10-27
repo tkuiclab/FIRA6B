@@ -116,6 +116,7 @@ catkin_package(
 foreach(subdir
 	transfer
 	akf
+	reset
 )
 add_subdirectory(${subdir})
 endforeach()
