@@ -37,20 +37,22 @@ private:
     ros::Publisher reset_imu_pub;
     ros::Publisher amcl_init_pub;
     int __reset_command;
+    struct position{
+        float x,y;
+    };
+    position __reset_pose;
 public:
     Client(int argc, char** argv,const char* node_name);
-    ~Client() {}
+    ~Client(){}
     int GetResetCommand();
     void ros_comms_init();
 //    topic publish or subscriber
-    void AmclPoseSub(){};
-    void ResetCommandSub(){};
-    void ResetImuPub(){};
-    void AmclInitPub(){};
+    void AmclPoseSub(const geometry_msgs::Pose2D& msg);
+    void ResetCommandSub(const std_msgs::Int32& msg);
+    void ResetImuPub();
+    void AmclInitPub();
 //    param
     ros::NodeHandle* getNodeHandle(){return nh;}
 };
-typedef struct position{
-    int x,y;
-}reset_pose;
+
 #endif

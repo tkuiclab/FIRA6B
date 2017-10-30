@@ -17,7 +17,6 @@ int main(int argc, char **argv){
     ros::Rate loop_rate(30);
     while(ros::ok())
     {
-        mNodeHandle.loadParam(mNodeHandle.getNodeHandle());
         ros::spinOnce();
         printf("%d\n",mNodeHandle.GetResetCommand());
         loop_rate.sleep();
