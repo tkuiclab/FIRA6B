@@ -18,7 +18,13 @@ int main(int argc, char **argv){
     while(ros::ok())
     {
         ros::spinOnce();
-        printf("%d\n",mNodeHandle.GetResetCommand());
+        if(mNodeHandle.GetResetCommand()){
+            mNodeHandle.AmclInitPub();
+            mNodeHandle.ResetImuPub();
+            mNodeHandle.SetCommand();
+            printf("minda\n");
+            printf("%d\n",mNodeHandle.GetResetCommand());
+        }
         loop_rate.sleep();
     }
 }

@@ -484,6 +484,16 @@ int main(int argc,char **argv)
             double t;
             double last_time;
             double delta_t = 0;
+            if (reset_command)
+            { // reset rotation data to zero
+                degree = 0;
+                direct_tmp = sensor.x;
+                reset_command = 0;
+                printf("Get reset command, reset yaw data ! ! ! \n");
+            }
+            printf("sensor.x=%lf\n",sensor.x);
+            printf("direct_tmp=%lf\n",direct_tmp);
+            printf("degree=%lf\n",degree);
             degree = 360+sensor.x-direct_tmp;
             if(degree>=360)
                 degree = degree - 360;
@@ -504,13 +514,10 @@ int main(int argc,char **argv)
             }
             last_time = t;
 
-            //Calculate shift
+            //Calculate shiftdegree
             rotate(-(accel.x-0.0048),-(accel.y-0.0051),DEGREES_TO_RADIANS(degree));     //原訊號
             //rotate(accel_x,accel_y,DEGREES_TO_RADIANS(degree));
-            if(reset_command){          // reset rotation data to zero
-                degree = 0;
-                printf("Get reset command, reset yaw data ! ! ! \n");
-            }
+
             if(stationary)
             {
                 vel(0) = 0;

@@ -39,6 +39,7 @@ private:
     int __reset_command;
     struct position{
         float x,y;
+        int rec;
     };
     position __reset_pose;
 public:
@@ -46,6 +47,7 @@ public:
     ~Client(){}
     int GetResetCommand();
     void ros_comms_init();
+    void SetCommand();
 //    topic publish or subscriber
     void AmclPoseSub(const geometry_msgs::Pose2D& msg);
     void ResetCommandSub(const std_msgs::Int32& msg);
