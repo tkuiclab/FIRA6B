@@ -21,8 +21,8 @@ void Client::SetCommand(){
     __reset_command = 0;
 }
 void Client::AmclPoseSub(const geometry_msgs::Pose2D& msg){
-    __reset_pose.x = msg.x;
-    __reset_pose.y = msg.y;
+    __reset_pose.x = msg.x/100;
+    __reset_pose.y = msg.y/100;
     __reset_command = 1;
 }
 void Client::ResetCommandSub(const std_msgs::Int32& msg){
@@ -35,7 +35,7 @@ void Client::ResetImuPub(){
 }
 void Client::AmclInitPub(){
     geometry_msgs::PoseWithCovarianceStamped init_pose;
-    init_pose.header.frame_id = "init_pose";
+    init_pose.header.frame_id = "";
     init_pose.header.stamp =  ros::Time::now();
     init_pose.pose.pose.position.x = __reset_pose.x;
     init_pose.pose.pose.position.y = __reset_pose.y;
