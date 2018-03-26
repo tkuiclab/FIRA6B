@@ -35,7 +35,7 @@ void Client::ResetImuPub(){
 }
 void Client::AmclInitPub(){
     geometry_msgs::PoseWithCovarianceStamped init_pose;
-    init_pose.header.frame_id = "";
+    init_pose.header.frame_id = "map";
     init_pose.header.stamp =  ros::Time::now();
     init_pose.pose.pose.position.x = __reset_pose.x;
     init_pose.pose.pose.position.y = __reset_pose.y;
