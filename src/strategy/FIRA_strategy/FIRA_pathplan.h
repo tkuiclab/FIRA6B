@@ -102,6 +102,10 @@ public:
     void Movement_Right(int);
     void Movement_RightForward(int);
     void Movement_RightBackward(int);
+    void Movement_LeftTurn(int);
+    void Movement_RightTurn(int);
+    void strategy_Defend_Goal(int);
+    void strategy_Straight_Leave_Ball(int);
 
 
 

@@ -529,14 +529,25 @@ private:
         global_env->yellow_side_goal_data[2]=msg->yellow_ang_min;
         if(global_env->teamcolor == "Blue"){
             global_env->home[global_env->RobotNumber].goal_edge.max = msg->yellow_ang_max;
+            global_env->home[global_env->RobotNumber].goal_edge.max_dis = msg->yellow_right;
             global_env->home[global_env->RobotNumber].goal_edge.min = msg->yellow_ang_min;
+            global_env->home[global_env->RobotNumber].goal_edge.min_dis = msg->yellow_left;
+
             global_env->home[global_env->RobotNumber].op_goal_edge.max = msg->blue_ang_max;
+            global_env->home[global_env->RobotNumber].op_goal_edge.max_dis = msg->blue_right;
             global_env->home[global_env->RobotNumber].op_goal_edge.min = msg->blue_ang_min;
+            global_env->home[global_env->RobotNumber].op_goal_edge.min_dis = msg->blue_left;
+
         }else if(global_env->teamcolor == "Yellow"){
             global_env->home[global_env->RobotNumber].goal_edge.max = msg->blue_ang_max;
+            global_env->home[global_env->RobotNumber].goal_edge.max_dis = msg->blue_right;
             global_env->home[global_env->RobotNumber].goal_edge.min = msg->blue_ang_min;
+            global_env->home[global_env->RobotNumber].goal_edge.min_dis = msg->blue_left;
+
             global_env->home[global_env->RobotNumber].op_goal_edge.max = msg->yellow_ang_max;
+            global_env->home[global_env->RobotNumber].op_goal_edge.max_dis = msg->yellow_right;
             global_env->home[global_env->RobotNumber].op_goal_edge.min = msg->yellow_ang_min;
+            global_env->home[global_env->RobotNumber].op_goal_edge.min_dis = msg->yellow_left;
         }
 //        printf("blue max=%d min=%d\n",msg->blue_ang_max,msg->blue_ang_min);
 //        printf("yellow max=%d min=%d\n",msg->yellow_ang_max,msg->yellow_ang_min);

@@ -96,6 +96,11 @@ const long PLAYERS_PER_SIDE = 3;
 #define action_RightForward             53
 #define action_RightBackward            54
 #define action_Slow_Chase               55
+#define action_LeftTurn                 56
+#define action_RightTurn                57
+#define action_Defend_Goal              58
+#define action_Straight_Leave_Ball      59
+
 
 #define state_Init              0
 #define state_Chase             1
@@ -120,7 +125,7 @@ typedef struct{
 }Vector3D;
 
 typedef struct{
-    double max, min;
+    double max, min, max_dis, min_dis;
 }Two_point;
 
 typedef struct{

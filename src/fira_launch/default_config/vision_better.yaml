@@ -1,8 +1,8 @@
 FIRA:
   Attack_Strategy: [0]
   Camera: {Focal: 13.971313932573906, High: 650.0}
-  Center: {Camera_high: 650, Center_X: 302, Center_Y: 245, Front: 272, Inner: 43,
-    Outer: 235, X: 308, Y: 266}
+  Center: {Camera_high: 650, Center_X: 298, Center_Y: 251, Front: 270, Inner: 43,
+    Outer: 190, X: 308, Y: 266}
   Chase_Strategy: [0]
   Corner_Kick: [1.2, 60, 90, 50]
   Distance:
@@ -11,29 +11,29 @@ FIRA:
     Space: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]
   Distance_Settings: [0, 0, 0]
   Dorsad_Attack: [6, 90, 180, 2, 1, 2]
-  FPS: 20
-  General_PathPlan: [0.1, 0.1, 3, 0.1, 2, 0.1, 5, 1.5, 0.1, 5, 0.1, 5]
+  FPS: 30
+  General_PathPlan: [0.1, 0.1, 3, 0.1, 2, 0.2, 3, 1.5, 10, 3, 10, 3]
   HSV:
-    Ball: [0, 55, 35, 100, 42, 100]
-    Blue: [169, 249, 79, 100, 8, 100]
+    Ball: [1, 24, 0, 100, 0, 100]
+    Blue: [203, 236, 82, 100, 0, 100]
     Bluerange: [245, 204, 255, 179, 255, 72]
-    Green: [0, 195, 59, 100, 18, 100]
+    Green: [84, 192, 64, 86, 4, 63]
     Greenrange: [188, 114, 255, 130, 255, 0]
     Redrange: [36, 0, 255, 118, 255, 0]
-    White: [0, 359, 0, 100, 0, 28]
+    White: [0, 359, 0, 22, 0, 23]
     Whiterange: [227, 146, 166, 13, 255, 134]
-    Yellow: [33, 107, 20, 85, 54, 100]
+    Yellow: [82, 104, 32, 100, 0, 100]
     Yellowrange: [103, 59, 255, 70, 255, 137]
-    black: {angle: 1, gray: 31}
+    black: {angle: 1, gray: 29}
     white: {angle: 1, gray: 170}
   IsSimulator: 0
-  Parameterbutton: 7
+  Parameterbutton: 4
   Penalty_Kick: [-45, 2]
-  RobotNumber: 1
-  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 3, Angle_range_2_3: 3, Dont_Search_Angle_1: 331,
-    Dont_Search_Angle_2: 87, Dont_Search_Angle_3: 206, Magn_Far_End: 240, Magn_Far_Start: 141,
-    Magn_Middle_Start: 98, Magn_Near_Gap: 4, Magn_Near_Start: 40}
-  SPlanning_Velocity: [1, 0.3, 80, 60, 15, 0.5, 90, 2, 5, 0, 100, 45]
+  RobotNumber: 0
+  SCAN: {Angle_Near_Gap: 4, Angle_range_1: 3, Angle_range_2_3: 3, Dont_Search_Angle_1: 336,
+    Dont_Search_Angle_2: 89, Dont_Search_Angle_3: 206, Magn_Far_End: 240, Magn_Far_Start: 141,
+    Magn_Middle_Start: 90, Magn_Near_Gap: 4, Magn_Near_Start: 47}
+  SPlanning_Velocity: [1.5, 0.6, 40, 20, 7, 3, 180, 0, 5, 0, 70, 47]
   Scan:
     Far: [451, 254, 454, 254, 457, 254, 460, 254, 463, 253, 466, 253, 469, 253, 472,
       253, 475, 253, 478, 252, 481, 252, 484, 252, 487, 252, 490, 252, 493, 251, 496,
@@ -1447,16 +1447,16 @@ FIRA:
   blackItem: {angle: 3, gray: 40}
   whiteline: {angle: 4, gray: 100}
 FIRA_Behavior:
-  Attack_Strategy: [5, 2.5, 0.4]
-  Chase_Strategy: [5, 0.15, 0.2, 3, 0.33]
+  Attack_Strategy: [5, 1, 0.4]
+  Chase_Strategy: [5, 0.15, 0.2, 3, 0.32]
   Corner_Kick: [120, 0.45]
-  PrefixSetting: [0, 0, 0, 0, 2.5]
+  PrefixSetting: [1, 0, 0, 0, 2]
   Side_Speed_UP: [10, 0.45]
   Support_Strategy: [1]
   TypeS_Attack: [20, 1, 1.5]
   TypeU_Chase: [30, 0.3]
   Zone_Attack: [0.6]
-StrategySelection: [0, 0, 1, 0, 1, 0, 0, 0, 1]
+StrategySelection: [1, 0, 0, 1, 0, 0, 0, 0, 0]
 amcl: {base_frame_id: /base_link, beam_skip_distance: 2.0, beam_skip_threshold: 1.0,
   do_beamskip: false, first_map_only: true, global_frame_id: /map, gui_publish_rate: 90.0,
   initial_cov_aa: 2.3637392544171303, initial_cov_xx: 1.81218359004809, initial_cov_yy: 1.4574361390514445,
@@ -1483,7 +1483,7 @@ camera:
     compressedDepth: {depth_max: 10.0, depth_quantization: 100.0, png_level: 9}
     theora: {keyframe_frequency: 64, optimize_for: 1, quality: 31, target_bitrate: 800000}
 prosilica_driver: {auto_adjust_stream_bytes_per_second: true, auto_exposure: false,
-  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.02,
+  auto_gain: false, auto_whitebalance: false, binning_x: 1, binning_y: 1, exposure: 0.03,
   exposure_auto_max: 0.5, exposure_auto_target: 50, fixed_rate: 15.0, frame_id: '',
   gain: 0, gain_auto_max: 19, gain_auto_target: 50, height: 480, stream_bytes_per_second: 45000000,
   trig_rate: 15.0, trig_timestamp_topic: '', trigger_mode: streaming, whitebalance_blue: 100,
@@ -1495,6 +1495,43 @@ rosdistro: 'indigo
   '
 roslaunch:
   uris: {host_127_0_0_1__41358: 'http://127.0.0.1:41358/', host_127_0_0_1__59207: 'http://127.0.0.1:59207/',
+    host_iarc__32859: 'http://iarc:32859/', host_iarc__32993: 'http://iarc:32993/',
+    host_iarc__33152: 'http://iarc:33152/', host_iarc__33287: 'http://iarc:33287/',
+    host_iarc__33353: 'http://iarc:33353/', host_iarc__33510: 'http://iarc:33510/',
+    host_iarc__33554: 'http://iarc:33554/', host_iarc__34147: 'http://iarc:34147/',
+    host_iarc__34578: 'http://iarc:34578/', host_iarc__35221: 'http://iarc:35221/',
+    host_iarc__35329: 'http://iarc:35329/', host_iarc__35340: 'http://iarc:35340/',
+    host_iarc__35382: 'http://iarc:35382/', host_iarc__35608: 'http://iarc:35608/',
+    host_iarc__35873: 'http://iarc:35873/', host_iarc__35896: 'http://iarc:35896/',
+    host_iarc__36089: 'http://iarc:36089/', host_iarc__36493: 'http://iarc:36493/',
+    host_iarc__36808: 'http://iarc:36808/', host_iarc__36973: 'http://iarc:36973/',
+    host_iarc__37004: 'http://iarc:37004/', host_iarc__37168: 'http://iarc:37168/',
+    host_iarc__37176: 'http://iarc:37176/', host_iarc__37353: 'http://iarc:37353/',
+    host_iarc__37572: 'http://iarc:37572/', host_iarc__37640: 'http://iarc:37640/',
+    host_iarc__37705: 'http://iarc:37705/', host_iarc__37723: 'http://iarc:37723/',
+    host_iarc__37782: 'http://iarc:37782/', host_iarc__38133: 'http://iarc:38133/',
+    host_iarc__38167: 'http://iarc:38167/', host_iarc__38487: 'http://iarc:38487/',
+    host_iarc__38491: 'http://iarc:38491/', host_iarc__38647: 'http://iarc:38647/',
+    host_iarc__38747: 'http://iarc:38747/', host_iarc__38793: 'http://iarc:38793/',
+    host_iarc__38928: 'http://iarc:38928/', host_iarc__38986: 'http://iarc:38986/',
+    host_iarc__39610: 'http://iarc:39610/', host_iarc__39668: 'http://iarc:39668/',
+    host_iarc__40084: 'http://iarc:40084/', host_iarc__40146: 'http://iarc:40146/',
+    host_iarc__40227: 'http://iarc:40227/', host_iarc__40311: 'http://iarc:40311/',
+    host_iarc__40390: 'http://iarc:40390/', host_iarc__40400: 'http://iarc:40400/',
+    host_iarc__40795: 'http://iarc:40795/', host_iarc__41058: 'http://iarc:41058/',
+    host_iarc__41111: 'http://iarc:41111/', host_iarc__41286: 'http://iarc:41286/',
+    host_iarc__41362: 'http://iarc:41362/', host_iarc__41678: 'http://iarc:41678/',
+    host_iarc__42102: 'http://iarc:42102/', host_iarc__42425: 'http://iarc:42425/',
+    host_iarc__42554: 'http://iarc:42554/', host_iarc__42668: 'http://iarc:42668/',
+    host_iarc__42860: 'http://iarc:42860/', host_iarc__43640: 'http://iarc:43640/',
+    host_iarc__44214: 'http://iarc:44214/', host_iarc__44280: 'http://iarc:44280/',
+    host_iarc__44500: 'http://iarc:44500/', host_iarc__44725: 'http://iarc:44725/',
+    host_iarc__44962: 'http://iarc:44962/', host_iarc__44963: 'http://iarc:44963/',
+    host_iarc__45029: 'http://iarc:45029/', host_iarc__45136: 'http://iarc:45136/',
+    host_iarc__45389: 'http://iarc:45389/', host_iarc__45519: 'http://iarc:45519/',
+    host_iarc__45772: 'http://iarc:45772/', host_iarc__46121: 'http://iarc:46121/',
+    host_iarc__46139: 'http://iarc:46139/', host_iarc__46163: 'http://iarc:46163/',
+    host_iarc__46412: 'http://iarc:46412/', host_iarc__46505: 'http://iarc:46505/',
     host_iclab1_desktop__35643: 'http://iclab1-desktop:35643/', host_iclab1_desktop__53957: 'http://iclab1-desktop:53957/',
     host_iclab1_desktop__55070: 'http://iclab1-desktop:55070/', host_iclab2_to_be_filled_by_o_e_m__36515: 'http://iclab2-To-be-filled-by-O-E-M:36515/',
     host_iclab2_to_be_filled_by_o_e_m__38690: 'http://iclab2-To-be-filled-by-O-E-M:38690/',
@@ -1668,7 +1705,7 @@ roslaunch:
     host_iclab_desktop__60400: 'http://iclab-desktop:60400/', host_iclab_desktop__60948: 'http://iclab-desktop:60948/',
     host_iclab_to_be_filled_by_o_e_m__42489: 'http://iclab-To-be-filled-by-O-E-M:42489/',
     host_iclab_to_be_filled_by_o_e_m__55755: 'http://iclab-To-be-filled-by-O-E-M:55755/'}
-rosversion: '1.11.16
+rosversion: '1.11.21
 
   '
 rqt_gui_cpp_node_26020:

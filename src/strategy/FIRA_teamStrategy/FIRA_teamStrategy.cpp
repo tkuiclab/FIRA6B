@@ -791,13 +791,13 @@ void FIRA_teamStrategy_class::role_CornerKick(){
 }
 
 void FIRA_teamStrategy_class::role_GoalKick(){
-
+    roleAry[1] = Role_Attack;
+    roleAry[2] = Role_Attack;
 }
 
 void FIRA_teamStrategy_class::role_AvoidBarrier(){
-    roleAry[0] = Role_Halt;
-    roleAry[1] = Role_AvoidBarrier;
-    roleAry[2] = Role_Halt;
+    roleAry[1]=Role_Test1;
+    roleAry[2]=Role_Test1;
 }
 
 //---------------role choose end----------------

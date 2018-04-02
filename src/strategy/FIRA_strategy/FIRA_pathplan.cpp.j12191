@@ -257,9 +257,6 @@ void FIRA_pathplan_class::personalStrategy(int robotIndex,int action){
             case action_Defend_Goal:
                 strategy_Defend_Goal(robotIndex);
                 break;
-            case action_Straight_Leave_Ball:
-                strategy_Straight_Leave_Ball(robotIndex);
-                break;
         }
         if(last_action!=action){// switch gamestate
             Shoot_Begin_time = ros::Time::now().toSec();
@@ -449,7 +446,7 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
             if(Strategy_Selection[4]!=1){
                 if(fabs(gla_angle)<=General_PathPlan[2]){
                     printf("target\n");
-                    env.home[r_number].v_yaw = gla_angle;
+                    env.home[r_number].v_yaw = gla_angle*3;
                     Shoot_Current_time = ros::Time::now().toSec();
                     if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
                         printf("shoot\n");
@@ -469,7 +466,7 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
                         }else if(left_right_angle<-180){
                             left_right_angle = left_right_angle + 360;
                         }
-                        env.home[r_number].v_yaw = left_right_angle;
+                        env.home[r_number].v_yaw = left_right_angle*3;
                         if(fabs(left_right_angle)<General_PathPlan[2]){
                             Shoot_Current_time = ros::Time::now().toSec();
                             if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
@@ -487,7 +484,7 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
                         }else if(left_right_angle<-180){
                             left_right_angle = left_right_angle + 360;
                         }
-                        env.home[r_number].v_yaw = left_right_angle;
+                        env.home[r_number].v_yaw = left_right_angle*3;
                         if(fabs(left_right_angle)<General_PathPlan[2]){
                             Shoot_Current_time = ros::Time::now().toSec();
                             if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
@@ -507,13 +504,13 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
             }else{
                 if(fabs(gla_angle-goal_max)>=fabs(gla_angle-goal_min)){//shoot right
                     printf("shoot right!!!!\n");
-                    left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.4;
+                    left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.25;
                     if(left_right_angle>180){
                         left_right_angle = left_right_angle - 360;
                     }else if(left_right_angle<-180){
                         left_right_angle = left_right_angle + 360;
                     }
-                    env.home[r_number].v_yaw = left_right_angle;
+                    env.home[r_number].v_yaw = left_right_angle*3;
                     if(fabs(left_right_angle)<General_PathPlan[2]){
                         Shoot_Current_time = ros::Time::now().toSec();
                         if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
@@ -528,13 +525,13 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
                     }
                 }else if(fabs(gla_angle-goal_max)<fabs(gla_angle-goal_min)){//shoot left
                     printf("shoot left!!!!\n");
-                    left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.4;
+                    left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.25;
                     if(left_right_angle>180){
                         left_right_angle = left_right_angle - 360;
                     }else if(left_right_angle<-180){
                         left_right_angle = left_right_angle + 360;
                     }
-                    env.home[r_number].v_yaw = left_right_angle;
+                    env.home[r_number].v_yaw = left_right_angle*3;
                     if(fabs(left_right_angle)<General_PathPlan[2]){
                         Shoot_Current_time = ros::Time::now().toSec();
                         if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[1]){
@@ -553,13 +550,13 @@ void FIRA_pathplan_class::strategy_Attack(int Robot_index){
             }
         }else{
             //printf("head not aim goal\n");
-            env.home[r_number].v_yaw = gla_angle;
+            env.home[r_number].v_yaw = gla_angle*3;
             Shoot_Current_time = ros::Time::now().toSec();
             Shoot_Begin_time = ros::Time::now().toSec();
         }
     }else{
         //printf("goal_angle>-90&&goal_angle<90\n");
-        env.home[r_number].v_yaw = gla_angle;
+        env.home[r_number].v_yaw = gla_angle*3;
         shoot = 0;
     }
     env.home[r_number].v_x =vectornt(0)*1000;
@@ -636,7 +633,7 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
             if(Strategy_Selection[4]!=1){
                 if(fabs(gla_angle)<=General_PathPlan[4]){
                     printf("target\n");
-                    env.home[r_number].v_yaw = gla_angle;
+                    env.home[r_number].v_yaw = gla_angle*3;
                     Shoot_Current_time = ros::Time::now().toSec();
                     if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
                         printf("shoot\n");
@@ -656,7 +653,7 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
                         }else if(left_right_angle<-180){
                             left_right_angle = left_right_angle + 360;
                         }
-                        env.home[r_number].v_yaw = left_right_angle;
+                        env.home[r_number].v_yaw = left_right_angle*3;
                         if(fabs(left_right_angle)<General_PathPlan[4]){
                             Shoot_Current_time = ros::Time::now().toSec();
                             if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
@@ -677,7 +674,7 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
                         }else if(left_right_angle<-180){
                             left_right_angle = left_right_angle + 360;
                         }
-                        env.home[r_number].v_yaw = left_right_angle;
+                        env.home[r_number].v_yaw = left_right_angle*3;
                         if(fabs(left_right_angle)<General_PathPlan[4]){
                             Shoot_Current_time = ros::Time::now().toSec();
                             if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
@@ -693,20 +690,20 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
                     }
                 }else{
                     //printf("fabs(gla_angle)>2\n");
-                    env.home[r_number].v_yaw = gla_angle;
+                    env.home[r_number].v_yaw = gla_angle*3;
                     Shoot_Current_time = ros::Time::now().toSec();
                     Shoot_Begin_time = ros::Time::now().toSec();
                 }
             }else{
                 if(fabs(gla_angle-goal_max)>=fabs(gla_angle-goal_min)){//shoot right
                     printf("shoot right!!!!\n");
-                    left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.4;
+                    left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.25;
                     if(left_right_angle>180){
                         left_right_angle = left_right_angle - 360;
                     }else if(left_right_angle<-180){
                         left_right_angle = left_right_angle + 360;
                     }
-                    env.home[r_number].v_yaw = left_right_angle;
+                    env.home[r_number].v_yaw = left_right_angle*3;
                     if(fabs(left_right_angle)<General_PathPlan[4]){
                         Shoot_Current_time = ros::Time::now().toSec();
                         if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
@@ -721,13 +718,13 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
                     }
                 }else if(fabs(gla_angle-goal_max)<fabs(gla_angle-goal_min)){//shoot left
                     printf("shoot left!!!!\n");
-                    left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.4;
+                    left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.25;
                     if(left_right_angle>180){
                         left_right_angle = left_right_angle - 360;
                     }else if(left_right_angle<-180){
                         left_right_angle = left_right_angle + 360;
                     }
-                    env.home[r_number].v_yaw = left_right_angle;
+                    env.home[r_number].v_yaw = left_right_angle*3;
                     if(fabs(left_right_angle)<General_PathPlan[4]){
                         Shoot_Current_time = ros::Time::now().toSec();
                         if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[3]){
@@ -746,13 +743,13 @@ void FIRA_pathplan_class::strategy_Shoot_Attack(int Robot_index){
             }
         }else{
             //printf("head not aim goal\n");
-            env.home[r_number].v_yaw = goal_angle;
+            env.home[r_number].v_yaw = goal_angle*3;
             Shoot_Current_time = ros::Time::now().toSec();
             Shoot_Begin_time = ros::Time::now().toSec();
         }
     }else{
         //printf("goal_angle>-90&&goal_angle<90\n");
-        env.home[r_number].v_yaw = goal_angle;
+        env.home[r_number].v_yaw = goal_angle*3;
         shoot = 0;
     }
     env.home[r_number].v_x =0;
@@ -4202,7 +4199,7 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
                     if(Strategy_Selection[4]!=1){
                         if(fabs(gla_angle)<=General_PathPlan[6]){
                             printf("target\n");
-                            env.home[r_number].v_yaw = gla_angle;
+                            env.home[r_number].v_yaw = gla_angle*3;
                             Shoot_Current_time = ros::Time::now().toSec();
                             if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
                                 printf("shoot\n");
@@ -4222,7 +4219,7 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
                                 }else if(left_right_angle<-180){
                                     left_right_angle = left_right_angle + 360;
                                 }
-                                env.home[r_number].v_yaw = left_right_angle;
+                                env.home[r_number].v_yaw = left_right_angle*3;
                                 if(fabs(left_right_angle)<General_PathPlan[6]){
                                     Shoot_Current_time = ros::Time::now().toSec();
                                     if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
@@ -4240,7 +4237,7 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
                                 }else if(left_right_angle<-180){
                                     left_right_angle = left_right_angle + 360;
                                 }
-                                env.home[r_number].v_yaw = left_right_angle;
+                                env.home[r_number].v_yaw = left_right_angle*3;
                                 if(fabs(left_right_angle)<General_PathPlan[6]){
                                     Shoot_Current_time = ros::Time::now().toSec();
                                     if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
@@ -4254,20 +4251,20 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 
                         }else{
 //                        printf("fabs(gla_angle)>2\n");
-                            env.home[r_number].v_yaw = gla_angle;
+                            env.home[r_number].v_yaw = gla_angle*3;
                             Shoot_Current_time = ros::Time::now().toSec();
                             Shoot_Begin_time = ros::Time::now().toSec();
                         }
                     }else{
                         if(fabs(gla_angle-goal_max)>=fabs(gla_angle-goal_min)){//shoot right
                             printf("shoot right!!!!\n");
-                            left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.4;
+                            left_right_angle = goal_min + fabs(goal_angle-goal_min)*0.25;
                             if(left_right_angle>180){
                                 left_right_angle = left_right_angle - 360;
                             }else if(left_right_angle<-180){
                                 left_right_angle = left_right_angle + 360;
                             }
-                            env.home[r_number].v_yaw = left_right_angle;
+                            env.home[r_number].v_yaw = left_right_angle*3;
                             if(fabs(left_right_angle)<General_PathPlan[6]){
                                 Shoot_Current_time = ros::Time::now().toSec();
                                 if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
@@ -4282,13 +4279,13 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
                             }
                         }else if(fabs(gla_angle-goal_max)<fabs(gla_angle-goal_min)){//shoot left
                             printf("shoot left!!!!\n");
-                            left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.4;
+                            left_right_angle = goal_max - fabs(goal_angle-goal_max)*0.25;
                             if(left_right_angle>180){
                                 left_right_angle = left_right_angle - 360;
                             }else if(left_right_angle<-180){
                                 left_right_angle = left_right_angle + 360;
                             }
-                            env.home[r_number].v_yaw = left_right_angle;
+                            env.home[r_number].v_yaw = left_right_angle*3;
                             if(fabs(left_right_angle)<General_PathPlan[6]){
                                 Shoot_Current_time = ros::Time::now().toSec();
                                 if(fabs(Shoot_Current_time-Shoot_Begin_time)>General_PathPlan[5]){
@@ -4308,13 +4305,13 @@ void FIRA_pathplan_class::strategy_Straight_Attack(int r_number){
 
                 }else{
 //                    printf("head not aim goal\n");
-                    env.home[r_number].v_yaw = gla_angle;
+                    env.home[r_number].v_yaw = gla_angle*3;
                     Shoot_Current_time = ros::Time::now().toSec();
                     Shoot_Begin_time = ros::Time::now().toSec();
                 }
             }else{
 //                printf("goal_angle>-90&&goal_angle<90\n");
-                env.home[r_number].v_yaw = angle_dr;
+                env.home[r_number].v_yaw = angle_dr*3;
                 shoot = 0;
             }
         }
@@ -4447,10 +4444,10 @@ void FIRA_pathplan_class::strategy_Defend_Goal(int r_number){
 //    double goal_min_dis = env.home[r_number].goal_edge.min_dis;
     double opgoal_max = env.home[r_number].op_goal_edge.max;
     double opgoal_min = env.home[r_number].op_goal_edge.min;
-    double opgoal_max_dis = env.home[r_number].op_goal_edge.max_dis;// right face goal
-    double opgoal_min_dis = env.home[r_number].op_goal_edge.min_dis;//left face goal
+    double opgoal_max_dis = env.home[r_number].op_goal_edge.max_dis;
+    double opgoal_min_dis = env.home[r_number].op_goal_edge.min_dis;
     double transform_angle_opdr =opgoal_max + 90;
-    double inv_angle_opdr = op_angle_dr + 180;
+    double inv_angle_opdr = opgoal_max + 150;
 
     if(transform_angle_opdr>180){
         transform_angle_opdr = transform_angle_opdr - 360;
@@ -4460,33 +4457,42 @@ void FIRA_pathplan_class::strategy_Defend_Goal(int r_number){
     }
     printf("opgoal_min_dis=%f\n",opgoal_min_dis);
     printf("opgoal_max_dis=%f\n",opgoal_max_dis);
-    printf("transform_angle_opdr=%f\n",transform_angle_opdr);
-    printf("inv_angle_opdr=%f\n",inv_angle_opdr);
-    printf("opgoal_max=%f\n",opgoal_max);
-    printf("opgoal_min=%f\n",opgoal_min);
-    if(op_distance_dr>=2.5){
+    if(opgoal_max_dis>=1.5){
         printf("move to gate\n");
+        printf("transform_angle_opdr=%f\n",transform_angle_opdr);
+        printf("inv_angle_opdr=%f\n",inv_angle_opdr);
+        printf("opgoal_max=%f\n",opgoal_max);
         env.home[r_number].v_x = cos(transform_angle_opdr*deg2rad)*opgoal_max_dis;
         env.home[r_number].v_y = sin(transform_angle_opdr*deg2rad)*opgoal_max_dis;
         env.home[r_number].v_yaw = inv_angle_opdr;
     }else{
-        if(fabs(inv_angle_opdr)<5){
-            env.home[r_number].v_yaw = inv_angle_opdr;
-            env.home[r_number].v_x = 0;
-            env.home[r_number].v_y = 0;
-            if(opgoal_max<0&&opgoal_min>=0){
-                printf("good position\n");
-            }
-            if(opgoal_max_dis>opgoal_min_dis){
-                env.home[r_number].v_x = 100;
-            }else{
-                env.home[r_number].v_x = -100;
-            }
-        }else{
-            env.home[r_number].v_yaw = inv_angle_opdr;
-            env.home[r_number].v_x = 0;
-            env.home[r_number].v_y = 0;
-        }
+//        if(fabs(inv_angle_opdr)<10){// goal right side
+//            if(opgoal_max_dis>=1.22){
+//                env.home[r_number].v_x = cos(transform_angle_opdr*deg2rad)*opgoal_max_dis;
+//                env.home[r_number].v_y = sin(transform_angle_opdr*deg2rad)*opgoal_max_dis;
+//                env.home[r_number].v_yaw = inv_angle_opdr;
+//            }else if(opgoal_min_dis>1.5){
+//                printf("move right\n");
+//                env.home[r_number].v_x = -100;
+//                env.home[r_number].v_y = 0;
+//                env.home[r_number].v_yaw = inv_angle_opdr;
+//            }else if(opgoal_min_dis<1.2){
+//                printf("move left\n");
+//                env.home[r_number].v_x = 100;
+//                env.home[r_number].v_y = 0;
+//                env.home[r_number].v_yaw = inv_angle_opdr;
+//            }else{
+//                env.home[r_number].v_x = 0;
+//                env.home[r_number].v_y = 0;
+//                env.home[r_number].v_yaw = inv_angle_opdr;
+//            }
+//        }else{
+//            env.home[r_number].v_x = 0;
+//            env.home[r_number].v_y = 0;
+//        }
+        env.home[r_number].v_yaw = inv_angle_opdr;
+        env.home[r_number].v_x = 0;
+        env.home[r_number].v_y = 0;
     }
     shoot = 0;
 }

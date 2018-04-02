@@ -442,12 +442,12 @@ void Base_Control::inverseKinematics()
 	double y_error = *(this->base_robotCMD->y_speed) - y_CMD;
 	double yaw_error = *(this->base_robotCMD->yaw_speed) - yaw_CMD;
 
-	if(x_error>=0)x_CMD = (x_error>4)? x_CMD+4 : *(this->base_robotCMD->x_speed);
-	else x_CMD = (x_error<(-4))? x_CMD-4 : *(this->base_robotCMD->x_speed);
-	if(y_error>=0)y_CMD = (y_error>4)? y_CMD+4 : *(this->base_robotCMD->y_speed);
-	else y_CMD = (y_error<(-4))? y_CMD-4 : *(this->base_robotCMD->y_speed);
-	if(yaw_error>=0)yaw_CMD = (yaw_error>4)? yaw_CMD+4 : *(this->base_robotCMD->yaw_speed);
-	else yaw_CMD = (yaw_error<(-4))? yaw_CMD-4 : *(this->base_robotCMD->yaw_speed);
+	if(x_error>=0)x_CMD = (x_error>8)? x_CMD+8 : *(this->base_robotCMD->x_speed);
+	else x_CMD = (x_error<(-8))? x_CMD-8 : *(this->base_robotCMD->x_speed);
+	if(y_error>=0)y_CMD = (y_error>8)? y_CMD+8 : *(this->base_robotCMD->y_speed);
+	else y_CMD = (y_error<(-8))? y_CMD-8 : *(this->base_robotCMD->y_speed);
+	if(yaw_error>=0)yaw_CMD = (yaw_error>8)? yaw_CMD+8 : *(this->base_robotCMD->yaw_speed);
+	else yaw_CMD = (yaw_error<(-8))? yaw_CMD-8 : *(this->base_robotCMD->yaw_speed);
 
 	w1_speed = this->x_CMD*cos(m1_Angle)+y_CMD*sin(m1_Angle)+yaw_CMD*robot_radius*(-1);
 	w2_speed = this->x_CMD*cos(m2_Angle)+y_CMD*sin(m2_Angle)+yaw_CMD*robot_radius*(-1);
