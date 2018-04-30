@@ -27,6 +27,7 @@ typedef struct{
 	int* w1;
 	int* w2;
     int* w3;
+	int* w4;
 	unsigned char* shoot;
 	unsigned char* batery;
 }serial_rx;

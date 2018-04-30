@@ -19,6 +19,7 @@ foreach(subdir
 		common
 		Attack_motion
 		Defend_motion
+		Mecanum_motion
 		test
 		)
 	add_subdirectory(${subdir})
