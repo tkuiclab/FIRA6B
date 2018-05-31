@@ -46,6 +46,9 @@ Base_Control::Base_Control()
 	this->base_TX->enable_and_stop = new unsigned char;
 	this->base_TX->shoot = new unsigned char;
 	this->base_TX->checksum = new unsigned char;
+	this->base_TX->safe1 = new unsigned char;
+	this->base_TX->safe2 = new unsigned char;
+	this->base_TX->safe3 = new unsigned char;
 
 	memset(this->base_TX->head1, 0xff, sizeof(unsigned char));
 	memset(this->base_TX->head2, 0xfa, sizeof(unsigned char));
@@ -56,6 +59,9 @@ Base_Control::Base_Control()
 	memset(this->base_TX->enable_and_stop, 0, sizeof(unsigned char));
 	memset(this->base_TX->shoot, 0, sizeof(unsigned char));
 	memset(this->base_TX->checksum, 0, sizeof(unsigned char));
+	memset(this->base_TX->safe1, 0, sizeof(unsigned char));
+	memset(this->base_TX->safe2, 0, sizeof(unsigned char));
+	memset(this->base_TX->safe3, 0, sizeof(unsigned char));
 	
 	this->x_CMD = 0;
 	this->y_CMD = 0;

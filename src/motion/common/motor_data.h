@@ -19,6 +19,9 @@ typedef struct{
 	unsigned char* enable_and_stop;
 	unsigned char* shoot;
 	unsigned char* checksum;
+	unsigned char* safe1;
+	unsigned char* safe2;
+	unsigned char* safe3;
 }serial_tx;
 
 typedef struct{
