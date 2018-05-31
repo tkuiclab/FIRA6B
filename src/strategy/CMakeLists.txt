@@ -14,8 +14,7 @@ add_definitions(-std=c++11)
 #message(kkkkkTest catkin_INCLUDE_DIRS=${catkin_INCLUDE_DIRS})
 # These find_package calls setup catkin_INCLUDE_DIRS and ROS_LIBRARIES and 
 # all the component variables too (e.g. roscpp_INCLUDE_DIR?)
-find_package(catkin REQUIRED COMPONENTS qt_build message_generation std_msgs roscpp
-	     sensor_msgs cv_bridge image_transport)
+find_package(catkin REQUIRED COMPONENTS qt_build message_generation std_msgs roscpp sensor_msgs cv_bridge image_transport)
 include_directories(${catkin_INCLUDE_DIRS})
 
 ##############################################################################

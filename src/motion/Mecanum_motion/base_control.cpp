@@ -347,6 +347,9 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*w2_speed_percent/100) + w2_dir) : 0x80;
 	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*w3_speed_percent/100) + w3_dir) : 0x80;
 	*(this->base_TX->w4) = (w4_speed_percent>0)? (unsigned char)((127*w4_speed_percent/100) + w4_dir) : 0x80;
+	*(this->base_TX->enable_and_stop) = (this->en1<<7)+(this->en2<<6)+(this->en3<<5)+
+									(this->en4<<4)+(this->stop1<<3)+(this->stop2<<2)+
+									(this->stop3<<1)+(this->stop4);
 #ifdef DEBUG
 	std::cout << "speed_regularization(DEBUG)\n";
 	std::cout << std::hex;
