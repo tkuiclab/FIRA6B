@@ -1,8 +1,10 @@
 #include "base_control.h"
 #define MECANUM
+// #define DEBUG_CSSL
 //#include "../common/cssl/cssl.h"
 #include "cssl.c"
 #include "port.h"
+
 serial_rx* Base_Control::base_RX = NULL;
 Base_Control::Base_Control()
 {
@@ -18,21 +20,32 @@ Base_Control::Base_Control()
 
 	Base_Control::base_RX = new serial_rx;
 
-	Base_Control::base_RX->head1 = new unsigned char;
-	Base_Control::base_RX->head2 = new unsigned char;
-	Base_Control::base_RX->w1 = new int;
-	Base_Control::base_RX->w2 = new int;
-	Base_Control::base_RX->w3 = new int;
-	Base_Control::base_RX->w4 = new int;
-	Base_Control::base_RX->shoot = new unsigned char;
+	Base_Control::base_RX->head1 			= new unsigned char;
+	Base_Control::base_RX->head2 			= new unsigned char;
+	Base_Control::base_RX->w1	 			= new unsigned char;
+	Base_Control::base_RX->w2	 			= new unsigned char;
+	Base_Control::base_RX->w3   			= new unsigned char;
+	Base_Control::base_RX->w4 				= new unsigned char;
+	Base_Control::base_RX->enable_and_stop 	= new unsigned char;
+	Base_Control::base_RX->shoot			= new unsigned char;
+	Base_Control::base_RX->checksum 		= new unsigned char;
+	Base_Control::base_RX->safe1 			= new unsigned char;
+	Base_Control::base_RX->safe2 			= new unsigned char;
+	Base_Control::base_RX->safe3 			= new unsigned char;
 	// Base_Control::base_RX->batery = new unsigned char;
-	memset(Base_Control::base_RX->head1, 0, sizeof(unsigned char));
-	memset(Base_Control::base_RX->head2, 0, sizeof(unsigned char));
-	memset(Base_Control::base_RX->w1, 0, sizeof(int));
-	memset(Base_Control::base_RX->w2, 0, sizeof(int));
-	memset(Base_Control::base_RX->w3, 0, sizeof(int));
-	memset(Base_Control::base_RX->w4, 0, sizeof(int));
-	memset(Base_Control::base_RX->shoot, 0, sizeof(unsigned char));
+
+	memset(Base_Control::base_RX->head1, 			0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->head2, 			0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->w1, 				0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->w2, 				0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->w3, 				0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->w4, 				0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->enable_and_stop, 	0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->shoot, 			0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->checksum, 		0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->safe1, 			0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->safe2, 			0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->safe3, 			0, sizeof(unsigned char));
 	// memset(Base_Control::base_RX->batery, 0, sizeof(unsigned char));
 
 	this->base_TX = new serial_tx;
@@ -92,7 +105,7 @@ Base_Control::~Base_Control()
 
 int Base_Control::mcssl_init()
 {
-	char *devs;
+	const char *devs;
 #ifdef DEBUG_CSSL
 	std::cout << "mcssl_init(DEBUG_CSSL)\n";
 #else
@@ -170,36 +183,77 @@ void Base_Control::mcssl_finish()
 
 void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 {
-#ifdef UNDERSTAND
-	static unsigned char cssl_buffer[50]={0};
+	// static unsigned char cssl_buffer[50]={0};
+	// static int count_buffer=0;
+	// cssl_buffer[count_buffer++] = *buf;
+	// count_buffer = (count_buffer)%50;
+	// unsigned char checksum;
+	// bool error = true;
+	// int i;
+	// for(i=0; i<30; i++){
+	// 	if((cssl_buffer[i]==0xff)&&(cssl_buffer[i+1]==0xfa)&&(cssl_buffer[i+15]==0xff)&&(cssl_buffer[i+16])==0xfa){
+	// 		checksum = cssl_buffer[i+2]+cssl_buffer[i+3]+cssl_buffer[i+4]+cssl_buffer[i+5]+cssl_buffer[i+6]+cssl_buffer[i+7]+cssl_buffer[i+8]+cssl_buffer[i+9]+cssl_buffer[i+10]+cssl_buffer[i+11]+cssl_buffer[i+12]+cssl_buffer[i+13];
+	// 		if(cssl_buffer[i+14]==checksum){
+	// 			*(base_RX->head1) = cssl_buffer[i];
+	// 			*(base_RX->head2) = cssl_buffer[i+1];
+	// 			*(base_RX->w1) = (cssl_buffer[i+2]<<24)+(cssl_buffer[i+3]<<16)+(cssl_buffer[i+4]<<8)+(cssl_buffer[i+5]);
+	// 			*(base_RX->w2) = (cssl_buffer[i+6]<<24)+(cssl_buffer[i+7]<<16)+(cssl_buffer[i+8]<<8)+(cssl_buffer[i+9]);
+	// 			*(base_RX->w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
+	// 			*(base_RX->shoot) = 0;
+	// 			// *(base_RX->batery) = 0;
+	// 			error = false;
+	// 			break;
+	// 		}else{
+	// 			continue;
+	// 		}
+	// 	}else{
+	// 		continue;
+	// 	}
+	// }
+	static unsigned char cssl_buffer[100]={0};
 	static int count_buffer=0;
 	cssl_buffer[count_buffer++] = *buf;
-	count_buffer = (count_buffer)%50;
-	unsigned char checksum;
-	bool error = true;
-	int i;
-	for(i=0; i<30; i++){
-		if((cssl_buffer[i]==0xff)&&(cssl_buffer[i+1]==0xfa)&&(cssl_buffer[i+15]==0xff)&&(cssl_buffer[i+16])==0xfa){
-			checksum = cssl_buffer[i+2]+cssl_buffer[i+3]+cssl_buffer[i+4]+cssl_buffer[i+5]+cssl_buffer[i+6]\
-			+cssl_buffer[i+7]+cssl_buffer[i+8]+cssl_buffer[i+9]+cssl_buffer[i+10]+cssl_buffer[i+11]+cssl_buffer[i+12]+cssl_buffer[i+13];
-			if(cssl_buffer[i+14]==checksum){
-				*(base_RX->head1) = cssl_buffer[i];
-				*(base_RX->head2) = cssl_buffer[i+1];
-				*(base_RX->w1) = (cssl_buffer[i+2]<<24)+(cssl_buffer[i+3]<<16)+(cssl_buffer[i+4]<<8)+(cssl_buffer[i+5]);
-				*(base_RX->w2) = (cssl_buffer[i+6]<<24)+(cssl_buffer[i+7]<<16)+(cssl_buffer[i+8]<<8)+(cssl_buffer[i+9]);
-				*(base_RX->w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
-				*(base_RX->shoot) = 0;
-				*(base_RX->batery) = 0;
-				error = false;
-				break;
-			}else{
-				continue;
-			}
-		}else{
-			continue;
+	count_buffer = (count_buffer)%100;
+	// *(base_RX->head1) = cssl_buffer[0];
+	// *(base_RX->head2) = cssl_buffer[1];
+	// *(base_RX->w1) = cssl_buffer[2];
+	// *(base_RX->w2) = cssl_buffer[3];
+	// *(base_RX->w3) = cssl_buffer[4];
+	// *(base_RX->w4) = cssl_buffer[5];
+	// *(base_RX->enable_and_stop) = cssl_buffer[6];
+	// *(base_RX->shoot) = cssl_buffer[7];
+	// *(base_RX->checksum) = cssl_buffer[8];
+	// *(base_RX->safe1) = cssl_buffer[9];
+	// *(base_RX->safe2) = cssl_buffer[10];
+	// *(base_RX->safe3) = cssl_buffer[11];
+
+	for (int i=0;i<100;i++){
+		if((cssl_buffer[i]==0xff) && (cssl_buffer[i+1]==0xfa) && (cssl_buffer[i+3]==0xff) && (cssl_buffer[i+4]==0xfa) && (cssl_buffer[i+6]==0xff) && (cssl_buffer[i+7]==0xfa)){
+			*(base_RX->head1) = cssl_buffer[i];
+			*(base_RX->head2) = cssl_buffer[i+1];
+			*(base_RX->w1) = cssl_buffer[i+2];
+			*(base_RX->w2) = cssl_buffer[i+5];
+			*(base_RX->w3) = cssl_buffer[i+8];
+			// *(base_RX->w4) = cssl_buffer[i+7];
+			// *(base_RX->enable_and_stop) = cssl_buffer[i+8];
+			// *(base_RX->shoot) = cssl_buffer[i+9];
+			// *(base_RX->checksum) = cssl_buffer[i+10];
+			// *(base_RX->safe1) = cssl_buffer[i+11];
+			// *(base_RX->safe2) = cssl_buffer[i+12];
+			// *(base_RX->safe3) = cssl_buffer[i+13];
+			printf("\nRecieve!!!!!!!!!!!!!!!!!!!!!\nhead1: %d\nhead2: %d\nw1: %d\nw2: %d\nw3: %d\nw4: %d\nen_stop: %d\n", (int)*(base_RX->head1), \
+		(int)*(base_RX->head2), (int)*(base_RX->w1), (int)*(base_RX->w2), (int)*(base_RX->w3), (int)*(base_RX->w4), (int)*(base_RX->enable_and_stop));
 		}
 	}
-#endif
+	// if((int)*(base_RX->head1) == 255 && (int)*(base_RX->head2) == 250){
+	// 	std::cout << "head1: " << (int)*(base_RX->head1) << std::endl
+	// 			<< "head2: " << (int)*(base_RX->head2) << std::endl;
+	// }
+	// if(*(base_RX->head1) == 0xff && *(base_RX->head2) == 250){
+	// 	printf("\nRecieve!!!!!!!!!!!!!!!!!!!!!\nhead1: %d\nhead2: %d\n\w1: %d\nw2: %d\nw3: %d\nw4: %d\nen_stop: %d\n", (int)*(base_RX->head1), \
+	// 	(int)*(base_RX->head2), (int)*(base_RX->w1), (int)*(base_RX->w2), (int)*(base_RX->w3), (int)*(base_RX->w4), (int)*(base_RX->enable_and_stop));
+	// }
+	
 #ifdef DEBUG_CSSLCALLBACK_TEST
 	double x,y,z,yaw;
 	int round;
@@ -241,6 +295,7 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 	std::cout << "mcssl_Callback(DEBUG_CSSLCALLBACK)\n";
 	std::cout << std::hex;
 	std::cout << "buf: " << (int)*(buf) << "\n";
+	std::cout << "buf: " << (int)*(buf) << "\n";
 	std::cout << "RX SERIAL: ";
 	for(int j=0; j<50; j++){
 		std::cout << (int)cssl_buffer[j] << " ";
@@ -271,16 +326,34 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 
 void Base_Control::mcssl_send2motor()
 {	
-	*(this->base_TX->checksum) = *(this->base_TX->w1)+*(this->base_TX->w2)+*(this->base_TX->w3)+*(this->base_TX->w4);
+	unsigned char temp[]={	*(this->base_TX->w1), *(this->base_TX->w2), 
+							*(this->base_TX->w3), *(this->base_TX->w4), 
+							*(this->base_TX->enable_and_stop),*(this->base_TX->shoot)};
+	int size = 6;
+	Crc_8 aaaa(temp, size);
+	*this->base_TX->checksum = aaaa.getCrc();
+	// unsigned char aa[]={	*(this->base_TX->w1), *(this->base_TX->w2), 
+	// 						*(this->base_TX->w3), *(this->base_TX->w4), 
+	// 						*(this->base_TX->enable_and_stop),*(this->base_TX->shoot), *(this->base_TX->checksum)};
+	// std::cout << "bool: "<< aaaa.checkCrc(aa, 7) << std::endl;
+
 #ifdef DEBUG_CSSL
 	std::cout << "mcssl_send2motor(DEBUG_CSSL)\n";
 	std::cout << std::hex;
-	std::cout << "w1: " << (int)*(this->base_TX->w1) << std::endl;
-	std::cout << "w2: " << (int)*(this->base_TX->w2) << std::endl;
-	std::cout << "w3: " << (int)*(this->base_TX->w3) << std::endl;
-	std::cout << "w4: " << (int)*(this->base_TX->w4) << std::endl;
-	std::cout << "checksum: " << (int)*(this->base_TX->checksum) << std::endl;
-	std::cout << std::endl;
+	std::cout << "head1: " 				<< (int)*(this->base_TX->head1) 			<< std::endl;
+	std::cout << "head2: " 				<< (int)*(this->base_TX->head2) 			<< std::endl;
+	std::cout << "w1: " 				<< (int)*(this->base_TX->w1) 				<< std::endl;
+	std::cout << "w2: " 				<< (int)*(this->base_TX->w2) 				<< std::endl;
+	std::cout << "w3: " 				<< (int)*(this->base_TX->w3) 				<< std::endl;
+	std::cout << "w4: " 				<< (int)*(this->base_TX->w4) 				<< std::endl;
+	std::cout << "enable_and_stop: " 	<< (int)*(this->base_TX->enable_and_stop) 	<< std::endl;
+	std::cout << "shoot: " 				<< (int)*(this->base_TX->shoot) 			<< std::endl;
+	std::cout << "checksum: " 			<< (int)*(this->base_TX->checksum) 			<< std::endl;
+	std::cout << "safe1: " 				<< (int)*(this->base_TX->safe1) 			<< std::endl;
+	std::cout << "safe2: "				<< (int)*(this->base_TX->safe2) 			<< std::endl;
+	std::cout << "safe3: "				<< (int)*(this->base_TX->safe3) 			<< std::endl;
+	std::cout << "cssl error: "			<< cssl_geterrormsg() 						<< std::endl;
+
 #else
 #ifdef DEBUG
 	std::cout << "mcssl_send2motor(DEBUG)\n";
@@ -292,6 +365,10 @@ void Base_Control::mcssl_send2motor()
 	std::cout << "checksum: " << (int)*(this->base_TX->checksum) << std::endl;
 	std::cout << std::endl;
 #endif
+	// *(this->base_TX->w1) = 0x3F;
+	// *(this->base_TX->w2) = 0x3F;
+	// *(this->base_TX->w3) = 0x3F;
+	// *(this->base_TX->w4) = 0x3F;
 	cssl_putchar(serial, *(this->base_TX->head1));
 	cssl_putchar(serial, *(this->base_TX->head2));
 	cssl_putchar(serial, *(this->base_TX->w1));
@@ -301,19 +378,30 @@ void Base_Control::mcssl_send2motor()
 	cssl_putchar(serial, *(this->base_TX->enable_and_stop));
 	cssl_putchar(serial, *(this->base_TX->shoot));
 	cssl_putchar(serial, *(this->base_TX->checksum));
-	/*cssl_putchar(serial, 0xff);
-	cssl_putchar(serial, 0xfa);
-	cssl_putchar(serial, 0);
-	cssl_putchar(serial, 0);
-	cssl_putchar(serial, 0);
-	cssl_putchar(serial, 0x80);
-	cssl_putchar(serial, 0x0);*/
+	// cssl_putchar(serial, *(this->base_TX->safe1));
+	// cssl_putchar(serial, *(this->base_TX->safe2));
+	// cssl_putchar(serial, *(this->base_TX->safe3));
+	
+	printf("**************************\n");
+	printf("* mcssl_send(DEBUG_CSSL) *\n");
+	printf("**************************\n");
+	printf("head1: %x\n", *(this->base_TX->head1));
+	printf("head2: %x\n", *(this->base_TX->head2));
+	printf("w1: %x\n", *(this->base_TX->w1));
+	printf("w2: %x\n", *(this->base_TX->w2));
+	printf("w3: %x\n", *(this->base_TX->w3));
+	printf("w4: %x\n", *(this->base_TX->w4));
+	printf("enable_and_stop: %x\n", *(this->base_TX->enable_and_stop));
+	printf("shoot: %x\n", *(this->base_TX->shoot));
+	printf("checksum: %x\n", *(this->base_TX->checksum));
 #endif
 }
 
 void Base_Control::shoot_regularization()
 {
-	if(*(this->base_robotCMD->shoot_power)>=100){
+	if(*(this->base_robotCMD->shoot_power)==0){
+		*(this->base_TX->shoot) = 1;
+	}else if(*(this->base_robotCMD->shoot_power)>=100){
 		*(this->base_TX->shoot) = 255;
 	}
 	else{
@@ -353,6 +441,10 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*w2_speed_percent/100) + w2_dir) : 0x80;
 	*(this->base_TX->w3) = (w3_speed_percent>0)? (unsigned char)((127*w3_speed_percent/100) + w3_dir) : 0x80;
 	*(this->base_TX->w4) = (w4_speed_percent>0)? (unsigned char)((127*w4_speed_percent/100) + w4_dir) : 0x80;
+	printf("w1: %lf\t, w2: %lf\t, w3: %lf\t, w4: %lf\n", w1, w2, w3, w4);
+
+
+	this->en1=0;this->en2=0;this->en3=0;this->en4=0;
 	*(this->base_TX->enable_and_stop) = (this->en1<<7)+(this->en2<<6)+(this->en3<<5)+
 									(this->en4<<4)+(this->stop1<<3)+(this->stop2<<2)+
 									(this->stop3<<1)+(this->stop4);
@@ -378,13 +470,13 @@ void Base_Control::forwardKinematics()
 	double Rw = 0.05;	// platform wheeled radius
 	*(this->base_robotFB->x_speed) = *(base_RX->w1) + *(base_RX->w2) + *(base_RX->w3) + *(base_RX->w4);
 	*(this->base_robotFB->y_speed) = -*(base_RX->w1) + *(base_RX->w2) + *(base_RX->w3) - *(base_RX->w4);
-	*(this->base_robotFB->yaw_speed) = -(1/(Lx+Ly)) * *(base_RX->w1) + (1/(Lx+Ly)) * *(base_RX->w2)  \ 
-									   -(1/(Lx+Ly)) * *(base_RX->w3) + (1/(Lx+Ly)) * *(base_RX->w4);
+	*(this->base_robotFB->yaw_speed) = -(1/(Lx+Ly)) * *(base_RX->w1) + (1/(Lx+Ly)) * *(base_RX->w2) - (1/(Lx+Ly)) * *(base_RX->w3) + (1/(Lx+Ly)) * *(base_RX->w4);
 #endif
 }
 
 void Base_Control::inverseKinematics()
 {
+	// std::cout << "speed is error !! " << std::endl;
 	double w1_speed, w2_speed, w3_speed, w4_speed;
 	double x_error = *(this->base_robotCMD->x_speed) - x_CMD;
 	double y_error = *(this->base_robotCMD->y_speed) - y_CMD;
@@ -428,6 +520,7 @@ void Base_Control::inverseKinematics()
 			break;
 		}
 	}
+
 	speed_regularization(w1_speed, w2_speed, w3_speed, w4_speed);
 #ifdef DEBUG
 	std::cout << "Inverse kinematics(DEBUG)\n";

@@ -27,11 +27,16 @@ typedef struct{
 typedef struct{
 	unsigned char* head1;
 	unsigned char* head2;
-	int* w1;
-	int* w2;
-    int* w3;
-	int* w4;
+	unsigned char* w1;
+	unsigned char* w2;
+	unsigned char* w3;
+	unsigned char* w4;
+	unsigned char* enable_and_stop;
 	unsigned char* shoot;
+	unsigned char* checksum;
+	unsigned char* safe1;
+	unsigned char* safe2;
+	unsigned char* safe3;
 	unsigned char* batery;
 }serial_rx;
 

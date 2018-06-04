@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <cmath>
 #include <cstring>
+#include "crc_8.h"
+
 /*******************************
   * Include library
   ******************************/
@@ -15,6 +17,13 @@ extern "C"{
 #include "motor_data.h"
 #include "cssl.h"
 }
+
+#ifndef pkg_size
+#define pkg_size 8
+#endif
+
+const unsigned short crc_8 = 0x131;  // x^8 + x^5 + x^4 + 1  
+
 //#include "../common/cssl/cssl.c"
 //#include "../common/cssl/port.h"
 
@@ -57,6 +66,7 @@ private:
 	static serial_rx* base_RX;
 	double x_CMD, y_CMD, yaw_CMD;
 	unsigned char en1,en2,en3,en4,stop1,stop2,stop3,stop4;
+	// unsigned char crc8_build(unsigned char* input_crc=NULL, const int size=0);
 public:
 	void send(robot_command*);
 	robot_command* get_feedback();

@@ -17,8 +17,8 @@ catkin_package(CATKIN_DEPENDS
 #add_library(csslLib cssl/cssl.h cssl/cssl.h cssl/uty.c)
 foreach(subdir
 		common
-		Attack_motion
-		Defend_motion
+		# Attack_motion
+		# Defend_motion
 		Mecanum_motion
 		test
 		)
