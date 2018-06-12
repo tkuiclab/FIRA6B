@@ -35,7 +35,7 @@ unsigned char Crc_8::genCrc(unsigned char* msg, int size){
 	while(size--)
 		crc = crc8_table[crc ^ *msg++];
 #endif
-    printf("crc: %x\n", crc);
+    // printf("crc: %x\n", crc);
     return crc;
 };
 
@@ -71,5 +71,5 @@ void Crc_8::buildCrcTable(void){
             printf("\n");
         unsigned char j = i&0xFF;
         printf("0x%.2x, ", genCrc(j));
-    }        
+    }   
 };

@@ -22,6 +22,8 @@ typedef struct{
 	unsigned char* safe1;
 	unsigned char* safe2;
 	unsigned char* safe3;
+	unsigned char* crc_16_1;
+	unsigned char* crc_16_2;
 }serial_tx;
 
 typedef struct{
@@ -38,6 +40,7 @@ typedef struct{
 	unsigned char* safe2;
 	unsigned char* safe3;
 	unsigned char* batery;
+	
 }serial_rx;
 
 //typedef struct MOTOR_FEEDBACK motor_feedback;

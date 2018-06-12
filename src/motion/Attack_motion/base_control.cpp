@@ -262,7 +262,8 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 
 void Base_Control::mcssl_send2motor()
 {	
-	*(this->base_TX->checksum) = *(this->base_TX->w1)+*(this->base_TX->w2)+*(this->base_TX->w3)+*(this->base_TX->enable_and_stop)+*(this->base_TX->shoot);
+	*(this->base_TX->checksum) = *(this->base_TX->w1)+*(this->base_TX->w2)+*(this->base_TX->w3)+
+								*(this->base_TX->enable_and_stop)+*(this->base_TX->shoot);
 #ifdef DEBUG_CSSL
 	std::cout << "mcssl_send2motor(DEBUG_CSSL)\n";
 	std::cout << std::hex;

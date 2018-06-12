@@ -18,6 +18,7 @@ add_executable(Mecanum_motion_node
 				motion_nodeHandle.cpp
 				base_control.cpp 
 				crc_8.cpp
+				crc_16.cpp
 )
 target_link_libraries(Mecanum_motion_node ${catkin_LIBRARIES} csslLib motorDataLib)
 
