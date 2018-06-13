@@ -45,6 +45,9 @@ static const unsigned char crc8_table[] =
 #include <iostream>
 
 class Crc_8{
+    /*
+        Generate CRC-8-x8+x5+x4+1 code 
+    */
 // Construct and Deconstruct
 public:
     Crc_8(unsigned char* msg, int size);                                    

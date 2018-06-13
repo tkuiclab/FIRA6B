@@ -8,6 +8,9 @@
 serial_rx* Base_Control::base_RX = NULL;
 Base_Control::Base_Control()
 {
+	/*
+		Declare and initalize the serial rx and tx data 
+	*/
 	this->base_robotFB = new robot_command;
 	this->base_robotFB->x_speed = new double;
 	this->base_robotFB->y_speed = new double;
@@ -108,6 +111,9 @@ Base_Control::~Base_Control()
 
 int Base_Control::mcssl_init()
 {
+	/*
+		start using cssl, check and open the serial port.
+	*/
 	const char *devs;
 #ifdef DEBUG_CSSL
 	std::cout << "mcssl_init(DEBUG_CSSL)\n";
@@ -176,6 +182,9 @@ int Base_Control::mcssl_init()
 
 void Base_Control::mcssl_finish()
 {
+	/*
+		Close the serial port when the process done.
+	*/
 #ifdef DEBUG_CSSL
 	std::cout << "mcssl_finish(DEBUG_CSSL)\n";
 #else
@@ -186,6 +195,9 @@ void Base_Control::mcssl_finish()
 
 void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 {
+	/*
+		Receive the motor feed back;
+	*/
 #ifdef OMNIDIRECTIONAL
 	static unsigned char cssl_buffer[50]={0};
 	static int count_buffer=0;
@@ -398,8 +410,11 @@ void Base_Control::shoot_regularization()
 
 void Base_Control::speed_regularization(double w1, double w2, double w3, double w4)
 {
+	/*
+		Regular the speed and set the minimum speed 
+	*/
 	int speed_max = 2000;
-	int min_scope = 5;
+	int min_scope = 10;
 	int speed_min = (speed_max/100)*min_scope;
 
 	unsigned char w1_dir = (w1<0)? 0x80 : 0;
@@ -462,6 +477,14 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 
 void Base_Control::forwardKinematics()
 {
+	/*
+		Mecanum forward kinematics
+		math:
+			[v_x				[1			1			1			1			[w1
+			 v_y		=(r/4)*	-1			1			1			-1			 w2
+			 v_yaw]				-1/(lx+ly)	1/(lx+ly)	-1/(lx+ly)	1/(lx+ly)]	 w3
+																				 w4]
+	*/
 #ifdef MECANUM
 // inverseKinematics for mecanum wheeled platform
 	double Lx = 0.3;	// platform x size 
@@ -475,6 +498,9 @@ void Base_Control::forwardKinematics()
 
 void Base_Control::inverseKinematics()
 {
+	/*
+		Mecanum inverse kinematics
+	*/
 	double w1_speed, w2_speed, w3_speed, w4_speed;
 	x_CMD = *(this->base_robotCMD->x_speed);
 	y_CMD = *(this->base_robotCMD->y_speed);

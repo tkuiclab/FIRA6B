@@ -32,10 +32,16 @@ static const unsigned short crc16_table[] = {
 0xEF1F, 0xFF3E, 0xCF5D, 0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8, 
 0x6E17, 0x7E36, 0x4E55, 0x5E74, 0x2E93, 0x3EB2, 0x0ED1, 0x1EF0
 }; 
+/*
+    CRC-16-CCITT table 
+*/
 
 #include <iostream>
 
 class Crc_16{
+    /*
+        Generate CRC-16-CCITT code 
+    */
 // Construct and Deconstruct
 public:
     Crc_16(unsigned char* msg, int size);
