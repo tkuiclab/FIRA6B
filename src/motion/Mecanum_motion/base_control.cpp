@@ -67,8 +67,10 @@ Base_Control::Base_Control()
 	this->base_TX->crc_16_1 = new unsigned char;
 	this->base_TX->crc_16_2 = new unsigned char;
 
-	memset(this->base_TX->head1, 0xff, sizeof(unsigned char));
-	memset(this->base_TX->head2, 0xfa, sizeof(unsigned char));
+	memset(this->base_TX->head1, 0x55, sizeof(unsigned char));
+	memset(this->base_TX->head2, 0xaa, sizeof(unsigned char));
+	// memset(this->base_TX->head1, 0xff, sizeof(unsigned char));
+	// memset(this->base_TX->head2, 0xfa, sizeof(unsigned char));
 	memset(this->base_TX->w1, 0, sizeof(unsigned char));
 	memset(this->base_TX->w2, 0, sizeof(unsigned char));
 	memset(this->base_TX->w3, 0, sizeof(unsigned char));
@@ -328,15 +330,17 @@ void Base_Control::mcssl_send2motor()
 	/*
 		Send the motor speed control to the control board through RS232 by using libcssl
 	*/
-	unsigned char com_data[]={	*(this->base_TX->w1), *(this->base_TX->w2), 
+	unsigned char com_data[]={	*(this->base_TX->head1), *(this->base_TX->head2),
+								*(this->base_TX->w1), *(this->base_TX->w2), 
 								*(this->base_TX->w3), *(this->base_TX->w4), 
 								*(this->base_TX->enable_and_stop)};
-	int size = 5;
+	int size = int(sizeof(com_data)/sizeof(unsigned char));
 	Crc_16 crc16(com_data, size);
 	unsigned short crc = crc16.getCrc();
 	this->base_TX->crc_16_1 = ((unsigned char*)(&crc) + 1);
 	this->base_TX->crc_16_2 = ((unsigned char*)(&crc) + 0);
-	*this->base_TX->checksum = *(this->base_TX->w1) + *(this->base_TX->w2) + *(this->base_TX->w3) + *(this->base_TX->w4) + *(this->base_TX->enable_and_stop) + *(this->base_TX->crc_16_1) + *(this->base_TX->crc_16_2);
+	*this->base_TX->checksum = *(this->base_TX->head1) + *(this->base_TX->head2) + *(this->base_TX->w1) + *(this->base_TX->w2) + *(this->base_TX->w3) + *(this->base_TX->w4) + *(this->base_TX->enable_and_stop) + *(this->base_TX->crc_16_1) + *(this->base_TX->crc_16_2);
+	int aaa(*(this->base_TX->head1) + *(this->base_TX->head2) + *(this->base_TX->w1) + *(this->base_TX->w2) + *(this->base_TX->w3) + *(this->base_TX->w4) + *(this->base_TX->enable_and_stop) + *(this->base_TX->crc_16_1) + *(this->base_TX->crc_16_2));
 #ifdef DEBUG_CSSL
 	std::cout << "mcssl_send2motor(DEBUG_CSSL)\n";
 	std::cout << std::hex;
@@ -364,16 +368,12 @@ void Base_Control::mcssl_send2motor()
 	std::cout << "checksum: " << (int)*(this->base_TX->checksum) << std::endl;
 	std::cout << std::endl;
 #endif
-	cssl_putchar(serial, *(this->base_TX->head1));
-	cssl_putchar(serial, *(this->base_TX->head2));
-	cssl_putchar(serial, *(this->base_TX->w1));
-	cssl_putchar(serial, *(this->base_TX->w2));
-	cssl_putchar(serial, *(this->base_TX->w3));
-	cssl_putchar(serial, *(this->base_TX->w4));
-	cssl_putchar(serial, *(this->base_TX->enable_and_stop));
-	cssl_putchar(serial, *(this->base_TX->crc_16_1));
-	cssl_putchar(serial, *(this->base_TX->crc_16_2));
-	cssl_putchar(serial, *(this->base_TX->checksum));
+	uint8_t buffer[]={	*(this->base_TX->head1), *(this->base_TX->head2),
+						*(this->base_TX->w1), *(this->base_TX->w2),
+						*(this->base_TX->w3), *(this->base_TX->w4),
+						*(this->base_TX->enable_and_stop), *(this->base_TX->crc_16_1),
+						*(this->base_TX->crc_16_2), *(this->base_TX->checksum)};
+	cssl_putdata(serial,buffer,int(sizeof(buffer)/sizeof(uint8_t)));
 	printf("**************************\n");
 	printf("* mcssl_send(DEBUG_CSSL) *\n");
 	printf("**************************\n");
