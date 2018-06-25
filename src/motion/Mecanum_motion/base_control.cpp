@@ -374,6 +374,16 @@ void Base_Control::mcssl_send2motor()
 						*(this->base_TX->enable_and_stop), *(this->base_TX->crc_16_1),
 						*(this->base_TX->crc_16_2), *(this->base_TX->checksum)};
 	cssl_putdata(serial,buffer,int(sizeof(buffer)/sizeof(uint8_t)));
+	// cssl_putchar(serial, *(this->base_TX->head1));
+	// cssl_putchar(serial, *(this->base_TX->head2));
+	// cssl_putchar(serial, *(this->base_TX->w1));
+	// cssl_putchar(serial, *(this->base_TX->w2));
+	// cssl_putchar(serial, *(this->base_TX->w3));
+	// cssl_putchar(serial, *(this->base_TX->w4));
+	// cssl_putchar(serial, *(this->base_TX->enable_and_stop));
+	// cssl_putchar(serial, *(this->base_TX->crc_16_1));
+	// cssl_putchar(serial, *(this->base_TX->crc_16_2));
+	// cssl_putchar(serial, *(this->base_TX->checksum));
 	printf("**************************\n");
 	printf("* mcssl_send(DEBUG_CSSL) *\n");
 	printf("**************************\n");
@@ -418,9 +428,9 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 	int speed_min = (speed_max/100)*min_scope;
 
 	unsigned char w1_dir = (w1<0)? 0x80 : 0;
-	unsigned char w2_dir = (w2<0)? 0x80 : 0;
+	unsigned char w2_dir = (w2<0)? 0 : 0x80;
 	unsigned char w3_dir = (w3<0)? 0x80 : 0;
-	unsigned char w4_dir = (w4<0)? 0x80 : 0;
+	unsigned char w4_dir = (w4<0)? 0 : 0x80;
 #ifdef OMNIDIRECTIONAL
 	if((w1_speed_percent>0.1) && (w1_speed_percent<5))w1_speed_percent=5;
 	if((w2_speed_percent>0.1) && (w2_speed_percent<5))w2_speed_percent=5;
