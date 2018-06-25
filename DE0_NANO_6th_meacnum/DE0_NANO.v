@@ -375,7 +375,7 @@ assign GPIO_0_D[14] = wSignal[3];//sp1
 MotorController MotorA (
 	.iCLK		(CLOCK_50),			// 50MHz, System Clock
 	.iRst_n		(iReset_n),		// Reset
-	.iCMD		(wCMD_Motor1),		// Command, SPD + DIR
+	.iCMD		(8'h26),		// Command, SPD + DIR
 	.iPA		(iMotor1_PA),		// Encoder Channel A
 	.iPB		(iMotor1_PB),		// Encoder Channel B
 	.oPWM_Pulse	(oMotor1_PWM),	// PWM of motor
@@ -396,7 +396,7 @@ assign GPIO_0_D[27] = wSignal[2];//sp2
 MotorController MotorB (
 	.iCLK		(CLOCK_50),			// 50MHz, System Clock
 	.iRst_n		(iReset_n),		// Reset
-	.iCMD		(wCMD_Motor2),		// Command, SPD + DIR
+	.iCMD		(8'h26),		// Command, SPD + DIR
 	.iPA		(iMotor2_PA),		// Encoder Channel A
 	.iPB		(iMotor2_PB),		// Encoder Channel B
 	.oPWM_Pulse	(oMotor2_PWM),	// PWM of motor
@@ -418,7 +418,7 @@ assign GPIO_0_D[7] = wSignal[1];//sp3
 MotorController MotorC (
 	.iCLK		(CLOCK_50),			// 50MHz, System Clock
 	.iRst_n		(iReset_n),		// Reset
-	.iCMD		(wCMD_Motor3),		// Command, SPD + DIR
+	.iCMD		(8'hA6),		// Command, SPD + DIR
 	.iPA		(iMotor3_PA),		// Encoder Channel A
 	.iPB		(iMotor3_PB),		// Encoder Channel B
 	.oPWM_Pulse	(oMotor3_PWM),	// PWM of motor
@@ -440,7 +440,7 @@ assign GPIO_0_D[9] = wSignal[0];//sp4
 MotorController MotorD (
 	.iCLK		(CLOCK_50),			// 50MHz, System Clock
 	.iRst_n		(iReset_n),		// Reset
-	.iCMD		(wCMD_Motor4),		// Command, SPD + DIR
+	.iCMD		(8'hA6),		// Command, SPD + DIR
 	.iPA		(iMotor4_PA),		// Encoder Channel A
 	.iPB		(iMotor4_PB),		// Encoder Channel B
 	.oPWM_Pulse	(oMotor4_PWM), // PWM of motor

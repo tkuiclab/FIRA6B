@@ -116,20 +116,35 @@ always @(posedge iCLK) begin
 	// Take apart Data
 	else begin
 		
-		rChecksum <= rData_2 + rData_3 + rData_4 + rData_5 + rData_6 + rData_7 + rData_8;
+		rChecksum <= rData_0 + rData_1 + rData_2 + rData_3 + rData_4 + rData_5 + rData_6 + rData_7 + rData_8;
 
 		if(~rRx_ready & iRx_ready) begin
 			case(state)
 				DATA0:
+//					begin
+//						if( iData == 8'hFF ) begin	// when getting initiation packet, state jump next
+//							rData_0	<=	iData;
+//							state	<=	DATA1;
+//						end
+//					end
 					begin
-						if( iData == 8'hFF ) begin	// when getting initiation packet, state jump next
+						if( iData == 8'h55 ) begin	// when getting initiation packet, state jump next
 							rData_0	<=	iData;
 							state	<=	DATA1;
 						end
 					end
 				DATA1:
+//					begin
+//						if( iData == 8'hFA ) begin	//when getting second initiation packet, start to receive and transmit Data
+//							rData_1	<=	iData;
+//							state	<=	DATA2;
+//						end
+//						else begin
+//							state	<=	DATA0;		
+//						end
+//					end
 					begin
-						if( iData == 8'hFA ) begin	//when getting second initiation packet, start to receive and transmit Data
+						if( iData == 8'hAA ) begin	//when getting second initiation packet, start to receive and transmit Data
 							rData_1	<=	iData;
 							state	<=	DATA2;
 						end
@@ -172,17 +187,16 @@ always @(posedge iCLK) begin
 					begin
 						rData_8	<=	iData;		//crc16-2
 						all <={rData_2,rData_3,rData_4,rData_5,rData_6,rData_7,rData_8};
-						crc ={rData_2,rData_3,rData_4,rData_5,rData_6,rData_7,rData_8};
-						for(i=0; i<40; i=i+1)begin
-							if(crc&56'h10000000000000 == 56'h10000000000000)begin
+						crc ={rData_0, rData_1, rData_2,rData_3,rData_4,rData_5,rData_6,rData_7,rData_8};
+						for(i=0; i<56; i=i+1)begin
+							if(crc&71'h100000000000000000 == 71'h100000000000000000)begin
 								crc = (crc << 1);
-								crc[55:40] = crc[55:40] ^ 16'h1021;
+								crc[71:56] = crc[71:56] ^ 16'h1021;
 							end
 							else begin
 								crc = (crc << 1);
 							end
 						end
-//						all[15:0] <= crc[55:40];
 						state	<=	DATA9;
 					end
 				DATA9:
@@ -243,7 +257,8 @@ always @(posedge iCLK) begin
 //			end
 //			all[15:0] <= crc[55:40];
 						
-			if((rTmpData_7 == crc[55:48]) && (rTmpData_8 == crc[47:40]) && (rTmpData_0 == 8'hFF) && (rTmpData_1 == 8'hFA) && (rTmpData_9 == rChecksum) ) begin
+//			if((rTmpData_7 == crc[71:64]) && (rTmpData_8 == crc[63:56]) && (rTmpData_0 == 8'hFF) && (rTmpData_1 == 8'hFA) && (rTmpData_9 == rChecksum) ) begin
+			if((rTmpData_7 == crc[71:64]) && (rTmpData_8 == crc[63:56]) && (rTmpData_0 == 8'h55) && (rTmpData_1 == 8'hAA) && (rTmpData_9 == rChecksum) ) begin
 				rError <= 0;
 				oCMD_Motor1 <= rTmpData_2;
 				oCMD_Motor2 <= rTmpData_3;
