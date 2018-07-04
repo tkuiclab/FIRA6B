@@ -435,7 +435,7 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 	int speed_max = 2000;
 	int min_scale = 5;
 	int speed_min = (speed_max/100)*min_scale;
-	int acc_scale(1), acc_limit((speed_max/100)*acc_scale);
+	int acc_scale(3), acc_limit((speed_max/100)*acc_scale);
 	static double w1_old(w1), w2_old(w2), w3_old(w3), w4_old(w4);
 
 	if(fabs(w1-w1_old)>acc_limit) (w1-w1_old > 0)? w1 = w1_old+acc_limit : w1 = w1_old-acc_limit;
@@ -480,10 +480,10 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 	this->en2 = (w2_speed_percent > 0)? 1 : 0;
 	this->en3 = (w3_speed_percent > 0)? 1 : 0;
 	this->en4 = (w3_speed_percent > 0)? 1 : 0;
-	this->stop1 = 0;
-	this->stop2 = 0;
-	this->stop3 = 0;
-	this->stop4 = 0;
+	w1 == 0 ? this->stop1 = 1 : this->stop1 = 0;
+	w1 == 0 ? this->stop2 = 1 : this->stop2 = 0;
+	w1 == 0 ? this->stop3 = 1 : this->stop3 = 0;
+	w1 == 0 ? this->stop4 = 1 : this->stop4 = 0; 
 
 	*(this->base_TX->w1) = (w1_speed_percent>0)? (unsigned char)((127*w1_speed_percent/speed_max) + w1_dir) : 0x80;
 	*(this->base_TX->w2) = (w2_speed_percent>0)? (unsigned char)((127*w2_speed_percent/speed_max) + w2_dir) : 0x80;
