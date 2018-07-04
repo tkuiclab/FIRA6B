@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 	//while(ros::ok()){
 	//	if(Global_Motor_Control.mcssl_init()){
 	//		break;
+
 	//	}else{
 	//		exit(EXIT_FAILURE);
 	//	}

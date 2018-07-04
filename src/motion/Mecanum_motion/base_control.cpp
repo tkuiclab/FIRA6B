@@ -246,7 +246,7 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 				*(base_RX->w2) = (cssl_buffer[i+6]<<24)+(cssl_buffer[i+7]<<16)+(cssl_buffer[i+8]<<8)+(cssl_buffer[i+9]);
 				*(base_RX->w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
 				*(base_RX->w4) = (cssl_buffer[i+14]<<24)+(cssl_buffer[i+15]<<16)+(cssl_buffer[i+16]<<8)+(cssl_buffer[i+17]);
-				printf("head1: %x\nhead2: %x\nw1: %d\nw2: %d\nw3: %d\nw4: %d\n", *(base_RX->head1), *(base_RX->head2), int(*(base_RX->w1)), \
+				// printf("head1: %x\nhead2: %x\nw1: %d\nw2: %d\nw3: %d\nw4: %d\n", *(base_RX->head1), *(base_RX->head2), int(*(base_RX->w1)), \
 				int(*(base_RX->w2)), int(*(base_RX->w3)), int(*(base_RX->w4)));
 				break;
 			}else{
@@ -374,6 +374,7 @@ void Base_Control::mcssl_send2motor()
 						*(this->base_TX->w3), *(this->base_TX->w4),
 						*(this->base_TX->enable_and_stop), *(this->base_TX->crc_16_1),
 						*(this->base_TX->crc_16_2), *(this->base_TX->checksum)};
+	cssl_putdata(serial,buffer,int(sizeof(buffer)/sizeof(uint8_t)));
 	cssl_putdata(serial,buffer,int(sizeof(buffer)/sizeof(uint8_t)));
 	// cssl_putchar(serial, *(this->base_TX->head1));
 	// cssl_putchar(serial, *(this->base_TX->head2));
@@ -581,8 +582,6 @@ void Base_Control::inverseKinematics()
 	w3_speed = (1/Rw)*(x_CMD+y_CMD-yaw_CMD*(Lx+Ly));
 	w4_speed = (1/Rw)*(x_CMD-y_CMD+yaw_CMD*(Lx+Ly));
 #endif
-
-
 
 	speed_regularization(w1_speed, w2_speed, w3_speed, w4_speed);
 #ifdef DEBUG
