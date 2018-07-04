@@ -10,6 +10,7 @@
 #include <cstring>
 #include "crc_8.h"
 #include "crc_16.h"
+#include "ros/ros.h"
 
 /*******************************
   * Include library
@@ -22,6 +23,9 @@ extern "C"{
 #ifndef pkg_size
 #define pkg_size 8
 #endif
+
+#define rad2deg 180/M_PI
+#define deg2rad M_PI/180
 
 //#include "../common/cssl/cssl.c"
 //#include "../common/cssl/port.h"
@@ -47,6 +51,7 @@ private:
 	void	speed_regularization(double, double, double, double);
 	void	inverseKinematics();
 	void	forwardKinematics();	
+	void	curveFunction(double&, double&, double&);
 private:
 	const double m1_Angle =  M_PI/4;
 	const double m2_Angle = (-1)*M_PI/4;

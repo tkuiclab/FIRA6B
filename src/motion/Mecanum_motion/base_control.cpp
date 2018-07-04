@@ -234,25 +234,26 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 	cssl_buffer[count_buffer++] = *buf;
 	count_buffer = (count_buffer)%50;
 	for (int i=0;i<50;i++){
-		if((cssl_buffer[i]==0xff) && (cssl_buffer[i+1]==0xfa) && (cssl_buffer[i+7]==0x00)){
-			unsigned char temp[]={cssl_buffer[i+2], cssl_buffer[i+3], cssl_buffer[i+4],
-								  cssl_buffer[i+5], cssl_buffer[i+6], cssl_buffer[i+7]};
-			int size = 6;
-			Crc_8 crc_check(temp, size);
-			if(cssl_buffer[i+8] == crc_check.getCrc() && crc_check.getCrc() != 0) {
+		if((cssl_buffer[i]==0xff) && (cssl_buffer[i+1]==0xfa) && (cssl_buffer[i+19]==0xff) && (cssl_buffer[i+20])==0xfa){
+			unsigned char checksum = cssl_buffer[i+2]+cssl_buffer[i+3]+cssl_buffer[i+4]+cssl_buffer[i+5]+\
+			cssl_buffer[i+6]+cssl_buffer[i+7]+cssl_buffer[i+8]+cssl_buffer[i+9]+cssl_buffer[i+10]+\
+			cssl_buffer[i+11]+cssl_buffer[i+12]+cssl_buffer[i+13]+cssl_buffer[i+14]+cssl_buffer[i+15]\
+			+cssl_buffer[i+16]+cssl_buffer[i+17];
+			if(cssl_buffer[i+18]==checksum){
 				*(base_RX->head1) = cssl_buffer[i];
 				*(base_RX->head2) = cssl_buffer[i+1];
-				*(base_RX->w1) = cssl_buffer[i+2];
-				*(base_RX->w2) = cssl_buffer[i+3];
-				*(base_RX->w3) = cssl_buffer[i+4];
-				*(base_RX->w4) = cssl_buffer[i+5];
-				*(base_RX->enable_and_stop) = cssl_buffer[i+6];
-				*(base_RX->shoot) = cssl_buffer[i+7];
-				*(base_RX->checksum) = cssl_buffer[i+8];
+				*(base_RX->w1) = (cssl_buffer[i+2]<<24)+(cssl_buffer[i+3]<<16)+(cssl_buffer[i+4]<<8)+(cssl_buffer[i+5]);
+				*(base_RX->w2) = (cssl_buffer[i+6]<<24)+(cssl_buffer[i+7]<<16)+(cssl_buffer[i+8]<<8)+(cssl_buffer[i+9]);
+				*(base_RX->w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
+				*(base_RX->w4) = (cssl_buffer[i+14]<<24)+(cssl_buffer[i+15]<<16)+(cssl_buffer[i+16]<<8)+(cssl_buffer[i+17]);
+				printf("head1: %x\nhead2: %x\nw1: %d\nw2: %d\nw3: %d\nw4: %d\n", *(base_RX->head1), *(base_RX->head2), int(*(base_RX->w1)), \
+				int(*(base_RX->w2)), int(*(base_RX->w3)), int(*(base_RX->w4)));
+				break;
+			}else{
+				continue;
 			}
-		// 	if(cssl_buffer[i+8] == crc_check.getCrc())
-		// 		printf("\nRecieve!!!!!!!!!!!!!!!!!!!!!\nhead1: %x\nhead2: %x\nw1: %x\nw2: %x\nw3: %x\nw4: %x\nenable_and_stop: %x\nshoot: %x\ncheck: %x\n", *(base_RX->head1), \
-		// *(base_RX->head2), *(base_RX->w1), *(base_RX->w2), *(base_RX->w3), *(base_RX->w4), *(base_RX->enable_and_stop),  *(base_RX->shoot),  *(base_RX->checksum));
+		}else{
+			continue;
 		}
 	}
 #ifdef DEBUG_CSSLCALLBACK_TEST
@@ -384,6 +385,8 @@ void Base_Control::mcssl_send2motor()
 	// cssl_putchar(serial, *(this->base_TX->crc_16_1));
 	// cssl_putchar(serial, *(this->base_TX->crc_16_2));
 	// cssl_putchar(serial, *(this->base_TX->checksum));
+
+
 	printf("**************************\n");
 	printf("* mcssl_send(DEBUG_CSSL) *\n");
 	printf("**************************\n");
@@ -422,15 +425,32 @@ void Base_Control::speed_regularization(double w1, double w2, double w3, double 
 {
 	/*
 		Regular the speed and set the minimum speed 
-	*/
+		param:
+			speed_max: the limit of wheel 				(default: 2000)
+			min_scale:	the percent of min wheel speed	(default: 5%)
+			acc_scale: the accelerate limit of wheel	(default: 1  velocity/loop_rate)
+			acc_limit: the accelerate limit of wheel	(default: 1  velocity/loop_rate)
+ 	*/
 	int speed_max = 2000;
-	int min_scope = 10;
-	int speed_min = (speed_max/100)*min_scope;
+	int min_scale = 5;
+	int speed_min = (speed_max/100)*min_scale;
+	int acc_scale(1), acc_limit((speed_max/100)*acc_scale);
+	static double w1_old(w1), w2_old(w2), w3_old(w3), w4_old(w4);
+
+	if(fabs(w1-w1_old)>acc_limit) (w1-w1_old > 0)? w1 = w1_old+acc_limit : w1 = w1_old-acc_limit;
+	if(fabs(w2-w2_old)>acc_limit) (w2-w2_old > 0)? w2 = w2_old+acc_limit : w2 = w2_old-acc_limit;
+	if(fabs(w3-w3_old)>acc_limit) (w3-w3_old > 0)? w3 = w3_old+acc_limit : w3 = w3_old-acc_limit;
+	if(fabs(w4-w4_old)>acc_limit) (w4-w4_old > 0)? w4 = w4_old+acc_limit : w4 = w4_old-acc_limit;
 
 	unsigned char w1_dir = (w1<0)? 0x80 : 0;
-	unsigned char w2_dir = (w2<0)? 0 : 0x80;
+	unsigned char w2_dir = (w2<0)? 0 : 0x80;	// accroding to the direction of motor
 	unsigned char w3_dir = (w3<0)? 0x80 : 0;
-	unsigned char w4_dir = (w4<0)? 0 : 0x80;
+	unsigned char w4_dir = (w4<0)? 0 : 0x80;	// accroding to the direction of motor
+	w1_old = w1;
+	w2_old = w2;
+	w3_old = w3;
+	w4_old = w4;
+	
 #ifdef OMNIDIRECTIONAL
 	if((w1_speed_percent>0.1) && (w1_speed_percent<5))w1_speed_percent=5;
 	if((w2_speed_percent>0.1) && (w2_speed_percent<5))w2_speed_percent=5;
@@ -578,7 +598,55 @@ void Base_Control::inverseKinematics()
 	std::cout << std::endl;
 #endif
 }
+void Base_Control::curveFunction(double& vx_cmd, double& vy_cmd, double& vyaw_cmd){
+	/*
+		using s function to regularize robot velocity 
 
+		math:
+			(v_max-v_min)*(cos(pi*((t-t_min)/(t_max-t_min)-1))+1)/2+v_min;
+		param:
+			v_max:		upper bound of the robot velocity		(default: 80 percent)
+			v_min: 		lower bound of the robot velocity		(default: 10 percent)
+			angle_max:	upper bound of the angular velocity		(default: 144 degree)
+			angle_min:	lower bound of the angular velocity		(default: 5.0 degree)
+			dis_max:	upper bound of the robot distance		(default: 2.0 m)
+			dis_min:	lower bound of the robot distance		(default: 0.3 m)
+			omega_max:  upper bound of the angular velocity		(default: 80 percent)
+			omega_min:	lower bound of the angular velocity		(default: 5 percent)
+	*/
+	double v_max(80), v_min(10);
+	double dis_max(2), dis_min(0.3);
+	double angle_max(144), angle_min(5);
+	double omega_max(80), omega_min(5);
+	double v = hypot(vx_cmd, vy_cmd);
+	double alpha = atan2(vy_cmd, vx_cmd)*rad2deg;
+	double angle = vyaw_cmd*rad2deg;
+	double t = ros::Time::now().toSec();
+	double angle_(angle), v_(v);
+
+	// velocity 
+	if(v > v_max)
+		v_ = v_max;
+	else if(v < v_min)
+		v_ = v_min;
+	else if(v != 0)
+		v_ = (v_max-v_min)*(cos(M_PI*((v-dis_min)/(dis_max-dis_min)-1))+1)/2+v_min;
+	// angular velocity
+	if(fabs(angle) > angle_max)
+		angle_ = angle_max;
+	else if(angle < angle_min)
+		angle_ = angle_min;
+	else if (angle != 0)
+		angle_ = (angle_max-angle_min)*(cos(M_PI*((fabs(angle)-omega_min)/(omega_max-omega_min)-1))+1)/2+angle_min;
+	if(angle<0)
+		angle_ = -angle_;
+	// detect the diff between velocity_cmd
+	 
+	// output 
+	vx_cmd = v_*cos(alpha*deg2rad);
+	vy_cmd = v_*sin(alpha*deg2rad);
+	vyaw_cmd = angle_;
+}
 void Base_Control::send(robot_command* CMD)
 {
 	this->base_robotCMD = CMD;
