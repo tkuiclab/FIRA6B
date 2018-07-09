@@ -118,9 +118,11 @@ speed_const.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("ParameterElement");
-        obj[0] = value;
+        obj[0].value = value;
+        console.log(value);
     } else {
         CheckGetParm = 0;
+        obj[0].value = 15;
         //obj[0] = 0;
     }
 });
@@ -129,10 +131,11 @@ yaw_const.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("ParameterElement");
-        obj[1] = value;
+        obj[1].value = value;
+                
     } else {
         CheckGetParm = 0;
-        //obj[1] = 0;
+        obj[1].value = 15;
     }
 });
 
@@ -140,10 +143,10 @@ shoot_const.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("ParameterElement");
-        obj[2] = value;
+        obj[2].value = value;
     } else {
         CheckGetParm = 0;
-        //obj[2] = 0;
+        obj[2].value = 50;
     }
 });
 
@@ -151,10 +154,10 @@ ball_distance.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("ParameterElement");
-        obj[3] = value;
+        obj[3].value = value;
     } else {
         CheckGetParm = 0;
-        //obj[3] = 0;
+        obj[3].value = 0.6;
     }
 });
 
@@ -162,10 +165,10 @@ goal_distance.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("ParameterElement");
-        obj[4] = value;
+        obj[4].value = value;
     } else {
         CheckGetParm = 0;
-        //obj[4] = 0;
+        obj[4].value = 3;
     }
 });
 
@@ -173,10 +176,10 @@ hold_ball_distance.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("ParameterElement");
-        obj[5] = value;
+        obj[5].value = value;
     } else {
         CheckGetParm = 0;
-        //obj[4] = 0;
+        obj[5].value = 0.31;
     }
 });
 
@@ -184,9 +187,9 @@ hold_ball_angle.get(function(value) {
     if (value != null) {
         CheckGetParm = 1;
         obj = document.getElementsByName("ParameterElement");
-        obj[6] = value;
+        obj[6].value = value;
     } else {
         CheckGetParm = 0;
-        //obj[4] = 0;
+        obj[6].value = 3;
     }
 });
