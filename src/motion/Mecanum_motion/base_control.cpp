@@ -35,6 +35,7 @@ Base_Control::Base_Control()
 	Base_Control::base_RX->safe1 			= new unsigned char;
 	Base_Control::base_RX->safe2 			= new unsigned char;
 	Base_Control::base_RX->safe3 			= new unsigned char;
+	Base_Control::base_RX->infrared			= new unsigned char;
 	// Base_Control::base_RX->batery = new unsigned char;
 
 	memset(Base_Control::base_RX->head1, 			0, sizeof(unsigned char));
@@ -49,6 +50,7 @@ Base_Control::Base_Control()
 	memset(Base_Control::base_RX->safe1, 			0, sizeof(unsigned char));
 	memset(Base_Control::base_RX->safe2, 			0, sizeof(unsigned char));
 	memset(Base_Control::base_RX->safe3, 			0, sizeof(unsigned char));
+	memset(Base_Control::base_RX->infrared, 			0, sizeof(unsigned char));
 	// memset(Base_Control::base_RX->batery, 0, sizeof(unsigned char));
 
 	this->base_TX = new serial_tx;
@@ -238,16 +240,18 @@ void Base_Control::mcssl_Callback(int id, uint8_t* buf, int length)
 			unsigned char checksum = cssl_buffer[i+2]+cssl_buffer[i+3]+cssl_buffer[i+4]+cssl_buffer[i+5]+\
 			cssl_buffer[i+6]+cssl_buffer[i+7]+cssl_buffer[i+8]+cssl_buffer[i+9]+cssl_buffer[i+10]+\
 			cssl_buffer[i+11]+cssl_buffer[i+12]+cssl_buffer[i+13]+cssl_buffer[i+14]+cssl_buffer[i+15]\
-			+cssl_buffer[i+16]+cssl_buffer[i+17];
-			if(cssl_buffer[i+18]==checksum){
+			+cssl_buffer[i+16]+cssl_buffer[i+17]+cssl_buffer[i+18]+cssl_buffer[i+19];
+			if(cssl_buffer[i+20]==checksum && cssl_buffer[i+18]==cssl_buffer[i+19] &&
+			   (cssl_buffer[i+18]<<6)==0x40 && (cssl_buffer[i+19]<<6)==0x80){
 				*(base_RX->head1) = cssl_buffer[i];
 				*(base_RX->head2) = cssl_buffer[i+1];
 				*(base_RX->w1) = (cssl_buffer[i+2]<<24)+(cssl_buffer[i+3]<<16)+(cssl_buffer[i+4]<<8)+(cssl_buffer[i+5]);
 				*(base_RX->w2) = (cssl_buffer[i+6]<<24)+(cssl_buffer[i+7]<<16)+(cssl_buffer[i+8]<<8)+(cssl_buffer[i+9]);
 				*(base_RX->w3) = (cssl_buffer[i+10]<<24)+(cssl_buffer[i+11]<<16)+(cssl_buffer[i+12]<<8)+(cssl_buffer[i+13]);
 				*(base_RX->w4) = (cssl_buffer[i+14]<<24)+(cssl_buffer[i+15]<<16)+(cssl_buffer[i+16]<<8)+(cssl_buffer[i+17]);
-				// printf("head1: %x\nhead2: %x\nw1: %d\nw2: %d\nw3: %d\nw4: %d\n", *(base_RX->head1), *(base_RX->head2), int(*(base_RX->w1)), \
-				int(*(base_RX->w2)), int(*(base_RX->w3)), int(*(base_RX->w4)));
+				*(base_RX->infrared) = (cssl_buffer[i+18]);
+				printf("head1: %x\nhead2: %x\nw1: %d\nw2: %d\nw3: %d\nw4: %d\ninfrared: %x\n", *(base_RX->head1), *(base_RX->head2), int(*(base_RX->w1)), \
+				int(*(base_RX->w2)), int(*(base_RX->w3)), int(*(base_RX->w4)), *(base_RX->infrared));
 				break;
 			}else{
 				continue;

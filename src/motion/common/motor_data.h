@@ -40,6 +40,7 @@ typedef struct{
 	unsigned char* safe2;
 	unsigned char* safe3;
 	unsigned char* batery;
+	unsigned char* infrared;
 	
 }serial_rx;
 
