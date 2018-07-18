@@ -1,0 +1,6 @@
+#! /usr/bin/python3.5
+
+from wrs_strategy import wrs_strategy
+
+if __name__ == '__main__':
+    wrs_strategy.Strategy()

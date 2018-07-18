@@ -1,2 +1,0 @@
-float32 re_leftVel
-float32 re_rightVel
