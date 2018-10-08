@@ -586,9 +586,9 @@ void InterfaceProc::find_object_point(object_Item &obj_, int color) {
     }
   }*/
   if(color == REDITEM){
-//cout<< obj_.dis_max - obj_.dis_min<<endl;
+//cout<< "ball_size = " << obj_.dis_max - obj_.dis_min<<endl;
     if(Omni_distance(obj_.distance) < 300 || obj_.dis_max - obj_.dis_min >= 13) obj_.gkm = 1;
-    if(Omni_distance(obj_.distance) > 200 && obj_.dis_max - obj_.dis_min >= 18) obj_.fly = 1;
+    if(Omni_distance(obj_.distance) > 250 && obj_.dis_max - obj_.dis_min >= 18) obj_.fly = 1; 
   }
   if(color == YELLOWITEM || color == BLUEITEM){
     if(Omni_distance(obj_.distance) < 300 && obj_.dis_max - obj_.dis_min <= 50){

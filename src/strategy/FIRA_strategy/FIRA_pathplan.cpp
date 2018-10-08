@@ -226,6 +226,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
     double pullback_ball_to_opgoal_dis = Goalkeeper[1];
     double pullback_opgoal_dis = Goalkeeper[2];
     double angle_range = Goalkeeper[3];
+    double close_to_opgoal_dis = Goalkeeper[5];
 
     speed = tan( deg2rad * (16 + (3.5-ball_to_opgoal_dis)*10) );  
     if(speed > max_speed){
@@ -235,14 +236,18 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
     }
     pullback_speed = max_speed;
 
-    if(opgoal_dis < 1.2){
-        rotAngle = 16;
+    if(opgoal_dis < close_to_opgoal_dis){
+        rotAngle = 8;
     }else{
-        rotAngle = -20;
+        rotAngle = -15;
     }
 
     if(angle_range == 0){
-        angle_range = 5.7 * ball_to_opgoal_dis;
+        if(ball_to_opgoal_dis > 2){
+            angle_range = 20;
+        }else{
+            angle_range = 8 * ball_to_opgoal_dis;
+        }
     }
 
     if(opgoal_dis > pullback_opgoal_dis && ball_to_opgoal_dis > pullback_ball_to_opgoal_dis){
@@ -317,8 +322,8 @@ void FIRA_pathplan_class::strategy_Goalkeeper_block(int r_number){
     
     if(fabs(ball_angle) > 5 && ball_angle != 999){
         env.home[r_number].v_yaw = ball_angle*2;
-    }else{
-        env.home[r_number].v_yaw = 0;
+    }else if(ball_angle != 999){
+        env.home[r_number].v_yaw = ball_angle;
     }
     std::cout << "block " << position << " -> " << direction << std::endl;
     
@@ -384,6 +389,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_push(int r_number){
         rotAngle = 0.15 *(opgoal_edge_angle_R - ball_angle) * (1-cos(deg2rad*(ball_angle-opgoal_angle_reverse)));
     }
 
+	/*
     if(opgoal_dis < 0.5){
         speed = 1.8;
         if(opgoal_left > opgoal_right){
@@ -397,6 +403,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_push(int r_number){
         }
         std::cout << "go out    ";
     }
+*/
 
     Vector2d vectorbr(x, y);
     Rotation2Dd rot( rotAngle * deg2rad);
@@ -409,6 +416,8 @@ void FIRA_pathplan_class::strategy_Goalkeeper_push(int r_number){
         env.home[r_number].v_y = vectornt(1); 
         if(fabs(ball_angle) > 5){
             yaw = ball_angle*2;
+        }else{
+            yaw = ball_angle;
         }
     }
     
@@ -436,8 +445,8 @@ void FIRA_pathplan_class::strategy_Goalkeeper_goalkick(int r_number){
     int rotAngle =0;
 
     if(opgoal_dis < 0.8){
-   	    x = 0.8 * sin(ball_angle * deg2rad);
-    	y = 0.8 * cos(ball_angle * deg2rad);
+   	x = 1.2 * sin(ball_angle * deg2rad);
+    	y = 1.2 * cos(ball_angle * deg2rad);
         direction = M;      
     }else if(fabs(opgoal_left - opgoal_right) < 0.45){
     	x = 0;
@@ -507,7 +516,7 @@ void FIRA_pathplan_class::strategy_Goalkeeper_shootblock(int r_number){
         shootblock_reset ++;    
         direction = stop;
     }else if(shootblock_reset !=0){
-        ball_direction += ball_angle - start_ball_angle;
+        ball_direction = ball_angle - start_ball_angle;
     }
 
     if(ball_direction > ball_direction_count){ 
@@ -553,10 +562,10 @@ void FIRA_pathplan_class::strategy_Goalkeeper_shootblock(int r_number){
     
     if(fabs(ball_angle) > 5 && ball_angle != 999){
         env.home[r_number].v_yaw = ball_angle*2;
-    }else{
-        env.home[r_number].v_yaw = 0;
+    }else if(ball_angle != 999){
+        env.home[r_number].v_yaw = ball_angle;
     }
-    
+    std::cout << "ball_direction = " << ball_direction << std::endl;
     std::cout << "shootblock -> " << direction << std::endl;
 }
 

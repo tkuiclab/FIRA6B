@@ -317,6 +317,8 @@ void FIRA_behavior_class::StateGoalkeeperBlock(int r_number){
     //     opgoal_angle_reverse = 180 + opgoal_angle;
     // }
 
+
+    
     if(ball_angle == 999){
         state_Goalkeeper = state_Goalkeeper_init;
     }else if(ball_fly == 1 && shootblock_enable ==1){
@@ -324,9 +326,8 @@ void FIRA_behavior_class::StateGoalkeeperBlock(int r_number){
     }else if(ball_to_opgoal_dis < param_ball_to_opgoal_dis && opgoal_dis < param_opgoal_dis){
         state_Goalkeeper = state_Goalkeeper_push;
     } 
-
-    // std::cout << "opgoal_reverse = " << opgoal_angle_reverse << std::endl;
-    // std::cout << "position_angle = " << position_angle << std::endl;
+    
+    // std::cout << " opgoal_dis = " << opgoal_dis << std::endl;
     // std::cout << "ball_to_opgoal_dis = " << ball_to_opgoal_dis << std::endl;
 }
 
@@ -402,11 +403,17 @@ void FIRA_behavior_class::StateGoalkeeperShootBlock(int r_number){
     }
     double start_time = (double)(start.sec+(double)start.nsec/1000000000);
     double current_time = (double)(current.sec+(double)current.nsec/1000000000);
-    double const shootblock_calculate_time = 2;
+    double const shootblock_calculate_time = 1;
 
-    if(ball_fly ==0 || ball_dis < 1 || shootblock_calculate_time < (current_time - start_time) ){
+    
+    if(ball_dis < 0.55){
+        state_Goalkeeper = state_Goalkeeper_push;
+        shootblock_timer_reset = 1;
+    }else if(ball_fly ==0 && ball_dis > 2){
         state_Goalkeeper = state_Goalkeeper_block;
         shootblock_timer_reset = 1;
+    }else if(shootblock_calculate_time < (current_time - start_time)){
+        state_Goalkeeper = state_Goalkeeper_block;
     }
 }
 //###################################################//

@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     mNodeHandle.setOpponent(isOpponent);
     mNodeHandle.on_init();
 
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(100);
 
     FIRA_behavior_class mbehavior;
 
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     //return 0;
     while(ros::ok())
     {
-
+    
         if(global_env->SaveParam){
             mpathplan.loadParam(mNodeHandle.getNodeHandle());
             mbehavior.loadParam(mNodeHandle.getNodeHandle());
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 
         ros::spinOnce();
         loop_rate.sleep();
-
+        
     }
 
     ros::shutdown();
